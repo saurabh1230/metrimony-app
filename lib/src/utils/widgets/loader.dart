@@ -21,3 +21,12 @@ class Loading extends StatelessWidget {
     );
   }
 }
+ Widget customLoader({
+  required double size,
+}) {
+  return Center(
+      child: LoadingAnimationWidget.staggeredDotsWave(
+        color: primaryColor,
+        size: size,
+      ));
+ }

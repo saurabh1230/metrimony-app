@@ -19,9 +19,9 @@ class SignUpScreenTwo extends StatefulWidget {
 
   @override
   State<SignUpScreenTwo> createState() => _SignUpScreenTwoState();
-  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  static final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   bool validate() {
-    return _formKey.currentState?.validate() ?? false;
+    return _formKey2.currentState?.validate() ?? false;
   }
 }
 
@@ -51,7 +51,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
-          key: SignUpScreenTwo._formKey,
+          key: SignUpScreenTwo._formKey2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -72,11 +72,7 @@ class EditDialogWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                  child: backButton(context: context, image: icCross, onTap: () {
-                    Navigator.pop(context);
-                  })),
+
              /* Text(
                 title,
               ),*/

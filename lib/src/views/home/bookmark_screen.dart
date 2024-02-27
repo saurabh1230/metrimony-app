@@ -1,12 +1,15 @@
+import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../../apis/members_api.dart';
+import 'package:like_button/like_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../apis/members_api/bookmart_api.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizedboxe.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
 import '../../models/matches_model.dart';
+import '../../models/saved_bookmark_model.dart';
 import '../../utils/widgets/buttons.dart';
 import '../../utils/widgets/common_widgets.dart';
 import '../../utils/widgets/loader.dart';
@@ -54,65 +57,87 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
   @override
   void initState() {
     super.initState();
-    getMatches();
+    getSavedMatches();
   }
 
   bool isSearch = false;
-  List<MatchesModel> matches = [];
+  List<SavedBookMarkModel> matches = [];
 
 // MatchesData matches = MatchesModel();
   bool isLoading = false;
 
-  getMatches() {
+  // getSavedMatches() {
+  //   isLoading = true;
+  //   var resp = savedMatchesApi();
+  //   resp.then((value) {
+  //     matches.clear();
+  //     if (mounted) {
+  //       if (value != null && value['status'] == true && value['data'] != null && value['data']['shortlists']['data'] != null) {
+  //         setState(() {
+  //           for (var v in value['data']['shortlists']['data']) {
+  //             matches.add(SavedBookMarkModel.fromJson(v));
+  //           }
+  //           print("ce");
+  //           print(matches.length);
+  //           isLoading = false;
+  //         });
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //       }
+  //     }
+  //   });
+  //
+  // }
+  getSavedMatches() {
     isLoading = true;
-    var resp = getMatchesApi(page: '1');
-    resp.then((value) {
-      matches.clear();
+    savedMatchesApi().then((value) {
       if (mounted) {
-        if (value['status'] == true) {
-          setState(() {
-            for (var v in value['data']['members']['data']) {
-              matches.add(MatchesModel.fromJson(v));
-
-              print(matches.length);
+        setState(() {
+          try {
+            if (value != null && value['status'] != null) {
+              if (value['status'] == true) {
+                if (value['data'] != null &&
+                    value['data']['shortlists'] != null &&
+                    value['data']['shortlists']['data'] != null) {
+                  for (var v in value['data']['shortlists']['data']) {
+                    matches.add(SavedBookMarkModel.fromJson(v));
+                  }
+                }
+              }
             }
+          } catch (e) {
+            print('Error in parsing API response: $e');
+          } finally {
             isLoading = false;
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-        }
+          }
+        });
       }
+    }).catchError((error) {
+      print('Error in API call: $error');
+      isLoading = false;
     });
   }
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+       leading: Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: backButton(
+          context: context,
+          image: icArrowLeft,
+          onTap: () {
+            Navigator.pop(context);
+          }),),
         centerTitle: false,
         automaticallyImplyLeading: false,
-        title: Text("Saved Matches",
+        title: Text(" Matches",
           style: styleSatoshiBold(size: 22, color: Colors.black),),
-        actions: [
-       /*   backButton(context: context,
-              image: icSearch,
-              onTap: (){
-                setState(() {
-                  isSearch = !isSearch;
-                });
-              }),
-          const SizedBox(width: 10,),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: backButton(context: context, image: icFilter, onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (builder) => const FilterMatchesScreen()));
-            }),
-          ),*/
-        ],
       ),
       body: isLoading ? Loading() :
       CustomRefreshIndicator(
@@ -120,7 +145,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
           setState(() {
             isLoading = true;
           });
-          return getMatches();
+          return getSavedMatches();
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -154,9 +179,9 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                     return otherUserdataHolder(
                         context: context,
                         tap: () {},
-                        imgUrl:   '${matches[i].image.toString()}',
-                        userName: '${matches[i].firstname} ${matches[i].lastname}',
-                        atributeReligion: "5 ft 4 in  •  Khatri Hindu",
+                        imgUrl:   '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
+                        userName: '${matches[i].profile!.firstname} ${matches[i].profile!.lastname}',
+                        atributeReligion: "Religion: ${matches[i].profile!.religion ?? ""}",
                         profession: "Software Engineer",
                         Location: "India",
 
@@ -169,7 +194,45 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                         width: 134,
                         context: context,
                         onTap: () {},
-                        title: "Connect Now"),);
+                        title: "Connect Now"),
+                      bookmark: LikeButton(
+                        onTap: (isLiked) async {
+                          print(matches[i].profileId.toString());
+                          try {
+                            // Call your API to save the bookmark
+                            var result = await unSaveBookMarkApi(memberId: matches[i].profileId.toString());
+                            if (result['status'] == true) {
+                              // Handle successful response
+                              setState(() {
+                                // isLoadingList[i] = !isLiked; // Update isLoadingList to reflect the bookmark status
+                              });
+                              ToastUtil.showToast("Bookmark Saved");
+                            } else {
+                              // Handle error response
+                              List<dynamic> errors = result['message']['error'];
+                              String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                              Fluttertoast.showToast(msg: errorMessage);
+                            }
+                          } catch (error) {
+                            print('Error: $error');
+                          }
+                        },
+                        size: 22,
+                        circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                        bubblesColor: const BubblesColor(
+                          dotPrimaryColor: Color(0xff33b5e5),
+                          dotSecondaryColor: Color(0xff0099cc),
+                        ),
+                        likeBuilder: (bool isLiked) {
+                          return Icon(
+                            Icons.bookmark,
+                            color : primaryColor , // Use green color if liked, else use primaryColor
+                            size: 22,
+                          );
+                        },
+                      ),
+                      bookMarkTap: () {  },
+                    );
                     // return GestureDetector(
                     //   behavior: HitTestBehavior.translucent,
                     //   onTap: () {

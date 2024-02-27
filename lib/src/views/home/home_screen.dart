@@ -2,6 +2,7 @@ import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
+import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
@@ -22,8 +23,9 @@ import '../user_profile/user_profile.dart';
 import 'connect/connect_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 class HomeScreen extends StatefulWidget {
+  final LoginResponse response;
 
-  const HomeScreen({super.key,});
+  const HomeScreen({super.key, required this.response,});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
    int page = 1;
    // bool loading = false;
    List<MatchesModel> matches = [];
-   LoginResponse? response;
+   // LoginResponse? response;
 
    /*@override
    void initState() {
@@ -54,7 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
 */
    getMatches() {
      isLoading = true;
-     getNewMatchesApi(page: page.toString()).then((value) {
+     getNewMatchesApi(page: page.toString(),
+       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M",).then((value) {
        if (mounted) {
          setState(() {
            if (value['status'] == true) {
@@ -95,34 +98,52 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 buildStack(),
                 sizedBox28(),
-                Text("8 members looking for you",
+                Text("${matches.length} members looking for you",
                 style: styleSatoshiBold(size: 18, color: color1C1C1c),),
                 sizedBox18(),
+                isLoading ?
+                    customLoader(size: 30):
                 SizedBox(
-                  height: 100,
+                  height: 140,
                   child: ListView.separated(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                      itemCount: 10,
+                      itemCount: matches.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (_,i) {
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           flex:2,
                           child: Container(
                             height: 65,
                             width: 65,
+                            clipBehavior: Clip.hardEdge,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle
                             ),
-                            child: Image.asset("assets/images/ic_profile_male1.png",
+                            child: CachedNetworkImage(
+                              imageUrl:
+                              '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                               fit: BoxFit.cover,
+                              errorWidget: (context, url, error) =>
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(icLogo,
+                                      height: 40,
+                                      width: 40,),
+                                  ),
+                              progressIndicatorBuilder: (a, b, c) =>
+                                  customShimmer(height: 170, /*width: 0,*/),
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Text("Eleanor",
+                          child: Text(
+                           ' ${matches[i].firstname ?? ""}\n${matches[i].lastname ?? "User"}',
+                          maxLines: 2,
+                          textAlign:TextAlign.center,
                           style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
                         )
                       ],
@@ -398,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${matches[i].firstname} \n  ${matches[i].lastname}',
+                                  '${matches[i].firstname} \n${matches[i].lastname}',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       // "Jassica S.",
@@ -547,7 +568,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),*/
                 sizedBox16(),
                 button(context: context, onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) => const AllNewMatchesScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                   AllNewMatchesScreen(response: widget.response,)));
                 }, title: 'See All New Matches'),
 
 
@@ -577,7 +599,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircularPercentIndicator(
                   radius: 120.0,
                   lineWidth: 7.0,
-                  percent: 0.7,
+                  percent: 1,
                   center: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(

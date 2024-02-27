@@ -75,371 +75,509 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
       appBar: buildAppBar(context),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: CustomRefreshIndicator(
-          onRefresh: () {
-            setState(() {
-              isLoading = true;
-            });
-            return educationInfo();
-          },
-          child: SingleChildScrollView(
-            child: button(context: context, onTap: () {
-              print(selectedItemId);
-            },  title: "Save"),
-          ),
+        child: SingleChildScrollView(
+          child: button(context: context, onTap: () {
+            print(selectedItemId);
+          },  title: "Save"),
         ),
       ),
-      body:isLoading ?Loading() :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-          child: Column(
-            children: [
+      body:isLoading ?Loading() :CustomRefreshIndicator(
+        onRefresh: () {
+          setState(() {
+            isLoading = true;
+          });
+          return educationInfo();
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
 
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: educationDetails.length,
-                  itemBuilder: (_,i) {
-                return customCard(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onLongPress: () {
-                      setState(() {
-                        selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        buildListRow(title: 'Institute', data1: educationDetails[i].institute.toString(), ),
-                        buildListRow(title: 'Degree', data1: educationDetails[i].degree.toString(), ),
-                        buildListRow(title: 'Study', data1: educationDetails[i].fieldOfStudy.toString(), ),
-                        buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
-                        buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
-                        buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
-                        buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
-                        buildListRow(title: 'Result', data1: educationDetails[i].result.toString(), ),
-                        buildListRow(title: 'Out of', data1: educationDetails[i].outOf.toString(), ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+            child: Column(
+              children: [
+                educationDetails.isEmpty ||educationDetails == null ?
+                    Center(child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return StatefulBuilder(
+                                builder: (BuildContext context, StateSetter setState) {
+                                  return EditDialogWidget(
+                                      addTextField: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Education",
+                                            style: styleSatoshiBold(size: 18, color: Colors.black),),
+                                          sizedBox16(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Institute', controller: instituteController),
+                                              ),
+                                              SizedBox(width: 6,),
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Degress', controller: degreeController),
+                                              ),
+                                            ],
+                                          ),
+                                          sizedBox10(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Study', controller: fieldOfStudyController),
+                                              ),
+                                              SizedBox(width: 6,),
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Registration No',
+                                                    controller: registrationNoController,
+                                                    keyboard: TextInputType.number
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          sizedBox10(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Roll No', controller: rollNoController,
+                                                    keyboard: TextInputType.number),
+                                              ),
+                                              SizedBox(width: 6,),
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Starting year', controller: startingYearController,
+                                                    keyboard: TextInputType.number),
+                                              ),
+                                            ],
+                                          ),
+                                          sizedBox10(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Ending Year', controller: endingYearController,
+                                                    keyboard: TextInputType.number),
+                                              ),
+                                              SizedBox(width: 6,),
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Result in no', controller: resultController,
+                                                    keyboard: TextInputType.number),
+                                              ),
+                                            ],
+                                          ),
+                                          sizedBox10(),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: buildTextFormField(context, hint: 'Out of', controller: outOfController,
+                                                    keyboard: TextInputType.number),
+                                              ),
+
+                                            ],
+                                          ),
+                                          sizedBox16(),
+                                          loading ?
+                                          loadingElevatedButton(context: context,
+                                              color: primaryColor):
+                                          elevatedButton(
+                                              color: primaryColor,
+                                              context: context, onTap: () {
+                                            setState(() {
+                                              loading =true;
+                                            });
+                                            educationInfoAddApi(
+                                                institute: instituteController.text,
+                                                degree: degreeController.text,
+                                                fieldOfStudy: fieldOfStudyController.text,
+                                                regNO: resultController.text, start: startingYearController.text,
+                                                end: endingYearController.text, result: resultController.text,
+                                                outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
+                                              setState(() {
+                                              });
+                                              if (value['status'] == true) {
+                                                setState(() {
+                                                  loading = false;
+                                                });
+
+                                                // isLoading ? Loading() :careerInfo();
+                                                // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                                                // const KycWaitScreen()));
+
+                                                // ToastUtil.showToast("Login Successful");
+
+                                                ToastUtil.showToast("Updated Successfully");
+                                                print('done');
+                                              } else {
+                                                setState(() {
+                                                  loading = false;
+                                                });
 
 
-                      ],
-                    ),
-                  ), tap: () {
-
-
-                },
-                  borderColor:  selectedItemId == educationDetails[i].id.toString()
-                      ? Colors.red
-                      : Colors.grey,
-                );
-              }),
-          /*    GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Institute',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
+                                                List<dynamic> errors = value['message']['error'];
+                                                String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                                Fluttertoast.showToast(msg: errorMessage);
+                                              }
+                                            });
+                                          }, title: "Save")
+                                        ],
+                                      )
+                                  );
+                                }
+                            );
                           },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: instituteController,
-                          decoration: AppTFDecoration(
-                              hint: 'Institute').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
+                        );
+
+                      },
+                      child: Image.asset(
+                        icAddImageHolder,
+                        height: 120,
+                      ),
+                    )):
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: educationDetails.length,
+                    itemBuilder: (_,i) {
+                  return customCard(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onLongPress: () {
+                        setState(() {
+                          selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          buildListRow(title: 'Institute', data1: educationDetails[i].institute.toString(), ),
+                          buildListRow(title: 'Degree', data1: educationDetails[i].degree.toString(), ),
+                          buildListRow(title: 'Study', data1: educationDetails[i].fieldOfStudy.toString(), ),
+                          buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
+                          buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
+                          buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
+                          buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
+                          buildListRow(title: 'Result', data1: educationDetails[i].result.toString(), ),
+                          buildListRow(title: 'Out of', data1: educationDetails[i].outOf.toString(), ),
+
+
+                        ],
+                      ),
+                    ), tap: () {
+
+
+                  },
+                    borderColor:  selectedItemId == educationDetails[i].id.toString()
+                        ? Colors.red
+                        : Colors.grey,
                   );
-                },
-                child: buildDataAddRow(title: 'Institute',
-                    data1: instituteController.text.isEmpty ?
+                }),
+            /*    GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Institute',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
+
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: instituteController,
+                            decoration: AppTFDecoration(
+                                hint: 'Institute').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Institute',
+                      data1: instituteController.text.isEmpty ?
+                      'Update Info':
+                       instituteController.text, data2: instituteController.text,
+                    isControllerTextEmpty: instituteController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'degree',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
+
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: degreeController,
+                            decoration: AppTFDecoration(
+                                hint: 'degree').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'degree',
+                    data1: degreeController.text.isEmpty ?
                     'Update Info':
-                     instituteController.text, data2: instituteController.text,
-                  isControllerTextEmpty: instituteController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'degree',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                    degreeController.text, data2: degreeController.text,
+                    isControllerTextEmpty: degreeController.text.isEmpty),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Study',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: degreeController,
-                          decoration: AppTFDecoration(
-                              hint: 'degree').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'degree',
-                  data1: degreeController.text.isEmpty ?
-                  'Update Info':
-                  degreeController.text, data2: degreeController.text,
-                  isControllerTextEmpty: degreeController.text.isEmpty),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Study',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: fieldOfStudyController,
+                            decoration: AppTFDecoration(
+                                hint: 'Study').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Study',
+                    data1: fieldOfStudyController.text.isEmpty ?
+                    'Update Info':
+                    fieldOfStudyController.text, data2: fieldOfStudyController.text,
+                    isControllerTextEmpty: fieldOfStudyController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Registration No',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: fieldOfStudyController,
-                          decoration: AppTFDecoration(
-                              hint: 'Study').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Study',
-                  data1: fieldOfStudyController.text.isEmpty ?
-                  'Update Info':
-                  fieldOfStudyController.text, data2: fieldOfStudyController.text,
-                  isControllerTextEmpty: fieldOfStudyController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Registration No',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: registrationNoController,
+                            decoration: AppTFDecoration(
+                                hint: 'Registration No').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Registration No',
+                    data1: registrationNoController.text.isEmpty ?
+                    'Update Info':
+                    registrationNoController.text, data2: registrationNoController.text,
+                    isControllerTextEmpty: registrationNoController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Roll No',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: registrationNoController,
-                          decoration: AppTFDecoration(
-                              hint: 'Registration No').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Registration No',
-                  data1: registrationNoController.text.isEmpty ?
-                  'Update Info':
-                  registrationNoController.text, data2: registrationNoController.text,
-                  isControllerTextEmpty: registrationNoController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Roll No',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: rollNoController,
+                            decoration: AppTFDecoration(
+                                hint: 'Roll No').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Roll No',
+                    data1: rollNoController.text.isEmpty ?
+                    'Update Info':
+                    rollNoController.text, data2: rollNoController.text,
+                    isControllerTextEmpty: rollNoController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Starting Year',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: rollNoController,
-                          decoration: AppTFDecoration(
-                              hint: 'Roll No').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Roll No',
-                  data1: rollNoController.text.isEmpty ?
-                  'Update Info':
-                  rollNoController.text, data2: rollNoController.text,
-                  isControllerTextEmpty: rollNoController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Starting Year',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: startingYearController,
+                            decoration: AppTFDecoration(
+                                hint: 'Starting Year').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Starting Year',
+                    data1: startingYearController.text.isEmpty ?
+                    'Update Info':
+                    startingYearController.text, data2: startingYearController.text,
+                    isControllerTextEmpty: startingYearController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Ending Year',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: startingYearController,
-                          decoration: AppTFDecoration(
-                              hint: 'Starting Year').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Starting Year',
-                  data1: startingYearController.text.isEmpty ?
-                  'Update Info':
-                  startingYearController.text, data2: startingYearController.text,
-                  isControllerTextEmpty: startingYearController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Ending Year',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: endingYearController,
+                            decoration: AppTFDecoration(
+                                hint: 'Ending Year').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Ending Year',
+                    data1: endingYearController.text.isEmpty ?
+                    'Update Info':
+                    endingYearController.text, data2: endingYearController.text,
+                    isControllerTextEmpty: endingYearController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Result',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: endingYearController,
-                          decoration: AppTFDecoration(
-                              hint: 'Ending Year').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Ending Year',
-                  data1: endingYearController.text.isEmpty ?
-                  'Update Info':
-                  endingYearController.text, data2: endingYearController.text,
-                  isControllerTextEmpty: endingYearController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Result',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: resultController,
+                            decoration: AppTFDecoration(
+                                hint: 'Result').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Result',
+                    data1: resultController.text.isEmpty ?
+                    'Update Info':
+                    resultController.text, data2: resultController.text,
+                    isControllerTextEmpty: resultController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Out of',
+                          addTextField:TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: resultController,
-                          decoration: AppTFDecoration(
-                              hint: 'Result').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Result',
-                  data1: resultController.text.isEmpty ?
-                  'Update Info':
-                  resultController.text, data2: resultController.text,
-                  isControllerTextEmpty: resultController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Out of',
-                        addTextField:TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: outOfController,
-                          decoration: AppTFDecoration(
-                              hint: 'hint').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Out Of',
-                  data1: outOfController.text.isEmpty ?
-                  'Update Info':
-                  outOfController.text, data2: outOfController.text,
-                  isControllerTextEmpty: outOfController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),*/
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: outOfController,
+                            decoration: AppTFDecoration(
+                                hint: 'hint').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Out Of',
+                    data1: outOfController.text.isEmpty ?
+                    'Update Info':
+                    outOfController.text, data2: outOfController.text,
+                    isControllerTextEmpty: outOfController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),*/
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -552,7 +690,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
               if (value['status'] == true) {
                 setState(() {
                   loading = false;
-                  isLoading  ? Loading() :  educationInfo();
+                  isLoading  ?  Loading() :  educationInfo();
                 });
 
                 // isLoading ? Loading() :careerInfo();
@@ -587,7 +725,11 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                   builder: (BuildContext context, StateSetter setState) {
                     return EditDialogWidget(
                         addTextField: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text("Education",
+                              style: styleSatoshiBold(size: 18, color: Colors.black),),
+                            sizedBox16(),
                             Row(
                               children: [
                                 Expanded(
@@ -675,6 +817,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                                   setState(() {
                                     loading = false;
                                   });
+                                  Navigator.pop(context);
 
                                   // isLoading ? Loading() :careerInfo();
                                   // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
@@ -720,6 +863,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
     TextInputType ? keyboard,}) {
     return TextFormField(
       keyboardType: keyboard ?? TextInputType.name,
+      textInputAction: TextInputAction.next,
 
       inputFormatters: [
         LengthLimitingTextInputFormatter(40),
@@ -730,7 +874,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                               });
                             },
                             onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
+                              // Navigator.pop(context); // Close the dialog
                             },
                             controller: controller,
                             decoration: AppTFDecoration(

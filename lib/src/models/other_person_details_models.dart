@@ -7,46 +7,80 @@ class OtherProfileModel {
 
   OtherProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class Data {
   String? pageTitle;
-
+  User? user;
   Matches? matches;
 
-  Data({this.pageTitle,  this.matches});
+  Data({this.pageTitle, this.user, this.matches});
 
   Data.fromJson(Map<String, dynamic> json) {
     pageTitle = json['pageTitle'];
-
-    matches =
-    json['matches'] != null ? new Matches.fromJson(json['matches']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    matches = json['matches'] != null ? Matches.fromJson(json['matches']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['pageTitle'] = this.pageTitle;
-
-    if (this.matches != null) {
-      data['matches'] = this.matches!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['pageTitle'] = pageTitle;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    if (matches != null) {
+      data['matches'] = matches!.toJson();
     }
     return data;
   }
 }
 
+class User {
+  int? id;
+  int? profileId;
+  String? firstname;
+  String? lastname;
+  int? lookingFor;
+  String? username;
+  // Add other properties here
+
+  User({this.id, this.profileId, this.firstname, this.lastname, this.lookingFor, this.username});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    profileId = json['profile_id'];
+    firstname = json['firstname'];
+    lastname = json['lastname'];
+    lookingFor = json['looking_for'];
+    username = json['username'];
+    // Initialize other properties here
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['profile_id'] = profileId;
+    data['firstname'] = firstname;
+    data['lastname'] = lastname;
+    data['looking_for'] = lookingFor;
+    data['username'] = username;
+    // Add other properties here
+    return data;
+  }
+}
 
 class Matches {
   int? id;
@@ -62,12 +96,12 @@ class Matches {
   String? balance;
   int? status;
 
-  int? kv;
-  int? ev;
-  int? sv;
-  int? profileComplete;
+  // int? kv;
+  // int? ev;
+  // int? sv;
+  // int? profileComplete;
 
-  int? totalStep;
+  // int? totalStep;
 
   String? image;
   String? createdAt;
@@ -100,11 +134,11 @@ class Matches {
         this.balance,
         this.status,
 
-        this.kv,
-        this.ev,
-        this.sv,
-        this.profileComplete,
-        this.totalStep,
+        // this.kv,
+        // this.ev,
+        // this.sv,
+        // this.profileComplete,
+        // this.totalStep,
         this.image,
         this.createdAt,
         this.updatedAt,
@@ -134,11 +168,11 @@ class Matches {
     balance = json['balance'];
     status = json['status'];
 
-    kv = json['kv'];
-    ev = json['ev'];
-    sv = json['sv'];
-    profileComplete = json['profile_complete'];
-    totalStep = json['total_step'];
+    // kv = json['kv'];
+    // ev = json['ev'];
+    // sv = json['sv'];
+    // profileComplete = json['profile_complete'];
+    // totalStep = json['total_step'];
     image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -175,11 +209,11 @@ class Matches {
     data['balance'] = this.balance;
     data['status'] = this.status;
 
-    data['kv'] = this.kv;
-    data['ev'] = this.ev;
-    data['sv'] = this.sv;
-    data['profile_complete'] = this.profileComplete;
-    data['total_step'] = this.totalStep;
+    // data['kv'] = this.kv;
+    // data['ev'] = this.ev;
+    // data['sv'] = this.sv;
+    // data['profile_complete'] = this.profileComplete;
+    // data['total_step'] = this.totalStep;
     data['image'] = this.image;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
@@ -216,15 +250,15 @@ class BasicInfo {
   int? userId;
   String? gender;
   String? profession;
-  Null? financialCondition;
+  // Null? financialCondition;
   String? religion;
   int? smokingStatus;
   int? drinkingStatus;
   String? birthDate;
-  List<Null>? language;
+  // List<Null>? language;
   String? maritalStatus;
-  Null? presentAddress;
-  Null? permanentAddress;
+  // Null? presentAddress;
+  // Null? permanentAddress;
   String? createdAt;
   String? updatedAt;
   String? community;
@@ -235,15 +269,15 @@ class BasicInfo {
         this.userId,
         this.gender,
         this.profession,
-        this.financialCondition,
+        // this.financialCondition,
         this.religion,
         this.smokingStatus,
         this.drinkingStatus,
         this.birthDate,
-        this.language,
+        // this.language,
         this.maritalStatus,
-        this.presentAddress,
-        this.permanentAddress,
+        // this.presentAddress,
+        // this.permanentAddress,
         this.createdAt,
         this.updatedAt,
         this.community,
@@ -254,15 +288,15 @@ class BasicInfo {
     userId = json['user_id'];
     gender = json['gender'];
     profession = json['profession'];
-    financialCondition = json['financial_condition'];
+    // financialCondition = json['financial_condition'];
     religion = json['religion'];
     smokingStatus = json['smoking_status'];
     drinkingStatus = json['drinking_status'];
     birthDate = json['birth_date'];
 
     maritalStatus = json['marital_status'];
-    presentAddress = json['present_address'];
-    permanentAddress = json['permanent_address'];
+    // presentAddress = json['present_address'];
+    // permanentAddress = json['permanent_address'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     community = json['community'];
@@ -275,14 +309,14 @@ class BasicInfo {
     data['user_id'] = this.userId;
     data['gender'] = this.gender;
     data['profession'] = this.profession;
-    data['financial_condition'] = this.financialCondition;
+    // data['financial_condition'] = this.financialCondition;
     data['religion'] = this.religion;
     data['smoking_status'] = this.smokingStatus;
     data['drinking_status'] = this.drinkingStatus;
     data['birth_date'] = this.birthDate;
     data['marital_status'] = this.maritalStatus;
-    data['present_address'] = this.presentAddress;
-    data['permanent_address'] = this.permanentAddress;
+    // data['present_address'] = this.presentAddress;
+    // data['permanent_address'] = this.permanentAddress;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['community'] = this.community;

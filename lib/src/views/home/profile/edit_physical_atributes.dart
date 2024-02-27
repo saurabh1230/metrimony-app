@@ -105,6 +105,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                 setState(() {
                   loading = false;
                 });
+                Navigator.pop(context);
                 dynamic message = value['message']['original']['message'];
                 List<String> errors = [];
 
@@ -130,297 +131,316 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                 setState(() {
                   loading = false;
                 });
+                Fluttertoast.showToast(msg: "Add All Details");
 
 
-                List<dynamic> errors = value['message']['original']['message'];
-                String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                Fluttertoast.showToast(msg: errorMessage);
+               /* dynamic message = value['message']['original']['message'];
+                List<String> errors = [];
+
+                if (message != null && message is Map) {
+                  // If the message is not null and is a Map, extract the error messages
+                  message.forEach((key, value) {
+                    errors.addAll(value);
+                  });
+                }
+
+                String errorMessage = errors.isNotEmpty ? errors.join(", ") : "An unknown error occurred.";
+                Fluttertoast.showToast(msg: errorMessage);*/
               }
             });
           },  title: "Save"),
         ),
       ),
-      body:isLoading ? Loading() : SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Complexion',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+      body:isLoading ? Loading() : CustomRefreshIndicator(
+        onRefresh: () {
+          setState(() {
+            isLoading = true;
+          });
+          return careerInfo();
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Complexion',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: complexionController,
-                          decoration: AppTFDecoration(
-                              hint: 'Complexion').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Complexion',
-               data1: complexionController.text.isEmpty
-                    ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
-                    ? 'Not Added'
-                        : physicalData.complexion!)
-              : complexionController.text,
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: complexionController,
+                            decoration: AppTFDecoration(
+                                hint: 'Complexion').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Complexion',
+                 data1: complexionController.text.isEmpty
+                      ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
+                      ? 'Not Added'
+                          : physicalData.complexion!)
+                : complexionController.text,
 
 
-          //   complexionController.text.isEmpty
-              //       ? (physicalData == null || physicalData.complexion.isEmpty
-              //       ? 'Update Info'
-              //       : physicalData.complexion
-              // : complexionController.text,
-                 /* data1:
-                  complexionController.text.isEmpty ?
-                  'Update Info':
-                  complexionController.text,*/
-                  data2: complexionController.text,
-                  isControllerTextEmpty: complexionController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Height',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+            //   complexionController.text.isEmpty
+                //       ? (physicalData == null || physicalData.complexion.isEmpty
+                //       ? 'Update Info'
+                //       : physicalData.complexion
+                // : complexionController.text,
+                   /* data1:
+                    complexionController.text.isEmpty ?
+                    'Update Info':
+                    complexionController.text,*/
+                    data2: complexionController.text,
+                    isControllerTextEmpty: complexionController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Height',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: heightController,
-                          decoration: AppTFDecoration(
-                              hint: 'Height').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Height',
-                   data1: heightController.text.isEmpty
-                        ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: heightController,
+                            decoration: AppTFDecoration(
+                                hint: 'Height').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Height',
+                     data1: heightController.text.isEmpty
+                          ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
+                          ? 'Not Added'
+                          : physicalData.height.toString())
+                          : heightController.text,
+                      // data1: heightController.text.isEmpty ?
+                      // 'Update Info':
+                      // heightController.text,
+                      data2: heightController.text,
+                      isControllerTextEmpty: heightController.text.isEmpty),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Weight',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
+
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: weightController,
+                            decoration: AppTFDecoration(
+                                hint: 'Weight').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Weight',
+                    data1: weightController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
                         ? 'Not Added'
-                        : physicalData.height.toString())
-                        : heightController.text,
-                    // data1: heightController.text.isEmpty ?
-                    // 'Update Info':
-                    // heightController.text,
-                    data2: heightController.text,
-                    isControllerTextEmpty: heightController.text.isEmpty),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Weight',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                        : physicalData.weight.toString())
+                        : weightController.text,
+                    data2: weightController.text,
+                    isControllerTextEmpty: weightController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Blood Group',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: weightController,
-                          decoration: AppTFDecoration(
-                              hint: 'Weight').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Weight',
-                  data1: weightController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
-                      ? 'Not Added'
-                      : physicalData.weight.toString())
-                      : weightController.text,
-                  data2: weightController.text,
-                  isControllerTextEmpty: weightController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Blood Group',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: bloodGroupController,
+                            decoration: AppTFDecoration(
+                                hint: 'Blood Group').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Blood Group',
+                    data1: bloodGroupController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
+                        ? 'Not Added'
+                        : physicalData.bloodGroup.toString())
+                        : bloodGroupController.text,
+                    data2: bloodGroupController.text,
+                    isControllerTextEmpty: bloodGroupController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'EyeColor ',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: bloodGroupController,
-                          decoration: AppTFDecoration(
-                              hint: 'Blood Group').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Blood Group',
-                  data1: bloodGroupController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
-                      ? 'Not Added'
-                      : physicalData.bloodGroup.toString())
-                      : bloodGroupController.text,
-                  data2: bloodGroupController.text,
-                  isControllerTextEmpty: bloodGroupController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'EyeColor ',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: eyeColorController,
+                            decoration: AppTFDecoration(
+                                hint: 'EyeColor').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'EyeColor',
+                    data1: eyeColorController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
+                        ? 'Not Added'
+                        : physicalData.eyeColor.toString())
+                        : eyeColorController.text,
+                    data2: eyeColorController.text,
+                    isControllerTextEmpty: eyeColorController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Hair Color',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: eyeColorController,
-                          decoration: AppTFDecoration(
-                              hint: 'EyeColor').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'EyeColor',
-                  data1: eyeColorController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
-                      ? 'Not Added'
-                      : physicalData.eyeColor.toString())
-                      : eyeColorController.text,
-                  data2: eyeColorController.text,
-                  isControllerTextEmpty: eyeColorController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Hair Color',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: hairColorController,
-                          decoration: AppTFDecoration(
-                              hint: 'Hair Color').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Hair Color',
-                  data1: hairColorController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
-                      ? 'Not Added'
-                      : physicalData.weight.toString())
-                      : hairColorController.text,
-                  data2: hairColorController.text,
-                  isControllerTextEmpty: hairColorController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Disability',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: disablityController,
-                          decoration: AppTFDecoration(
-                              hint: 'Disability').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Disability',
-                  data1: disablityController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.disability == null || physicalData.disability!.isEmpty
-                      ? 'Not Added'
-                      : physicalData.disability.toString())
-                      : disablityController.text,
-                  data2: disablityController.text,
-                  isControllerTextEmpty: disablityController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: hairColorController,
+                            decoration: AppTFDecoration(
+                                hint: 'Hair Color').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Hair Color',
+                    data1: hairColorController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
+                        ? 'Not Added'
+                        : physicalData.weight.toString())
+                        : hairColorController.text,
+                    data2: hairColorController.text,
+                    isControllerTextEmpty: hairColorController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Disability',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: disablityController,
+                            decoration: AppTFDecoration(
+                                hint: 'Disability').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Disability',
+                    data1: disablityController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.disability == null || physicalData.disability!.isEmpty
+                        ? 'Not Added'
+                        : physicalData.disability.toString())
+                        : disablityController.text,
+                    data2: disablityController.text,
+                    isControllerTextEmpty: disablityController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
 
 
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

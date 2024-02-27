@@ -7,7 +7,7 @@ class ProfileModel {
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -28,7 +28,7 @@ class Data {
   Data({this.user});
 
   Data.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -53,18 +53,11 @@ class User {
   String? mobile;
   String? balance;
   int? status;
-  Null? kycData;
   int? kv;
   int? ev;
   int? sv;
   int? profileComplete;
-  List<Null>? skippedStep;
-  List<Null>? completedStep;
   int? totalStep;
-  Null? verCodeSendAt;
-  Null? tsc;
-  Null? loginBy;
-  Null? banReason;
   String? image;
   String? createdAt;
   String? updatedAt;
@@ -74,7 +67,6 @@ class User {
   String? motherTongue;
   String? community;
   BasicInfo? basicInfo;
-  Null? partnerExpectation;
   PhysicalAttributes? physicalAttributes;
   Family? family;
   List<CareerInfo>? careerInfo;
@@ -93,18 +85,11 @@ class User {
         this.mobile,
         this.balance,
         this.status,
-        this.kycData,
         this.kv,
         this.ev,
         this.sv,
         this.profileComplete,
-        this.skippedStep,
-        this.completedStep,
         this.totalStep,
-        this.verCodeSendAt,
-        this.tsc,
-        this.loginBy,
-        this.banReason,
         this.image,
         this.createdAt,
         this.updatedAt,
@@ -114,7 +99,6 @@ class User {
         this.motherTongue,
         this.community,
         this.basicInfo,
-        this.partnerExpectation,
         this.physicalAttributes,
         this.family,
         this.careerInfo,
@@ -128,23 +112,18 @@ class User {
     lookingFor = json['looking_for'];
     username = json['username'];
     address =
-    json['address'] != null ? new Address.fromJson(json['address']) : null;
+    json['address'] != null ? Address.fromJson(json['address']) : null;
     email = json['email'];
     countryCode = json['country_code'];
     mobile = json['mobile'];
     balance = json['balance'];
     status = json['status'];
-    kycData = json['kyc_data'];
     kv = json['kv'];
     ev = json['ev'];
     sv = json['sv'];
     profileComplete = json['profile_complete'];
     totalStep = json['total_step'];
-    verCodeSendAt = json['ver_code_send_at'];
-    tsc = json['tsc'];
-    loginBy = json['login_by'];
-    banReason = json['ban_reason'];
-    image = json['image'].toString();
+    image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     bloodGroup = json['blood_group'];
@@ -153,80 +132,71 @@ class User {
     motherTongue = json['mother_tongue'];
     community = json['community'];
     basicInfo = json['basic_info'] != null
-        ? new BasicInfo.fromJson(json['basic_info'])
+        ? BasicInfo.fromJson(json['basic_info'])
         : null;
-    partnerExpectation = json['partner_expectation'];
     physicalAttributes = json['physical_attributes'] != null
-        ? new PhysicalAttributes.fromJson(json['physical_attributes'])
+        ? PhysicalAttributes.fromJson(json['physical_attributes'])
         : null;
     family =
-    json['family'] != null ? new Family.fromJson(json['family']) : null;
+    json['family'] != null ? Family.fromJson(json['family']) : null;
     if (json['career_info'] != null) {
       careerInfo = <CareerInfo>[];
       json['career_info'].forEach((v) {
-        careerInfo!.add(new CareerInfo.fromJson(v));
+        careerInfo!.add(CareerInfo.fromJson(v));
       });
     }
     if (json['education_info'] != null) {
       educationInfo = <EducationInfo>[];
       json['education_info'].forEach((v) {
-        educationInfo!.add(new EducationInfo.fromJson(v));
+        educationInfo!.add(EducationInfo.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['profile_id'] = this.profileId;
-    data['firstname'] = this.firstname;
-    data['lastname'] = this.lastname;
-    data['looking_for'] = this.lookingFor;
-    data['username'] = this.username;
-    if (this.address != null) {
-      data['address'] = this.address!.toJson();
+    data['id'] = id;
+    data['profile_id'] = profileId;
+    data['firstname'] = firstname;
+    data['lastname'] = lastname;
+    data['looking_for'] = lookingFor;
+    data['username'] = username;
+    if (address != null) {
+      data['address'] = address!.toJson();
     }
-    data['email'] = this.email;
-    data['country_code'] = this.countryCode;
-    data['mobile'] = this.mobile;
-    data['balance'] = this.balance;
-    data['status'] = this.status;
-    data['kyc_data'] = this.kycData;
-    data['kv'] = this.kv;
-    data['ev'] = this.ev;
-    data['sv'] = this.sv;
-    data['profile_complete'] = this.profileComplete;
-
-
-    data['total_step'] = this.totalStep;
-    data['ver_code_send_at'] = this.verCodeSendAt;
-    data['tsc'] = this.tsc;
-    data['login_by'] = this.loginBy;
-    data['ban_reason'] = this.banReason;
-    data['image'] = this.image;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['blood_group'] = this.bloodGroup;
-    data['religion'] = this.religion;
-    data['marital_status'] = this.maritalStatus;
-    data['mother_tongue'] = this.motherTongue;
-    data['community'] = this.community;
-    if (this.basicInfo != null) {
-      data['basic_info'] = this.basicInfo!.toJson();
+    data['email'] = email;
+    data['country_code'] = countryCode;
+    data['mobile'] = mobile;
+    data['balance'] = balance;
+    data['status'] = status;
+    data['kv'] = kv;
+    data['ev'] = ev;
+    data['sv'] = sv;
+    data['profile_complete'] = profileComplete;
+    data['total_step'] = totalStep;
+    data['image'] = image;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['blood_group'] = bloodGroup;
+    data['religion'] = religion;
+    data['marital_status'] = maritalStatus;
+    data['mother_tongue'] = motherTongue;
+    data['community'] = community;
+    if (basicInfo != null) {
+      data['basic_info'] = basicInfo!.toJson();
     }
-    data['partner_expectation'] = this.partnerExpectation;
-    if (this.physicalAttributes != null) {
-      data['physical_attributes'] = this.physicalAttributes!.toJson();
+    if (physicalAttributes != null) {
+      data['physical_attributes'] = physicalAttributes!.toJson();
     }
-    if (this.family != null) {
-      data['family'] = this.family!.toJson();
+    if (family != null) {
+      data['family'] = family!.toJson();
     }
-    if (this.careerInfo != null) {
-      data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
+    if (careerInfo != null) {
+      data['career_info'] = careerInfo!.map((v) => v.toJson()).toList();
     }
-    if (this.educationInfo != null) {
+    if (educationInfo != null) {
       data['education_info'] =
-          this.educationInfo!.map((v) => v.toJson()).toList();
+          educationInfo!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -251,11 +221,11 @@ class Address {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['address'] = this.address;
-    data['state'] = this.state;
-    data['zip'] = this.zip;
-    data['country'] = this.country;
-    data['city'] = this.city;
+    data['address'] = address;
+    data['state'] = state;
+    data['zip'] = zip;
+    data['country'] = country;
+    data['city'] = city;
     return data;
   }
 }
@@ -265,15 +235,15 @@ class BasicInfo {
   int? userId;
   String? gender;
   String? profession;
-  Null? financialCondition;
+  String? financialCondition;
   String? religion;
   int? smokingStatus;
   int? drinkingStatus;
   String? birthDate;
-  List<Null>? language;
+  List<String>? language;
   String? maritalStatus;
-  Null? presentAddress;
-  Null? permanentAddress;
+  Map<String, dynamic>? presentAddress;
+  Map<String, dynamic>? permanentAddress;
   String? createdAt;
   String? updatedAt;
   String? community;
@@ -308,7 +278,6 @@ class BasicInfo {
     smokingStatus = json['smoking_status'];
     drinkingStatus = json['drinking_status'];
     birthDate = json['birth_date'];
-
     maritalStatus = json['marital_status'];
     presentAddress = json['present_address'];
     permanentAddress = json['permanent_address'];
@@ -320,23 +289,22 @@ class BasicInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['gender'] = this.gender;
-    data['profession'] = this.profession;
-    data['financial_condition'] = this.financialCondition;
-    data['religion'] = this.religion;
-    data['smoking_status'] = this.smokingStatus;
-    data['drinking_status'] = this.drinkingStatus;
-    data['birth_date'] = this.birthDate;
-
-    data['marital_status'] = this.maritalStatus;
-    data['present_address'] = this.presentAddress;
-    data['permanent_address'] = this.permanentAddress;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['community'] = this.community;
-    data['mother_tongue'] = this.motherTongue;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['gender'] = gender;
+    data['profession'] = profession;
+    data['financial_condition'] = financialCondition;
+    data['religion'] = religion;
+    data['smoking_status'] = smokingStatus;
+    data['drinking_status'] = drinkingStatus;
+    data['birth_date'] = birthDate;
+    data['marital_status'] = maritalStatus;
+    data['present_address'] = presentAddress;
+    data['permanent_address'] = permanentAddress;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['community'] = community;
+    data['mother_tongue'] = motherTongue;
     return data;
   }
 }
@@ -383,17 +351,17 @@ class PhysicalAttributes {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['blood_group'] = this.bloodGroup;
-    data['eye_color'] = this.eyeColor;
-    data['hair_color'] = this.hairColor;
-    data['complexion'] = this.complexion;
-    data['disability'] = this.disability;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['blood_group'] = bloodGroup;
+    data['eye_color'] = eyeColor;
+    data['hair_color'] = hairColor;
+    data['complexion'] = complexion;
+    data['disability'] = disability;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -443,18 +411,18 @@ class Family {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['father_name'] = this.fatherName;
-    data['father_profession'] = this.fatherProfession;
-    data['father_contact'] = this.fatherContact;
-    data['mother_name'] = this.motherName;
-    data['mother_profession'] = this.motherProfession;
-    data['mother_contact'] = this.motherContact;
-    data['total_brother'] = this.totalBrother;
-    data['total_sister'] = this.totalSister;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['father_name'] = fatherName;
+    data['father_profession'] = fatherProfession;
+    data['father_contact'] = fatherContact;
+    data['mother_name'] = motherName;
+    data['mother_profession'] = motherProfession;
+    data['mother_contact'] = motherContact;
+    data['total_brother'] = totalBrother;
+    data['total_sister'] = totalSister;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -492,14 +460,14 @@ class CareerInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['company'] = this.company;
-    data['designation'] = this.designation;
-    data['start'] = this.start;
-    data['end'] = this.end;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['company'] = company;
+    data['designation'] = designation;
+    data['start'] = start;
+    data['end'] = end;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -507,13 +475,9 @@ class CareerInfo {
 class EducationInfo {
   int? id;
   int? userId;
+  String? institution;
   String? degree;
   String? fieldOfStudy;
-  String? institute;
-  int? regNo;
-  int? rollNo;
-  String? outOf;
-  String? result;
   String? start;
   String? end;
   String? createdAt;
@@ -522,13 +486,9 @@ class EducationInfo {
   EducationInfo(
       {this.id,
         this.userId,
+        this.institution,
         this.degree,
         this.fieldOfStudy,
-        this.institute,
-        this.regNo,
-        this.rollNo,
-        this.outOf,
-        this.result,
         this.start,
         this.end,
         this.createdAt,
@@ -537,13 +497,9 @@ class EducationInfo {
   EducationInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
+    institution = json['institution'];
     degree = json['degree'];
     fieldOfStudy = json['field_of_study'];
-    institute = json['institute'];
-    regNo = json['reg_no'];
-    rollNo = json['roll_no'];
-    outOf = json['out_of'];
-    result = json['result'];
     start = json['start'];
     end = json['end'];
     createdAt = json['created_at'];
@@ -552,19 +508,15 @@ class EducationInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['degree'] = this.degree;
-    data['field_of_study'] = this.fieldOfStudy;
-    data['institute'] = this.institute;
-    data['reg_no'] = this.regNo;
-    data['roll_no'] = this.rollNo;
-    data['out_of'] = this.outOf;
-    data['result'] = this.result;
-    data['start'] = this.start;
-    data['end'] = this.end;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['institution'] = institution;
+    data['degree'] = degree;
+    data['field_of_study'] = fieldOfStudy;
+    data['start'] = start;
+    data['end'] = end;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

@@ -5,7 +5,7 @@ class MatchesModel {
   String? lastname;
   int? lookingFor;
   String? username;
-  String? address;
+  Address? address;
   String? email;
   String? countryCode;
   String? mobile;
@@ -15,6 +15,7 @@ class MatchesModel {
   int? kv;
   int? ev;
   int? sv;
+  int? bookmark;
   int? profileComplete;
   int? totalStep;
   String? verCodeSendAt;
@@ -40,16 +41,17 @@ class MatchesModel {
     this.lastname,
     this.lookingFor,
     this.username,
-    // this.address,
     this.email,
     this.countryCode,
     this.mobile,
     this.balance,
     this.status,
     this.kycData,
+    this.address,
     this.kv,
     this.ev,
     this.sv,
+    this.bookmark,
     this.profileComplete,
     this.totalStep,
     this.verCodeSendAt,
@@ -71,12 +73,14 @@ class MatchesModel {
 
   MatchesModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    profileId = json['profileId'];
+    profileId = json['profile_id'];
     firstname = json['firstname'];
     lastname = json['lastname'];
     lookingFor = json['lookingFor'];
     username = json['username'];
-    // address = json['address'] != null ? address.fromJson(json['address']) : null;
+    address =
+    json['address'] != null ? new Address.fromJson(json['address']) : null;
+
     email = json['email'];
     countryCode = json['countryCode'];
     mobile = json['mobile'];
@@ -86,6 +90,7 @@ class MatchesModel {
     kv = json['kv'];
     ev = json['ev'];
     sv = json['sv'];
+    bookmark = json['bookmark'];
     profileComplete = json['profileComplete'];
     totalStep = json['totalStep'];
     verCodeSendAt = json['verCodeSendAt']?.toString();
@@ -100,23 +105,19 @@ class MatchesModel {
     maritalStatus = json['maritalStatus'];
     motherTongue = json['motherTongue'];
     community = json['community'];
-    // physicalAttributes = json['physicalAttributes'] != null
-    //     ? physicalAttributes.fromJson(json['physicalAttributes'])
-    //     : null;
-    // limitation = json['limitation']?.toString();
-    // basicInfo = json['basicInfo'] != null
-    //     ? basicInfo.fromJson(json['basicInfo'])
-    //     : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['id'] = id;
-    data['profileId'] = profileId;
+    data['profile_id'] = profileId;
     data['firstname'] = firstname;
     data['lastname'] = lastname;
     data['lookingFor'] = lookingFor;
     data['username'] = username;
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
     // data['address'] = address?.toJson();
     data['email'] = email;
     data['countryCode'] = countryCode;
@@ -127,6 +128,7 @@ class MatchesModel {
     data['kv'] = kv;
     data['ev'] = ev;
     data['sv'] = sv;
+    data['bookmark'] = bookmark;
     data['profileComplete'] = profileComplete;
     data['totalStep'] = totalStep;
     data['verCodeSendAt'] = verCodeSendAt;
@@ -141,9 +143,35 @@ class MatchesModel {
     data['maritalStatus'] = maritalStatus;
     data['motherTongue'] = motherTongue;
     data['community'] = community;
-    // data['physicalAttributes'] = physicalAttributes?.toJson();
     data['limitation'] = limitation;
-    // data['basicInfo'] = basicInfo?.toJson();
+    return data;
+  }
+}
+
+class Address {
+  String? address;
+  String? state;
+  String? zip;
+  String? country;
+  String? city;
+
+  Address({this.address, this.state, this.zip, this.country, this.city});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    address = json['address'];
+    state = json['state'];
+    zip = json['zip'];
+    country = json['country'];
+    city = json['city'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = this.address;
+    data['state'] = this.state;
+    data['zip'] = this.zip;
+    data['country'] = this.country;
+    data['city'] = this.city;
     return data;
   }
 }

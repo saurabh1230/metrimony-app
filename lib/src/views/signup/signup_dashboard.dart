@@ -155,67 +155,72 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                     else if (_currentPage == 2) {
-                      setState(() {
-                        loading = true;
-                      });
-                      setState(() {
-                        SharedPrefs().clearGender();
-                        SharedPrefs().clearMaritalStatus();
-                        SharedPrefs().clearReligion();
-                      });
 
-                      signUpApi(
-                          userName: '${SharedPrefs().getUserName()}',
-                          email: '${SharedPrefs().getEmail()}',
-                          password:'${SharedPrefs().getPassword()}',
-                          mobileNo: '${SharedPrefs().getPhone()}',
-                          passwordConfirmation: '${SharedPrefs().getPassword()}',
-                          firstName: '${SharedPrefs().getName()}',
-                          lastName: '${SharedPrefs().getLastName()}',
-                          lookingFor: 'My Self',
-                          gender: '${SharedPrefs().getGender() == null ? "M" : SharedPrefs().getGender()}',
+                     if(pickedImagePath.isEmpty )  {
+                       Fluttertoast.showToast(msg: "Please add Image and birth date");
 
-                          // gender: '${SharedPrefs().getGender()}',
-                          motherTongue: '${SharedPrefs().getMotherTongue()}',
-                          birthDate: '${SharedPrefs().getDob()}',
-                          country: '${SharedPrefs().getCountry()}',
-                          countryCode:  '${SharedPrefs().getCountryCode()}',
-                          maritalStatus: '${SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus()}',
-                          // maritalStatus: '${SharedPrefs().getMaritalStatus()}',
-                          photo: '$pickedImagePath',
-                          religion: '${SharedPrefs().getReligion() == null ? "Hindi" : SharedPrefs().getMaritalStatus()}',
-                          profession: '${SharedPrefs().getProfession()}').then((value) async {
+                     } else {
+                       setState(() {
+                         loading = true;
+                       });
+                       signUpApi(
+                           userName: '${SharedPrefs().getUserName()}',
+                           email: '${SharedPrefs().getEmail()}',
+                           password:'${SharedPrefs().getPassword()}',
+                           mobileNo: '${SharedPrefs().getPhone()}',
+                           passwordConfirmation: '${SharedPrefs().getPassword()}',
+                           firstName: '${SharedPrefs().getName()}',
+                           lastName: '${SharedPrefs().getLastName()}',
+                           lookingFor: 'My Self',
+                           gender: '${SharedPrefs().getGender() == null ? "M" : SharedPrefs().getGender().toString()}',
 
-                        if (value['status'] == 'success') {
-                          setState(() {
-                            loading = false;
-                          });
-                        /*  var prefs = await SharedPreferences
+                           // gender: '${SharedPrefs().getGender()}',
+                           motherTongue: '${SharedPrefs().getMotherTongue()}',
+                           birthDate: '${SharedPrefs().getDob()}',
+                           country: '${SharedPrefs().getCountry()}',
+                           countryCode:  '${SharedPrefs().getCountryCode()}',
+                           maritalStatus: '${SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus().toString()}',
+                           // maritalStatus: 'Unmarried',
+                           photo: '$pickedImagePath',
+                           religion: '${SharedPrefs().getReligion() == null ? "Hindi" : SharedPrefs().getReligion().toString()}',
+
+                           profession: '${SharedPrefs().getProfession()}').then((value) async {
+
+                         if (value['status'] == 'success') {
+                           setState(() {
+                             loading = false;
+                           });
+                           setState(() {
+                             SharedPrefs().clearGender();
+                             SharedPrefs().clearMaritalStatus();
+                             SharedPrefs().clearReligion();
+                           });
+                           /*  var prefs = await SharedPreferences
                               .getInstance();
                           prefs.setString(
                               'accessToken', value['data']['access_token']);*/
 
-                          SharedPrefs().setLoginToken(value['data']['access_token']);
-                          // print(value['data']['access_token']);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (builder) => const AddKycDetailsScreen()),
-                          );
+                           SharedPrefs().setLoginToken(value['data']['access_token']);
+                           // print(value['data']['access_token']);
+                           Navigator.pushReplacement(
+                             context,
+                             MaterialPageRoute(builder: (builder) => const AddKycDetailsScreen()),
+                           );
 
-                          ToastUtil.showToast("Registered Successfully");
-                          print('done');
-                        } else {
-                          setState(() {
-                            loading = false;
-                          });
-                          // Display error message in Flutter toast
-                          List<dynamic> errors = value['message']['error'];
-                          String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                          Fluttertoast.showToast(msg: errorMessage);
-                        }
+                           ToastUtil.showToast("Registered Successfully");
+                           print('done');
+                         } else {
+                           setState(() {
+                             loading = false;
+                           });
+                           // Display error message in Flutter toast
+                           List<dynamic> errors = value['message']['error'];
+                           String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                           Fluttertoast.showToast(msg: errorMessage);
+                         }
 
 
-                        /* if ( value['status'] == 'success') {
+                         /* if ( value['status'] == 'success') {
                           SharedPrefs().setLoginToken(value['data']['access_token']);
                           print(value['data']['access_token']);
 
@@ -231,18 +236,19 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
 
                         // ToastUtil.showToast("Please Check Register details");
                         }*/
-                      });
-                      // Navigator.push(context, MaterialPageRoute(builder: (builder) => SignInScreen()));
-                      // _pageController.nextPage(
-                      //   duration: Duration(milliseconds: 200),
-                      //   curve: Curves.easeInOut,
-                      // );
-                    } else {
-                      setState(() {
-                        loading = false;
-                      });
+                       });
+                       // Navigator.push(context, MaterialPageRoute(builder: (builder) => SignInScreen()));
+                       // _pageController.nextPage(
+                       //   duration: Duration(milliseconds: 200),
+                       //   curve: Curves.easeInOut,
+                       // );
+                     };
 
-                    }
+                     }
+
+
+
+
                  /*   // _handleNext();
                     if (_currentPage < 2) {
                       _pageController.nextPage(

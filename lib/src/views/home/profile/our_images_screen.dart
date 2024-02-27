@@ -161,19 +161,18 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
       ],
     ),
       body: SingleChildScrollView(
-       child: isLoading ? Loading() :Padding(
-         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-         child: CustomRefreshIndicator(
-           onRefresh: () {
-             setState(() {
-               isLoading = true;
-             });
-             return     getImage();
-           },
+       child: isLoading ? Loading() :CustomRefreshIndicator(
+         onRefresh: () {
+           setState(() {
+             isLoading = true;
+           });
+           return     getImage();
+         },
+         child: Padding(
+           padding: const EdgeInsets.symmetric(horizontal: 16.0),
            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -184,7 +183,9 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhotosScreen()));
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (builder) =>
+                          const EditPhotosScreen()));
                         },
                           child: Icon(Icons.add)),
                     ],

@@ -14,14 +14,16 @@ import 'package:flutter/material.dart';
 import 'bookmark_screen.dart';
 bool isClick = false;
 class HomeDashboardScreen extends StatefulWidget {
+  final LoginResponse response;
 
-  const HomeDashboardScreen({super.key, });
+  const HomeDashboardScreen({super.key, required this.response, });
 
   @override
   State<HomeDashboardScreen> createState() => _HomeDashboardScreenState();
 }
 
 class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
+
 
   Future<bool> onBackMove(BuildContext context) {
     if (isClick == true) {
@@ -64,6 +66,13 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
           );
         });
   }
+
+  @override
+  void initState() {
+    print("cehck");
+    print(widget.response.data!.user!.firstname);
+    super.initState();
+  }
    int index = 0;
   @override
   Widget build(BuildContext context) {
@@ -71,9 +80,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
       onWillPop: () => onBackMove(context),
       child: Scaffold(
         body: [
-           HomeScreen(),
-          const MatchesScreen(),
-          const FilterMatchesScreen(),
+           HomeScreen(response: widget.response,),
+           MatchesScreen(response: widget.response,),
+           FilterMatchesScreen(response:  widget.response,),
           const ProfileScreen(),
         ][index],
         bottomNavigationBar: bottomBar(),

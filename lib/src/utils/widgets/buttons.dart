@@ -47,7 +47,6 @@ button({
 
 loadingButton({
   required BuildContext context,
-
   double ? height,
   double ? width,
   double ? radius,

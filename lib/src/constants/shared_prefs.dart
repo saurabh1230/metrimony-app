@@ -13,6 +13,7 @@ class SharedPrefs {
   String password = 'password';
   String profileFor = 'profile_for';
   String gender = 'gender';
+  String loginGender = 'login_gender';
   String userName = 'username';
   String country = 'county';
   String countryCode = 'countryCode';
@@ -20,7 +21,7 @@ class SharedPrefs {
   String profession = 'profession';
   String dateOfBirth = 'dateOfBirth';
   String profileId = 'profileId';
-  String maritalStatus = 'profileId';
+  String maritalStatus = 'marital_status';
   String religion = 'religion';
   String profilePhoto = 'profile_photo';
 
@@ -98,6 +99,15 @@ class SharedPrefs {
 
   String? getDob() {
     return _prefs?.getString(dateOfBirth);
+  }
+
+  Future setLoginGender(String sGender) async {
+    await init(); // Make sure to initialize SharedPreferences before using it
+    return await _prefs?.setString(loginGender, sGender);
+  }
+
+  String? getLoginGender() {
+    return _prefs?.getString(loginGender);
   }
 
   Future clearDob() async {

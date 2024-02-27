@@ -16,19 +16,19 @@ class AppTFDecoration {
       fillColor: Colors.white,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: primaryColor, width: 1),
+        borderSide: BorderSide(color: primaryColor, width: 0.5),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color:primaryColor, width: 2),
+        borderSide: BorderSide(color:primaryColor, width: 0.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: primaryColor, width: 1),
+        borderSide: BorderSide(color: primaryColor, width: 0.5),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: primaryColor, width: 2),
+        borderSide: BorderSide(color: primaryColor, width: 0.5),
       ),
     );
   }

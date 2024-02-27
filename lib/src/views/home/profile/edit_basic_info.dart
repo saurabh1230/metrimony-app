@@ -13,6 +13,7 @@ import '../../../constants/assets.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/attributes_model.dart';
 import '../../../models/basic_info_model.dart';
+import '../../../models/info_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
@@ -25,6 +26,10 @@ class EditBasicInfoScreen extends StatefulWidget {
 }
 
 class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final userNameController = TextEditingController();
+  final emailController = TextEditingController();
   final professionController = TextEditingController();
   final genderController = TextEditingController();
   final religionController = TextEditingController();
@@ -34,7 +39,12 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   final communityController = TextEditingController();
   final motherTongueController = TextEditingController();
   final marriedStatusController = TextEditingController();
-
+  final stateController = TextEditingController();
+  final zipController = TextEditingController();
+  final countryController = TextEditingController();
+  final cityController = TextEditingController();
+  final financialCondition = TextEditingController();
+  bool load = false;
   bool loading = false;
   bool isLoading = false;
 
@@ -49,6 +59,8 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
 
   BasicInfoModel basicInfo = BasicInfoModel();
+  InfoModel mainInfo = InfoModel();
+
 
   careerInfo() {
     isLoading = true;
@@ -61,7 +73,15 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
           if (physicalAttributesData != null) {
             setState(() {
               basicInfo = BasicInfoModel.fromJson(physicalAttributesData);
-              // fields();
+              fields();
+            });
+          }
+          var info = value['data']['user'];
+          if (info != null) {
+            setState(() {
+              mainInfo = InfoModel.fromJson(info);
+              fields();
+
             });
           }
           // print(career.length);
@@ -76,16 +96,24 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   }
 
   void fields() {
-    professionController.text = basicInfo.profession.toString() ?? '';
-    genderController.text =basicInfo.gender.toString() ?? '';
-    religionController.text =basicInfo.religion.toString() ?? '';
-    smokingController.text = basicInfo.smokingStatus.toString()?? '';
-    drinkingController.text =basicInfo.drinkingStatus.toString() ?? '';
-    birthDateController.text = basicInfo.birthDate.toString() ?? '';
-    communityController.text = basicInfo.community.toString() ?? '';
-    motherTongueController.text =basicInfo.motherTongue.toString() ?? '';
-    marriedStatusController.text =basicInfo.maritalStatus.toString() ?? '';
-
+    firstNameController.text = mainInfo?.firstname.toString()?? '';
+    lastNameController.text = mainInfo?.lastname.toString()?? '';
+    userNameController.text = mainInfo?.username.toString()?? '';
+    emailController.text = mainInfo?.email.toString()?? '';
+    professionController.text = basicInfo?.profession?.toString() ?? '';
+    genderController.text = basicInfo?.gender?.toString() ?? '';
+    religionController.text = basicInfo?.religion?.toString() ?? '';
+    smokingController.text = basicInfo?.smokingStatus?.toString() ?? '';
+    drinkingController.text = basicInfo?.drinkingStatus?.toString() ?? '';
+    birthDateController.text = basicInfo?.birthDate?.toString() ?? '';
+    communityController.text = basicInfo?.community?.toString() ?? '';
+    motherTongueController.text = basicInfo?.motherTongue?.toString() ?? '';
+    marriedStatusController.text = basicInfo?.maritalStatus?.toString() ?? '';
+    stateController.text = basicInfo?.presentAddress?.state?.toString() ?? '';
+    zipController.text = basicInfo?.presentAddress?.zip?.toString() ?? '';
+    countryController.text = basicInfo?.presentAddress?.country?.toString() ?? '';
+    cityController.text = basicInfo?.presentAddress?.city?.toString() ?? '';
+    financialCondition.text = basicInfo?.financialCondition?.toString() ?? '';
   }
 
 
@@ -132,7 +160,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 ),
               ),
               sizedBox16(),
-              loading ?
+              load ?
                   loadingElevatedButton(
                       color: Colors.green,
 
@@ -146,40 +174,246 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   style: styleSatoshiLight(size: 10, color: Colors.white),
                   width: 80,
                   context: context, onTap: () {
-                  setState(() {
-                    loading = true;
-                  });
-                  addProfileImageAPi( photo: pickedImage.path
-                    // id: career[0].id.toString(),
-                  )
-                      .then((value) {
-                    if (value['status'] == true) {
-                      setState(() {
-                        loading = false;
-                      });
+                  if(pickedImage.path.isEmpty ) {
+                    Fluttertoast.showToast(msg: "Please Pick Image First");
 
-                      // isLoading ? Loading() :careerInfo();
-                      // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                      // const KycWaitScreen()));
+                  } else {
+                    setState(() {
+                      load = true;
+                    });
+                    addProfileImageAPi( photo: pickedImage.path
+                      // id: career[0].id.toString(),
+                    )
+                        .then((value) {
+                      if (value['status'] == true) {
+                        setState(() {
+                          load = false;
+                        });
 
-                      // ToastUtil.showToast("Login Successful");
+                        // isLoading ? Loading() :careerInfo();
+                        // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                        // const KycWaitScreen()));
 
-                    ToastUtil.showToast("Image Updated Successfully");
-                    } else {
-                      setState(() {
-                        loading = false;
-                      });
+                        // ToastUtil.showToast("Login Successful");
 
-                      List<dynamic> errors =
-                      value['message']['error'];
-                      String errorMessage = errors.isNotEmpty
-                          ? errors[0]
-                          : "An unknown error occurred.";
-                      Fluttertoast.showToast(msg: errorMessage);
-                    }
-                  });
+                        ToastUtil.showToast("Image Updated Successfully");
+                      } else {
+                        setState(() {
+                          loading = false;
+                        });
+
+                        List<dynamic> errors =
+                        value['message']['error'];
+                        String errorMessage = errors.isNotEmpty
+                            ? errors[0]
+                            : "An unknown error occurred.";
+                        Fluttertoast.showToast(msg: errorMessage);
+                      }
+                    });
+                  }
+
 
               }, title: "Add"),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'First Name',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: firstNameController,
+                          decoration: AppTFDecoration(
+                              hint: 'First Name').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'First Name',
+                  data1: firstNameController.text.isEmpty
+                      ? (mainInfo == null || mainInfo.firstname == null || mainInfo.firstname!.isEmpty
+                      ? 'Not Added'
+                      :  mainInfo.firstname!)
+                      : firstNameController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: firstNameController.text,
+                  isControllerTextEmpty: firstNameController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'Last Name',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: lastNameController,
+                          decoration: AppTFDecoration(
+                              hint: 'Last Name').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'Last Name',
+                  data1: lastNameController.text.isEmpty
+                      ? (mainInfo == null || mainInfo.lastname == null || mainInfo.lastname!.isEmpty
+                      ? 'Not Added'
+                      :  mainInfo.lastname!)
+                      : lastNameController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: lastNameController.text,
+                  isControllerTextEmpty: lastNameController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'User Name',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: userNameController,
+                          decoration: AppTFDecoration(
+                              hint: 'User Name').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'User Name',
+                  data1: userNameController.text.isEmpty
+                      ? (mainInfo == null || mainInfo.username == null || mainInfo.username!.isEmpty
+                      ? 'User Name'
+                      :  mainInfo.username!)
+                      : userNameController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: userNameController.text,
+                  isControllerTextEmpty: userNameController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return NameEditDialogWidget(
+                  //       title: 'Email',
+                  //       addTextField: TextFormField(
+                  //         maxLength: 40,
+                  //         onChanged: (v) {
+                  //           setState(() {
+                  //
+                  //           });
+                  //         },
+                  //         onEditingComplete: () {
+                  //           Navigator.pop(context); // Close the dialog
+                  //         },
+                  //         controller: emailController,
+                  //         decoration: AppTFDecoration(
+                  //             hint: 'User Name').decoration(),
+                  //         //keyboardType: TextInputType.phone,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
+                },
+                child: buildDataAddRow(
+                  widget: SizedBox(),
+                  title: 'Email',
+                  data1: emailController.text.isEmpty
+                      ? (mainInfo == null || mainInfo.username == null || mainInfo.username!.isEmpty
+                      ? 'Email'
+                      :  mainInfo.username!)
+                      : emailController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: emailController.text,
+                  isControllerTextEmpty: emailController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
               GestureDetector(
                 onTap: () {
                   showDialog(
@@ -207,6 +441,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   );
                 },
                 child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
                   title: 'Profession',
                   data1: professionController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.profession == null || basicInfo.profession!.isEmpty
@@ -309,68 +544,76 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
               sizedBox16(),
               GestureDetector(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Married Status',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: religionController,
-                          decoration: AppTFDecoration(
-                              hint: 'Married Status').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return NameEditDialogWidget(
+                  //       title: 'Married Status',
+                  //       addTextField: TextFormField(
+                  //         maxLength: 40,
+                  //         onChanged: (v) {
+                  //           setState(() {
+                  //
+                  //           });
+                  //         },
+                  //         onEditingComplete: () {
+                  //           Navigator.pop(context); // Close the dialog
+                  //         },
+                  //         controller: marriedStatusController,
+                  //         decoration: AppTFDecoration(
+                  //             hint: 'Married Status').decoration(),
+                  //         //keyboardType: TextInputType.phone,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
                 },
-                child: buildDataAddRow(title: 'Married Status',
-                  data1: religionController.text.isEmpty
+                child: buildDataAddRow(
+                  widget: SizedBox(),
+                  title: 'Married Status',
+                  data1: marriedStatusController.text.isEmpty
                       ? ( basicInfo.id == null ||  basicInfo.maritalStatus== null || basicInfo.maritalStatus!.isEmpty
                       ? 'Not Added'
                       : basicInfo.maritalStatus.toString())
-                      : religionController.text,
-                  data2: religionController.text,
-                  isControllerTextEmpty: religionController.text.isEmpty,),
+                      : marriedStatusController.text,
+                  data2: marriedStatusController.text,
+                  isControllerTextEmpty: marriedStatusController.text.isEmpty,),
                 // child: CarRowWidget(favourites: favourites!,)
               ),
               sizedBox16(),
               GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  showDialog(
+                  showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Smoking status ',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: smokingController,
-                          decoration: AppTFDecoration(
-                              hint: 'Smoking status').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
+                      return PrivacyStatusBottomSheet(privacyStatus: '', onPop: (val ) {
+                        smokingController.text = val;
+                        print(smokingController.text);
+                      },);
+                      // return NameEditDialogWidget(
+                      //   title: 'Smoking status ',
+                      //   addTextField: TextFormField(
+                      //     maxLength: 40,
+                      //     onChanged: (v) {
+                      //       setState(() {
+                      //
+                      //       });
+                      //     },
+                      //     onEditingComplete: () {
+                      //       Navigator.pop(context); // Close the dialog
+                      //     },
+                      //     controller: smokingController,
+                      //     decoration: AppTFDecoration(
+                      //         hint: 'Smoking status').decoration(),
+                      //     //keyboardType: TextInputType.phone,
+                      //   ),
+                      // );
                     },
                   );
                 },
                 child: buildDataAddRow(title: 'Smoking status',
+                  widget:  Icon(Icons.edit,size: 12,),
                   data1: smokingController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.smokingStatus == null
                       ? 'Not Added'
@@ -378,36 +621,65 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                       : smokingController.text,
                   data2: smokingController.text,
                   isControllerTextEmpty: smokingController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
+
               ),
               sizedBox16(),
               GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  showDialog(
+                  showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Drinking status',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: drinkingController,
-                          decoration: AppTFDecoration(
-                              hint: 'Drinking status').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
+                      return DrinkingStatusBottomSheet(privacyStatus: '', onPop: (val ) {
+                        drinkingController.text = val;
+                        // print(smokingController.text);
+                      },);
+                      // return NameEditDialogWidget(
+                      //   title: 'Smoking status ',
+                      //   addTextField: TextFormField(
+                      //     maxLength: 40,
+                      //     onChanged: (v) {
+                      //       setState(() {
+                      //
+                      //       });
+                      //     },
+                      //     onEditingComplete: () {
+                      //       Navigator.pop(context); // Close the dialog
+                      //     },
+                      //     controller: smokingController,
+                      //     decoration: AppTFDecoration(
+                      //         hint: 'Smoking status').decoration(),
+                      //     //keyboardType: TextInputType.phone,
+                      //   ),
+                      // );
                     },
                   );
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return NameEditDialogWidget(
+                  //       title: 'Drinking status',
+                  //       addTextField: TextFormField(
+                  //         maxLength: 40,
+                  //         onChanged: (v) {
+                  //           setState(() {
+                  //
+                  //           });
+                  //         },
+                  //         onEditingComplete: () {
+                  //           Navigator.pop(context); // Close the dialog
+                  //         },
+                  //         controller: drinkingController,
+                  //         decoration: AppTFDecoration(
+                  //             hint: 'Drinking status').decoration(),
+                  //         //keyboardType: TextInputType.phone,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
                 },
                 child: buildDataAddRow(title: 'Drinking status',
+                  widget:  Icon(Icons.edit,size: 12,),
                   data1: drinkingController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.drinkingStatus == null
                       ? 'Not Added'
@@ -458,30 +730,31 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
               sizedBox16(),
               GestureDetector(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Community',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: birthDateController,
-                          decoration: AppTFDecoration(
-                              hint: 'Community').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return NameEditDialogWidget(
+                  //       title: 'Community',
+                  //       addTextField: TextFormField(
+                  //         maxLength: 40,
+                  //         onChanged: (v) {
+                  //           setState(() {
+                  //           });
+                  //         },
+                  //         onEditingComplete: () {
+                  //           Navigator.pop(context); // Close the dialog
+                  //         },
+                  //         controller: communityController,
+                  //         decoration: AppTFDecoration(
+                  //             hint: 'Community').decoration(),
+                  //         //keyboardType: TextInputType.phone,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
                 },
                 child: buildDataAddRow(title: 'Community',
+                  widget: SizedBox(),
                   data1: communityController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.community == null || basicInfo.community!.isEmpty
                       ? 'Not Added'
@@ -498,7 +771,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return NameEditDialogWidget(
-                        title: 'Mother Tongue',
+                        title: 'Financial Condition',
                         addTextField: TextFormField(
                           maxLength: 40,
                           onChanged: (v) {
@@ -508,16 +781,54 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                           onEditingComplete: () {
                             Navigator.pop(context); // Close the dialog
                           },
-                          controller: motherTongueController,
+                          controller: financialCondition,
                           decoration: AppTFDecoration(
-                              hint: 'Mother Tongue').decoration(),
+                              hint: 'Financial Condition').decoration(),
                           //keyboardType: TextInputType.phone,
                         ),
                       );
                     },
                   );
                 },
+                child: buildDataAddRow(title: 'Financial Condition',
+                  widget:  Icon(Icons.edit,size: 12,),
+                  data1: financialCondition.text.isEmpty
+                      ? (basicInfo.id == null || basicInfo.financialCondition == null || basicInfo.financialCondition!.isEmpty
+                      ? 'Not Added'
+                      : basicInfo.financialCondition.toString())
+                      : financialCondition.text,
+                  data2: financialCondition.text,
+                  isControllerTextEmpty: financialCondition.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return NameEditDialogWidget(
+                  //       title: 'Mother Tongue',
+                  //       addTextField: TextFormField(
+                  //         maxLength: 40,
+                  //         onChanged: (v) {
+                  //           setState(() {
+                  //           });
+                  //         },
+                  //         onEditingComplete: () {
+                  //           Navigator.pop(context); // Close the dialog
+                  //         },
+                  //         controller: motherTongueController,
+                  //         decoration: AppTFDecoration(
+                  //             hint: 'Mother Tongue').decoration(),
+                  //         //keyboardType: TextInputType.phone,
+                  //       ),
+                  //     );
+                  //   },
+                  // );
+                },
                 child: buildDataAddRow(title: 'Mother Tongue',
+                  widget: SizedBox(),
                   data1: motherTongueController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.motherTongue == null || basicInfo.motherTongue!.isEmpty
                       ? 'Not Added'
@@ -527,6 +838,212 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   isControllerTextEmpty: motherTongueController.text.isEmpty,),
                 // child: CarRowWidget(favourites: favourites!,)
               ),
+              sizedBox16(),
+
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'City',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: cityController,
+                          decoration: AppTFDecoration(
+                              hint: 'City').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'City',
+                  data1:
+                  cityController.text.isEmpty
+                      ? (  basicInfo.presentAddress?.city == null
+                      ? 'City'
+                      : basicInfo.presentAddress!.city!)
+                      : cityController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: cityController.text,
+                  isControllerTextEmpty: cityController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'State',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: stateController,
+                          decoration: AppTFDecoration(
+                              hint: 'State').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'State',
+                  data1: stateController.text.isEmpty
+                      ? (basicInfo.presentAddress == null || basicInfo.presentAddress!.state == null
+                      ? 'State'
+                      : basicInfo.presentAddress!.state!)
+                      : stateController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: stateController.text,
+                  isControllerTextEmpty: stateController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'Zip Code',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: zipController,
+                          decoration: AppTFDecoration(
+                              hint: 'Zip Code').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'Zip Code',
+                  data1: zipController.text.isEmpty
+                      ?  (basicInfo.presentAddress == null || basicInfo.presentAddress!.zip == null
+                      ? 'Zip Code'
+                      : basicInfo.presentAddress!.zip!)
+                      : zipController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: zipController.text,
+                  isControllerTextEmpty: zipController.text.isEmpty,),
+
+                // chil
+                // d: CarRowWidget(favourites: favourites!,)
+              ),
+
+              sizedBox16(),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NameEditDialogWidget(
+                        title: 'Country',
+                        addTextField: TextFormField(
+                          maxLength: 40,
+                          onChanged: (v) {
+                            setState(() {
+
+                            });
+                          },
+                          onEditingComplete: () {
+                            Navigator.pop(context); // Close the dialog
+                          },
+                          controller: countryController,
+                          decoration: AppTFDecoration(
+                              hint: 'Country').decoration(),
+                          //keyboardType: TextInputType.phone,
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: buildDataAddRow(
+                  widget:  Icon(Icons.edit,size: 12,),
+                  title: 'Country',
+                  data1: countryController.text.isEmpty
+                      ? (basicInfo.presentAddress == null || basicInfo.presentAddress!.country == null
+                      ? 'Country'
+                      : basicInfo.presentAddress!.country!)
+                      : countryController.text,
+
+
+                  //   complexionController.text.isEmpty
+                  //       ? (physicalData == null || physicalData.complexion.isEmpty
+                  //       ? 'Update Info'
+                  //       : physicalData.complexion
+                  // : complexionController.text,
+                  /* data1:
+                  complexionController.text.isEmpty ?
+                  'Update Info':
+                  complexionController.text,*/
+                  data2: countryController.text,
+                  isControllerTextEmpty: countryController.text.isEmpty,),
+                // child: CarRowWidget(favourites: favourites!,)
+              ),
+
 
 
 
@@ -556,13 +1073,22 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
               community: communityController.text,
               smokingStatus: smokingController.text,
               drinkingStatus: drinkingController.text,
-              maritalStatus: marriedStatusController.text).then((value) {
+              maritalStatus: marriedStatusController.text,
+              birthDate: birthDateController.text,
+              // language: "englsh", "hindi",
+              state: stateController.text,
+              zip:  zipController.text,
+              city:  cityController.text,
+              country:  countryController.text, gender: genderController.text,
+              financialCondition: financialCondition.text, firstName: firstNameController.text,
+              lastName: lastNameController.text).then((value) {
             setState(() {
             });
             if (value['status'] == true) {
               setState(() {
                 loading = false;
               });
+              Navigator.pop(context);
               dynamic message = value['message']['original']['message'];
               List<String> errors = [];
 
@@ -605,14 +1131,21 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     required String data1,
     required String data2,
     required bool isControllerTextEmpty,
-     Widget? widget,
+    required Widget widget,
   }) {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            title,
+          child: Row(
+            children: [
+              Text(
+                title,
+              ),
+              SizedBox(width: 3,),
+              widget,
+            ],
           ),
+
         ),
         isControllerTextEmpty ?
         Expanded(
@@ -632,26 +1165,37 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     ),
                     SizedBox(width: 2,),
 
-                    isControllerTextEmpty ?
-                    widget??
-                    Icon(Icons.edit,size: 12,) :
-                        SizedBox(),
+
+
+
+
+
                   ],
                 ),
               ],
             ),
           ),
         ) :
-        SizedBox(
-          width: 200,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(data2,
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+        Expanded(
+          child: SizedBox(
+            width: 180,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  data2,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+
+
+
+
+
+
+                // widget,
+              ],
+            ),
           ),
         )
       ],
@@ -677,3 +1221,200 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     );
   }
 }
+
+class PrivacyStatusBottomSheet extends StatefulWidget {
+  final String privacyStatus;
+  final Function(String) onPop;
+  const PrivacyStatusBottomSheet(
+      {Key? key, required this.privacyStatus, required this.onPop})
+      : super(key: key);
+
+  @override
+  State<PrivacyStatusBottomSheet> createState() => _PrivacyStatusBottomSheet();
+}
+
+class _PrivacyStatusBottomSheet extends State<PrivacyStatusBottomSheet> {
+  int _gIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Material(
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Select Smoking Status",
+                style: styleSatoshiMedium(size: 16, color: Colors.black),),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 0;
+                    Navigator.of(context).pop();
+                    widget.onPop("1");
+                  }),
+                  child: Container(
+                    height: 44,
+                    width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 0 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Yes',
+                          style: styleSatoshiLight(size: 14, color:_gIndex == 0 ? Colors.white : Colors.black),
+                          // style: _gIndex == 0
+                          //     ? textColorF7E64114w400
+                          //     : ColorSelect.colorF7E641
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 1;
+                    Navigator.of(context).pop();
+                    widget.onPop("0");
+                  }),
+                  child: Container(
+                    height: 44,
+                    width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 1 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'No',
+                          style: styleSatoshiLight(size: 14, color:_gIndex == 1 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+
+
+              ],
+            ),),),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.privacyStatus == "1") {
+      _gIndex = 0;
+    } else if (widget.privacyStatus == "0") {
+      _gIndex = 1;
+    }
+    super.initState();
+  }
+}
+
+class DrinkingStatusBottomSheet extends StatefulWidget {
+  final String privacyStatus;
+  final Function(String) onPop;
+  const DrinkingStatusBottomSheet(
+      {Key? key, required this.privacyStatus, required this.onPop})
+      : super(key: key);
+
+  @override
+  State<DrinkingStatusBottomSheet> createState() => _DrinkingStatusBottomSheet();
+}
+
+class _DrinkingStatusBottomSheet extends State<DrinkingStatusBottomSheet> {
+  int _gIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Material(
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Select Drinking Status",
+                  style: styleSatoshiMedium(size: 16, color: Colors.black),),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 0;
+                    Navigator.of(context).pop();
+                    widget.onPop("1");
+                  }),
+                  child: Container(
+                    height: 44,
+                    width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 0 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Yes',
+                          style: styleSatoshiLight(size: 14, color:_gIndex == 0 ? Colors.white : Colors.black),
+                          // style: _gIndex == 0
+                          //     ? textColorF7E64114w400
+                          //     : ColorSelect.colorF7E641
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 1;
+                    Navigator.of(context).pop();
+                    widget.onPop("0");
+                  }),
+                  child: Container(
+                    height: 44,
+                    width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 1 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'No',
+                          style: styleSatoshiLight(size: 14, color:_gIndex == 1 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+
+
+              ],
+            ),),),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.privacyStatus == "1") {
+      _gIndex = 0;
+    } else if (widget.privacyStatus == "0") {
+      _gIndex = 1;
+    }
+    super.initState();
+  }
+}
+

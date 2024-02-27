@@ -321,11 +321,16 @@
 //     );
 //   }
 // }
-
+import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
+import 'package:like_button/like_button.dart';
+import 'package:bureau_couple/src/constants/shared_prefs.dart';
+import 'package:bureau_couple/src/models/LoginResponse.dart';
+import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../apis/members_api.dart';
+import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
@@ -336,10 +341,12 @@ import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/loader.dart';
 import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
-
+import 'dart:async';
 
 class MatchesScreen extends StatefulWidget {
-  const MatchesScreen({Key? key}) : super(key: key);
+  final LoginResponse response;
+
+  const MatchesScreen({Key? key, required this.response}) : super(key: key);
 
   @override
   State<MatchesScreen> createState() => _MatchesScreenState();
@@ -350,6 +357,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   List<MatchesModel> matches = [];
   List<bool> isLoadingList = [];
+  List<bool> isLikeList = [];
+
+  // List<bool> isbList = [];
   bool isLoading = false;
   int page = 1;
   bool loading = false;
@@ -360,16 +370,26 @@ class _MatchesScreenState extends State<MatchesScreen> {
     getMatches();
   }
 
+  LoginResponse? response;
+
+  bool like = false;
+
   getMatches() {
+    print("cehck");
+    print(widget.response.data!.user!.gender.toString());
+    print(SharedPrefs().getLoginGender());
     isLoading = true;
-    getMatchesApi(page: page.toString()).then((value) {
+    getMatchesByGenderApi(
+      page: page.toString(),
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+    ).then((value) {
       if (mounted) {
         setState(() {
           if (value['status'] == true) {
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
-              isLoadingList.add(false); // Add false for each new match
-
+              isLoadingList.add(false); //
+              isLikeList.add(false); // Add false for each new match
             }
             isLoading = false;
             page++;
@@ -383,26 +403,28 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   loadMore() {
     print('ndnd');
-    if (!isLoading) {
-      isLoading = true;
-      getMatchesApi(page: page.toString()).then((value) {
-        if (mounted) {
-          setState(() {
-            if (value['status'] == true) {
-              for (var v in value['data']['members']['data']) {
-                matches.add(MatchesModel.fromJson(v));
-                isLoadingList.add(false); // Add false for each new match
-
-              }
-              isLoading = false;
-              page++;
-            } else {
-              isLoading = false;
+    // if (!isLoading) {
+    isLoading = true;
+    getMatchesByGenderApi(
+      page: page.toString(),
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+    ).then((value) {
+      if (mounted) {
+        setState(() {
+          if (value['status'] == true) {
+            for (var v in value['data']['members']['data']) {
+              matches.add(MatchesModel.fromJson(v));
+              isLoadingList.add(false); // Add false for each new match
             }
-          });
-        }
-      });
-    }
+            isLoading = false;
+            page++;
+          } else {
+            isLoading = false;
+          }
+        });
+      }
+    });
+    // }
   }
 
   @override
@@ -416,7 +438,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
           style: styleSatoshiBold(size: 22, color: Colors.black),
         ),
         actions: [
-          backButton(
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (builder) => SavedMatchesScreen()));
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: Icon(Icons.bookmark),
+            ),
+          )
+          /* backButton(
             context: context,
             image: icSearch,
             onTap: () {
@@ -424,110 +458,182 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 // Handle search action
               });
             },
-          ),
-          const SizedBox(width: 10),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0,),
-            child: backButton(
-              context: context,
-              image: icFilter,
-              onTap: () {
-                // Navigate to filter screen
-              },
-            ),
-          ),
+          ),*/
+          // const SizedBox(width: 10),
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 16.0,),
+          //   child: backButton(
+          //     context: context,
+          //     image: icFilter,
+          //     onTap: () {
+          //       // Navigate to filter screen
+          //     },
+          //   ),
+          // ),
         ],
       ),
       body: isLoading
           ? Loading()
-          : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0,),
-            child: LazyLoadScrollView(
-             isLoading: isLoading,
-             onEndOfPage: () {
-            loadMore();
+          : matches.isEmpty && matches == null
+              ? Text("No Matches Yet")
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: LazyLoadScrollView(
+                    isLoading: isLoading,
+                    onEndOfPage: () {
+                      loadMore();
                     },
-             child: ListView.separated(
-            itemCount: matches.length,
-               itemBuilder: (context, i) {
-                 if (i < matches.length) {
-                   return otherUserdataHolder(
-                     context: context,
-                     tap: () {
-                       Navigator.push(
-                           context, MaterialPageRoute(
-                           builder: (builder) =>  UserProfileScreen(userId: matches[i].id.toString(),))
-                       );
-                     },
-                     imgUrl:   matches[i].image == null ?
-                     "" :
-                     '${matches[i].image.toString()}',
-                     userName:  matches[i].firstname == null && matches[i].lastname == null?
-                     "" :
-                     '${matches[i].firstname} ${matches[i].lastname}',
-                     atributeReligion: "5 ft 4 in  •  Khatri Hindu",
-                     profession: "Software Engineer",
-                     Location:  "",
-                     likedColor: Colors.grey,
-                     unlikeColor: primaryColor,
-                     button:
-                     isLoadingList[i] ? loadingButton(
-                         height: 30,
-                         width: 134,
-                         context: context) :button(
-                         fontSize: 14,
-                         height: 30,
-                         width: 134,
-                         context: context,
-                         onTap: () {
-                           setState(() {
-                             isLoadingList[i] = true;
-                           });
-                           print(matches[i].id.toString());
-                           sendRequestApi(memberId: matches[i].id.toString()
-                             // id: career[0].id.toString(),
-                           )
-                               .then((value) {
-                             if (value['status'] == true) {
-                               setState(() {
-                                 isLoadingList[i] = false;
-                               });
-                               ToastUtil.showToast("Connection Request Sent");
-                               print('done');
-                             } else {
-                               setState(() {
-                                 isLoadingList[i] = false;
-                               });
+                    child: ListView.separated(
+                      itemCount: matches.length + 1,
+                      itemBuilder: (context, i) {
+                        if (i < matches.length) {
+                          return otherUserdataHolder(
+                            context: context,
+                            tap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (builder) => UserProfileScreen(
+                                            userId: matches[i].id.toString(),
+                                          )));
+                            },
+                            imgUrl:
+                                '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                            // matches[i].image == null ?
+                            // "" :
+                            // '${matches[i].image.toString()}',
+                            userName: matches[i].firstname == null &&
+                                    matches[i].lastname == null
+                                ? ""
+                                : '${matches[i].firstname} ${matches[i].lastname}',
+                            atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
+                            profession: "Software Engineer",
+                            Location:
+                                '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
+                            likedColor: Colors.grey,
+                            unlikeColor: primaryColor,
+                            button: isLoadingList[i]
+                                ? loadingButton(
+                                    height: 30, width: 134, context: context)
+                                : button(
+                                    fontSize: 14,
+                                    height: 30,
+                                    width: 134,
+                                    context: context,
+                                    onTap: () {
+                                      setState(() {
+                                        isLoadingList[i] = true;
+                                      });
+                                      print(matches[i].id.toString());
+                                      sendRequestApi(
+                                              memberId: matches[i].id.toString()
+                                              // id: career[0].id.toString(),
+                                              )
+                                          .then((value) {
+                                        if (value['status'] == true) {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
+                                          ToastUtil.showToast(
+                                              "Connection Request Sent");
+                                          print('done');
+                                        } else {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
 
-                               List<dynamic> errors =
-                               value['message']['error'];
-                               String errorMessage = errors.isNotEmpty
-                                   ? errors[0]
-                                   : "An unknown error occurred.";
-                               Fluttertoast.showToast(msg: errorMessage);
-                             }
-                           });
-                         },
-                         title: "Connect Now"),
-                   );
-                 } else if (page >= 8 &&
-                          isLoading) {
-                         print("1");
-                        return const Center(
-                          child: CircularProgressIndicator()
-                        );
-                      } else if (page < 8) {
-                         print("2");
-                        return const SizedBox.shrink();
-                      } else {
-                         print("3");
-                        return const Center(
-                          child: CircularProgressIndicator()
-                        );}
-               }, separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 16,),
+                                          List<dynamic> errors =
+                                              value['message']['error'];
+                                          String errorMessage = errors
+                                                  .isNotEmpty
+                                              ? errors[0]
+                                              : "An unknown error occurred.";
+                                          Fluttertoast.showToast(
+                                              msg: errorMessage);
+                                        }
+                                      });
+                                    },
+                                    title: "Connect Now"),
+                            bookmark:
+                            LikeButton(
+                              onTap: (isLiked) async {
+                                print(matches[i].profileId.toString());
+                                  var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
+                                  if (result['status'] == true) {
+                                    Fluttertoast.showToast(msg: "Bookmark Saved");
+                                    // Fluttertoast.showToast("Bookmark Saved");
+                                  } else {
+
+                                  }
+
+                              },
+                              size: 22,
+                              circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                              bubblesColor: const BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.bookmark,
+                                  color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
+                                  size: 22,
+                                );
+                              },
+
+                            ),
+                            bookMarkTap: () {},
+                          );
+                        }
+
+                        // Check if all data has been loaded
+                        // else {
+                        // Check if all data has been loaded
+                        // if (isLoading) {
+                        //   // If data is still loading, show the loader
+                        //   return Center(child: CircularProgressIndicator());
+                        // } else {
+                        //   // If all data has been loaded, show the text
+                        //   return Center(child: Text("All matches loaded"));
+                        // }
+                        // }
+                        else if (isLoading) {
+                          return customLoader(size: 40);
+                        } else if (isLoading) {
+                          return SizedBox.shrink();
+                        } else {
+                          return customLoader(size: 40);
+                        }
+
+                        // if (isLoading){
+                        //   return Text("All matches loaded");
+                        // } else {
+                        //   return customLoader(size: 40);
+                        // }
+                        // else if (is) {
+                        //         print("1");
+                        //        return const Center(
+                        //          child: CircularProgressIndicator()
+                        //        );
+                        //      } else if (page < 8) {
+                        //         print("2");
+                        //        return const SizedBox.shrink();
+                        //      } else {
+                        //         print("3");
+                        //        return const Center(
+                        //          child: CircularProgressIndicator()
+                        //        );}
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        height: 16,
+                      ),
                     ),
                   ),
-          ),
+                ),
     );
   }
 }

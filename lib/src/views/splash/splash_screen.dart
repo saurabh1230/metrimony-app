@@ -73,13 +73,19 @@ class _SplashScreenState extends State<SplashScreen> {
             password: '${SharedPrefs().getLoginPassword()}',
             userName: '${SharedPrefs().getLoginEmail()}',
           ).then((value) {
-            if ( value['status'] == 'success') {
-              SharedPrefs().setLoginToken(value['data']['access_token']);
+            response = value;
+            if (
+
+                response!.status == 'success'
+            /*value['status'] == 'success'*/) {
+              print("dsd");
+              print(response!.data!.user!.gender.toString());
+              SharedPrefs().setLoginToken(response!.data!.accessToken.toString());
               SharedPrefs().setLoginTrue();
               // SharedPrefs().setLoginEmail(emailController.text);
               // SharedPrefs().setLoginPassword(passwordController.text);
               Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-               HomeDashboardScreen()));
+               HomeDashboardScreen(response: response!,)));
               // ToastUtil.showToast("Login Successful");
 
             } else {

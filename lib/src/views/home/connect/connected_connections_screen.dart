@@ -80,6 +80,20 @@ class _AllConnectionsScreenState extends State<AllConnectionsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
           child: Column(
             children: [
+              request.isEmpty || request == null ?
+              Center(
+                child: Column(
+                  children: [
+                    sizedBox16(),
+                    Image.asset(icWaitPlaceHolder,
+                      height: 80,),
+                    sizedBox16(),
+                    Text("No Connections Yet",
+
+                      style: styleSatoshiLight(size: 18, color: Colors.black),)
+                  ],
+                ),
+              ) :
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: request.length,

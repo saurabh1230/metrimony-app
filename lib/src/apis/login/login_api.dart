@@ -22,12 +22,20 @@ Future<dynamic> loginApi({
   var resp = jsonDecode(await response.stream.bytesToString());
   print(resp);
   if (response.statusCode == 200) {
-      return resp;
+    if(resp['status'] == 'success'){
+      return LoginResponse.fromJson(resp);
+
+    }
+      // return resp;
     } else {
-      print(resp);
-      print(response.reasonPhrase);
-      print(response.statusCode);
-      return resp;
+    print(resp);
+    print(response.statusCode);
+    print(response.reasonPhrase);
+    return false;
+      // print(resp);
+      // print(response.reasonPhrase);
+      // print(response.statusCode);
+      // return resp;
     }
 /*    if(resp['status'] == 'success'){
       return LoginResponse.fromJson(resp);

@@ -11,6 +11,16 @@ Future<dynamic> updateBasicInfo({
   required String smokingStatus,
   required String drinkingStatus,
   required String maritalStatus,
+  required String birthDate,
+  // required List<String> language,
+  required String state,
+  required String zip,
+  required String city,
+  required String country,
+  required String gender,
+  required String financialCondition,
+  required String firstName,
+  required String lastName,
 
 
 }) async {
@@ -23,21 +33,23 @@ Future<dynamic> updateBasicInfo({
       Uri.parse('${baseUrl}profile-update'));
   request.fields.addAll({
     'method': 'basicInfo',
-    // 'gender': 'm',
+    'gender': gender,
     'profession': profession,
-    // 'financial_condition': 'sdadsasad',
+    'financial_condition': financialCondition,
     'religion': religion,
     'mother_tongue': motherTongue,
     'community': community,
     'smoking_status': smokingStatus,
     'drinking_status': drinkingStatus,
-    // 'birth_date': '2024-02-14',
-    // 'languages[]': 'english',
+    'birth_date': birthDate,
+    'languages[]': "English,Hindi",
     'marital_status': maritalStatus,
-    // 'pre_state': 'delhi',
-    // 'pre_zip': '110057',
-    // 'pre_city': 'new delhi',
-    // 'per_country': 'india'
+    'pre_state': state,
+    'pre_zip': zip,
+    'pre_city': city,
+    'per_country': country,
+    'lastname': firstName,
+    'firstname': lastName
 
   });
   request.headers.addAll(headers);

@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<dynamic> kycDetailsApi({
   required String designation,
   required String identityProof,
-  required String joiningDate,
+  // required String joiningDate,
   required String photo,
 
 }) async {
@@ -26,7 +26,7 @@ Future<dynamic> kycDetailsApi({
   request.fields.addAll({
     'designation': designation,
     'identity_proof': identityProof,
-    'joining_date': joiningDate
+    // 'joining_date': joiningDate
   });
   request.files.add(await http.MultipartFile.fromPath('image', photo));
   request.headers.addAll(headers);

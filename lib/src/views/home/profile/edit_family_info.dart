@@ -67,16 +67,18 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
   }
 
   void fields() {
-    fatherNameController.text = familyData.fatherName.toString() ?? '';
-    fatherProfessionController.text =familyData.fatherProfession.toString() ?? '';
-    fatherContactController.text =familyData.fatherContact.toString() ?? '';
-    motherNameController.text = familyData.motherName.toString()?? '';
-    motherProfessionController.text =familyData.motherProfession.toString() ?? '';
-    motherContactController.text = familyData.motherContact.toString() ?? '';
-    totalBrotherController.text =familyData.totalBrother.toString() ?? '';
-    totalSisterController.text =familyData.totalSister.toString() ?? '';
+    fatherNameController.text = familyData.fatherName.toString() ?? 'Nil';
+    fatherProfessionController.text =familyData.fatherProfession.toString() ?? 'Nil';
+    fatherContactController.text =familyData.fatherContact.toString() ?? 'Nil';
+    motherNameController.text = familyData.motherName.toString()?? 'Nil';
+    motherProfessionController.text =familyData.motherProfession.toString() ?? 'Nil';
+    motherContactController.text = familyData.motherContact.toString() ?? 'Nil';
+    totalBrotherController.text =familyData.totalBrother.toString() ?? 'Nil';
+    totalSisterController.text =familyData.totalSister.toString() ?? 'Nil';
 
   }
+
+  final formKey = GlobalKey<FormState>();
 
 
   @override
@@ -84,276 +86,285 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
     return Scaffold(
       appBar: buildAppBar(context),
       bottomNavigationBar: buildBottomBar(context),
-      body: isLoading ? Loading(): SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Father Name',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+      body: isLoading ? Loading(): CustomRefreshIndicator(
+        onRefresh: () {
+          setState(() {
+            isLoading = true;
+          });
+          return familyInfo();
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Father Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: fatherNameController,
-                          decoration: AppTFDecoration(
-                              hint: 'Father Name').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Father Name',
-                  data1: fatherNameController.text.isEmpty
-                      ? (familyData.id == null || familyData.fatherName == null || familyData.fatherName!.isEmpty
-                      ? 'Not Added'
-                      : familyData.fatherName!)
-                      : fatherNameController.text,
-                  data2: fatherNameController.text,
-                  isControllerTextEmpty: fatherNameController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Father Profession',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
-
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: fatherProfessionController,
-                          decoration: AppTFDecoration(
-                              hint: 'Father Profession').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Father Profession',
-                    data1: fatherProfessionController.text.isEmpty
-                        ? (familyData.id == null || familyData.fatherProfession == null || familyData.fatherProfession!.isEmpty
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: fatherNameController,
+                            decoration: AppTFDecoration(
+                                hint: 'Father Name').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Father Name',
+                    data1: fatherNameController.text.isEmpty
+                        ? (familyData.id == null || familyData.fatherName == null || familyData.fatherName!.isEmpty
                         ? 'Not Added'
-                        : familyData.fatherProfession!)
-                        : fatherProfessionController.text,
-                    data2: fatherProfessionController.text,
-                    isControllerTextEmpty: fatherProfessionController.text.isEmpty),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Father Contact',
-                        addTextField: TextFormField(
-                          keyboardType : TextInputType.number,
-                          maxLength: 10,
-                          onChanged: (v) {
-                            setState(() {
+                        : familyData.fatherName!)
+                        : fatherNameController.text,
+                    data2: fatherNameController.text,
+                    isControllerTextEmpty: fatherNameController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Father Profession',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: fatherContactController,
-                          decoration: AppTFDecoration(
-                              hint: 'Father Contact').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Father Contact',
-                  data1:fatherContactController.text.isEmpty
-                      ? (familyData.id == null || familyData.fatherContact == null || familyData.fatherContact!.isEmpty
-                      ? 'Not Added'
-                      : familyData.fatherContact!)
-                      : fatherContactController.text,
-                  data2: fatherContactController.text,
-                  isControllerTextEmpty: fatherContactController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Mother Name',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: fatherProfessionController,
+                            decoration: AppTFDecoration(
+                                hint: 'Father Profession').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Father Profession',
+                      data1: fatherProfessionController.text.isEmpty
+                          ? (familyData.id == null || familyData.fatherProfession == null || familyData.fatherProfession!.isEmpty
+                          ? 'Not Added'
+                          : familyData.fatherProfession!)
+                          : fatherProfessionController.text,
+                      data2: fatherProfessionController.text,
+                      isControllerTextEmpty: fatherProfessionController.text.isEmpty),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Father Contact',
+                          addTextField: TextFormField(
+                            keyboardType : TextInputType.number,
+                            maxLength: 10,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: motherNameController,
-                          decoration: AppTFDecoration(
-                              hint: 'Mother Name').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Mother Name',
-                  data1: motherNameController.text.isEmpty
-                      ? (familyData.id == null || familyData.motherName == null || familyData.motherName!.isEmpty
-                      ? 'Not Added'
-                      : familyData.motherName!)
-                      : motherNameController.text,
-                  data2: motherNameController.text,
-                  isControllerTextEmpty: motherNameController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Mother Profession',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: fatherContactController,
+                            decoration: AppTFDecoration(
+                                hint: 'Father Contact').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Father Contact',
+                    data1:fatherContactController.text.isEmpty
+                        ? (familyData.id == null || familyData.fatherContact == null || familyData.fatherContact!.isEmpty
+                        ? 'Not Added'
+                        : familyData.fatherContact!)
+                        : fatherContactController.text,
+                    data2: fatherContactController.text,
+                    isControllerTextEmpty: fatherContactController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Mother Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: motherProfessionController,
-                          decoration: AppTFDecoration(
-                              hint: 'Mother Profession').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Mother Profession',
-                  data1: motherProfessionController.text.isEmpty
-                      ? (familyData.id == null || familyData.motherProfession == null || familyData.motherProfession!.isEmpty
-                      ? 'Not Added'
-                      : familyData.motherProfession!)
-                      : motherProfessionController.text,
-                  data2: motherProfessionController.text,
-                  isControllerTextEmpty: motherProfessionController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Mother Contact',
-                        addTextField: TextFormField(
-                          keyboardType : TextInputType.number,
-                          maxLength: 10,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: motherNameController,
+                            decoration: AppTFDecoration(
+                                hint: 'Mother Name').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Mother Name',
+                    data1: motherNameController.text.isEmpty
+                        ? (familyData.id == null || familyData.motherName == null || familyData.motherName!.isEmpty
+                        ? 'Not Added'
+                        : familyData.motherName!)
+                        : motherNameController.text,
+                    data2: motherNameController.text,
+                    isControllerTextEmpty: motherNameController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Mother Profession',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: motherContactController,
-                          decoration: AppTFDecoration(
-                              hint: 'Mother Contact').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Mother Contact',
-                  data1: motherContactController.text.isEmpty
-                      ? (familyData.id == null || familyData.motherContact == null || familyData.motherContact!.isEmpty
-                      ? 'Not Added'
-                      : familyData.motherContact!)
-                      : motherContactController.text,
-                  data2: motherContactController.text,
-                  isControllerTextEmpty: motherContactController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),
-              sizedBox16(),
-             /* GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NameEditDialogWidget(
-                        title: 'Total Brothers',
-                        addTextField: TextFormField(
-                          maxLength: 40,
-                          onChanged: (v) {
-                            setState(() {
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: motherProfessionController,
+                            decoration: AppTFDecoration(
+                                hint: 'Mother Profession').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Mother Profession',
+                    data1: motherProfessionController.text.isEmpty
+                        ? (familyData.id == null || familyData.motherProfession == null || familyData.motherProfession!.isEmpty
+                        ? 'Not Added'
+                        : familyData.motherProfession!)
+                        : motherProfessionController.text,
+                    data2: motherProfessionController.text,
+                    isControllerTextEmpty: motherProfessionController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Mother Contact',
+                          addTextField: TextFormField(
+                            keyboardType : TextInputType.number,
+                            maxLength: 10,
+                            onChanged: (v) {
+                              setState(() {
 
-                            });
-                          },
-                          onEditingComplete: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          controller: totalBrotherController,
-                          decoration: AppTFDecoration(
-                              hint: 'Total Brothers').decoration(),
-                          //keyboardType: TextInputType.phone,
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: buildDataAddRow(title: 'Total Brothers',
-                  data1:  totalBrotherController.text.isEmpty
-                      ? (familyData.id == null || familyData.totalBrother == null || familyData.motherContact!.isEmpty
-                      ? 'Not Added'
-                      : familyData.motherContact!)
-                      : totalBrotherController.text,
-                  data2: totalBrotherController.text,
-                  isControllerTextEmpty: totalBrotherController.text.isEmpty,),
-                // child: CarRowWidget(favourites: favourites!,)
-              ),*/
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: motherContactController,
+                            decoration: AppTFDecoration(
+                                hint: 'Mother Contact').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Mother Contact',
+                    data1: motherContactController.text.isEmpty
+                        ? (familyData.id == null || familyData.motherContact == null || familyData.motherContact!.isEmpty
+                        ? 'Not Added'
+                        : familyData.motherContact!)
+                        : motherContactController.text,
+                    data2: motherContactController.text,
+                    isControllerTextEmpty: motherContactController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+               /* GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Total Brothers',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {
+
+                              });
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: totalBrotherController,
+                            decoration: AppTFDecoration(
+                                hint: 'Total Brothers').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(title: 'Total Brothers',
+                    data1:  totalBrotherController.text.isEmpty
+                        ? (familyData.id == null || familyData.totalBrother == null || familyData.motherContact!.isEmpty
+                        ? 'Not Added'
+                        : familyData.motherContact!)
+                        : totalBrotherController.text,
+                    data2: totalBrotherController.text,
+                    isControllerTextEmpty: totalBrotherController.text.isEmpty,),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),*/
 
 
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -363,60 +374,73 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
   Padding buildBottomBar(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child:loading ? loadingButton(context: context) : button(context: context, onTap: () {
-          setState(() {
-            loading = true;
-          });
-          familyInfoUpdateApi(
-              fatherName: fatherNameController.text,
-              fatherProfession: fatherProfessionController.text,
-              fatherContact: fatherContactController.text,
-              motherName: motherNameController.text,
-              motherProfession: motherProfessionController.text,
-              motherContact: motherContactController.text,
-              totalBrother: '0',
-              totalSister: "0").then((value) {
-            setState(() {
-            });
-            if (value['status'] == true) {
-              setState(() {
-                loading = false;
-              });
-              dynamic message = value['message']['original']['message'];
-              List<String> errors = [];
+      child: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child:loading ? loadingButton(context: context) : button(context: context, onTap: () {
+           if(fatherNameController.text.isNotEmpty &&
+               fatherProfessionController.text.isNotEmpty &&
+               fatherContactController.text.isNotEmpty &&
+               motherNameController.text.isNotEmpty &&
+               motherProfessionController.text.isNotEmpty &&
+               motherContactController.text.isNotEmpty ) {
+             setState(() {
+               loading = true;
+             });
+             familyInfoUpdateApi(
+                 fatherName: fatherNameController.text,
+                 fatherProfession: fatherProfessionController.text,
+                 fatherContact: fatherContactController.text,
+                 motherName: motherNameController.text,
+                 motherProfession: motherProfessionController.text,
+                 motherContact: motherContactController.text,
+                 totalBrother: '0',
+                 totalSister: "0").then((value) {
+               setState(() {
+               });
+               if (value['status'] == true) {
+                 setState(() {
+                   loading = false;
+                 });
+                 Navigator.pop(context);
+                 dynamic message = value['message']['original']['message'];
+                 List<String> errors = [];
 
-              if (message != null && message is Map) {
-                // If the message is not null and is a Map, extract the error messages
-                message.forEach((key, value) {
-                  errors.addAll(value);
-                });
-              }
+                 if (message != null && message is Map) {
+                   // If the message is not null and is a Map, extract the error messages
+                   message.forEach((key, value) {
+                     errors.addAll(value);
+                   });
+                 }
 
-              String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
-              Fluttertoast.showToast(msg: errorMessage);
+                 String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
+                 Fluttertoast.showToast(msg: errorMessage);
 
-              // isLoading ? Loading() :careerInfo();
-              // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-              // const KycWaitScreen()));
+                 // isLoading ? Loading() :careerInfo();
+                 // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                 // const KycWaitScreen()));
 
-              // ToastUtil.showToast("Login Successful");
+                 // ToastUtil.showToast("Login Successful");
 
-              // ToastUtil.showToast("Updated Successfully");
-              print('done');
-            } else {
-              setState(() {
-                loading = false;
-              });
+                 // ToastUtil.showToast("Updated Successfully");
+                 print('done');
+               } else {
+                 setState(() {
+                   loading = false;
+                 });
 
 
-              List<dynamic> errors = value['message']['original']['message'];
-              String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-              Fluttertoast.showToast(msg: errorMessage);
-            }
-          });
+                 List<dynamic> errors = value['message']['original']['message'];
+                 String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                 Fluttertoast.showToast(msg: errorMessage);
+               }
+             });
+           } else {
+             Fluttertoast.showToast(msg: "Please Add All Details");
+           }
 
-        },  title: "Save"),
+          },  title: "Save"),
+        ),
       ),
     );
   }

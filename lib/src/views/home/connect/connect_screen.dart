@@ -31,7 +31,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 Navigator.pop(context);
               }),
         ),
-        title: Text("Connection Request",
+        title: Text(" Request",
           style: styleSatoshiBold(size: 22, color: Colors.black),
         ),
       ),

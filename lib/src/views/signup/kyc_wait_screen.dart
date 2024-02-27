@@ -20,7 +20,7 @@ class KycWaitScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: backButton(context: context, image: icCross, onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
               // onBackPressed(context) ;
             }),
           )
@@ -50,7 +50,7 @@ class KycWaitScreen extends StatelessWidget {
                 // Spacer(),
                 SizedBox(height: 40,),
                 button(context: context, onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
                 }, title: "Go back")
               ],
             ),

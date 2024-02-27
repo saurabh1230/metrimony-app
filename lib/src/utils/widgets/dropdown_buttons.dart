@@ -73,7 +73,7 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 1.sw,
-          width: 1.sw,
+          width: 300.sw,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             color: Colors.white,
