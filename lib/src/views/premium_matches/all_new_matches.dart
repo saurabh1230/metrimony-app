@@ -418,6 +418,14 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
+        leading: Padding(
+        padding: const EdgeInsets.only(left: 16),
+    child: backButton(
+    context: context,
+    image: icArrowLeft,
+    onTap: () {
+    Navigator.pop(context);
+    }),),
         title: Text(
           "All New Matches",
           style: styleSatoshiBold(size: 22, color: Colors.black),
@@ -450,11 +458,11 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                   // "" :
                   // '${matches[i].image.toString()}',
                   userName:  matches[i].firstname == null && matches[i].lastname == null?
-                  "" :
+                  "user" :
                   '${matches[i].firstname} ${matches[i].lastname}',
-                  atributeReligion: "5 ft 4 in  •  Khatri Hindu",
-                  profession: "Software Engineer",
-                  Location:  "",
+                  atributeReligion: "Religion: ${matches[i].religion}",
+                  profession: "",
+                  Location: "${matches[i].address!.state ?? ""} ${matches[i].address!.country ?? ""}",
                   likedColor: Colors.grey,
                   unlikeColor: primaryColor,
                   button:
@@ -497,11 +505,19 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                       },
                       title: "Connect Now"), bookMarkTap: () {  },
                 );
-              } if (isLoading){
+              }
+              if (isLoading) {
+                return customLoader(size: 40);
+              } else if (isLoading) {
                 return customLoader(size: 40);
               } else {
-                return customLoader(size: 40);
-              };
+                return Center(child: Text("All matches loaded"));
+              }
+              // if (isLoading){
+              //   return customLoader(size: 40);
+              // } else {
+              //   return customLoader(size: 40);
+              // };
               // else if (is) {
               //         print("1");
               //        return const Center(

@@ -118,6 +118,7 @@ class Matches {
   List<CareerInfo>? careerInfo;
 
   List<EducationInfo>? educationInfo;
+  Address? address;
 
 
   Matches(
@@ -127,6 +128,7 @@ class Matches {
         this.lastname,
         this.lookingFor,
         this.username,
+        this.address,
 
         this.email,
         this.countryCode,
@@ -189,6 +191,8 @@ class Matches {
         : null;
     family =
     json['family'] != null ? new Family.fromJson(json['family']) : null;
+    address =
+    json['address'] != null ? new Address.fromJson(json['address']) : null;
 
 
 
@@ -240,7 +244,37 @@ class Matches {
       data['education_info'] =
           this.educationInfo!.map((v) => v.toJson()).toList();
     }
+    if (this.address != null) {
+      data['address'] = this.address!.toJson();
+    }
 
+    return data;
+  }
+}
+class Address {
+  String? address;
+  String? state;
+  String? zip;
+  String? country;
+  String? city;
+
+  Address({this.address, this.state, this.zip, this.country, this.city});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    address = json['address'];
+    state = json['state'];
+    zip = json['zip'];
+    country = json['country'];
+    city = json['city'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['address'] = this.address;
+    data['state'] = this.state;
+    data['zip'] = this.zip;
+    data['country'] = this.country;
+    data['city'] = this.city;
     return data;
   }
 }

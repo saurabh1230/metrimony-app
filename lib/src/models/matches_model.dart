@@ -32,7 +32,8 @@ class MatchesModel {
   String? community;
   String? physicalAttributes;
   String? limitation;
-  String? basicInfo;
+
+
 
   MatchesModel({
     this.id,
@@ -68,7 +69,8 @@ class MatchesModel {
     this.community,
     this.physicalAttributes,
     this.limitation,
-    this.basicInfo,
+
+
   });
 
   MatchesModel.fromJson(Map<String, dynamic> json) {
@@ -105,6 +107,7 @@ class MatchesModel {
     maritalStatus = json['maritalStatus'];
     motherTongue = json['motherTongue'];
     community = json['community'];
+
   }
 
   Map<String, dynamic> toJson() {

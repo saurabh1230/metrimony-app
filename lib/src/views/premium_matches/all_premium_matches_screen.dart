@@ -124,7 +124,7 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                     onTap: () {
                       Navigator.push(
                           context, MaterialPageRoute(
-                          builder: (builder) => const UserProfileScreen(userId: '',))
+                          builder: (builder) => const UserProfileScreen(userId: ''))
                       );
                     },
                     child: Container(
@@ -197,7 +197,7 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                                         height: 17,
                                         width: 17,),
                                     ),
-                                    SizedBox(width: 10,),
+                                    const SizedBox(width: 10,),
                                     Expanded(
                                       flex:10,
                                       child: Text("New York, USA",
@@ -218,8 +218,6 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                                     context: context,
                                     onTap: (){},
                                     title: "Connect Now"),
-
-
 
 
                               ],

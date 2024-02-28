@@ -106,7 +106,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Row(
                           children: [
                             Text(
-                              "${model.data!.matches!.firstname ?? '- - - - '} ${model.data!.matches!.lastname ?? 'User'}",
+                              "${model.data!.matches!.firstname ?? ''} ${model.data!.matches!.lastname ?? 'User'}",
                               // "Cody Fisher ",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -190,9 +190,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("You Match of her Preferences",
+                          Text("Your Match Details",
                             style: styleSatoshiRegular(size: 14, color: Colors.white),),
-                          Text("9/14",
+                          Text("",
                             style: styleSatoshiRegular(size: 16, color: Colors.white),)
                         ],
                       ),
@@ -203,7 +203,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   // buildProfileRow(image: icAgeIcon, title: 'Age', text: '41 to 45'),
                   buildProfileRow(image: icHeightIcon, title: 'Height',
                       text:
-                      model.data?.matches?.physicalAttributes?.height ?? '- - - - -'
+                      model.data?.matches?.physicalAttributes?.height ?? 'Not Added Yet'
                       // (model.data!.matches!.physicalAttributes!.height == null ||
                       //     model.data!.matches!.physicalAttributes!.height!.isEmpty) ? "" : "${model.data!.matches!.physicalAttributes!.height}",
                   ),
@@ -247,7 +247,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 height: 20,
                                 width: 20,)),
                             Expanded(child: Text(
-                          "${model.data?.matches?.basicInfo?.profession ?? "not added yet"}",
+                              ' ${model.data!.matches!.basicInfo!.profession ?? "not added yet"}',
+                          // "${model.data?.matches?.basicInfo?.profession ?? "not added yet"}",
     // "Software Engineer",
                            style: styleSatoshiMedium(
                              size: 14,
@@ -287,8 +288,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 height: 20,
                                 width: 20,)),
                             Expanded(child: Text(
-                             // ' ${model.data!.matches! ?? "not added yet"}',
-                              "New York Usa",
+                             ' ${model.data!.matches!.address!.country ?? "not added yet"}',
+                             //  "New York Usa",
                               style: styleSatoshiMedium(
                                 size: 14,
                                 color: Colors.black.withOpacity(0.70),

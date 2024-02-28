@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.push(
                             context, MaterialPageRoute(
-                            builder: (builder) => const UserProfileScreen(userId: '',))
+                            builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
                         );
                       },
                       child: Stack(
@@ -419,7 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${matches[i].firstname} \n${matches[i].lastname}',
+                                  '${matches[i].firstname ?? 'User'} \n${matches[i].lastname ??''}',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       // "Jassica S.",

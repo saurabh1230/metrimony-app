@@ -96,6 +96,7 @@ otherUserdataHolder({
                     )*/
                   ],
                 ),
+                sizedBox10(),
                 Text(
                   // '${matches[i].physicalAttributes!.height} cm • ${matches[i].religion}',
                   atributeReligion,
@@ -104,8 +105,8 @@ otherUserdataHolder({
                       size: 13,
                       color: Colors.black.withOpacity(0.80)),
                 ),
-                sizedBox16(),
-                Row(
+                // sizedBox16(),
+               /* Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
@@ -128,7 +129,7 @@ otherUserdataHolder({
                       ),
                     ),
                   ],
-                ),
+                ),*/
                 sizedBox8(),
                 Row(
                   children: [

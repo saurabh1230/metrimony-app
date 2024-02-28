@@ -381,6 +381,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     isLoading = true;
     getMatchesByGenderApi(
       page: page.toString(),
+      // gender: "",
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
     ).then((value) {
       if (mounted) {
@@ -407,6 +408,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     isLoading = true;
     getMatchesByGenderApi(
       page: page.toString(),
+      // gender: "",
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
     ).then((value) {
       if (mounted) {
@@ -506,8 +508,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             // '${matches[i].image.toString()}',
                             userName: matches[i].firstname == null &&
                                     matches[i].lastname == null
-                                ? ""
-                                : '${matches[i].firstname} ${matches[i].lastname}',
+                                ? "user"
+                                : '${matches[i].firstname ?? "user"} ${matches[i].lastname ?? "user"}',
                             atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
                             profession: "Software Engineer",
                             Location:
@@ -600,12 +602,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         //   return Center(child: Text("All matches loaded"));
                         // }
                         // }
-                        else if (isLoading) {
+                      if (isLoading) {
                           return customLoader(size: 40);
                         } else if (isLoading) {
-                          return SizedBox.shrink();
-                        } else {
                           return customLoader(size: 40);
+                        } else {
+                          return Center(child: Text("All matches loaded"));
                         }
 
                         // if (isLoading){

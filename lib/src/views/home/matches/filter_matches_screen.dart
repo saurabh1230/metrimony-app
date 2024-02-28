@@ -3,8 +3,9 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:like_button/like_button.dart';
 import '../../../apis/members_api.dart';
+import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../models/LoginResponse.dart';
 import '../../../models/matches_model.dart';
@@ -115,7 +116,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
 
   getMatches() {
     isLoading = true;
-    matches.clear();
+    // matches.clear();
     // matches.clear();
     getMatchesFilterApi(
       page: page.toString(),
@@ -123,7 +124,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       religion: religionFilter,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
     ).then((value) {
-      // matches.clear();
+      matches.clear();
       setState(() {
         if (value['status'] == true) {
           for (var v in value['data']['members']['data']) {
@@ -143,7 +144,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
     print('ndnd');
     // if (!isLoading) {
     isLoading = true;
-    matches.clear();
+    // matches.clear();
 
     getMatchesFilterApi(
       page: page.toString(),
@@ -327,7 +328,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                 // '${matches[i].image.toString()}',
                                 userName: matches[i].firstname == null &&
                                         matches[i].lastname == null
-                                    ? ""
+                                    ? "user"
                                     : '${matches[i].firstname} ${matches[i].lastname}',
                                 atributeReligion:
                                     "5 ft 4 in  • ${matches[i].religion ?? "Not Added Yet"}",
@@ -381,15 +382,42 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                           });
                                         },
                                         title: "Connect Now"),
+                                bookmark: LikeButton(
+                                  onTap: (isLiked) async {
+                                    print(matches[i].profileId.toString());
+                                    var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
+                                    if (result['status'] == true) {
+                                      Fluttertoast.showToast(msg: "Bookmark Saved");
+                                      // Fluttertoast.showToast("Bookmark Saved");
+                                    } else {
+
+                                    }
+
+                                  },
+                                  size: 22,
+                                  circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                                  bubblesColor: const BubblesColor(
+                                    dotPrimaryColor: Color(0xff33b5e5),
+                                    dotSecondaryColor: Color(0xff0099cc),
+                                  ),
+
+                                  likeBuilder: (bool isLiked) {
+                                    return Icon(
+                                      Icons.bookmark,
+                                      color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
+                                      size: 22,
+                                    );
+                                  },
+
+                                ),
                                 bookMarkTap: () {},
                               );
                             }
                             if (isLoading) {
                               return customLoader(size: 40);
                             } else {
-                              return customLoader(size: 40);
+                              return Center(child: Text("All matches loaded"));
                             }
-                            ;
                             // else if (is) {
                             //         print("1");
                             //        return const Center(
