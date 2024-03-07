@@ -6,12 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../../apis/profile_apis/basic_info_api.dart';
-import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
-import '../../../apis/profile_apis/physical_attributes_api.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/textstyles.dart';
-import '../../../models/attributes_model.dart';
 import '../../../models/basic_info_model.dart';
 import '../../../models/info_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
@@ -241,7 +238,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   );
                 },
                 child: buildDataAddRow(
-                  widget:  Icon(Icons.edit,size: 12,),
+                  widget: const Icon(Icons.edit,size: 12,),
                   title: 'First Name',
                   data1: firstNameController.text.isEmpty
                       ? (mainInfo == null || mainInfo.firstname == null || mainInfo.firstname!.isEmpty
@@ -291,7 +288,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   );
                 },
                 child: buildDataAddRow(
-                  widget:  Icon(Icons.edit,size: 12,),
+                  widget: const  Icon(Icons.edit,size: 12,),
                   title: 'Last Name',
                   data1: lastNameController.text.isEmpty
                       ? (mainInfo == null || mainInfo.lastname == null || mainInfo.lastname!.isEmpty
@@ -341,7 +338,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   );
                 },
                 child: buildDataAddRow(
-                  widget:  Icon(Icons.edit,size: 12,),
+                  widget: const Icon(Icons.edit,size: 12,),
                   title: 'User Name',
                   data1: userNameController.text.isEmpty
                       ? (mainInfo == null || mainInfo.username == null || mainInfo.username!.isEmpty
@@ -391,7 +388,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   // );
                 },
                 child: buildDataAddRow(
-                  widget: SizedBox(),
+                  widget: const SizedBox(),
                   title: 'Email',
                   data1: emailController.text.isEmpty
                       ? (mainInfo == null || mainInfo.username == null || mainInfo.username!.isEmpty
@@ -441,7 +438,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   );
                 },
                 child: buildDataAddRow(
-                  widget:  Icon(Icons.edit,size: 12,),
+                  widget: const Icon(Icons.edit,size: 12,),
                   title: 'Profession',
                   data1: professionController.text.isEmpty
                       ? (basicInfo.id == null || basicInfo.profession == null || basicInfo.profession!.isEmpty
@@ -569,7 +566,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   // );
                 },
                 child: buildDataAddRow(
-                  widget: SizedBox(),
+                  widget:const SizedBox(),
                   title: 'Married Status',
                   data1: marriedStatusController.text.isEmpty
                       ? ( basicInfo.id == null ||  basicInfo.maritalStatus== null || basicInfo.maritalStatus!.isEmpty

@@ -7,8 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:like_button/like_button.dart';
 
-import '../../constants/textstyles.dart';
-import 'buttons.dart';
+
 Widget backButton({
   required BuildContext context,
   required String image,

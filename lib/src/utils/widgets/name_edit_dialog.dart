@@ -1,9 +1,6 @@
-import 'package:bureau_couple/src/constants/assets.dart';
-import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../constants/textstyles.dart';
 
 
 

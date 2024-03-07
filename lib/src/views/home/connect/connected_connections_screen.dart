@@ -10,7 +10,7 @@ import '../../../constants/textstyles.dart';
 import '../../../models/connectionRequestModel.dart';
 import '../../../utils/urls.dart';
 import '../../../utils/widgets/common_widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AllConnectionsScreen extends StatefulWidget {

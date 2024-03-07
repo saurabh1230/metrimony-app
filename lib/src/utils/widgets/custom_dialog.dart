@@ -1,4 +1,4 @@
-import 'package:bureau_couple/src/constants/colors.dart';
+
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter/cupertino.dart';

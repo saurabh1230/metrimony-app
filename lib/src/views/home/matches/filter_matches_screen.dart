@@ -236,7 +236,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                             SizedBox(
                               width: 1.sw,
                               child: CustomStyledDropdownButton(
-                                items: [
+                                items: const  [
                                   "Unmarried",
                                   "Married",
                                   "Widowed",

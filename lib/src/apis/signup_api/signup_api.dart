@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:http/http.dart' as http;
 
-import '../../models/LoginResponse.dart';
 
 Future<dynamic> signUpApi({
   required String userName,

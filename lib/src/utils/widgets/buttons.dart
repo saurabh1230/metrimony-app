@@ -1,7 +1,7 @@
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../constants/assets.dart';
+
 import '../../constants/colors.dart';
 import '../../constants/fonts.dart';
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../constants/colors.dart';
 
 class CustomStyledDropdownButton extends StatefulWidget {
   final String title;

@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
-import 'package:bureau_couple/src/views/signup/signup_dashboard.dart';
 import 'package:http/http.dart' as http;
-import '../../constants/string.dart';
-import '../../models/LoginResponse.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<dynamic> kycDetailsApi({
   required String designation,
