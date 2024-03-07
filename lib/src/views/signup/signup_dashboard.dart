@@ -1,5 +1,4 @@
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
-import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +42,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
   void navigateToPage(int pageIndex) {
     _pageController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
     );
   }
@@ -110,16 +109,15 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                   physics:  const NeverScrollableScrollPhysics(),
                   controller: _pageController,
                   children:   [
-                    SignUpScreenOne(),
+                    const SignUpScreenOne(),
                     // SignUpScreenOne(),
-                    SignUpScreenTwo(),
+                    const SignUpScreenTwo(),
                     SingUpScreenThree(onImagePicked: (imagePath ) {
                       setState(() {
                         pickedImagePath = imagePath;
                       });
                       // pickedImage = imagePath;
-                      print("chcc");
-                      print('Picked image path: $imagePath');
+                     
                     },),
                   ]
                 ),
@@ -137,7 +135,6 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
               button(
                   context: context,
                   onTap: (){
-
                     if (_currentPage == 0) {
                       if (SignUpScreenOne().validate()) {
                         _pageController.nextPage(
@@ -155,10 +152,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                     else if (_currentPage == 2) {
-
                      if(pickedImagePath.isEmpty )  {
                        Fluttertoast.showToast(msg: "Please add Image and birth date");
-
                      } else {
                        setState(() {
                          loading = true;
@@ -182,7 +177,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            maritalStatus: '${SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus().toString()}',
                            // maritalStatus: 'Unmarried',
                            photo: '$pickedImagePath',
-                           religion: '${SharedPrefs().getReligion() == null ? "Hindi" : SharedPrefs().getReligion().toString()}',
+                           religion: '${SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString()}',
 
                            profession: '${SharedPrefs().getProfession()}').then((value) async {
 

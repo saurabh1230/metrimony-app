@@ -3,7 +3,7 @@ import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/assets.dart';
-import '../../constants/fonts.dart';
+
 import '../../constants/sizedboxe.dart';
 import '../../constants/textstyles.dart';
 import '../../utils/widgets/common_widgets.dart';
@@ -48,7 +48,7 @@ class KycWaitScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: styleSatoshiRegular(size: 18, color: Colors.black),),
                 // Spacer(),
-                SizedBox(height: 40,),
+                const SizedBox(height: 40,),
                 button(context: context, onTap: () {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
                 }, title: "Go back")

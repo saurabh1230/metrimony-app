@@ -71,3 +71,5 @@ const String icSaved = 'assets/icons/ic_saved.png';
 const String icArrowRight = 'assets/icons/ic_arrow_rightside.png';
 const String icWaitPlaceHolder = 'assets/icons/ic_wait.png';
 const String icAddDataPlaceHolder = 'assets/icons/add-data-document-svgrepo-com.png';
+const String icPray = 'assets/icons/ic_pray.png';
+const String icMarried = 'assets/icons/ic_married.png';

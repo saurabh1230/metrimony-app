@@ -1,9 +1,8 @@
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
-import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 
 import '../../constants/assets.dart';
 import '../../constants/textfield.dart';
@@ -80,7 +79,7 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                   });
                 }),
           ),
-          SizedBox(width: 10,),
+           const  SizedBox(width: 10,),
           // Padding(
           //   padding: const EdgeInsets.only(right: 16.0),
           //   child: backButton(context: context, image: icFilter, onTap: () {
@@ -109,13 +108,13 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                   length: 40,
                   validator: null,
                   onChanged: search) :
-              SizedBox.shrink(),
+                const  SizedBox.shrink(),
               sizedBox14(),
               Text("8 premium matches found",
                 style: styleSatoshiMedium(size: 14, color: Colors.black.withOpacity(0.50)),),
               sizedBox13(),
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: filteredNames.length,
                 itemBuilder: (_,i) {
@@ -127,105 +126,102 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
                           builder: (builder) => const UserProfileScreen(userId: ''))
                       );
                     },
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Image.asset(images[i],
-                              height: 170,),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Image.asset(images[i],
+                            height: 170,),
+                        ),
+                         const SizedBox(width: 20,),
+                        Expanded(
+                          flex:2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex:4,
+                                    child: Text(filteredNames[i],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: styleSatoshiBold(size: 19, color: Colors.black),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Expanded(
+                                    child: Image.asset(icBookMark,
+                                      height: 24,
+                                      width: 24,),
+                                  )
+                                ],
+                              ),
+                              Text("5 ft 4 in  •  Khatri Hindu",
+                                maxLines: 2,
+                                style: styleSatoshiMedium(
+                                    size: 13, color: Colors.black.withOpacity(0.80)),
+                              ),
+                              sizedBox16(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Image.asset(icBag,
+                                      height: 17,
+                                      width: 17,),
+                                  ),
+                                  SizedBox(width: 10,),
+                    
+                                  Expanded(
+                                    flex:10,
+                                    child: Text("Software Engineer",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines:2,
+                    
+                                      style: styleSatoshiMedium(
+                                          size: 13, color: Colors.black.withOpacity(0.70)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              sizedBox8(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Image.asset(icLocation,
+                                      height: 17,
+                                      width: 17,),
+                                  ),
+                                  const SizedBox(width: 10,),
+                                  Expanded(
+                                    flex:10,
+                                    child: Text("New York, USA",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines:2,
+                    
+                                      style: styleSatoshiMedium(
+                                          size: 13, color: Colors.black.withOpacity(0.70)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              sizedBox16(),
+                              button(
+                                  fontSize: 14,
+                                  height: 30,
+                                  width: 134,
+                                  context: context,
+                                  onTap: (){},
+                                  title: "Connect Now"),
+                    
+                    
+                            ],
                           ),
-                          SizedBox(width: 20,),
-                          Expanded(
-                            flex:2,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      flex:4,
-                                      child: Text(filteredNames[i],
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: styleSatoshiBold(size: 19, color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Expanded(
-                                      child: Image.asset(icBookMark,
-                                        height: 24,
-                                        width: 24,),
-                                    )
-                                  ],
-                                ),
-                                Text("5 ft 4 in  •  Khatri Hindu",
-                                  maxLines: 2,
-                                  style: styleSatoshiMedium(
-                                      size: 13, color: Colors.black.withOpacity(0.80)),
-                                ),
-                                sizedBox16(),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Image.asset(icBag,
-                                        height: 17,
-                                        width: 17,),
-                                    ),
-                                    SizedBox(width: 10,),
-
-                                    Expanded(
-                                      flex:10,
-                                      child: Text("Software Engineer",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines:2,
-
-                                        style: styleSatoshiMedium(
-                                            size: 13, color: Colors.black.withOpacity(0.70)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                sizedBox8(),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Image.asset(icLocation,
-                                        height: 17,
-                                        width: 17,),
-                                    ),
-                                    const SizedBox(width: 10,),
-                                    Expanded(
-                                      flex:10,
-                                      child: Text("New York, USA",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines:2,
-
-                                        style: styleSatoshiMedium(
-                                            size: 13, color: Colors.black.withOpacity(0.70)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                sizedBox16(),
-                                button(
-                                    fontSize: 14,
-                                    height: 30,
-                                    width: 134,
-                                    context: context,
-                                    onTap: (){},
-                                    title: "Connect Now"),
-
-
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-
+                        )
+                      ],
                     ),
                   );
                 }, separatorBuilder: (BuildContext context, int index) => SizedBox(height: 30,),

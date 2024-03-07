@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../constants/fonts.dart';
 import '../../constants/sizedboxe.dart';
-import '../../constants/textfield.dart';
+
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -63,7 +63,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                 ],
               ),
-              SizedBox(height: 24,),
+              const SizedBox(height: 24,),
             ],
           ),
         ),

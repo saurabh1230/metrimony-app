@@ -119,7 +119,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                             controller: fatherNameController,
                             decoration: AppTFDecoration(
                                 hint: 'Father Name').decoration(),
-                            //keyboardType: TextInputType.phone,
+
                           ),
                         );
                       },
@@ -128,12 +128,12 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Father Name',
                     data1: fatherNameController.text.isEmpty
                         ? (familyData.id == null || familyData.fatherName == null || familyData.fatherName!.isEmpty
-                        ? 'Not Added'
+                        ? 'Add Now'
                         : familyData.fatherName!)
                         : fatherNameController.text,
                     data2: fatherNameController.text,
                     isControllerTextEmpty: fatherNameController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
+
                 ),
                 sizedBox16(),
                 GestureDetector(
@@ -156,7 +156,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                             controller: fatherProfessionController,
                             decoration: AppTFDecoration(
                                 hint: 'Father Profession').decoration(),
-                            //keyboardType: TextInputType.phone,
+
                           ),
                         );
                       },
@@ -165,12 +165,12 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Father Profession',
                       data1: fatherProfessionController.text.isEmpty
                           ? (familyData.id == null || familyData.fatherProfession == null || familyData.fatherProfession!.isEmpty
-                          ? 'Not Added'
+                          ? 'Add Now'
                           : familyData.fatherProfession!)
                           : fatherProfessionController.text,
                       data2: fatherProfessionController.text,
                       isControllerTextEmpty: fatherProfessionController.text.isEmpty),
-                  // child: CarRowWidget(favourites: favourites!,)
+
                 ),
                 sizedBox16(),
                 GestureDetector(
@@ -203,12 +203,12 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Father Contact',
                     data1:fatherContactController.text.isEmpty
                         ? (familyData.id == null || familyData.fatherContact == null || familyData.fatherContact!.isEmpty
-                        ? 'Not Added'
+                        ? 'Add Now'
                         : familyData.fatherContact!)
                         : fatherContactController.text,
                     data2: fatherContactController.text,
                     isControllerTextEmpty: fatherContactController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
+
                 ),
                 sizedBox16(),
                 GestureDetector(
@@ -240,12 +240,11 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Mother Name',
                     data1: motherNameController.text.isEmpty
                         ? (familyData.id == null || familyData.motherName == null || familyData.motherName!.isEmpty
-                        ? 'Not Added'
+                        ? 'Add Now'
                         : familyData.motherName!)
                         : motherNameController.text,
                     data2: motherNameController.text,
                     isControllerTextEmpty: motherNameController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
                 ),
                 sizedBox16(),
                 GestureDetector(
@@ -268,7 +267,6 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                             controller: motherProfessionController,
                             decoration: AppTFDecoration(
                                 hint: 'Mother Profession').decoration(),
-                            //keyboardType: TextInputType.phone,
                           ),
                         );
                       },
@@ -277,7 +275,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Mother Profession',
                     data1: motherProfessionController.text.isEmpty
                         ? (familyData.id == null || familyData.motherProfession == null || familyData.motherProfession!.isEmpty
-                        ? 'Not Added'
+                        ? 'Add Now'
                         : familyData.motherProfession!)
                         : motherProfessionController.text,
                     data2: motherProfessionController.text,
@@ -315,7 +313,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   child: buildDataAddRow(title: 'Mother Contact',
                     data1: motherContactController.text.isEmpty
                         ? (familyData.id == null || familyData.motherContact == null || familyData.motherContact!.isEmpty
-                        ? 'Not Added'
+                        ? 'Add Now'
                         : familyData.motherContact!)
                         : motherContactController.text,
                     data2: motherContactController.text,
@@ -323,46 +321,6 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
                 sizedBox16(),
-               /* GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Total Brothers',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: totalBrotherController,
-                            decoration: AppTFDecoration(
-                                hint: 'Total Brothers').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(title: 'Total Brothers',
-                    data1:  totalBrotherController.text.isEmpty
-                        ? (familyData.id == null || familyData.totalBrother == null || familyData.motherContact!.isEmpty
-                        ? 'Not Added'
-                        : familyData.motherContact!)
-                        : totalBrotherController.text,
-                    data2: totalBrotherController.text,
-                    isControllerTextEmpty: totalBrotherController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),*/
-
-
-
-
               ],
             ),
           ),

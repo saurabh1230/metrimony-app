@@ -2,6 +2,7 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
@@ -218,8 +219,9 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                       context: context,
                       builder: (BuildContext context) {
                         return NameEditDialogWidget(
-                          title: 'Height',
+                          title: 'Height in feet',
                           addTextField: TextFormField(
+                            keyboardType: TextInputType.number,
                             maxLength: 40,
                             onChanged: (v) {
                               setState(() {
@@ -258,8 +260,9 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                       context: context,
                       builder: (BuildContext context) {
                         return NameEditDialogWidget(
-                          title: 'Weight',
+                          title: 'Weight in kgs',
                           addTextField: TextFormField(
+                            keyboardType: TextInputType.number,
                             maxLength: 40,
                             onChanged: (v) {
                               setState(() {
@@ -300,7 +303,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                             maxLength: 40,
                             onChanged: (v) {
                               setState(() {
-
                               });
                             },
                             onEditingComplete: () {

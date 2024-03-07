@@ -211,7 +211,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                               child: SizedBox(
                                 width: 1.sw,
                                 child: CustomStyledDropdownButton(
-                                  items: [
+                                  items: const  [
                                     "Hindu",
                                     'Muslim',
                                     "Jain",
@@ -224,8 +224,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                     setState(() {
                                       religionValue = value;
                                       religionFilter = religionValue ?? '';
-                                      print(religionFilter);
-                                      print(religionValue);
+                                   
                                     });
                                   },
                                   title: 'Religion',
@@ -247,8 +246,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                   setState(() {
                                     marriedValue = value;
                                     marriedFilter = marriedValue!;
-                                    print("cegcj");
-                                    print(marriedFilter);
+                                  
                                   });
                                 },
                                 title: 'Married Status',
@@ -264,7 +262,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                     isLoading = true;
                                     page = 0;
 
-                                    print("fkg");
+                          
                                     getMatches();
                                   });
                                 },
@@ -280,7 +278,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
             child: Container(
               padding: const EdgeInsets.only(
                   right: 16.0, top: 6, bottom: 6, left: 10),
-              child: Icon(Icons.filter_alt_outlined),
+              child: const Icon(Icons.filter_alt_outlined),
             ),
           )
         ],
@@ -323,9 +321,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                 },
                                 imgUrl:
                                     '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                // matches[i].image == null ?
-                                // "" :
-                                // '${matches[i].image.toString()}',
+                          
                                 userName: matches[i].firstname == null &&
                                         matches[i].lastname == null
                                     ? "user"
@@ -351,7 +347,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                           setState(() {
                                             isLoadingList[i] = true;
                                           });
-                                          print(matches[i].id.toString());
+  
                                           sendRequestApi(
                                                   memberId:
                                                       matches[i].id.toString()
@@ -418,19 +414,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                             } else {
                               return Center(child: Text("All matches loaded"));
                             }
-                            // else if (is) {
-                            //         print("1");
-                            //        return const Center(
-                            //          child: CircularProgressIndicator()
-                            //        );
-                            //      } else if (page < 8) {
-                            //         print("2");
-                            //        return const SizedBox.shrink();
-                            //      } else {
-                            //         print("3");
-                            //        return const Center(
-                            //          child: CircularProgressIndicator()
-                            //        );}
+                        
                           },
                           separatorBuilder: (BuildContext context, int index) =>
                               const SizedBox(

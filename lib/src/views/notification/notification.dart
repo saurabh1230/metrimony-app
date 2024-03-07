@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../constants/assets.dart';
 import '../../constants/textstyles.dart';
 import '../../utils/widgets/common_widgets.dart';
-import '../home/matches/filter_matches_screen.dart';
+
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -51,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           const SizedBox(width: 5,),
           selectedItems.isNotEmpty ?
           Padding(
-            padding: EdgeInsets.only(right: 12.0),
+            padding: const EdgeInsets.only(right: 12.0),
             child: Row(
               children: [
                 GestureDetector(
@@ -70,11 +70,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     },
                     child: Image.asset(icSelectAll,height: 24,
                       width: 24,)),
-                Icon(Icons.delete),
+                    const Icon(Icons.delete),
               ],
             ),
           ) :
-          SizedBox(),
+            const SizedBox(),
         ],
       ),
       body:  SingleChildScrollView(
@@ -83,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           child: Column(
             children: [
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: 10,
                   shrinkWrap: true,
                   itemBuilder: (_,i) {

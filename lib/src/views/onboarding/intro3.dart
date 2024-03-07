@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 
 class Intro3 extends StatefulWidget {
@@ -13,7 +13,7 @@ class Intro3 extends StatefulWidget {
 class _Intro3State extends State<Intro3> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         backgroundColor: Colors.red,
 
     );
@@ -26,7 +26,7 @@ class Intro4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const  Scaffold(
       backgroundColor: Colors.grey,
     );
   }
@@ -37,7 +37,7 @@ class Intro6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.grey,
     );
   }
@@ -49,7 +49,7 @@ class Intro5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.grey,
     );
   }
@@ -62,7 +62,7 @@ class IntroFinal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.grey,
     );
   }

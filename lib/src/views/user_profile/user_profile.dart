@@ -100,13 +100,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Text("27 year",
-                        //   style: styleSatoshiMedium(size: 16, color: Colors.white),),
                         Row(
                           children: [
                             Text(
                               "${model.data!.matches!.firstname ?? ''} ${model.data!.matches!.lastname ?? 'User'}",
-                              // "Cody Fisher ",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: styleSatoshiBold(size: 30, color: Colors.white),),
@@ -117,8 +114,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                         Text(
                           model.data?.matches?.religion ?? '- - - - -',
-                            // (model.data!.matches!.religion == null || model.data!.matches!.religion!.isEmpty) ? "" : "${model.data!.matches!.religion}",
-                          // "Khatri Hindu",
                           style: styleSatoshiBold(size: 16, color: Colors.white),),
                         sizedBox16(),
                         loading ? loadingButton(

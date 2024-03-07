@@ -1,17 +1,14 @@
-import 'package:bureau_couple/src/constants/assets.dart';
+
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:country_list_pick/country_list_pick.dart';
 import 'package:country_picker/country_picker.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
-import '../../utils/widgets/buttons.dart';
-import '../../utils/widgets/dropdown_buttons.dart';
+
 
 class SignUpScreenTwo extends StatefulWidget {
 
@@ -38,6 +35,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   final countryController = TextEditingController();
   final profileController = TextEditingController();
   final countyController = TextEditingController();
+    final stateController = TextEditingController();
   final genderController = TextEditingController();
   final motherTongue = TextEditingController();
   final professionController = TextEditingController();
@@ -84,7 +82,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   fit: BoxFit.cover,
                 ),
               ),*/
-              SizedBox(height: 30,),
+              const  SizedBox(height: 30,),
               /*Align(
                 alignment: Alignment.centerLeft,
                 child: Text("This profile is for",
@@ -119,7 +117,6 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   elements: religion,
                   onChipSelected: (selectReligion) {
                     // Handle selected profile
-                    print(selectReligion);
                     setState(() {
                       SharedPrefs().setReligion(selectReligion);
                     });
@@ -139,8 +136,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   child: ChipList(
                     elements: gender,
                     onChipSelected: (selectedGender) {
-                      // Handle selected gender
-                      print(selectedGender);
+    
+              
                       setState(() {
                         SharedPrefs().setGender(selectedGender);
 
@@ -164,7 +161,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   elements: married,
                   onChipSelected: (marriedStatus) {
                     // Handle selected gender
-                    print(marriedStatus);
+      
                     setState(() {
                       SharedPrefs().setMaritalStatus(marriedStatus);
                     });
@@ -179,7 +176,6 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   style: styleSatoshiBold(size: 16, color: Colors.black),),
               ),
               const SizedBox(height: 12,),
-
               textBoxPickerField(
                   onTap: () {
                     showCountryPicker(
@@ -211,10 +207,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           selectedCountryName = country.displayName.split(' ')[0] ?? '';
                           countyController.text = selectedCountryName;
                         });
-                        print(countyController.text);
-                        print(selectedCountryName);
-                        print(country.countryCode);
-                        print('Select country: ${country.displayName}');
+             
 
                         setState(() {
                           SharedPrefs().setCountry(selectedCountryName);
@@ -224,16 +217,14 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                         // Example: updateSelectedCountry(country);
                       },
                     );
-                    setState(() {
-
-                    });
-                  },
+                    setState(() {});
+                    },
                   context: context,
                   label: '',
                   controller: countyController,
                   hint: '',
                   length: null,
-                  suffixIcon: Icon(Icons.visibility_off),
+                  suffixIcon: const  Icon(Icons.visibility_off),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your Country';
@@ -244,6 +235,30 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     // SharedPrefs().setCountry(countyController.text);
                     }, icon: Icons.flag,),
               sizedBox12(),
+           
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("State",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),),
+              ),
+              const SizedBox(height: 12,),
+
+              textBox(
+                context: context,
+                label: '',
+                controller: stateController,
+                hint: '',
+                length: null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your State';
+                    }
+                    return null;
+                  },
+                onChanged: (value) {
+                  SharedPrefs().setState(stateController.text);
+                },),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Mother Tongue",

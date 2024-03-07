@@ -1,7 +1,7 @@
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 
 class Intro1 extends StatefulWidget {
@@ -27,30 +27,26 @@ class _Intro1State extends State<Intro1> {
 
           Stack(
             children: [
-              Container(
-                // color: Colors.yellow,
-                // height: 400,
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Image.asset(icOnboarding1,
-                        // height: 400,
-                      ),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Image.asset(icOnboarding1,
+                      // height: 400,
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            icOnboarding2,
-                            // height: 400,
-                          ),
-                        ],
-                      ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          icOnboarding2,
+                          // height: 400,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
 
               Positioned(

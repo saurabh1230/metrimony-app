@@ -5,31 +5,25 @@ import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_career_info.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_education_screen.dart';
-import 'package:bureau_couple/src/views/home/profile/edit_interest.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_photos.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_physical_atributes.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../apis/dashboard/dashboard_api.dart';
 import '../../../apis/login/login_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../apis/profile_apis/images_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/textstyles.dart';
-import '../../../models/basic_info_model.dart';
 import '../../../models/images_model.dart';
 import '../../../models/profie_model.dart';
 import '../../../utils/widgets/buttons.dart';
 import '../../../utils/widgets/custom_dialog.dart';
 import '../../../utils/widgets/loader.dart';
-import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/pop_up_menu_button.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../utils/widgets/textfield_decoration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -64,12 +58,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         if(value['status'] == true) {
           setState(() {
             profile = ProfileModel.fromJson(value);
-            // for (var v in value['data']['user']) {
-            //   dashboardDetails.add(DashboardModel.fromJson(v));
-            // }
-            // print(profile.data!.user!.username);
-            // print('$baseProfilePhotoUrl${profile.data!.user!.image}');
             isLoading = false;
+            SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
           });
         } else {
           setState(() {
@@ -174,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           });
                     },
                     value: 'Delete Account',
-                    child: Text('Delete Account'),
+                    child: const Text('Delete Account'),
                   ),
                   PopupMenuItem<String>(
                     onTap: () {
@@ -187,7 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                     value: 'Change Password',
-                    child: Text('Change Password'),
+                    child: const Text('Change Password'),
                   ),
                   PopupMenuItem<String>(
                     onTap: () {
@@ -235,7 +225,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 builder: (builder) => const SignInScreen()));
 
                                         ToastUtil.showToast("Logout Successfully");
-                                        print('done');
                                       } else {
                                         setState(() {
                                           loading = false;
@@ -259,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       );
                     },
                     value: 'Logout',
-                    child: Text('Logout'),
+                    child:const Text('Logout'),
                   ),
                 ],
               );
@@ -271,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body:isLoading ? Loading(): Stack(
+      body:isLoading ? const Loading(): Stack(
         children: [
           CustomRefreshIndicator(
             onRefresh: () {
@@ -324,7 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       width: 40,),
                                   ),
                               progressIndicatorBuilder: (a, b, c) =>
-                                  customShimmer(height: 50, /*width: 0,*/),
+                                  customShimmer(height: 80, /*width: 0,*/),
                             ): Image.file(
                               pickedImage,
                               fit: BoxFit.cover,
@@ -340,10 +329,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
                       children: [
-                        // Text("67% Profile completed",
-                        //   textAlign: TextAlign.center,
-                        //   style: styleSatoshiMedium(size: 13, color: Colors.black),
-                        // ),
                         GestureDetector(
                           onTap: () {
 
@@ -400,65 +385,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         sizedBox13(),
                         buildInfoRow(title: 'Phone Number',
                         text: '${profile.data?.user?.mobile ?? '- - - - -'}',
-                        //     text: phoneController.text.isEmpty ?
-                        // // '+00 (232) 565 4534)' :
-                        //     '${profile.data!.user!.mobile} ':
-                        // //     '${SharedPrefs().getPhone()}':
-                        //  phoneController.text,
+
                             onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return NameEditDialogWidget(
-                          //       title: 'Phone No',
-                          //       addTextField: TextFormField(
-                          //         maxLength: 30,
-                          //         onChanged: (v) {
-                          //           setState(() {});
-                          //         },
-                          //         controller:phoneController ,
-                          //         onEditingComplete: () {
-                          //           Navigator.pop(context); // Close the dialog
-                          //         },
-                          //         cursorColor: primaryColor,
-                          //         decoration: AppTFDecoration(hint: 'Phone No')
-                          //             .decoration(),
-                          //         //keyboardType: TextInputType.phone,
-                          //       ),
-                          //     );
-                          //   },
-                          // );
+
                         }),
                         sizedBox13(),
                         buildInfoRow(title: 'Location',
                             text: '${profile.data?.user?.address?.country ?? '- - - - - '}',
-                        //     text: locationController.text.isEmpty ?
-                        // '${profile.data!.user!.address!.country} ${profile.data!.user!.address!.city}':
-                        //     locationController.text,
+
                             onTap: () {
 
                         }),
-                        // sizedBox40(),
-                        // buildDataRowBold(title: 'About Your Self', text: 'Change', onTap: () {
-                        // }),
-                        // sizedBox10(),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //   },
-                        //   child: Align(
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Text(
-                        //   '${profile.data?.user?.mobile ?? 'User'}',
-                        //     //   aboutController.text.isEmpty ?
-                        //     //     "Add About your self":
-                        //     // // "My name is Cody and I enjoy meet new people and in a partner, I'm looking for someone who is kind, honest, and has a good sense of humor." :
-                        //     //   aboutController.text,
-                        //       textAlign: TextAlign.start                                 ,
-                        //       style:styleSatoshiLight(size: 14, color: color14152B.withOpacity(0.60)),
-                        //       overflow: TextOverflow.ellipsis,
-                        //       maxLines: 3,),
-                        //   ),
-                        // ),
+
                         sizedBox40(),
                         buildDataRowBold(title: 'Education', text: 'Change', onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditEducationScreen()));
@@ -534,16 +472,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onTap: () {
 
                             }),
-                            buildProfileRow(image: icCommunityPro, title: 'Community',
-                                text: '${profile.data?.user?.community ?? 'Not Added Yet'}',
-                                // text:communityController.text.isEmpty && profile.data!.user!.community ==null ?
-                                //     "Add Community"
-                                // '${profile.data!.user!.community}'.replaceAll("null", "") :
-                                // // 'Agarwal':
-                                // communityController.text,
-                                onTap: () {
-
-                            }),
+                            // buildProfileRow(image: icCommunityPro, title: 'Community',
+                            //     text: '${profile.data?.user?.community ?? 'Not Added Yet'}',
+                            //     // text:communityController.text.isEmpty && profile.data!.user!.community ==null ?
+                            //     //     "Add Community"
+                            //     // '${profile.data!.user!.community}'.replaceAll("null", "") :
+                            //     // // 'Agarwal':
+                            //     // communityController.text,
+                            //     onTap: () {
+                            //
+                            // }),
                             buildProfileRow(image: icMotherToungeIcon, title: 'Mother Tongue',
                                 text: '${profile.data?.user?.motherTongue ?? '- - - - -'}',
                             //     text: motherTongueController.text.isEmpty ?
@@ -593,7 +531,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     childAspectRatio: 1,
                                   ),
                                   itemBuilder: (_, i) {
-                                    print(photos[i].image.toString());
                                     return GestureDetector(
                                       onTap: () {
                                         Navigator.push(

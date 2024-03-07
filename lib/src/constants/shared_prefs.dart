@@ -24,6 +24,7 @@ class SharedPrefs {
   String maritalStatus = 'marital_status';
   String religion = 'religion';
   String profilePhoto = 'profile_photo';
+    String state = 'religion';
 
   static SharedPreferences? _prefs;
 
@@ -128,6 +129,22 @@ class SharedPrefs {
     await init();
     return await _prefs?.remove(religion);
   }
+
+  
+  Future setState(String sState) async {
+    await init(); // Make sure to initialize SharedPreferences before using it
+    return await _prefs?.setString(state, sState);
+  }
+
+  String? getState() {
+    return _prefs?.getString(state);
+  }
+
+  Future clearState() async {
+    await init();
+    return await _prefs?.remove(state);
+  }
+
 
   Future setProfession(String sProfession) async {
     await init(); // Make sure to initialize SharedPreferences before using it

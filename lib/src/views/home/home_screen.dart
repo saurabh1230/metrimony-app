@@ -3,25 +3,25 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/views/home/profile/profile_screen.dart';
 import 'package:bureau_couple/src/views/notification/notification.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
-import '../../apis/members_api/request_apis.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../models/matches_model.dart';
 import '../../utils/urls.dart';
 import '../premium_matches/all_new_matches.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../user_profile/user_profile.dart';
 import 'connect/connect_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'matches/religion_category_screen.dart';
 class HomeScreen extends StatefulWidget {
   final LoginResponse response;
 
@@ -46,14 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
    int page = 1;
    // bool loading = false;
    List<MatchesModel> matches = [];
-   // LoginResponse? response;
 
-   /*@override
-   void initState() {
-     super.initState();
-     getMatches();
-   }
-*/
+
+
    getMatches() {
      isLoading = true;
      getNewMatchesApi(page: page.toString(),
@@ -77,6 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
    }
 
 
+   List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
+  List<String> categoryTitle = ["Filter by Religion","Filter By Married Status"];
+  List<Color> color = [colorE2b93b,colorEb5757];
+
 
 
   @override
@@ -96,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildStack(),
+                // buildStack(),
                 sizedBox28(),
                 Text("${matches.length} members looking for you",
                 style: styleSatoshiBold(size: 18, color: color1C1C1c),),
@@ -151,6 +150,76 @@ class _HomeScreenState extends State<HomeScreen> {
                   }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),),
                 ),
                 SizedBox(height: 20,),
+
+                Text('Category By Filter',
+                  style: styleSatoshiBold(size: 18, color: Colors.black),),
+                sizedBox16(),
+                GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: categoryImage.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio:1.9,
+                  ),
+                  itemBuilder: (_, i) {
+                    List<Widget Function(BuildContext)> screenRoutes = [
+                          (_) =>ReligionCategory(response: widget.response,),
+                          (_) => ReligionCategory(response: widget.response,),
+                      // Add more screen routes as needed
+                    ];
+                    // switch (i) {
+                    //   case 0:
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (builder) => ReligionCategory(response: widget.response,)),
+                    //     );
+                    //     break;
+                    //   case 1:
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (builder) => ReligionCategory(response: widget.response,)),
+                    //     );
+                    //     break;
+                    // }
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: screenRoutes[i]),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: color[i],
+                          borderRadius: BorderRadius.circular(16)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                           Column(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               Image.asset(categoryImage[i],
+                               height: 30,
+                               color: Colors.white,),
+                               sizedBox6(),
+                               Text(categoryTitle[i],
+                                 style: styleSatoshiBold(size: 10, color: Colors.white),),
+                             ],
+                           )
+
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                sizedBox16(),
                 ///-----------premium match section ------------------
               ///-----------premium match section ------------------
               /*  GestureDetector(
@@ -266,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 sizedBox20(),*/
                 ///-----------premium match section ------------------
                 ///-----------premium match section ------------------
-                GestureDetector(
+     /*           GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (builder) =>
                         const ProfileScreen()));
@@ -335,8 +404,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: 30,),
+                ),*/
+
+                ///*************************************************************
+
                 Text('New Matches',
                   style: styleSatoshiBold(size: 18, color: Colors.black),),
                 Text("Members who joined recently",
@@ -345,12 +416,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 sizedBox14(),
-                isLoading ? Center(
+                if (isLoading) Center(
                     child: LoadingAnimationWidget.staggeredDotsWave(
                       color: primaryColor,
                       size: 60,
-                    )) :
-                GridView.builder(
+                    )) else GridView.builder(
                   shrinkWrap: true,
                   itemCount: matches.length,
                   physics: const NeverScrollableScrollPhysics(),
@@ -374,22 +444,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           Container(
                             height: 500,
                             clipBehavior: Clip.hardEdge,
-                            decoration:  const BoxDecoration(
-                              color: Colors.transparent,
+                            decoration: const  BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10.0),),
                             ),
-                            child: CachedNetworkImage(
-                              imageUrl:matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(icLogo,
-                                      height: 40,
-                                      width: 40,),
-                                  ),
-                              progressIndicatorBuilder: (a, b, c) =>
-                                  customShimmer(height: 0, /*width: 0,*/),
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.3), // Adjust opacity as needed
+                                BlendMode.srcOver,
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl:matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(icLogo,
+                                        height: 40,
+                                        width: 40,),
+                                    ),
+                                progressIndicatorBuilder: (a, b, c) =>
+                                    customShimmer(height: 0, /*width: 0,*/),
+                              ),
                             ),
                           ),
                           Positioned(
@@ -430,7 +505,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: styleSatoshiRegular(size: 13, color: Colors.white),),
                                 sizedBox18(),
 
-                                Padding(
+                              /*  Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Center(
                                     child:
@@ -478,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: styleSatoshiMedium(size: 14, color: Colors.white),
                                     ),
                                   ),
-                                ),
+                                ),*/
                               ],
                             ),
                           ),
@@ -585,111 +660,158 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Stack buildStack() {
-    return Stack(
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 60,),
-                  Container(
-                      child: SvgPicture.asset(icHomeProfileHolder)),
-                ],
-              ),
-              Center(
-                child: CircularPercentIndicator(
-                  radius: 120.0,
-                  lineWidth: 7.0,
-                  percent: 1,
-                  center: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) =>
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Image.asset(icLogo,
-                                height: 40,
-                                width: 40,),
-                            ),
-                        progressIndicatorBuilder: (a, b, c) =>
-                            customShimmer(height: 0, /*width: 0,*/),
-                      ),
-                    ),
-                  ),
-                  progressColor: colorGreen,
-                ),
-              ),
-              Positioned(
-                bottom: 19,
-                left: 20,
-                right: 20,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        // response?.data?.user?.username?.toString() ?? 'User',
-                        "${SharedPrefs().getUserName()}",
-                      style: styleSatoshiBold(size: 22, color: Colors.white),),
-                      Text(
-                        "${SharedPrefs().getProfileId()}",
-                        // "LV-8768787",
-                        style: styleSatoshiBold(size: 15, color: Colors.white),),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          );
-  }
+// /*  Stack buildStack() {
+//     return Stack(
+//             children: [
+//               Column(
+//                 children: [
+//                   SizedBox(height: 60,),
+//                   Container(
+//                       child: SvgPicture.asset(icHomeProfileHolder)),
+//                 ],
+//               ),
+//               Center(
+//                 child: CircularPercentIndicator(
+//                   radius: 120.0,
+//                   lineWidth: 7.0,
+//                   percent: 1,
+//                   center: Padding(
+//                     padding: const EdgeInsets.all(8.0),
+//                     child: Container(
+//                       height: 100,
+//                       width: 100,
+//                       clipBehavior: Clip.hardEdge,
+//                       decoration: const BoxDecoration(
+//                         shape: BoxShape.circle
+//                       ),
+//                       child: CachedNetworkImage(
+//                         imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
+//                         fit: BoxFit.cover,
+//                         errorWidget: (context, url, error) =>
+//                             Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Image.asset(icLogo,
+//                                 height: 40,
+//                                 width: 40,),
+//                             ),
+//                         progressIndicatorBuilder: (a, b, c) =>
+//                             customShimmer(height: 0, *//*width: 0,*//*),
+//                       ),
+//                     ),
+//                   ),
+//                   progressColor: colorGreen,
+//                 ),
+//               ),
+//               Positioned(
+//                 bottom: 19,
+//                 left: 20,
+//                 right: 20,
+//                 child: Center(
+//                   child: Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       Text(
+//                         // response?.data?.user?.username?.toString() ?? 'User',
+//                         "${SharedPrefs().getUserName()}",
+//                         style: styleSatoshiBold(size: 22, color: Colors.white),),
+//                       Text(
+//                         "${SharedPrefs().getProfileId()}",
+//                         // "LV-8768787",
+//                         style: styleSatoshiBold(size: 15, color: Colors.white),),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           );
+//   }*/
 
   AppBar buildAppBar() {
     return AppBar(
-      centerTitle: true,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
-        child: SvgPicture.asset(icHomeLogo,
-        height: 35,
-        width: 44,),
-      ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text("New Delhi",
-            style: styleSatoshiBold(size: 15, color: Colors.black),
+      centerTitle: false,
+      title: Padding(
+        padding: const EdgeInsets.only(left: 6.0),
+        child: Row(
+          children: [
+            CircularPercentIndicator(
+              radius: 50.0,
+              lineWidth: 2.0,
+              percent: 1,
+              center: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: Container(
+                  height: 45,
+                  width: 45,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) =>
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(icLogo,
+                            height: 40,
+                            width: 40,),
+                        ),
+                    progressIndicatorBuilder: (a, b, c) =>
+                        customShimmer(height: 0, /*width: 0,*/),
+                  ),
+                ),
+              ),
+              progressColor: colorGreen,
             ),
-          ),
-          // SizedBox(width: 5,),
-          // SvgPicture.asset(icArrowDown,
-          // height: 8,)
-        ],
+            const SizedBox(width: 10,),
+            Text("${SharedPrefs().getUserName()}",
+              style: styleSatoshiBold(size: 24, color: Colors.black),
+            ),
+          ],
+        ),
       ),
+      // leading: Padding(
+      //   padding: const EdgeInsets.only(left: 20.0),
+      //   child: SvgPicture.asset(icHomeLogo,
+      //   height: 35,
+      //   width: 44,),
+
+      // title: Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Center(
+      //       child: Text("New Delhi",
+      //       style: styleSatoshiBold(size: 15, color: Colors.black),
+      //       ),
+      //     ),
+      //     // SizedBox(width: 5,),
+      //     // SvgPicture.asset(icArrowDown,
+      //     // height: 8,)
+      //   ],
+      // ),
       actions: [
         GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (builder) => ConnectScreen()));
-
           },
-            child: Icon(Icons.person,
-            size: 32,)),
+            child: 
+            const Icon(CupertinoIcons.person,
+              color: Colors.black,
+              size: 26,
+            )),
+        const SizedBox(width: 8,),
         GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (builder) => NotificationScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (builder) => const NotificationScreen()));
           },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: SvgPicture.asset(icBell,
-              height: 28,
-            width: 28,),
+          child: const  Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: Icon(CupertinoIcons.bell,
+              size: 26,
+            color: Colors.black,),
+            // child: Image.asset("assets/icons/ic_noti.png",
+            //   height: 28,
+            // width: 28,),
           ),
         )
 

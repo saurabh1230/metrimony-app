@@ -1077,7 +1077,8 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
               zip:  zipController.text,
               city:  cityController.text,
               country:  countryController.text, gender: genderController.text,
-              financialCondition: financialCondition.text, firstName: firstNameController.text,
+              financialCondition: financialCondition.text,
+              firstName: firstNameController.text,
               lastName: lastNameController.text).then((value) {
             setState(() {
             });

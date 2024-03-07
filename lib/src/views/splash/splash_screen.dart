@@ -1,19 +1,19 @@
 
 
-import 'package:bureau_couple/src/constants/assets.dart';
+
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/views/home/home_dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../../apis/login/login_api.dart';
 import '../../constants/shared_prefs.dart';
 import '../onboarding/onboarding_screen.dart';
 import '../onboarding/welcome_screen.dart';
 import '../signIn/sign_in_screen.dart';
-import '../signup/signup_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

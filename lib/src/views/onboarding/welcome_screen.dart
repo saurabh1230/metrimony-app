@@ -3,9 +3,6 @@ import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../constants/colors.dart';
-import '../../constants/colors.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizedboxe.dart';
 import '../../utils/widgets/buttons.dart';
@@ -60,26 +57,23 @@ class WelcomeScreen extends StatelessWidget {
                      padding: const EdgeInsets.symmetric(horizontal: 26.0),
                      child: Stack(
                        children: [
-                         Container(
-
-                           child: Row(
-                             children: [
-                               Expanded(
+                         Row(
+                           children: [
+                             Expanded(
+                               child: Image.asset(
+                                 icWelcome1,
+                               ),
+                             ),
+                             const SizedBox(width: 4,),
+                             Expanded(
+                               child: Padding(
+                                 padding: const EdgeInsets.only(top: 20.0),
                                  child: Image.asset(
-                                   icWelcome1,
+                                   icWelcome2,
                                  ),
                                ),
-                               const SizedBox(width: 4,),
-                               Expanded(
-                                 child: Padding(
-                                   padding: const EdgeInsets.only(top: 20.0),
-                                   child: Image.asset(
-                                     icWelcome2,
-                                   ),
-                                 ),
-                               )
-                             ],
-                           ),
+                             )
+                           ],
                          ),
                          Positioned(
                              left: 40,

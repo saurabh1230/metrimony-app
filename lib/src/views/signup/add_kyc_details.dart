@@ -1,16 +1,16 @@
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
-import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:colorful_safe_area/colorful_safe_area.dart';
+
 import '../../apis/signup_api/kyc_details_api.dart';
 import '../../constants/colors.dart';
 import '../../constants/fonts.dart';
-import '../../constants/shared_prefs.dart';
+
 import '../../constants/sizedboxe.dart';
 import '../../constants/textfield.dart';
-import '../../utils/state.dart';
+
 import 'package:intl/intl.dart';
 import '../../utils/widgets/buttons.dart';
 import 'package:image_picker/image_picker.dart';
@@ -100,7 +100,7 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                         child: Container(
                           height: 200,
                           width: 200,
-                          padding: EdgeInsets.all(24),
+                          padding:const EdgeInsets.all(24),
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(
                               // color: Colors.redAccent,
@@ -182,7 +182,7 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                     //     }
                     //     return null;
                     //   }, icon: Icons.calendar_month,),
-                    SizedBox(height: 30,),
+                    const SizedBox(height: 30,),
                     loading ?
                     loadingButton(context: context) :
                     button(context: context, onTap: () {
@@ -212,7 +212,7 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                               // ToastUtil.showToast("Login Successful");
 
                               ToastUtil.showToast("Registered Successfully");
-                              print('done');
+              
                             } else {
                               setState(() {
                                 loading = false;
@@ -236,7 +236,7 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
 
                   ],
                 ),
-                SizedBox(height: 24,),
+                const SizedBox(height: 24,),
               ],
             ),
           ),

@@ -21,5 +21,7 @@ const Color color6C7378= Color(0xff6C7378);
 const Color colorOnxy= Color(0xff3e3e3e);
 const Color color212121 =Color(0xff212121);
 const Color color5E5E5E =Color(0xff5E5E5E);
+const Color colorE2b93b =Color(0xffe8c762);
+const Color colorEb5757 =Color(0xffed6868);
 const Color colorDarkCyan =Color(0xff005D6C);
  Color color000000Op51 = Color(0xff000000).withOpacity(0.51);
