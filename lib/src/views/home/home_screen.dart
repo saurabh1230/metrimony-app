@@ -471,19 +471,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Positioned(
-                            top:6,
-                            right:6,
-                            left:6,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset(icIdea,
-                                  height: 20,
-                                  width: 20,)
-                              ],
-                            ),
-                          ),
-                          Positioned(
                             bottom:0,
                             left:20,
                             right:20,
