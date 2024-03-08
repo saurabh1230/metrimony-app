@@ -32,6 +32,7 @@ class MatchesModel {
   String? community;
   String? physicalAttributes;
   String? limitation;
+  BasicInfo? basicInfo;
 
 
 
@@ -69,6 +70,7 @@ class MatchesModel {
     this.community,
     this.physicalAttributes,
     this.limitation,
+    this.basicInfo,
 
 
   });
@@ -82,6 +84,9 @@ class MatchesModel {
     username = json['username'];
     address =
     json['address'] != null ? new Address.fromJson(json['address']) : null;
+    basicInfo = json['basic_info'] != null
+        ? new BasicInfo.fromJson(json['basic_info'])
+        : null;
 
     email = json['email'];
     countryCode = json['countryCode'];
@@ -120,6 +125,9 @@ class MatchesModel {
     data['username'] = username;
     if (this.address != null) {
       data['address'] = this.address!.toJson();
+    }
+    if (this.basicInfo != null) {
+      data['basic_info'] = this.basicInfo!.toJson();
     }
     // data['address'] = address?.toJson();
     data['email'] = email;
@@ -175,6 +183,116 @@ class Address {
     data['zip'] = this.zip;
     data['country'] = this.country;
     data['city'] = this.city;
+    return data;
+  }
+}
+
+class BasicInfo {
+  int? id;
+  int? userId;
+  String? gender;
+  String? profession;
+  String? religion;
+  int? smokingStatus;
+  int? drinkingStatus;
+  String? birthDate;
+  String? maritalStatus;
+  String? createdAt;
+  String? updatedAt;
+  String? community;
+  String? motherTongue;
+  String? aboutUs;
+  int? age;
+
+  BasicInfo(
+      {this.id,
+        this.userId,
+        this.gender,
+        this.profession,
+        this.religion,
+        this.smokingStatus,
+        this.drinkingStatus,
+        this.birthDate,
+        this.maritalStatus,
+        this.createdAt,
+        this.updatedAt,
+        this.community,
+        this.motherTongue,
+        this.aboutUs,
+        this.age});
+
+  BasicInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    gender = json['gender'];
+    profession = json['profession'];
+    religion = json['religion'];
+    smokingStatus = json['smoking_status'];
+    drinkingStatus = json['drinking_status'];
+    birthDate = json['birth_date'];
+    maritalStatus = json['marital_status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    community = json['community'];
+    motherTongue = json['mother_tongue'];
+    aboutUs = json['about_us'];
+    age = json['age'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['gender'] = this.gender;
+    data['profession'] = this.profession;
+    data['religion'] = this.religion;
+    data['smoking_status'] = this.smokingStatus;
+    data['drinking_status'] = this.drinkingStatus;
+    data['birth_date'] = this.birthDate;
+    data['marital_status'] = this.maritalStatus;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['community'] = this.community;
+    data['mother_tongue'] = this.motherTongue;
+    data['about_us'] = this.aboutUs;
+    data['age'] = this.age;
+    return data;
+  }
+}
+
+class Interests {
+  int? id;
+  int? userId;
+  int? interestingId;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
+
+  Interests(
+      {this.id,
+        this.userId,
+        this.interestingId,
+        this.status,
+        this.createdAt,
+        this.updatedAt});
+
+  Interests.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    interestingId = json['interesting_id'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['interesting_id'] = this.interestingId;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

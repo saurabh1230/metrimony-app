@@ -168,7 +168,6 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            lastName: '${SharedPrefs().getLastName()}',
                            lookingFor: 'My Self',
                            gender: '${SharedPrefs().getGender() == null ? "M" : SharedPrefs().getGender().toString()}',
-
                            // gender: '${SharedPrefs().getGender()}',
                            motherTongue: '${SharedPrefs().getMotherTongue()}',
                            birthDate: '${SharedPrefs().getDob()}',
@@ -178,9 +177,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            // maritalStatus: 'Unmarried',
                            photo: '$pickedImagePath',
                            religion: '${SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString()}',
-
                            profession: '${SharedPrefs().getProfession()}').then((value) async {
-
                          if (value['status'] == 'success') {
                            setState(() {
                              loading = false;

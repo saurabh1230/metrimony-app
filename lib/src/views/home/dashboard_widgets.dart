@@ -44,7 +44,7 @@ otherUserdataHolder({
               child: CachedNetworkImage(
                 imageUrl:
                 imgUrl,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 errorWidget: (context, url, error) =>
                     Padding(
                       padding: const EdgeInsets.all(8.0),

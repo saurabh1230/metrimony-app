@@ -77,21 +77,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       color: Colors.grey.withOpacity(0.60),
                       borderRadius: BorderRadius.circular(12)
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                      '$baseProfilePhotoUrl${model.data?.matches?.image ?? ''}',
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Image.asset(icLogo,
-                                height: 200,
-                                width: 200,),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.3), // Adjust opacity as needed
+                        BlendMode.srcOver,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl:
+                        '$baseProfilePhotoUrl${model.data?.matches?.image ?? ''}',
+                        fit: BoxFit.fill,
+                        errorWidget: (context, url, error) =>
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Image.asset(icLogo,
+                                  height: 200,
+                                  width: 200,),
+                              ),
                             ),
-                          ),
-                      progressIndicatorBuilder: (a, b, c) =>
-                          customShimmer(height: 170, /*width: 0,*/),
+                        progressIndicatorBuilder: (a, b, c) =>
+                            customShimmer(height: 170, /*width: 0,*/),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -168,6 +174,66 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               //   overflow: TextOverflow.ellipsis,
               //   maxLines: 3,),
               sizedBox20(),
+              Text("Professional Info",
+                style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+              sizedBox10(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: Image.asset(icUserBagIcon,
+                          height: 20,
+                          width: 20,)),
+                        Expanded(child: Text(
+                          ' ${model.data!.matches!.basicInfo!.profession ?? "not added yet"}',
+                          // "${model.data?.matches?.basicInfo?.profession ?? "not added yet"}",
+                          // "Software Engineer",
+                          style: styleSatoshiMedium(
+                            size: 14,
+                            color: Colors.black.withOpacity(0.70),
+                          ),
+                        ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: Image.asset(icUserHeightIcon,
+                          height: 20,
+                          width: 20,)),
+                        Expanded(child: Text(
+                          "${model.data?.matches?.physicalAttributes?.height ?? "not added yet"}",
+                          // "5 foot, 4 inch",
+                          style: styleSatoshiMedium(
+                            size: 14,
+                            color: Colors.black.withOpacity(0.70),
+                          ),))
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(child: Image.asset(icUserLocationIcon,
+                          height: 20,
+                          width: 20,)),
+                        Expanded(child: Text(
+                          ' ${model.data!.matches!.address!.country ?? "not added yet"}',
+                          //  "New York Usa",
+                          style: styleSatoshiMedium(
+                            size: 14,
+                            color: Colors.black.withOpacity(0.70),
+                          ),))
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              sizedBox20(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -194,6 +260,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   ),
                   sizedBox20(),
+
                   // buildProfileRow(image: icAgeIcon, title: 'Age', text: '41 to 45'),
                   buildProfileRow(image: icHeightIcon, title: 'Height',
                       text:
@@ -206,11 +273,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   buildProfileRow(image: icMotherToungeIcon,
                       title: 'Mother Tongue',
                       text: "${model.data!.matches?.motherTongue ?? "not added yet"}"),
+                  buildProfileRow(image: icMarriedStatusPro,
+                      title: 'Married Status',
+                      text: "${model.data!.matches?.maritalStatus ?? "not added yet"}"),
                   // buildProfileRow(image: icGotraIcon, title: 'Gotra', text: '41 to 45'),
-                  Text("Professional Info",
-                    style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                  sizedBox10(),
-                  Row(
+
+                 /* Row(
                     children: [
                       Expanded(
                         child: Row(
@@ -255,49 +323,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                     ],
-                  ),
+                  ),*/
                   sizedBox14(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: Image.asset(icUserHeightIcon,
-                              height: 20,
-                              width: 20,)),
-                            Expanded(child: Text(
-                              "${model.data?.matches?.physicalAttributes?.height ?? "not added yet"}",
-                              // "5 foot, 4 inch",
-                              style: styleSatoshiMedium(
-                                size: 14,
-                                color: Colors.black.withOpacity(0.70),
-                              ),))
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: Image.asset(icUserLocationIcon,
-                                height: 20,
-                                width: 20,)),
-                            Expanded(child: Text(
-                             ' ${model.data!.matches!.address!.country ?? "not added yet"}',
-                             //  "New York Usa",
-                              style: styleSatoshiMedium(
-                                size: 14,
-                                color: Colors.black.withOpacity(0.70),
-                              ),))
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+
                   sizedBox10(),
                   SizedBox(height: 14,),
                   // Text("Interests",
                   //   style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                  sizedBox10(),
+
                   // Wrap(
                   //   spacing: 8.0, // Adjust spacing as needed
                   //   runSpacing: 8.0, // Adjust run spacing as needed
@@ -309,7 +342,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                 ],
               ),
-              SizedBox(height:30),
+
 
 
             ],

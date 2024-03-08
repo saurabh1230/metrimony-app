@@ -109,6 +109,9 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                     print(formattedDate);
                     print(_selectedDate);
                     SharedPrefs().setDob(formattedDate);
+                    print('SharedPrefs().getDob()');
+
+
                   });
                 },
               ),

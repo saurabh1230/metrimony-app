@@ -117,7 +117,7 @@ class _ReligionCategoryState extends State<ReligionCategory> {
                 Navigator.pop(context);
               }),
         ),
-        title: Text("Religion Matches",
+        title: Text("${widget.response.data!.user!.religion.toString()} Matches",
           style: styleSatoshiBold(size: 22, color: Colors.black),
         ),
 

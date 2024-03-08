@@ -304,7 +304,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child:pickedImage.path.isEmpty
                                 ? CachedNetworkImage(
                               imageUrl: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fill,
                               errorWidget: (context, url, error) =>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
