@@ -17,10 +17,13 @@ otherUserdataHolder({
   required String atributeReligion,
   required String profession,
   required String Location,
+  required String dob,
   required Function() bookMarkTap,
   required Color likedColor,
   required Color unlikeColor,
   required Widget button,
+  required String height,
+  required String state,
    Widget? bookmark,
 
 }) {
@@ -80,7 +83,7 @@ otherUserdataHolder({
                             size: 19, color: Colors.black),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 10,),
                     Expanded(
                       child: bookmark ??likeButton(
                           click: bookMarkTap,
@@ -88,74 +91,107 @@ otherUserdataHolder({
                           unlikeColor: unlikeColor
                       ),
                     ),
-
-                    /*Expanded(
-                      child: Image.asset(icBookMark,
-                        height: 24,
-                        width: 24,),
-                    )*/
                   ],
                 ),
-                sizedBox10(),
+                Row(
+                  children: [
+                    Text(
+                      '${dob}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+
+                      style: styleSatoshiMedium(
+                          size: 13,
+                          color: Colors.black.withOpacity(
+                              0.70)),
+                    ),
+                    const SizedBox(width: 6,),
+                    Container(
+                      height: 4,
+                    width: 4,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
+                    ),
+                    const SizedBox(width: 6,),
+                    Text(
+                      height,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+
+                      style: styleSatoshiMedium(
+                          size: 13,
+                          color: Colors.black.withOpacity(
+                              0.70)),
+                    ),
+                  ],
+                ),
                 Text(
-                  // '${matches[i].physicalAttributes!.height} cm • ${matches[i].religion}',
                   atributeReligion,
                   maxLines: 2,
                   style: styleSatoshiMedium(
                       size: 13,
                       color: Colors.black.withOpacity(0.80)),
                 ),
-                // sizedBox16(),
-               /* Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Image.asset(icBag,
-                        height: 17,
-                        width: 17,),
-                    ),
-                    SizedBox(width: 10,),
-
-                    Expanded(
-                      flex: 10,
-                      child: Text(profession,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-
-                        style: styleSatoshiMedium(
-                            size: 13,
-                            color: Colors.black.withOpacity(
-                                0.70)),
-                      ),
-                    ),
-                  ],
-                ),*/
-                sizedBox8(),
+                const SizedBox(height: 3,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Image.asset(icLocation,
                         height: 17,
                         width: 17,),
                     ),
-                    SizedBox(width: 10,),
+                    const SizedBox(width: 2,),
                     Expanded(
                       flex: 10,
-                      child: Text(
-                        Location,
-                        // '${matches[i].address!.country}',
-                        // "New York, USA",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
+                      child: Row(
+                        children: [
+                          Text(
+                            Location,
+                            // '${matches[i].address!.country}',
+                            // "New York, USA",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
 
-                        style: styleSatoshiMedium(
-                            size: 13,
-                            color: Colors.black.withOpacity(
-                                0.70)),
+                            style: styleSatoshiMedium(
+                                size: 13,
+                                color: Colors.black.withOpacity(
+                                    0.70)),
+                          ),
+                          SizedBox(width: 3,),
+                          Container(
+                            height: 4,
+                            width: 5,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black,
+                          ),
+                          ),
+                          SizedBox(width: 3,),
+
+                          Text(
+                            state,
+
+                            // '${matches[i].address!.country}',
+                            // "New York, USA",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+
+                            style: styleSatoshiMedium(
+                                size: 13,
+                                color: Colors.black.withOpacity(
+                                    0.70)),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
+
+
                 sizedBox16(),
                 button,
               ],

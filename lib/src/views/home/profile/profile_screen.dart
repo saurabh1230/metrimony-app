@@ -1,6 +1,6 @@
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-import 'package:bureau_couple/src/models/dashboard_model.dart';
+import 'package:bureau_couple/src/constants/string.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_career_info.dart';
@@ -8,6 +8,7 @@ import 'package:bureau_couple/src/views/home/profile/edit_education_screen.dart'
 import 'package:bureau_couple/src/views/home/profile/edit_photos.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_physical_atributes.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../apis/login/login_api.dart';
@@ -273,7 +274,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   Center(
                     child: CircularPercentIndicator(
                       radius: 110.0,
@@ -304,7 +304,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child:pickedImage.path.isEmpty
                                 ? CachedNetworkImage(
                               imageUrl: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               errorWidget: (context, url, error) =>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -321,78 +321,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                      progressColor: Color(0xff00a337),
+                      progressColor: const Color(0xff00a337),
                     ),
                   ),
                   sizedBox10(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-
-                          },
+                        Center(
                           child: Text(
-                            // nameController.text.isEmpty ?
-                            '${profile.data?.user?.username ?? 'User'}',
-                          // "Cody Fisher" :
-                          //   nameController.text,
+                            StringUtils.capitalize(profile.data?.user?.username ?? 'User',),
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             style: styleSatoshiBold(size: 27, color: Colors.black),
                           ),
                         ),
                         sizedBox20(),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (builder) => const EditBasicInfoScreen()));
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("About Yourself",
+                                style: styleSatoshiBold(size: 16, color: color1C1C1c),
+                              ),
+                              Image.asset(icArrowRight,
+                                height: 18,
+                                width: 18,)
+                            ],
+                          ),
+                        ),
+                       const SizedBox(height: 10,),
+
+                        Text(profile.data?.user?.basicInfo?.aboutUs ?? "",
+                          maxLines: 2,
+                          style: styleSatoshiMedium(size: 14, color: color212121),
+                        ),
+                        // buildDataRowBold(title: 'Account Info', text: 'gfg', onTap: () {
+                        //   Navigator.push(context, MaterialPageRoute(
+                        //       builder: (builder) => const EditBasicInfoScreen()));
+                        // }),
+                        sizedBox13(),
                         buildDataRowBold(title: 'Account Info', text: '', onTap: () {
                           Navigator.push(context, MaterialPageRoute(
                               builder: (builder) => const EditBasicInfoScreen()));
                         }),
                         sizedBox13(),
                         buildInfoRow(title: 'Email*',
-                           text: '${profile.data?.user?.email ?? '- - - - -'}',
-                           // text: (profile.data!.user == null || profile.data!.user!.email == null || profile.data!.user!.email!.isEmpty
-                           //     ? 'Not Added'
-                           //     : profile.data!.user!.email!),
+                           text: profile.data?.user?.email ?? '',
                             onTap: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) {
-                          //     return NameEditDialogWidget(
-                          //       title: 'Email',
-                          //       addTextField: TextFormField(
-                          //         maxLength: 30,
-                          //         onChanged: (v) {
-                          //           setState(() {});
-                          //
-                          //         },
-                          //         onFieldSubmitted: (v) {
-                          //           // Add your onChanged logic if needed
-                          //         },
-                          //         onEditingComplete: () {
-                          //           Navigator.pop(context); // Close the dialog
-                          //         },
-                          //         controller:emailController ,
-                          //         cursorColor: primaryColor,
-                          //         decoration: AppTFDecoration(hint: 'Email')
-                          //             .decoration(),
-                          //         //keyboardType: TextInputType.phone,
-                          //       ),
-                          //     );
-                          //   },
-                          // );
                         }),
                         sizedBox13(),
                         buildInfoRow(title: 'Phone Number',
-                        text: '${profile.data?.user?.mobile ?? '- - - - -'}',
-
+                        text: profile.data?.user?.mobile ?? '',
                             onTap: () {
 
                         }),
                         sizedBox13(),
                         buildInfoRow(title: 'Location',
-                            text: '${profile.data?.user?.address?.country ?? '- - - - - '}',
-
+                            text: profile.data?.user?.address?.country ?? '',
                             onTap: () {
 
                         }),
@@ -414,7 +407,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         }),
                         sizedBox13(),
 
-
                         buildDataRowBold(title: 'Physical Attributes', text: 'Change', onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhysicalAttributesScreen()));
                         }),
@@ -425,87 +417,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             sizedBox20(),
-                            // buildProfileRow(image: icBirthDatePro, title: 'Age',
-                            //     text: '${profile.data?.user?.mobile ?? 'User'}',
-                            //     // text: ageController.text.isEmpty ?'41 to 45':
-                            //     // ageController.text,
-                            //     onTap: () {
-                            //
-                            //     }),
-                            // buildProfileRow(image: icMarriedStatusPro, title: 'Married Status',
-                            //     text:
-                            //     // marriedController.text.isEmpty ?
-                            //     profile.data!.user!.maritalStatus!.isEmpty || profile.data!.user!.maritalStatus == null ?
-                            //         "Update Married Status" :
-                            //
-                            //    '${profile.data!.user!.maritalStatus}' ,
-                            //     // // 'Divorced (1 Child, Living together)':
-                            //     // marriedController.text,
-                            //     onTap: () {
-                            //
-                            // }),
                             buildProfileRow(image: icLocationPro, title: 'Lives in',
-                                text: '${profile.data?.user?.address!.city ?? '- - - - -'}${profile.data?.user?.address!.state ?? ''}${profile.data?.user?.address!.country ?? ''}',
-                                // livesInController.text.isEmpty ?
-                                // '${profile.data!.user!.address!.city}${profile.data!.user!.address!.state}${profile.data!.user!.address!.country}' :
-                                // // 'Lives in Nagpur, Maharashtra, India' :
-                                // livesInController.text,
-                                onTap: () {
-                              print('${profile.data!.user!.address!.city}' );
-
-                            }),
+                                text: '${StringUtils.capitalize(profile.data?.user?.address!.city ?? '')}${profile.data?.user?.address!.state ?? ''}${profile.data?.user?.address!.country ?? ''}',
+                                onTap: () {}),
                             buildProfileRow(image: icChildrenIcon, title: 'Family',
-                            text: 'Father Name: ${profile.data?.user?.family?.fatherName ?? 'Father name not Added Yet'} \nMother Name: ${profile.data?.user?.family?.motherName ?? 'Mother name not Added Yet'}',
-                            //     text: childrenController.text.isEmpty?
-                            // 'Hindu: Agarwal, Hindu: Baniya, Hindu:Gupta, Hindu: Maheshwari' :
-                            //     childrenController.text,
-                                onTap: () {
-
-                            }),
+                            text: 'Father Name: ${StringUtils.capitalize(profile.data?.user?.family?.fatherName ?? '')} \nMother Name: ${StringUtils.capitalize(profile.data?.user?.family?.motherName ?? '')}',
+                                onTap: () {}),
                             buildProfileRow(image: icReligionIcon,
                                 title: 'Religion',
-                            text: '${profile.data?.user?.religion ?? 'Not Added Yet'}',
-                            //     text: religionController.text.isEmpty ?
-                            //    '${profile.data!.user!.religion}' :
-                            // // 'Hindu, Hindi' :
-                            //     religionController.text,
+                            text: profile.data?.user?.religion ?? 'Not Added Yet',
                                 onTap: () {
 
                             }),
-                            // buildProfileRow(image: icCommunityPro, title: 'Community',
-                            //     text: '${profile.data?.user?.community ?? 'Not Added Yet'}',
-                            //     // text:communityController.text.isEmpty && profile.data!.user!.community ==null ?
-                            //     //     "Add Community"
-                            //     // '${profile.data!.user!.community}'.replaceAll("null", "") :
-                            //     // // 'Agarwal':
-                            //     // communityController.text,
-                            //     onTap: () {
-                            //
-                            // }),
                             buildProfileRow(image: icMotherToungeIcon, title: 'Mother Tongue',
-                                text: '${profile.data?.user?.motherTongue ?? '- - - - -'}',
-                            //     text: motherTongueController.text.isEmpty ?
-                            //     profile.data!.user!.community ==null ?
-                            //         "Add Mother Tongue":
-                            //     '${profile.data!.user!.motherTongue}':
-                            // // 'Hindi' :
-                            //     motherTongueController.text,
-                                onTap: () {
-
-                            }),
-                            // buildProfileRow(image: icGotraIcon, title: 'Gotra', text:gotraController.text.isEmpty ?  'Jindal' :
-                            //     gotraController.text, onTap: () {
-                            //
-                            // }),
-                            // buildProfileRow(image: icDietIcon, title: 'Diet Preferences', text:dietController.text.isEmpty ?  'Vegetarian':
-                            //     designationController.text, onTap: () {
-                            //
-                            // }),
-
+                                text: StringUtils.capitalize(profile.data?.user?.motherTongue ?? ''),
+                                onTap: () {}),
                             sizedBox16(),
                             buildDataRowBold(title: 'Photos', text: 'Change', onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
-
                             }),
                             sizedBox8(),
                             photos.isEmpty ||  photos == null  ?
@@ -555,7 +484,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             Colors.grey,
                                             width: 1,
                                           ),
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                          borderRadius: const  BorderRadius.all(Radius.circular(10)),
                                         ),
                                         child: CachedNetworkImage(
                                           imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
@@ -585,8 +514,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: Row(
                                             children: [
                                               SvgPicture.asset(ic4Dots),
-                                              SizedBox(width: 6,),
-                                              Text("See All")
+                                              const SizedBox(width: 6,),
+                                              const Text("See All")
 
                                             ],
                                           ),
@@ -623,16 +552,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           alignment: Alignment.topRight,
-          title: Text('Custom Alert Dialog'),
+          title: const Text('Custom Alert Dialog'),
           content: Column(
             children: [
-              Text('This is a custom alert dialog.'),
-              SizedBox(height: 10),
+              const Text('This is a custom alert dialog.'),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           ),

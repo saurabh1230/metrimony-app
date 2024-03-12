@@ -187,13 +187,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                              SharedPrefs().clearMaritalStatus();
                              SharedPrefs().clearReligion();
                            });
-                           /*  var prefs = await SharedPreferences
-                              .getInstance();
-                          prefs.setString(
-                              'accessToken', value['data']['access_token']);*/
 
                            SharedPrefs().setLoginToken(value['data']['access_token']);
-                           // print(value['data']['access_token']);
                            Navigator.pushReplacement(
                              context,
                              MaterialPageRoute(builder: (builder) => const AddKycDetailsScreen()),
@@ -205,52 +200,13 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            setState(() {
                              loading = false;
                            });
-                           // Display error message in Flutter toast
                            List<dynamic> errors = value['message']['error'];
                            String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
                            Fluttertoast.showToast(msg: errorMessage);
                          }
-
-
-                         /* if ( value['status'] == 'success') {
-                          SharedPrefs().setLoginToken(value['data']['access_token']);
-                          print(value['data']['access_token']);
-
-                          Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                          AddKycDetailsScreen()));
-                          // ToastUtil.showToast("Login Successful");
-
-
-                          ToastUtil.showToast("Registered Successfully");
-                          print('done');
-                        } else {
-                          Fluttertoast.showToast(msg: value['message']['error']);
-
-                        // ToastUtil.showToast("Please Check Register details");
-                        }*/
                        });
-                       // Navigator.push(context, MaterialPageRoute(builder: (builder) => SignInScreen()));
-                       // _pageController.nextPage(
-                       //   duration: Duration(milliseconds: 200),
-                       //   curve: Curves.easeInOut,
-                       // );
                      };
-
                      }
-
-
-
-
-                 /*   // _handleNext();
-                    if (_currentPage < 2) {
-                      _pageController.nextPage(
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                      );
-                    } else {
-                      // Handle any additional logic when reaching the last page
-                    }*/
-
                   },
                   title:_currentPage == 2 ? 'Submit' :'Next'),
             ),

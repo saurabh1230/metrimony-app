@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../apis/profile_apis/family_info_apis.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../constants/assets.dart';
+import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/family_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
@@ -94,7 +95,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
           return familyInfo();
         },
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
             child: Column(
@@ -131,7 +132,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                         ? 'Add Now'
                         : familyData.fatherName!)
                         : fatherNameController.text,
-                    data2: fatherNameController.text,
+                    data2: StringUtils.capitalize(fatherNameController.text),
                     isControllerTextEmpty: fatherNameController.text.isEmpty,),
 
                 ),
@@ -168,7 +169,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                           ? 'Add Now'
                           : familyData.fatherProfession!)
                           : fatherProfessionController.text,
-                      data2: fatherProfessionController.text,
+                      data2: StringUtils.capitalize(fatherProfessionController.text),
                       isControllerTextEmpty: fatherProfessionController.text.isEmpty),
 
                 ),
@@ -243,7 +244,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                         ? 'Add Now'
                         : familyData.motherName!)
                         : motherNameController.text,
-                    data2: motherNameController.text,
+                    data2: StringUtils.capitalize(motherNameController.text),
                     isControllerTextEmpty: motherNameController.text.isEmpty,),
                 ),
                 sizedBox16(),
@@ -278,7 +279,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                         ? 'Add Now'
                         : familyData.motherProfession!)
                         : motherProfessionController.text,
-                    data2: motherProfessionController.text,
+                    data2: StringUtils.capitalize(motherProfessionController.text),
                     isControllerTextEmpty: motherProfessionController.text.isEmpty,),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),

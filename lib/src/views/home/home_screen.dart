@@ -15,6 +15,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/string.dart';
 import '../../models/matches_model.dart';
 import '../../utils/urls.dart';
 import '../premium_matches/all_new_matches.dart';
@@ -42,15 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
      super.initState();
      getMatches();
    }
-// fgfgg
+
 
    List<bool> isLoadingList = [];
    bool isLoading = false;
    int page = 1;
-   // bool loading = false;
    List<MatchesModel> matches = [];
-
-
 
    getMatches() {
      isLoading = true;
@@ -73,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
        }
      });
    }
-
 
    List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
   List<String> categoryTitle = ["Filter by Religion","Filter By Married Status"];
@@ -112,42 +109,51 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: matches.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (_,i) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex:2,
-                          child: Container(
-                            height: 65,
-                            width: 65,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                              '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                              fit: BoxFit.fill,
-                              errorWidget: (context, url, error) =>
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(icLogo,
-                                      height: 40,
-                                      width: 40,),
-                                  ),
-                              progressIndicatorBuilder: (a, b, c) =>
-                                  customShimmer(height: 170, /*width: 0,*/),
+                    return GestureDetector(
+                      onTap: () {
+
+                        Navigator.push(
+                            context, MaterialPageRoute(
+                            builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),)));
+
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              height: 65,
+                              width: 65,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                fit: BoxFit.fill,
+                                errorWidget: (context, url, error) =>
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(icLogo,
+                                        height: 40,
+                                        width: 40,),
+                                    ),
+                                progressIndicatorBuilder: (a, b, c) =>
+                                    customShimmer(height: 170, /*width: 0,*/),
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
-                           '${matches[i].firstname ?? ""}\n${matches[i].lastname ?? "User"}',
-                          maxLines: 2,
-                          textAlign:TextAlign.center,
-                          style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
-                        )
-                      ],
+                          Expanded(
+                            child: Text(
+                             '${StringUtils.capitalize(matches[i].firstname ?? '')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                            maxLines: 2,
+                            textAlign:TextAlign.center,
+                            style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
+                          )
+                        ],
+                      ),
                     );
                   }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
                 ),
@@ -172,20 +178,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           (_) => MarriedCategory(response: widget.response,),
                       // Add more screen routes as needed
                     ];
-                    // switch (i) {
-                    //   case 0:
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (builder) => ReligionCategory(response: widget.response,)),
-                    //     );
-                    //     break;
-                    //   case 1:
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (builder) => ReligionCategory(response: widget.response,)),
-                    //     );
-                    //     break;
-                    // }
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -430,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
-                    childAspectRatio: 0.6,
+                    childAspectRatio: 0.7,
                      ),
                     itemBuilder: (_, i) {
                       DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
@@ -445,18 +437,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Stack(
                         children: [
                           Container(
-                            height: 450,
+                            height: 400,
                             clipBehavior: Clip.hardEdge,
                             decoration: const  BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10.0),),
                             ),
                             child: ColorFiltered(
                               colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.3), // Adjust opacity as needed
+                                Colors.black.withOpacity(0.3),
                                 BlendMode.srcOver,
                               ),
                               child: CachedNetworkImage(
-                                imageUrl:matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
                                 fit: BoxFit.fill,
                                 errorWidget: (context, url, error) =>
                                     Padding(
@@ -478,13 +470,44 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${matches[i].firstname ?? 'User'} \n${matches[i].lastname ??''}',
+                                  '${StringUtils.capitalize(matches[i].firstname ?? 'User')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                   style: styleSatoshiBold(size: 18, color: Colors.white),),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '$age yrs',
+                                          style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                        ),
+                                        const SizedBox(width: 6,),
+                                        Container(
+                                          height: 4,
+                                          width: 4,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),),
+                                        const SizedBox(width: 6,),
+                                        Text(
+                                          "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                          style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  '$age years old',
-                                  style: styleSatoshiRegular(size: 13, color: Colors.white),),
+                                  matches[i].religion ?? '',
+                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                ),
+                                Text(
+                                matches[i].basicInfo?.presentAddress?.state ?? '',
+
+                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                ),
                                 sizedBox18(),
                               ],
                             ),
@@ -500,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
                    AllNewMatchesScreen(response: widget.response,)));
                 }, title: 'See All New Matches'),
 
-                SizedBox(height: 50,),
+                const SizedBox(height: 50,),
 
 
               ],
@@ -587,8 +610,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (builder) => EditBasicInfoScreen()));
-
+                Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
               },
               child: CircularPercentIndicator(
                 radius: 50.0,
@@ -605,7 +627,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: CachedNetworkImage(
                       imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       errorWidget: (context, url, error) =>
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -622,56 +644,25 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(width: 10,),
-            Text("${SharedPrefs().getUserName()}",
+            Text(StringUtils.capitalize('${SharedPrefs().getUserName()}'),
               style: styleSatoshiBold(size: 24, color: Colors.black),
             ),
           ],
         ),
       ),
-      // leading: Padding(
-      //   padding: const EdgeInsets.only(left: 20.0),
-      //   child: SvgPicture.asset(icHomeLogo,
-      //   height: 35,
-      //   width: 44,),
-
-      // title: Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Center(
-      //       child: Text("New Delhi",
-      //       style: styleSatoshiBold(size: 15, color: Colors.black),
-      //       ),
-      //     ),
-      //     // SizedBox(width: 5,),
-      //     // SvgPicture.asset(icArrowDown,
-      //     // height: 8,)
-      //   ],
-      // ),
       actions: [
         GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (builder) => ConnectScreen()));
+            Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
           },
             child: 
-            const Icon(CupertinoIcons.person,
-              color: Colors.black,
-              size: 26,
+            const Padding(
+              padding: EdgeInsets.only(right: 14.0),
+              child: Icon(CupertinoIcons.person,
+                color: Colors.black,
+                size: 26,
+              ),
             )),
-        const SizedBox(width: 8,),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (builder) => const NotificationScreen()));
-          },
-          child: const  Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(CupertinoIcons.bell,
-              size: 26,
-            color: Colors.black,),
-            // child: Image.asset("assets/icons/ic_noti.png",
-            //   height: 28,
-            // width: 28,),
-          ),
-        )
 
       ],
       automaticallyImplyLeading: false,

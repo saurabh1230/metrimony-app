@@ -9,6 +9,7 @@ import '../../../apis/profile_apis/career_info_api.dart';
 import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../constants/assets.dart';
+import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/career_info_model.dart';
 import '../../../models/education_info_model.dart';
@@ -178,17 +179,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                                       designationController.clear();
                                                       startingYearController.clear();
                                                       endingYearController.clear();
-
-
-
-                                                      // isLoading ? Loading() :careerInfo();
-                                                      // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                                      // const KycWaitScreen()));
-
-                                                      // ToastUtil.showToast("Login Successful");
-
                                                       ToastUtil.showToast("Updated Successfully");
-                                                      print('done');
                                                     } else {
                                                       setState(() {
                                                         loading = false;
@@ -203,39 +194,6 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                                       Fluttertoast.showToast(msg: errorMessage);
                                                     }
                                                   });
-                                                  /*   educationInfoAddApi(
-                                      institute: instituteController.text,
-                                      degree: degreeController.text,
-                                      fieldOfStudy: fieldOfStudyController.text,
-                                      regNO: resultController.text, start: startingYearController.text,
-                                      end: endingYearController.text, result: resultController.text,
-                                      outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
-                                    setState(() {
-                                    });
-                                    if (value['status'] == true) {
-                                      setState(() {
-                                        loading = false;
-                                      });
-
-                                      // isLoading ? Loading() :careerInfo();
-                                      // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                      // const KycWaitScreen()));
-
-                                      // ToastUtil.showToast("Login Successful");
-
-                                      ToastUtil.showToast("Updated Successfully");
-                                      print('done');
-                                    } else {
-                                      setState(() {
-                                        loading = false;
-                                      });
-
-
-                                      List<dynamic> errors = value['message']['error'];
-                                      String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                      Fluttertoast.showToast(msg: errorMessage);
-                                    }
-                                  });*/
                                                 },
                                                 title: "Save")
                                           ],
@@ -270,11 +228,11 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                   children: [
                                     buildListRow(
                                       title: 'company',
-                                      data1: career[i].company.toString(),
+                                      data1: StringUtils.capitalize(career[i].company.toString()),
                                     ),
                                     buildListRow(
                                       title: 'designation',
-                                      data1: career[i].designation.toString(),
+                                      data1:StringUtils.capitalize(career[i].designation.toString()),
                                     ),
                                     buildListRow(
                                       title: 'start',

@@ -322,7 +322,7 @@
 //   }
 // }
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
-import 'package:like_button/like_button.dart';
+import 'dart:async';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
@@ -330,10 +330,12 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../apis/members_api.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
+import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/matches_model.dart';
 import '../../../utils/widgets/buttons.dart';
@@ -341,7 +343,7 @@ import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/loader.dart';
 import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
-import 'dart:async';
+import 'package:intl/intl.dart';
 
 class MatchesScreen extends StatefulWidget {
   final LoginResponse response;
@@ -357,7 +359,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   List<MatchesModel> matches = [];
   List<bool> isLoadingList = [];
-  List<bool> isLikeList = [];
+  List<bool> like = [];
 
   // List<bool> isbList = [];
   bool isLoading = false;
@@ -372,7 +374,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   LoginResponse? response;
 
-  bool like = false;
+  // bool like = false;
 
   getMatches() {
     print("cehck");
@@ -390,7 +392,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); //
-              isLikeList.add(false); // Add false for each new match
+              like.add(false); // Add false for each new match
             }
             isLoading = false;
             page++;
@@ -429,6 +431,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
     // }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -437,7 +441,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         automaticallyImplyLeading: false,
         title: Text(
           "Matches",
-          style: styleSatoshiBold(size: 22, color: Colors.black),
+          style: styleSatoshiBold(size: 20, color: Colors.black),
         ),
         actions: [
           GestureDetector(
@@ -445,43 +449,21 @@ class _MatchesScreenState extends State<MatchesScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (builder) => SavedMatchesScreen()));
+                      builder: (builder) => const  SavedMatchesScreen()));
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 16.0),
-              child: Icon(Icons.bookmark),
+              child: Text("Saved Matches"),
             ),
           )
-          /* backButton(
-            context: context,
-            image: icSearch,
-            onTap: () {
-              setState(() {
-                // Handle search action
-              });
-            },
-          ),*/
-          // const SizedBox(width: 10),
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 16.0,),
-          //   child: backButton(
-          //     context: context,
-          //     image: icFilter,
-          //     onTap: () {
-          //       // Navigate to filter screen
-          //     },
-          //   ),
-          // ),
         ],
       ),
       body: isLoading
-          ? Loading()
+          ? const Loading()
           : matches.isEmpty && matches == null
-              ? Text("No Matches Yet")
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                  ),
+              ? const Text("No Matches Yet")
+              : Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
                   child: LazyLoadScrollView(
                     isLoading: isLoading,
                     onEndOfPage: () {
@@ -491,146 +473,118 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       itemCount: matches.length + 1,
                       itemBuilder: (context, i) {
                         if (i < matches.length) {
+                          DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                          int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
                           return otherUserdataHolder(
                             context: context,
                             tap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (builder) => UserProfileScreen(
-                                            userId: matches[i].id.toString(),
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) => UserProfileScreen(
+                                    userId: matches[i].id.toString(),
+                                  ),
+                                ),
+                              );
                             },
-                            imgUrl:
-                                '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                            // matches[i].image == null ?
-                            // "" :
-                            // '${matches[i].image.toString()}',
-                            userName: matches[i].firstname == null &&
-                                    matches[i].lastname == null
+                            height:"${matches[i].physicalAttributes!.height ?? ''} ft",
+                            imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                            state:matches[i].basicInfo?.presentAddress?.state ?? '',
+                            userName: matches[i].firstname == null && matches[i].lastname == null
                                 ? "user"
-                                : '${matches[i].firstname ?? "user"} ${matches[i].lastname ?? "user"}',
+                                : '${StringUtils.capitalize(matches[i].firstname ?? 'User')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
                             atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
                             profession: "Software Engineer",
-                            Location:
-                                '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
+                            Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
                             likedColor: Colors.grey,
                             unlikeColor: primaryColor,
                             button: isLoadingList[i]
-                                ? loadingButton(
-                                    height: 30, width: 134, context: context)
+                                ? loadingButton(height: 30, width: 134, context: context)
                                 : button(
-                                    fontSize: 14,
-                                    height: 30,
-                                    width: 134,
-                                    context: context,
-                                    onTap: () {
+                                fontSize: 14,
+                                height: 30,
+                                width: 134,
+                                context: context,
+                                onTap: () {
+                                  setState(() {
+                                    isLoadingList[i] = true;
+                                  });
+                                  sendRequestApi(memberId: matches[i].id.toString()).then((value) {
+                                    if (value['status'] == true) {
                                       setState(() {
-                                        isLoadingList[i] = true;
+                                        isLoadingList[i] = false;
                                       });
-                                      print(matches[i].id.toString());
-                                      sendRequestApi(
-                                              memberId: matches[i].id.toString()
-                                              // id: career[0].id.toString(),
-                                              )
-                                          .then((value) {
-                                        if (value['status'] == true) {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-                                          ToastUtil.showToast(
-                                              "Connection Request Sent");
-                                          print('done');
-                                        } else {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
+                                      ToastUtil.showToast("Connection Request Sent");
+                                    } else {
+                                      setState(() {
+                                        isLoadingList[i] = false;
+                                      });
 
-                                          List<dynamic> errors =
-                                              value['message']['error'];
-                                          String errorMessage = errors
-                                                  .isNotEmpty
-                                              ? errors[0]
-                                              : "An unknown error occurred.";
-                                          Fluttertoast.showToast(
-                                              msg: errorMessage);
-                                        }
-                                      });
-                                    },
-                                    title: "Connect Now"),
+                                      List<dynamic> errors = value['message']['error'];
+                                      String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                      Fluttertoast.showToast(msg: errorMessage);
+                                    }
+                                  });
+                                },
+                                title: "Connect Now"),
                             bookmark:
-                            LikeButton(
-                              onTap: (isLiked) async {
-                                print(matches[i].profileId.toString());
+                            GestureDetector(
+                              onTap: () {
+
+                                setState(() {
+                                  like[i] = !like[i];
+                                });
+                                Timer timer = Timer(Duration(seconds: 2), () async {
+                                  setState(() {
+                                    like[i] = false;
+                                  });
                                   var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                  if (result['status'] == true) {
-                                    Fluttertoast.showToast(msg: "Bookmark Saved");
-                                    // Fluttertoast.showToast("Bookmark Saved");
-                                  } else {
-
-                                  }
-
+                                      if (result['status'] == true) {
+                                        Fluttertoast.showToast(msg: "Bookmark Saved");
+                                      } else {}
+                                });
                               },
-                              size: 22,
-                              circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                              bubblesColor: const BubblesColor(
-                                dotPrimaryColor: Color(0xff33b5e5),
-                                dotSecondaryColor: Color(0xff0099cc),
-                              ),
-
-                              likeBuilder: (bool isLiked) {
-                                return Icon(
-                                  Icons.bookmark,
-                                  color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                  size: 22,
-                                );
-                              },
-
+                              child:like[i] ? Center(
+                              child: LoadingAnimationWidget.beat(
+                               size: 20, color: primaryColor,
+                              )):  Image.asset(icHeart,
+                              height: 24,
+                              width: 24,
+                              color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,),
                             ),
+                            // bookmark: LikeButton(
+                            //   onTap: (isLiked) async {
+                            //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
+                            //     if (result['status'] == true) {
+                            //       Fluttertoast.showToast(msg: "Bookmark Saved");
+                            //     } else {}
+                            //   },
+                            //   size: 22,
+                            //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                            //   bubblesColor: const BubblesColor(
+                            //     dotPrimaryColor: Color(0xff33b5e5),
+                            //     dotSecondaryColor: Color(0xff0099cc),
+                            //   ),
+                            //   likeBuilder: (bool isLiked) {
+                            //     return Icon(
+                            //       Icons.bookmark,
+                            //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
+                            //       size: 22,
+                            //     );
+                            //   },
+                            // ),
                             bookMarkTap: () {},
+                            dob: '$age yrs',
                           );
-                        }
-
-                        // Check if all data has been loaded
-                        // else {
-                        // Check if all data has been loaded
-                        // if (isLoading) {
-                        //   // If data is still loading, show the loader
-                        //   return Center(child: CircularProgressIndicator());
-                        // } else {
-                        //   // If all data has been loaded, show the text
-                        //   return Center(child: Text("All matches loaded"));
-                        // }
-                        // }
-                      if (isLoading) {
-                          return customLoader(size: 40);
-                        } else if (isLoading) {
-                          return customLoader(size: 40);
                         } else {
-                          return Center(child: Text("All matches loaded"));
+                          if (isLoading) {
+                            return customLoader(size: 40);
+                          } else {
+                            return const Center(child: Text("All matches loaded"));
+                          }
                         }
-
-                        // if (isLoading){
-                        //   return Text("All matches loaded");
-                        // } else {
-                        //   return customLoader(size: 40);
-                        // }
-                        // else if (is) {
-                        //         print("1");
-                        //        return const Center(
-                        //          child: CircularProgressIndicator()
-                        //        );
-                        //      } else if (page < 8) {
-                        //         print("2");
-                        //        return const SizedBox.shrink();
-                        //      } else {
-                        //         print("3");
-                        //        return const Center(
-                        //          child: CircularProgressIndicator()
-                        //        );}
                       },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(
+                      separatorBuilder: (BuildContext context, int index) => const SizedBox(
                         height: 16,
                       ),
                     ),

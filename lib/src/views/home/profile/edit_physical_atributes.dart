@@ -8,6 +8,7 @@ import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../apis/profile_apis/physical_attributes_api.dart';
 import '../../../constants/assets.dart';
+import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/attributes_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
@@ -120,33 +121,11 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                 String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
                 Fluttertoast.showToast(msg: errorMessage);
 
-                // isLoading ? Loading() :careerInfo();
-                // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                // const KycWaitScreen()));
-
-                // ToastUtil.showToast("Login Successful");
-
-                // ToastUtil.showToast("Updated Successfully");
-                print('done');
               } else {
                 setState(() {
                   loading = false;
                 });
                 Fluttertoast.showToast(msg: "Add All Details");
-
-
-               /* dynamic message = value['message']['original']['message'];
-                List<String> errors = [];
-
-                if (message != null && message is Map) {
-                  // If the message is not null and is a Map, extract the error messages
-                  message.forEach((key, value) {
-                    errors.addAll(value);
-                  });
-                }
-
-                String errorMessage = errors.isNotEmpty ? errors.join(", ") : "An unknown error occurred.";
-                Fluttertoast.showToast(msg: errorMessage);*/
               }
             });
           },  title: "Save"),
@@ -197,20 +176,8 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                       ? 'Not Added'
                           : physicalData.complexion!)
                 : complexionController.text,
-
-
-            //   complexionController.text.isEmpty
-                //       ? (physicalData == null || physicalData.complexion.isEmpty
-                //       ? 'Update Info'
-                //       : physicalData.complexion
-                // : complexionController.text,
-                   /* data1:
-                    complexionController.text.isEmpty ?
-                    'Update Info':
-                    complexionController.text,*/
-                    data2: complexionController.text,
+                    data2: StringUtils.capitalize(complexionController.text),
                     isControllerTextEmpty: complexionController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
                 ),
                 sizedBox16(),
                 GestureDetector(
@@ -246,9 +213,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                           ? 'Not Added'
                           : physicalData.height.toString())
                           : heightController.text,
-                      // data1: heightController.text.isEmpty ?
-                      // 'Update Info':
-                      // heightController.text,
                       data2: heightController.text,
                       isControllerTextEmpty: heightController.text.isEmpty),
                   // child: CarRowWidget(favourites: favourites!,)
@@ -323,7 +287,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                         ? 'Not Added'
                         : physicalData.bloodGroup.toString())
                         : bloodGroupController.text,
-                    data2: bloodGroupController.text,
+                    data2: StringUtils.capitalize(bloodGroupController.text),
                     isControllerTextEmpty: bloodGroupController.text.isEmpty,),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
@@ -360,7 +324,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                         ? 'Not Added'
                         : physicalData.eyeColor.toString())
                         : eyeColorController.text,
-                    data2: eyeColorController.text,
+                    data2: StringUtils.capitalize(eyeColorController.text),
                     isControllerTextEmpty: eyeColorController.text.isEmpty,),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
@@ -397,7 +361,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                         ? 'Not Added'
                         : physicalData.weight.toString())
                         : hairColorController.text,
-                    data2: hairColorController.text,
+                    data2: StringUtils.capitalize(hairColorController.text),
                     isControllerTextEmpty: hairColorController.text.isEmpty,),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
@@ -433,7 +397,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                         ? 'Not Added'
                         : physicalData.disability.toString())
                         : disablityController.text,
-                    data2: disablityController.text,
+                    data2: StringUtils.capitalize(disablityController.text),
                     isControllerTextEmpty: disablityController.text.isEmpty,),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),

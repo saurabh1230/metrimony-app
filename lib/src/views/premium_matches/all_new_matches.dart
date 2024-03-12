@@ -331,6 +331,7 @@ import '../../apis/members_api.dart';
 import '../../apis/members_api/request_apis.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/string.dart';
 import '../../constants/textstyles.dart';
 import '../../models/matches_model.dart';
 import '../../utils/widgets/buttons.dart';
@@ -338,7 +339,7 @@ import '../../utils/widgets/common_widgets.dart';
 import '../../utils/widgets/loader.dart';
 import '../home/dashboard_widgets.dart';
 import '../user_profile/user_profile.dart';
-
+import 'package:intl/intl.dart';
 
 class AllNewMatchesScreen extends StatefulWidget {
   final LoginResponse response;
@@ -428,11 +429,11 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
     }),),
         title: Text(
           "All New Matches",
-          style: styleSatoshiBold(size: 22, color: Colors.black),
+          style: styleSatoshiBold(size:18, color: Colors.black),
         ),
       ),
       body: isLoading
-          ? Loading()
+          ? const  Loading()
           : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10),
         child: LazyLoadScrollView(
@@ -441,35 +442,37 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
             loadMore();
           },
           child: ListView.separated(
-            itemCount: matches.length +1,
+            itemCount: matches.length + 1,
             itemBuilder: (context, i) {
               if (i < matches.length) {
+                DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
                 return otherUserdataHolder(
                   context: context,
                   tap: () {
                     Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (builder) =>  UserProfileScreen(userId: matches[i].id.toString(),))
+                      context,
+                      MaterialPageRoute(
+                        builder: (builder) => UserProfileScreen(
+                          userId: matches[i].id.toString(),
+                        ),
+                      ),
                     );
                   },
-                  imgUrl:
-                  '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                  // matches[i].image == null ?
-                  // "" :
-                  // '${matches[i].image.toString()}',
-                  userName:  matches[i].firstname == null && matches[i].lastname == null?
-                  "user" :
-                  '${matches[i].firstname} ${matches[i].lastname}',
-                  atributeReligion: "Religion: ${matches[i].religion}",
+                  imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                  state:matches[i].basicInfo?.presentAddress?.state ?? '',
+                  userName: matches[i].firstname == null && matches[i].lastname == null
+                      ? "user"
+                      : '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? '')}',
+                  atributeReligion: "${matches[i].religion}",
                   profession: "",
                   Location: "${matches[i].address!.state ?? ""} ${matches[i].address!.country ?? ""}",
+                  dob: '$age yrs',
                   likedColor: Colors.grey,
                   unlikeColor: primaryColor,
-                  button:
-                  isLoadingList[i] ? loadingButton(
-                      height: 30,
-                      width: 134,
-                      context: context) :button(
+                  button: isLoadingList[i]
+                      ? loadingButton(height: 30, width: 134, context: context)
+                      : button(
                       fontSize: 14,
                       height: 30,
                       width: 134,
@@ -478,11 +481,8 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                         setState(() {
                           isLoadingList[i] = true;
                         });
-                        print(matches[i].id.toString());
-                        sendRequestApi(memberId: matches[i].id.toString()
-                          // id: career[0].id.toString(),
-                        )
-                            .then((value) {
+
+                        sendRequestApi(memberId: matches[i].id.toString()).then((value) {
                           if (value['status'] == true) {
                             setState(() {
                               isLoadingList[i] = false;
@@ -494,44 +494,27 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                               isLoadingList[i] = false;
                             });
 
-                            List<dynamic> errors =
-                            value['message']['error'];
-                            String errorMessage = errors.isNotEmpty
-                                ? errors[0]
-                                : "An unknown error occurred.";
+                            List<dynamic> errors = value['message']['error'];
+                            String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
                             Fluttertoast.showToast(msg: errorMessage);
                           }
                         });
                       },
-                      title: "Connect Now"), bookMarkTap: () {  },
+                      title: "Connect Now"),
+                  bookMarkTap: () {},
+                  height:"${matches[i].physicalAttributes!.height ?? ''} ft",
                 );
-              }
-              if (isLoading) {
-                return customLoader(size: 40);
-              } else if (isLoading) {
-                return customLoader(size: 40);
               } else {
-                return Center(child: Text("All matches loaded"));
+                if (isLoading) {
+                  return customLoader(size: 40);
+                } else {
+                  return Center(child: Text("All matches loaded"));
+                }
               }
-              // if (isLoading){
-              //   return customLoader(size: 40);
-              // } else {
-              //   return customLoader(size: 40);
-              // };
-              // else if (is) {
-              //         print("1");
-              //        return const Center(
-              //          child: CircularProgressIndicator()
-              //        );
-              //      } else if (page < 8) {
-              //         print("2");
-              //        return const SizedBox.shrink();
-              //      } else {
-              //         print("3");
-              //        return const Center(
-              //          child: CircularProgressIndicator()
-              //        );}
-            }, separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 16,),
+            },
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(
+              height: 16,
+            ),
           ),
         ),
       ),

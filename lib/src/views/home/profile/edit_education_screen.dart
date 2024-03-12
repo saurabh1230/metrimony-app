@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../constants/assets.dart';
+import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/education_info_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
@@ -252,15 +253,23 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                       },
                       child: Column(
                         children: [
-                          buildListRow(title: 'Institute', data1: educationDetails[i].institute.toString(), ),
-                          buildListRow(title: 'Degree', data1: educationDetails[i].degree.toString(), ),
-                          buildListRow(title: 'Study', data1: educationDetails[i].fieldOfStudy.toString(), ),
+                          buildListRow(title: 'Institute', data1: StringUtils.capitalize(educationDetails[i].institute.toString()), ),
+                          sizedBox6(),
+                          buildListRow(title: 'Degree', data1:  StringUtils.capitalize(educationDetails[i].degree.toString()), ),
+                          sizedBox6(),
+                          buildListRow(title: 'Study', data1: StringUtils.capitalize(educationDetails[i].fieldOfStudy.toString()), ),
+                          sizedBox6(),
                           buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
+                          sizedBox6(),
                           buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
+                          sizedBox6(),
                           buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
+                          sizedBox6(),
                           buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
+                          sizedBox6(),
                           buildListRow(title: 'Result',
                             data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
+                          sizedBox6(),
                           buildListRow(title: 'Out of',
                             data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
 

@@ -8,13 +8,12 @@ import '../../constants/colors.dart';
 import '../../constants/sizedboxe.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
-import '../../models/matches_model.dart';
 import '../../models/saved_bookmark_model.dart';
 import '../../utils/widgets/buttons.dart';
 import '../../utils/widgets/common_widgets.dart';
 import '../../utils/widgets/loader.dart';
-import '../user_profile/user_profile.dart';
 import 'dashboard_widgets.dart';
+import 'package:intl/intl.dart';
 
 class SavedMatchesScreen extends StatefulWidget {
   const SavedMatchesScreen({super.key});
@@ -176,14 +175,19 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                   shrinkWrap: true,
                   itemCount: matches.length,
                   itemBuilder: (_, i) {
+                    // DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                    // int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
                     return otherUserdataHolder(
                         context: context,
                         tap: () {},
-                        imgUrl:   '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
-                        userName: '${matches[i].profile!.firstname} ${matches[i].profile!.lastname}',
-                        atributeReligion: "Religion: ${matches[i].profile!.religion ?? ""}",
+                        height:"",
+                        imgUrl:   '$baseProfilePhotoUrl${matches[i].profile?.image.toString()}',
+                        userName: '${matches[i].profile?.firstname} ${matches[i].profile?.lastname}',
+                        atributeReligion: "Religion: ${matches[i].profile?.religion ?? ""}",
                         profession: "Software Engineer",
                         Location: "India",
+                        dob:'',
+                        state:'',
 
                         // Location: '${matches[i].address!.country}'
                         likedColor: Colors.grey,
@@ -195,7 +199,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                         context: context,
                         onTap: () {},
                         title: "Connect Now"),
-                      bookmark: LikeButton(
+                        bookmark: LikeButton(
                         onTap: (isLiked) async {
                           print(matches[i].profileId.toString());
                           try {

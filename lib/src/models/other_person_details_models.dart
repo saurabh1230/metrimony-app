@@ -77,7 +77,6 @@ class User {
     data['lastname'] = lastname;
     data['looking_for'] = lookingFor;
     data['username'] = username;
-    // Add other properties here
     return data;
   }
 }
@@ -118,6 +117,7 @@ class Matches {
   List<CareerInfo>? careerInfo;
 
   List<EducationInfo>? educationInfo;
+  List<Galleries>? galleries;
   Address? address;
 
 
@@ -154,6 +154,7 @@ class Matches {
         this.family,
         this.careerInfo,
         this.educationInfo,
+        this.galleries
  });
 
   Matches.fromJson(Map<String, dynamic> json) {
@@ -189,13 +190,22 @@ class Matches {
     physicalAttributes = json['physical_attributes'] != null
         ? new PhysicalAttributes.fromJson(json['physical_attributes'])
         : null;
+    if (json['education_info'] != null) {
+      educationInfo = <EducationInfo>[];
+      json['education_info'].forEach((v) {
+        educationInfo!.add(new EducationInfo.fromJson(v));
+      });
+    }
+    if (json['galleries'] != null) {
+      galleries = <Galleries>[];
+      json['galleries'].forEach((v) {
+        galleries!.add(new Galleries.fromJson(v));
+      });
+    }
     family =
     json['family'] != null ? new Family.fromJson(json['family']) : null;
     address =
     json['address'] != null ? new Address.fromJson(json['address']) : null;
-
-
-
   }
 
   Map<String, dynamic> toJson() {
@@ -244,6 +254,9 @@ class Matches {
       data['education_info'] =
           this.educationInfo!.map((v) => v.toJson()).toList();
     }
+    if (this.galleries != null) {
+      data['galleries'] = this.galleries!.map((v) => v.toJson()).toList();
+    }
     if (this.address != null) {
       data['address'] = this.address!.toJson();
     }
@@ -291,12 +304,13 @@ class BasicInfo {
   String? birthDate;
   // List<Null>? language;
   String? maritalStatus;
-  // Null? presentAddress;
+  PresentAddress? presentAddress;
   // Null? permanentAddress;
   String? createdAt;
   String? updatedAt;
   String? community;
   String? motherTongue;
+  String? aboutUs;
 
   BasicInfo(
       {this.id,
@@ -310,12 +324,15 @@ class BasicInfo {
         this.birthDate,
         // this.language,
         this.maritalStatus,
+        this.presentAddress,
         // this.presentAddress,
         // this.permanentAddress,
         this.createdAt,
         this.updatedAt,
         this.community,
-        this.motherTongue});
+        this.motherTongue,
+        this.aboutUs,
+      });
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -329,11 +346,15 @@ class BasicInfo {
     birthDate = json['birth_date'];
 
     maritalStatus = json['marital_status'];
+    presentAddress = json['present_address'] != null
+        ? new PresentAddress.fromJson(json['present_address'])
+        : null;
     // presentAddress = json['present_address'];
     // permanentAddress = json['permanent_address'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     community = json['community'];
+    aboutUs = json['about_us'];
     motherTongue = json['mother_tongue'];
   }
 
@@ -349,6 +370,9 @@ class BasicInfo {
     data['drinking_status'] = this.drinkingStatus;
     data['birth_date'] = this.birthDate;
     data['marital_status'] = this.maritalStatus;
+    if (this.presentAddress != null) {
+      data['present_address'] = this.presentAddress!.toJson();
+    }
     // data['present_address'] = this.presentAddress;
     // data['permanent_address'] = this.permanentAddress;
     data['created_at'] = this.createdAt;
@@ -358,6 +382,33 @@ class BasicInfo {
     return data;
   }
 }
+
+
+class PresentAddress {
+  String? country;
+  String? state;
+  String? zip;
+  String? city;
+
+  PresentAddress({this.country, this.state, this.zip, this.city});
+
+  PresentAddress.fromJson(Map<String, dynamic> json) {
+    country = json['country'];
+    state = json['state'];
+    zip = json['zip'];
+    city = json['city'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['zip'] = this.zip;
+    data['city'] = this.city;
+    return data;
+  }
+}
+
 
 class PhysicalAttributes {
   int? id;
@@ -583,6 +634,31 @@ class EducationInfo {
     data['end'] = this.end;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+class Galleries {
+  int? id;
+  int? userId;
+  String? image;
+
+
+
+  Galleries({this.id, this.userId, this.image, });
+
+  Galleries.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    image = json['image'];
+
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['image'] = this.image;
     return data;
   }
 }

@@ -248,6 +248,7 @@ class BasicInfo {
   String? updatedAt;
   String? community;
   String? motherTongue;
+  String? aboutUs;
 
   BasicInfo(
       {this.id,
@@ -266,7 +267,9 @@ class BasicInfo {
         this.createdAt,
         this.updatedAt,
         this.community,
-        this.motherTongue});
+        this.motherTongue,
+        this.aboutUs,
+      });
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -285,6 +288,7 @@ class BasicInfo {
     updatedAt = json['updated_at'];
     community = json['community'];
     motherTongue = json['mother_tongue'];
+    aboutUs = json['about_us'];
   }
 
   Map<String, dynamic> toJson() {
@@ -305,6 +309,7 @@ class BasicInfo {
     data['updated_at'] = updatedAt;
     data['community'] = community;
     data['mother_tongue'] = motherTongue;
+    data['about_us'] = this.aboutUs;
     return data;
   }
 }

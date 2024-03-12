@@ -200,7 +200,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Image.asset(
                     "assets/icons/ic_heart3.png",
                     height: 150,
-                    )),
+                    ),
+              ),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Image.asset(
@@ -218,11 +219,15 @@ class _SplashScreenState extends State<SplashScreen> {
             ],
           ),
           Center(
-              child: Image.asset('assets/icons/ic_splash_logo.png',
+              child: Image.asset(
+                'assets/icons/ic_splash_logo.png',
+              color: Colors.white,
               height: 111,
-              width: 237,))
-        ],
-      ),
+              width: 237,
+              ),
+            ),
+          ],
+        ),
       // body: Column(
       //   children: [
       //     Container(

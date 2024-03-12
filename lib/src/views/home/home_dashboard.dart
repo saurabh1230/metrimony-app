@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -8,10 +7,8 @@ import 'package:bureau_couple/src/views/home/home_screen.dart';
 import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart';
 import 'package:bureau_couple/src/views/home/matches/matches_screen.dart';
 import 'package:bureau_couple/src/views/home/profile/profile_screen.dart';
-import 'package:bureau_couple/src/views/home/search_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'bookmark_screen.dart';
 bool isClick = false;
 class HomeDashboardScreen extends StatefulWidget {
   final LoginResponse response;

@@ -136,13 +136,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   child: ChipList(
                     elements: gender,
                     onChipSelected: (selectedGender) {
-    
-              
                       setState(() {
                         SharedPrefs().setGender(selectedGender);
-
-
-                        // print(SharedPrefs().getGender());
                       });
                     },
                     defaultSelected: "M",
@@ -184,13 +179,11 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                         flagSize: 25,
                         backgroundColor: Colors.white,
                         textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
-                        bottomSheetHeight: 500, // Optional. Country list modal height
-                        //Optional. Sets the border radius for the bottomsheet.
+                        bottomSheetHeight: 500,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20.0),
                           topRight: Radius.circular(20.0),
                         ),
-                        //Optional. Styles the search field.
                         inputDecoration: InputDecoration(
                           labelText: 'Search',
                           hintText: 'Start typing to search',
@@ -207,14 +200,10 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           selectedCountryName = country.displayName.split(' ')[0] ?? '';
                           countyController.text = selectedCountryName;
                         });
-             
-
                         setState(() {
                           SharedPrefs().setCountry(selectedCountryName);
                           SharedPrefs().setCountryCode(country.countryCode);
                         });
-                        // Call a function or update the state here
-                        // Example: updateSelectedCountry(country);
                       },
                     );
                     setState(() {});
@@ -232,7 +221,6 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     return null;
                   },
                 onChanged: (value) {
-                    // SharedPrefs().setCountry(countyController.text);
                     }, icon: Icons.flag,),
               sizedBox12(),
            

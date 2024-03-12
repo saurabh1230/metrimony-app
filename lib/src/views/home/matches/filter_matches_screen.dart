@@ -7,6 +7,7 @@ import 'package:like_button/like_button.dart';
 import '../../../apis/members_api.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
+import '../../../constants/string.dart';
 import '../../../models/LoginResponse.dart';
 import '../../../models/matches_model.dart';
 import '../../../utils/urls.dart';
@@ -18,6 +19,7 @@ import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class FilterMatchesScreen extends StatefulWidget {
   final LoginResponse response;
@@ -307,6 +309,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                           itemCount: matches.length + 1,
                           itemBuilder: (context, i) {
                             if (i < matches.length) {
+                              DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                              int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
                               return otherUserdataHolder(
                                 context: context,
                                 tap: () {
@@ -325,9 +329,9 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                 userName: matches[i].firstname == null &&
                                         matches[i].lastname == null
                                     ? "user"
-                                    : '${matches[i].firstname} ${matches[i].lastname}',
+                                    : '${StringUtils.capitalize(matches[i].firstname ?? 'User')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
                                 atributeReligion:
-                                    "5 ft 4 in  • ${matches[i].religion ?? "Not Added Yet"}",
+                                    "5 ft 4 in  • ${matches[i].religion ?? ""}",
                                 profession: "Software Engineer",
                                 Location:
                                     "${matches[i].address!.state ?? ""} ${matches[i].address!.country ?? ""}",
@@ -360,7 +364,6 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                               });
                                               ToastUtil.showToast(
                                                   "Connection Request Sent");
-                                              print('done');
                                             } else {
                                               setState(() {
                                                 isLoadingList[i] = false;
@@ -380,7 +383,6 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                         title: "Connect Now"),
                                 bookmark: LikeButton(
                                   onTap: (isLiked) async {
-                                    print(matches[i].profileId.toString());
                                     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
                                     if (result['status'] == true) {
                                       Fluttertoast.showToast(msg: "Bookmark Saved");
@@ -407,6 +409,9 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
 
                                 ),
                                 bookMarkTap: () {},
+                                dob:'$age yrs',
+                                height:"${matches[i].physicalAttributes!.height ?? ''} ft",
+                                state:matches[i].basicInfo?.presentAddress?.state ?? '',
                               );
                             }
                             if (isLoading) {

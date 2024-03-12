@@ -21,6 +21,7 @@ Future<dynamic> updateBasicInfo({
   required String financialCondition,
   required String firstName,
   required String lastName,
+  required String aboutUs,
 
 
 }) async {
@@ -48,17 +49,17 @@ Future<dynamic> updateBasicInfo({
     'pre_zip': zip,
     'pre_city': city,
     'per_country': country,
-    'lastname': firstName,
-    'firstname': lastName
+    'lastname': lastName,
+    'firstname': firstName,
+    "about_us" : aboutUs,
 
   });
-  request.headers.addAll(headers);
   print(request.fields);
-  print(headers);
+  request.headers.addAll(headers);
   http.StreamedResponse response = await request.send();
   var resp = jsonDecode(await response.stream.bytesToString());
-  print(resp);
   if (response.statusCode == 200) {
+    print(resp);
     return resp;
   } else {
     print(resp);

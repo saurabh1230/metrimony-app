@@ -2,18 +2,24 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../apis/members_api/request_apis.dart';
 import '../../apis/other_user_api/other_user_profile_details.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/string.dart';
 import '../../constants/textstyles.dart';
 import '../../models/other_person_details_models.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../utils/widgets/buttons.dart';
-
+import 'package:intl/intl.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 class UserProfileScreen extends StatefulWidget {
   final String userId;
   const UserProfileScreen({super.key, required this.userId,});
@@ -32,7 +38,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   }
   OtherProfileModel model = OtherProfileModel();
-  // List<OtherProfileModel> model = [];
+
   getProfileDetails() {
     isLoading = true;
     var resp = getOtherUserProfileApi(otherUserId: widget.userId);
@@ -42,10 +48,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         if(value['status'] == true) {
           setState(() {
             model = OtherProfileModel.fromJson(value);
-          /*  for (var v in value['data']['matches']) {
-              model = OtherProfileModel.fromJson(v);
-              // model.add(OtherProfileModel.fromJson(v));
-            }*/
             isLoading = false;
           });
         } else {
@@ -57,290 +59,405 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     });
   }
 
+
+  DateTime? birthDate;
+  int age = 0;
   bool loading = false;
+
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    String? birthDateString = model.data?.matches?.basicInfo?.birthDate;
+    if (birthDateString != null) {
+      birthDate = DateFormat('yyyy-MM-dd').parse(birthDateString);
+      age = birthDate != null ? DateTime.now().difference(birthDate!).inDays ~/ 365 : 0;
+    }
     return Scaffold(
-      appBar: buildAppBar(),
-      body: isLoading ?Loading() :SingleChildScrollView(
+      // appBar: buildAppBar(),
+      body: isLoading ? const Loading() :SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
+              Column(
                 children: [
-                  Container(
-                    height: 400,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.60),
-                      borderRadius: BorderRadius.circular(12)
-                    ),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.3), // Adjust opacity as needed
-                        BlendMode.srcOver,
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(32),
+                   bottomLeft:Radius.circular(32) ),
+                child: CarouselSlider.builder(
+                  itemCount: model.data?.matches?.galleries?.length ?? 0,
+                  itemBuilder: (ctx, index, realIndex) {
+                    return CachedNetworkImage(
+                      imageUrl: '$baseGalleryImage${model.data?.matches?.galleries?[index].image}',
+                      fit: BoxFit.fill,
+                      errorWidget: (context, url, error) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(icLogo),
                       ),
-                      child: CachedNetworkImage(
-                        imageUrl:
-                        '$baseProfilePhotoUrl${model.data?.matches?.image ?? ''}',
-                        fit: BoxFit.fill,
-                        errorWidget: (context, url, error) =>
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Image.asset(icLogo,
-                                  height: 200,
-                                  width: 200,),
-                              ),
-                            ),
-                        progressIndicatorBuilder: (a, b, c) =>
-                            customShimmer(height: 170, /*width: 0,*/),
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          customShimmer(height: 0),
+                    );
+                  },
+                  options: CarouselOptions(
+                    height: 500,
+                    viewportFraction: 2,
+                    enlargeFactor: 0.3,
+                    aspectRatio: 0.8,
+                      enableInfiniteScroll : false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 40,
+                left: 0,
+                right: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    model.data?.matches?.galleries?.length ?? 0,
+                        (index) => Container(
+                      width: 40,
+                      height: 6,
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: _currentIndex == index ? Colors.white : Colors.black.withOpacity(0.30),
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 26,
-                    left: 26,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+              Positioned(
+                bottom: 26,
+                left: 26,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "${model.data!.matches!.firstname ?? ''} ${model.data!.matches!.lastname ?? 'User'}",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: styleSatoshiBold(size: 30, color: Colors.white),),
-                            SvgPicture.asset(icVerified,
-                              height: 24,
-                              width: 24,)
-                          ],
-                        ),
                         Text(
-                          model.data?.matches?.religion ?? '- - - - -',
-                          style: styleSatoshiBold(size: 16, color: Colors.white),),
-                        sizedBox16(),
-                        loading ? loadingButton(
-                            height: 30,
-                            width: 134,
-                            context: context) :button(
-                            fontSize: 14,
-                            height: 30,
-                            width: 134,
-                            context: context,
-                            onTap: () {
-                              setState(() {
-                                loading = true;
-                              });
-
-                              sendRequestApi(memberId: model.data!.matches!.id!.toString()
-                                // id: career[0].id.toString(),
-                              )
-                                  .then((value) {
-                                if (value['status'] == true) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  ToastUtil.showToast("Connection Request Sent");
-                                  print('done');
-                                } else {
-                                  setState(() {
-                                    loading = false;
-                                  });
-
-                                  List<dynamic> errors =
-                                  value['message']['error'];
-                                  String errorMessage = errors.isNotEmpty
-                                      ? errors[0]
-                                      : "An unknown error occurred.";
-                                  Fluttertoast.showToast(msg: errorMessage);
-                                }
-                              });
-                            },
-                            title: "Connect Now")
+                          "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: styleSatoshiBold(size: 30, color: Colors.white),),
+                        SvgPicture.asset(icVerified,
+                          height: 24,
+                          width: 24,)
                       ],
                     ),
-                  ),
+                    Text(
+                      StringUtils.capitalize(model.data?.matches?.religion ?? ''),
+                      style: styleSatoshiBold(size: 16, color: Colors.white),),
+                    Row(
+                      children: [
+                        Text(
+                          StringUtils.capitalize('$age yrs'),
+                          style: styleSatoshiBold(size: 16, color: Colors.white),),
+                        SizedBox(width: 10,),
+                        Text(
+                          StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
+                          style: styleSatoshiBold(size: 16, color: Colors.white),),
+                      ],
+                    ),
+                    sizedBox16(),
+                    loading ? loadingButton(
+                        height: 30,
+                        width: 134,
+                        context: context) :button(
+                        fontSize: 14,
+                        height: 30,
+                        width: 134,
+                        context: context,
+                        onTap: () {
+                          setState(() {
+                            loading = true;
+                          });
+                          sendRequestApi(memberId: model.data!.matches!.id!.toString())
+                              .then((value) {
+                            if (value['status'] == true) {
+                              setState(() {
+                                loading = false;
+                              });
+                              ToastUtil.showToast("Connection Request Sent");
+                              print('done');
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
 
+                              List<dynamic> errors =
+                              value['message']['error'];
+                              String errorMessage = errors.isNotEmpty
+                                  ? errors[0]
+                                  : "An unknown error occurred.";
+                              Fluttertoast.showToast(msg: errorMessage);
+                            }
+                          });
+                        },
+                        title: "Connect Now")
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16,
+                    top: 30),
+                child: backButton(
+                    context: context,
+                    image: icArrowLeft,
+                    onTap: () {
+                      Navigator.pop(context);
+                    }),
+              ),
+            ],
+          ),
                 ],
               ),
-              // sizedBox20(),
-              // Text("About",
-              //   style: styleSatoshiBold(size: 19, color: color22172A),),
-              // Text("My name is Cody and I enjoy meet new people and in a partner, I'm looking for someone who is kind, honest, and has a good sense of humor.",
-              //   style:styleSatoshiLight(size: 14, color: color14152B.withOpacity(0.60)),
-              //   overflow: TextOverflow.ellipsis,
-              //   maxLines: 3,),
+
+
               sizedBox20(),
-              Text("Professional Info",
-                style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-              sizedBox10(),
-              Row(
-                children: [
-                  Expanded(
-                    child: Row(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "About",
+                      style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                    sizedBox10(),
+                    Text(
+                      '${model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}" }',
+                      textAlign: TextAlign.start,
+                      style: styleSatoshiMedium(
+                        size: 14,
+                        color: Colors.black.withOpacity(0.70),
+                      ),
+                    ),
+                    sizedBox10(),
+                    Text(
+                      "Professional Info",
+                      style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                    sizedBox10(),
+                    Row(
                       children: [
-                        Expanded(child: Image.asset(icUserBagIcon,
-                          height: 20,
-                          width: 20,)),
-                        Expanded(child: Text(
-                          ' ${model.data!.matches!.basicInfo!.profession ?? "not added yet"}',
-                          // "${model.data?.matches?.basicInfo?.profession ?? "not added yet"}",
-                          // "Software Engineer",
-                          style: styleSatoshiMedium(
-                            size: 14,
-                            color: Colors.black.withOpacity(0.70),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: SvgPicture.asset(icEducation,
+                                  height: 18,
+                                  width: 18,),
+                              ),
+                              sizedBox6(),
+                              Text(
+                                ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
+                                textAlign: TextAlign.center,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icUserBagIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                StringUtils.capitalize(model.data!.matches!.basicInfo!.profession ?? ""),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              ),
+
+                            ],
+                          ),
                         ),
 
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Row(
+                    sizedBox12(),
+                    Row(
                       children: [
-                        Expanded(child: Image.asset(icUserHeightIcon,
-                          height: 20,
-                          width: 20,)),
-                        Expanded(child: Text(
-                          "${model.data?.matches?.physicalAttributes?.height ?? "not added yet"}",
-                          // "5 foot, 4 inch",
-                          style: styleSatoshiMedium(
-                            size: 14,
-                            color: Colors.black.withOpacity(0.70),
-                          ),))
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icUserHeightIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                "${model.data?.matches?.physicalAttributes?.height} ft" ?? "not added yet",
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),)
+                            ],
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(icUserLocationIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                ' ${model.data!.matches!.address!.country ?? ""}',
+                                textAlign: TextAlign.center,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: Row(
+                    sizedBox20(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(child: Image.asset(icUserLocationIcon,
-                          height: 20,
-                          width: 20,)),
-                        Expanded(child: Text(
-                          ' ${model.data!.matches!.address!.country ?? "not added yet"}',
-                          //  "New York Usa",
-                          style: styleSatoshiMedium(
-                            size: 14,
-                            color: Colors.black.withOpacity(0.70),
-                          ),))
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              sizedBox20(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 18,bottom: 18,left: 22,right: 22),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Your Match Details",
-                            style: styleSatoshiRegular(size: 14, color: Colors.white),),
-                          Text("",
-                            style: styleSatoshiRegular(size: 16, color: Colors.white),)
-                        ],
-                      ),
-                    ),
+                        Container(
+                          decoration: const BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              )
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 18,bottom: 18,left: 22,right: 22),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("User Details",
+                                  style: styleSatoshiRegular(size: 14, color: Colors.white),),
+                                Text("",
+                                  style: styleSatoshiRegular(size: 16, color: Colors.white),)
+                              ],
+                            ),
+                          ),
 
-                  ),
-                  sizedBox20(),
-
-                  // buildProfileRow(image: icAgeIcon, title: 'Age', text: '41 to 45'),
-                  buildProfileRow(image: icHeightIcon, title: 'Height',
-                      text:
-                      model.data?.matches?.physicalAttributes?.height ?? 'Not Added Yet'
-                      // (model.data!.matches!.physicalAttributes!.height == null ||
-                      //     model.data!.matches!.physicalAttributes!.height!.isEmpty) ? "" : "${model.data!.matches!.physicalAttributes!.height}",
-                  ),
-                  buildProfileRow(image: icChildrenIcon, title: 'Family', text: 'Father: ${model.data!.matches!.family?.fatherName ?? "not added yet"}, Mother: ${model.data!.matches!.family?.motherName ?? "not added yet"},'),
-                  buildProfileRow(image: icReligionIcon, title: 'Religion / Community', text:  '${model.data!.matches?.religion ?? "not added yet"}'),
-                  buildProfileRow(image: icMotherToungeIcon,
-                      title: 'Mother Tongue',
-                      text: "${model.data!.matches?.motherTongue ?? "not added yet"}"),
-                  buildProfileRow(image: icMarriedStatusPro,
-                      title: 'Married Status',
-                      text: "${model.data!.matches?.maritalStatus ?? "not added yet"}"),
-                  // buildProfileRow(image: icGotraIcon, title: 'Gotra', text: '41 to 45'),
-
-                 /* Row(
-                    children: [
-                      Expanded(
-                        child: Row(
+                        ),
+                        sizedBox20(),
+                        buildProfileRow(image: icHeightIcon, title: 'Height',
+                            text:
+                            "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''
+                        ),
+                        buildProfileRow(image: icChildrenIcon, title: 'Family', text: 'Father: ${model.data!.matches!.family?.fatherName ?? ""}, \nMother: ${model.data!.matches!.family?.motherName ?? "not added yet"},'),
+                        buildProfileRow(image: icReligionIcon, title: 'Religion / Community', text:  model.data!.matches?.religion ?? ""),
+                        buildProfileRow(image: icMotherToungeIcon,
+                            title: 'Mother Tongue',
+                            text: model.data!.matches?.motherTongue ?? ""),
+                        buildProfileRow(image: icMarriedStatusPro,
+                            title: 'Married Status',
+                            text: model.data!.matches?.maritalStatus ?? ""),
+                        Text("Preference",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        sizedBox6(),
+                        Row(
                           children: [
                             Expanded(
-                              child: Image.asset(icUserEducation,
-                                  height: 20,
-                                  width: 20,
+                              child: customContainer(
+                                  vertical: 8,
+                                  child: Center(
+                                    child: Text(model.data!.matches?.religion ?? "",
+                                      style: styleSatoshiLight(size: 12, color: Colors.white),),
+                                  ),
+                                  radius: 16,
+                                  color:  primaryColor,
+                                  click: () {}
+                              ),
                             ),
+                            const SizedBox(width: 5,),
+                            Expanded(
+                              child: customContainer(
+                                  vertical: 8,
+                                  child: Center(
+                                    child: Text(model.data!.matches?.maritalStatus ?? "",
+                                      style: styleSatoshiLight(size: 12, color: Colors.white),
+                                    ),
+                                  ),
+                                  radius: 16,
+                                  color: primaryColor,
+                                  click: () {}
+                              ),
                             ),
-                            Expanded(child: Text(
-                            // (model.data!.matches!.educationInfo![0].degree == null ||
-    // model.data!.matches!.educationInfo![0].degree!.isEmpty) ? "Not Added Yet" : "${model.data!.matches!.educationInfo![0].degree }",
-                            "${model.data?.matches?.educationInfo != null && model.data!.matches!.educationInfo!.isNotEmpty ? model.data!.matches!.educationInfo![0].degree ?? "not added yet" : "not added yet"}",
+                            const SizedBox(width: 5,),
 
-    // "Computer Science",
-                            style: styleSatoshiMedium(size: 14, color: Colors.black.withOpacity(0.70),
+
+                            Expanded(
+                              child: customContainer(
+                                  vertical: 8,
+                                  child: Center(
+                                    child: Text(model.data!.matches!.address!.country.toString() ?? "",
+                                      style: styleSatoshiLight(size: 12, color: Colors.white),
+                                    ),
+                                  ),
+                                  radius: 16,
+                                  color:  primaryColor,
+                                  click: () {}
+                              ),
                             ),
-                            ),
-                            )
+                            const SizedBox(width: 5,),
+                            Expanded(
+                              child: customContainer(
+                                  vertical: 8,
+                                  child: Center(
+                                    child: Text(model.data!.matches!.basicInfo!.gender ?? "",
+                                      style: styleSatoshiLight(size: 12, color: Colors.white),
+                                    ),
+                                  ),
+                                  radius: 16,
+                                  color:  primaryColor,
+                                  click: () {}
+                              ),)
+
                           ],
                         ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(child: Image.asset(icUserBagIcon,
-                                height: 20,
-                                width: 20,)),
-                            Expanded(child: Text(
-                              ' ${model.data!.matches!.basicInfo!.profession ?? "not added yet"}',
-                          // "${model.data?.matches?.basicInfo?.profession ?? "not added yet"}",
-    // "Software Engineer",
-                           style: styleSatoshiMedium(
-                             size: 14,
-                             color: Colors.black.withOpacity(0.70),
-                           ),
-                            ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),*/
-                  sizedBox14(),
-
-                  sizedBox10(),
-                  SizedBox(height: 14,),
-                  // Text("Interests",
-                  //   style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-
-                  // Wrap(
-                  //   spacing: 8.0, // Adjust spacing as needed
-                  //   runSpacing: 8.0, // Adjust run spacing as needed
-                  //   children: interest!.map((e) => chipBox(name: e)).toList(),
-                  // ),
 
 
-
-
-                ],
+                        sizedBox14(),
+                        sizedBox10(),
+                        const SizedBox(height: 14,),
+                      ],
+                    ),
+                  ],
+                ),
               ),
 
 
@@ -431,7 +548,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       title: Row(
         children: [
           Center(
-            child: Text('${model.data?.matches?.profileId ?? ''}',
+            child: Text('${StringUtils.capitalize(model.data?.matches?.firstname ?? '')} ${StringUtils.capitalize(model.data?.matches?.lastname ?? '')}',
               style: styleSatoshiBold(size: 16, color: Colors.black),
             ),
           ),

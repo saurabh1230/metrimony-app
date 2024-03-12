@@ -30,9 +30,10 @@ class MatchesModel {
   String? maritalStatus;
   String? motherTongue;
   String? community;
-  String? physicalAttributes;
+  // String? physicalAttributes;
   String? limitation;
   BasicInfo? basicInfo;
+  PhysicalAttributes? physicalAttributes;
 
 
 
@@ -73,6 +74,7 @@ class MatchesModel {
     this.basicInfo,
 
 
+
   });
 
   MatchesModel.fromJson(Map<String, dynamic> json) {
@@ -87,6 +89,11 @@ class MatchesModel {
     basicInfo = json['basic_info'] != null
         ? new BasicInfo.fromJson(json['basic_info'])
         : null;
+    physicalAttributes = json['physical_attributes'] != null
+        ? new PhysicalAttributes.fromJson(json['physical_attributes'])
+        : null;
+
+
 
     email = json['email'];
     countryCode = json['countryCode'];
@@ -113,6 +120,8 @@ class MatchesModel {
     motherTongue = json['motherTongue'];
     community = json['community'];
 
+
+
   }
 
   Map<String, dynamic> toJson() {
@@ -128,6 +137,9 @@ class MatchesModel {
     }
     if (this.basicInfo != null) {
       data['basic_info'] = this.basicInfo!.toJson();
+    }
+    if (this.physicalAttributes != null) {
+      data['physical_attributes'] = this.physicalAttributes!.toJson();
     }
     // data['address'] = address?.toJson();
     data['email'] = email;
@@ -155,6 +167,7 @@ class MatchesModel {
     data['motherTongue'] = motherTongue;
     data['community'] = community;
     data['limitation'] = limitation;
+
     return data;
   }
 }
@@ -201,11 +214,12 @@ class BasicInfo {
   String? updatedAt;
   String? community;
   String? motherTongue;
+  PresentAddress? presentAddress;
   String? aboutUs;
   int? age;
 
   BasicInfo(
-      {this.id,
+      {  this.id,
         this.userId,
         this.gender,
         this.profession,
@@ -214,6 +228,7 @@ class BasicInfo {
         this.drinkingStatus,
         this.birthDate,
         this.maritalStatus,
+        this.presentAddress,
         this.createdAt,
         this.updatedAt,
         this.community,
@@ -237,6 +252,9 @@ class BasicInfo {
     motherTongue = json['mother_tongue'];
     aboutUs = json['about_us'];
     age = json['age'];
+    presentAddress = json['present_address'] != null
+        ? new PresentAddress.fromJson(json['present_address'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -256,9 +274,40 @@ class BasicInfo {
     data['mother_tongue'] = this.motherTongue;
     data['about_us'] = this.aboutUs;
     data['age'] = this.age;
+    if (this.presentAddress != null) {
+      data['present_address'] = this.presentAddress!.toJson();
+    }
     return data;
   }
 }
+
+class PresentAddress {
+  String? country;
+  String? state;
+  String? zip;
+  String? city;
+
+  PresentAddress({this.country, this.state, this.zip, this.city});
+
+  PresentAddress.fromJson(Map<String, dynamic> json) {
+    country = json['country'];
+    state = json['state'];
+    zip = json['zip'];
+    city = json['city'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['zip'] = this.zip;
+    data['city'] = this.city;
+    return data;
+  }
+}
+
+
+
 
 class Interests {
   int? id;
@@ -291,6 +340,64 @@ class Interests {
     data['user_id'] = this.userId;
     data['interesting_id'] = this.interestingId;
     data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+
+class PhysicalAttributes {
+  int? id;
+  int? userId;
+  String? height;
+  String? weight;
+  String? bloodGroup;
+  String? eyeColor;
+  String? hairColor;
+  String? complexion;
+  String? disability;
+  String? createdAt;
+  String? updatedAt;
+
+  PhysicalAttributes(
+      {this.id,
+        this.userId,
+        this.height,
+        this.weight,
+        this.bloodGroup,
+        this.eyeColor,
+        this.hairColor,
+        this.complexion,
+        this.disability,
+        this.createdAt,
+        this.updatedAt});
+
+  PhysicalAttributes.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    height = json['height'];
+    weight = json['weight'];
+    bloodGroup = json['blood_group'];
+    eyeColor = json['eye_color'];
+    hairColor = json['hair_color'];
+    complexion = json['complexion'];
+    disability = json['disability'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['height'] = this.height;
+    data['weight'] = this.weight;
+    data['blood_group'] = this.bloodGroup;
+    data['eye_color'] = this.eyeColor;
+    data['hair_color'] = this.hairColor;
+    data['complexion'] = this.complexion;
+    data['disability'] = this.disability;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
