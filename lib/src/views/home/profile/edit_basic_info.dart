@@ -213,7 +213,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                            context: context,
                            builder: (BuildContext context) {
                              return NameEditDialogWidget(
-                               title: 'About Us',
+                               title: 'Introduction',
                                addTextField: TextFormField(
                                  maxLength: 200,
                                  onChanged: (v) {
@@ -223,7 +223,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                                    Navigator.pop(context); // Close the dialog
                                  },
                                  controller: aboutUs,
-                                 decoration: AppTFDecoration(hint: 'About Us')
+                                 decoration: AppTFDecoration(hint: 'Introduction')
                                      .decoration(),
                                  //keyboardType: TextInputType.phone,
                                ),
@@ -238,7 +238,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                           const Row(
                             children: [
                               Text(
-                                "About Us",
+                                "Introduction",
                               ),
                               SizedBox(width: 3,),
                               Icon(

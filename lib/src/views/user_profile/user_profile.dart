@@ -20,6 +20,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../utils/widgets/buttons.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:readmore/readmore.dart';
+
 class UserProfileScreen extends StatefulWidget {
   final String userId;
   const UserProfileScreen({super.key, required this.userId,});
@@ -85,7 +87,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(32),
                    bottomLeft:Radius.circular(32) ),
                 child: CarouselSlider.builder(
@@ -229,18 +231,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "About",
-                      style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                    sizedBox10(),
-                    Text(
-                      '${model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}" }',
-                      textAlign: TextAlign.start,
-                      style: styleSatoshiMedium(
-                        size: 14,
-                        color: Colors.black.withOpacity(0.70),
-                      ),
+                    model.data!.matches!.basicInfo!.aboutUs!.isEmpty ?
+                    const SizedBox() : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Introduction",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        sizedBox10(),
+                        ReadMoreText(
+                          '${model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}" }',
+                          trimLines: 2,
+                          colorClickableText: Colors.pink,
+                          trimMode: TrimMode.Line,
+                          trimCollapsedText: 'Show more',
+                          trimExpandedText: ' Show less',
+                          moreStyle: styleSatoshiLight(size: 14, color: primaryColor),
+                          lessStyle: styleSatoshiLight(size: 14, color: primaryColor),
+                        ),
+                      ],
                     ),
+
                     sizedBox10(),
                     Text(
                       "Professional Info",
@@ -438,7 +449,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: customContainer(
                                   vertical: 8,
                                   child: Center(
-                                    child: Text(model.data!.matches!.basicInfo!.gender ?? "",
+                                    child: Text(model.data!.matches!.basicInfo!.gender!.contains("F") ? "Female" :"Male" ?? "",
                                       style: styleSatoshiLight(size: 12, color: Colors.white),
                                     ),
                                   ),
@@ -473,7 +484,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Container chipBox({required String name}) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(12),
           ),
           border: Border.all(
@@ -481,7 +492,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               color: color4B164C.withOpacity(0.20)
           ),
           color: Colors.transparent),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Text(
         name,
         style: styleSatoshiMedium(size: 16, color: color4B164C),
@@ -554,50 +565,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       ),
-/*      actions: [
-        Popupmen(menuList: [
-          PopupMenuItem(
-            child: ListTile(
-              title: InkWell(
-                onTap: () {
-                },
-                child: const Text(
-                  'Account',
-                ),
-              ),
-            ),
-          ),
-
-          PopupMenuItem(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (builder) => SignInScreen()));
-
-              },
-              child: const ListTile(
-                title: Text(
-                  'Log out',
-                ),
-              ),
-            ),
-          ),
-        ], icon: SvgPicture.asset(ic3dots,
-          height: 48,
-          width: 48,))
-        *//* GestureDetector(
-          onTap: () {
-
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: SvgPicture.asset(ic3dots,
-              height: 48,
-              width: 48,),
-          ),
-        ),*//*
-
-      ],*/
       automaticallyImplyLeading: false,
 
     );
