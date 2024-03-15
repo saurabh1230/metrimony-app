@@ -91,6 +91,8 @@ Future<dynamic> getMatchesFilterApi({
   required String maritalStatus,
   required String page,
   required String gender,
+  required String country,
+  required String height,
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
@@ -100,6 +102,8 @@ Future<dynamic> getMatchesFilterApi({
     'gender': gender,
     'religion': religion,
     'marital_status' : maritalStatus,
+    'country' : country,
+    'height' : height,
   });
   print(request.fields);
 

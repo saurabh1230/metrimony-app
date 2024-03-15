@@ -493,12 +493,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             userName: matches[i].firstname == null && matches[i].lastname == null
                                 ? "user"
                                 : '${StringUtils.capitalize(matches[i].firstname ?? 'User')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                            atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
+                            atributeReligion: 'Religion: ${matches[i].basicInfo?.religion ?? ''}',
                             profession: "Software Engineer",
                             Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
                             likedColor: Colors.grey,
                             unlikeColor: primaryColor,
-                            button: isLoadingList[i]
+                            button: 
+                            matches[i].bookmark == 1 ? 
+                            button(
+                              fontSize: 14,
+                                height: 30,
+                                width: 134,
+                              context: context, onTap: (){}, title: "Connection saved"):
+                            isLoadingList[i]
                                 ? loadingButton(height: 30, width: 134, context: context)
                                 : button(
                                 fontSize: 14,

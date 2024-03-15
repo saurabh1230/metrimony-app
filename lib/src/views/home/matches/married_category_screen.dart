@@ -52,7 +52,7 @@ class _MarriedCategoryState extends State<MarriedCategory> {
       page: page.toString(),
       maritalStatus: widget.response.data!.user!.maritalStatus.toString(),
       religion: "",
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '',
     ).then((value) {
       matches.clear();
       setState(() {
@@ -77,7 +77,7 @@ class _MarriedCategoryState extends State<MarriedCategory> {
       page: page.toString(),
       maritalStatus:widget.response.data!.user!.maritalStatus.toString(),
       religion: religionFilter,
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '',
     ).then((value) {
       setState(() {
         if (value['status'] == true) {

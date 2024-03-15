@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../constants/colors.dart';
+
 
 class CustomStyledDropdownButton extends StatefulWidget {
   final String title;
@@ -24,72 +26,157 @@ class CustomStyledDropdownButton extends StatefulWidget {
 class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonHideUnderline(
-      child: DropdownButton2<String>(
-        isExpanded: true,
-        hint:  Row(
-          children: [
-            Expanded(
-              child: Text(
-                widget.title,
-                style: styleSatoshiRegular(size: 14, color: Colors.black),
-              ),
+    return DropdownButtonFormField2<String>(
+      isExpanded: true,
+      decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16,
+              horizontal: 5),
+          enabledBorder:  OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+              width: 0.5,
+              color: lightGrey.withOpacity(0.30),
             ),
-          ],
-        ),
-        items: widget.items
-            .map((String item) => DropdownMenuItem<String>(
-          value: item,
-          child: Text(
-            item,
-            style: styleSatoshiLight(size: 14, color: Colors.black),
-            overflow: TextOverflow.ellipsis,
           ),
-        ))
-            .toList(),
-        value: widget.selectedValue,
-        onChanged: widget.onChanged,
-        buttonStyleData: ButtonStyleData(
-          height: 50,
-          width: 160,
-          padding: const EdgeInsets.only(left: 14, right: 14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: Colors.black26,
+          errorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+              width: 0.5,
+              color: Colors.redAccent,
             ),
-            color: Colors.white,
           ),
-          elevation: 1,
+
+          focusedBorder:  OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+              width: 0.5,
+              color: lightGrey.withOpacity(0.30),
+            ),
+          ),
+          hintText: widget.title,
+          focusedErrorBorder:  OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(
+              width: 0.5,
+              color: lightGrey.withOpacity(0.30),
+            ),
+          )),
+      hint:  Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.title,
+              style: styleSatoshiRegular(size: 14, color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+      items: widget.items
+          .map((String item) => DropdownMenuItem<String>(
+        value: item,
+        child: Text(
+          item,
+          style: styleSatoshiLight(size: 14, color: Colors.black),
+          overflow: TextOverflow.ellipsis,
         ),
-        iconStyleData: const IconStyleData(
-          icon: Icon(
-            Icons.arrow_drop_down,
-          ),
-          iconSize: 14,
-          iconEnabledColor: Colors.black,
-          iconDisabledColor: Colors.grey,
+      ))
+          .toList(),
+      value: widget.selectedValue,
+      onChanged: widget.onChanged,
+      iconStyleData: const IconStyleData(
+        icon: Icon(
+          Icons.arrow_drop_down,
         ),
-        dropdownStyleData: DropdownStyleData(
-          maxHeight: 1.sw,
-          width: 300.sw,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            color: Colors.white,
-          ),
-          offset: const Offset(-20, 0),
-          scrollbarTheme: ScrollbarThemeData(
-            radius: const Radius.circular(40),
-            thickness: MaterialStateProperty.all(6),
-            thumbVisibility: MaterialStateProperty.all(true),
-          ),
+        iconSize: 20,
+        iconEnabledColor: Colors.black,
+        iconDisabledColor: Colors.grey,
+      ),
+      dropdownStyleData: DropdownStyleData(
+        maxHeight: 1.sw,
+        width: 300.sw,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.white,
         ),
-        menuItemStyleData: const MenuItemStyleData(
-          height: 40,
-          padding: EdgeInsets.only(left: 14, right: 14),
+        offset: const Offset(-20, 0),
+        scrollbarTheme: ScrollbarThemeData(
+          radius: const Radius.circular(40),
+          thickness: MaterialStateProperty.all(6),
+          thumbVisibility: MaterialStateProperty.all(true),
         ),
       ),
+      menuItemStyleData: const MenuItemStyleData(
+        height: 40,
+        padding: EdgeInsets.only(left: 14, right: 14),
+      ),
     );
+    // return DropdownButtonHideUnderline(
+    //   child: DropdownButton2<String>(
+    //     isExpanded: true,
+    //     hint:  Row(
+    //       children: [
+    //         Expanded(
+    //           child: Text(
+    //             widget.title,
+    //             style: styleSatoshiRegular(size: 14, color: Colors.black),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     items: widget.items
+    //         .map((String item) => DropdownMenuItem<String>(
+    //       value: item,
+    //       child: Text(
+    //         item,
+    //         style: styleSatoshiLight(size: 14, color: Colors.black),
+    //         overflow: TextOverflow.ellipsis,
+    //       ),
+    //     ))
+    //         .toList(),
+    //     value: widget.selectedValue,
+    //     onChanged: widget.onChanged,
+    //     buttonStyleData: ButtonStyleData(
+    //       height: 50,
+    //       width: 160,
+    //       padding: const EdgeInsets.only(left: 14, right: 14),
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(14),
+    //         border: Border.all(
+    //           color: Colors.black26,
+    //         ),
+    //         color: Colors.white,
+    //       ),
+    //       elevation: 1,
+    //     ),
+    //     iconStyleData: const IconStyleData(
+    //       icon: Icon(
+    //         Icons.arrow_drop_down,
+    //       ),
+    //       iconSize: 14,
+    //       iconEnabledColor: Colors.black,
+    //       iconDisabledColor: Colors.grey,
+    //     ),
+    //     dropdownStyleData: DropdownStyleData(
+    //       maxHeight: 1.sw,
+    //       width: 300.sw,
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(14),
+    //         color: Colors.white,
+    //       ),
+    //       offset: const Offset(-20, 0),
+    //       scrollbarTheme: ScrollbarThemeData(
+    //         radius: const Radius.circular(40),
+    //         thickness: MaterialStateProperty.all(6),
+    //         thumbVisibility: MaterialStateProperty.all(true),
+    //       ),
+    //     ),
+    //     menuItemStyleData: const MenuItemStyleData(
+    //       height: 40,
+    //       padding: EdgeInsets.only(left: 14, right: 14),
+    //     ),
+    //   ),
+    // );
   }
 }
 

@@ -82,14 +82,14 @@ class WelcomeScreen extends StatelessWidget {
                              bottom:40,
                              child: Container(
                                padding: const EdgeInsets.all(40),
-                               child: Image.asset(icHeart,
+                               child: Image.asset(icHeartWelcome,
                                height: 72,
                                width: 72,),
                              ))
                        ],
                      ),
                    ),
-                   SizedBox(height: 39,),
+                   const SizedBox(height: 39,),
                    Text("Continue with Social Media",
                    style: kManrope16MediumBlack,),
                    sizedBox18(),

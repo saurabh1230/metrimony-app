@@ -8,6 +8,7 @@ import '../../../apis/members_api.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/string.dart';
+import '../../../constants/textfield.dart';
 import '../../../models/LoginResponse.dart';
 import '../../../models/matches_model.dart';
 import '../../../utils/urls.dart';
@@ -20,7 +21,8 @@ import '../dashboard_widgets.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-
+import 'package:country_picker/country_picker.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 class FilterMatchesScreen extends StatefulWidget {
   final LoginResponse response;
 
@@ -33,6 +35,7 @@ class FilterMatchesScreen extends StatefulWidget {
 class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   String religionFilter = '';
   String marriedFilter = '';
+  double _value = 5.0;
 
   @override
   void initState() {
@@ -125,6 +128,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       maritalStatus: marriedFilter,
       religion: religionFilter,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      country: countyController.text, height: '5-11',
     ).then((value) {
       matches.clear();
       setState(() {
@@ -152,7 +156,9 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       page: page.toString(),
       maritalStatus: marriedFilter,
       religion: religionFilter,
+      country: countyController.text,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      height: '5-11',
     ).then((value) {
       setState(() {
         if (value['status'] == true) {
@@ -172,6 +178,11 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
 
   String? religionValue;
   String? marriedValue;
+
+  String selectedCountryName = '';
+  String? selectedValue;
+  final countyController = TextEditingController();
+  final stateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -234,26 +245,120 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                               ),
                             ),
                             sizedBox16(),
-                            SizedBox(
-                              width: 1.sw,
-                              child: CustomStyledDropdownButton(
-                                items: const  [
-                                  "Unmarried",
-                                  "Married",
-                                  "Widowed",
-                                  "Divorced"
-                                ],
-                                selectedValue: marriedValue,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    marriedValue = value;
-                                    marriedFilter = marriedValue!;
-                                  
-                                  });
-                                },
-                                title: 'Married Status',
-                              ),
+                            textBoxPickerField(
+                              onTap: () {
+                                showCountryPicker(
+                                  context: context,
+                                  countryListTheme: CountryListThemeData(
+                                    flagSize: 25,
+                                    backgroundColor: Colors.white,
+                                    textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
+                                    bottomSheetHeight: 500,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20.0),
+                                      topRight: Radius.circular(20.0),
+                                    ),
+                                    inputDecoration: InputDecoration(
+                                      // labelText: 'Search',
+                                      hintText: 'Start typing to search',
+                                      hintStyle: styleSatoshiBlack(size: 12, color: Colors.black),
+                                      prefixIcon: const Icon(Icons.search),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: const Color(0xFF8C98A8).withOpacity(0.2),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onSelect: (Country country) {
+                                    setState(() {
+                                      selectedCountryName = country.displayName.split(' ')[0] ?? '';
+                                      countyController.text = selectedCountryName;
+                                    });
+                                    setState(() {
+
+                                    });
+                                  },
+                                );
+                                setState(() {});
+                              },
+                              context: context,
+                              label: '',
+                              controller: countyController,
+                              hint: '',
+                              length: null,
+                              suffixIcon: const  Icon(Icons.visibility_off),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your Country';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                              }, icon: Icons.flag,),
+                            sizedBox16(),
+                            textBox(
+                              context: context,
+                              label: 'State',
+                              controller: stateController,
+                              hint: 'State',
+                              length: null,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your State';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+
+                              },),
+                            sizedBox16(),
+                            SfSlider(
+                              activeColor: primaryColor,
+                              min: 5.0,
+                              max: 7.0,
+                              value: _value,
+                              interval: 1, // Interval is 1 foot
+                              showTicks: true,
+                              showLabels: true,
+                              enableTooltip: true,
+                              minorTicksPerInterval: 0, // Disable minor ticks
+                              onChanged: (dynamic value) {
+                                setState(() {
+                                  _value = value;
+                                });
+                              },
+                              labelFormatterCallback: (dynamic value, String formattedValue) {
+                                int feet = value.floor();
+                                int inches = ((value - feet) * 12).round();
+                                if (inches == 12) {
+                                  feet++;
+                                  inches = 0;
+                                }
+                                return '$feet\' $inches"';
+                              },
                             ),
+
+                            // SizedBox(
+                            //   width: 1.sw,
+                            //   child: CustomStyledDropdownButton(
+                            //     items: const  [
+                            //       "Unmarried",
+                            //       "Married",
+                            //       "Widowed",
+                            //       "Divorced"
+                            //     ],
+                            //     selectedValue: marriedValue,
+                            //     onChanged: (String? value) {
+                            //       setState(() {
+                            //         marriedValue = value;
+                            //         marriedFilter = marriedValue!;
+                            //
+                            //       });
+                            //     },
+                            //     title: 'Married Status',
+                            //   ),
+                            // ),
                             sizedBox16(),
                             elevatedButton(
                                 color: primaryColor,
@@ -331,62 +436,51 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                     ? "user"
                                     : '${StringUtils.capitalize(matches[i].firstname ?? 'User')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
                                 atributeReligion:
-                                    "5 ft 4 in  • ${matches[i].religion ?? ""}",
+                                    "5 ft 4 in  • ${StringUtils.capitalize(matches[i].basicInfo?.religion ?? "")}",
                                 profession: "Software Engineer",
                                 Location:
                                     "${matches[i].address!.state ?? ""} ${matches[i].address!.country ?? ""}",
                                 likedColor: Colors.grey,
                                 unlikeColor: primaryColor,
-                                button: isLoadingList[i]
-                                    ? loadingButton(
-                                        height: 30,
-                                        width: 134,
-                                        context: context)
+                                button: matches[i].bookmark == 1 ?
+                                button(
+                                    fontSize: 14,
+                                    height: 30,
+                                    width: 134,
+                                    context: context, onTap: (){}, title: "Connection saved"):
+                                isLoadingList[i]
+                                    ? loadingButton(height: 30, width: 134, context: context)
                                     : button(
-                                        fontSize: 14,
-                                        height: 30,
-                                        width: 134,
-                                        context: context,
-                                        onTap: () {
+                                    fontSize: 14,
+                                    height: 30,
+                                    width: 134,
+                                    context: context,
+                                    onTap: () {
+                                      setState(() {
+                                        isLoadingList[i] = true;
+                                      });
+                                      sendRequestApi(memberId: matches[i].id.toString()).then((value) {
+                                        if (value['status'] == true) {
                                           setState(() {
-                                            isLoadingList[i] = true;
+                                            isLoadingList[i] = false;
                                           });
-  
-                                          sendRequestApi(
-                                                  memberId:
-                                                      matches[i].id.toString()
-                                                  // id: career[0].id.toString(),
-                                                  )
-                                              .then((value) {
-                                            if (value['status'] == true) {
-                                              setState(() {
-                                                isLoadingList[i] = false;
-                                              });
-                                              ToastUtil.showToast(
-                                                  "Connection Request Sent");
-                                            } else {
-                                              setState(() {
-                                                isLoadingList[i] = false;
-                                              });
-
-                                              List<dynamic> errors =
-                                                  value['message']['error'];
-                                              String errorMessage = errors
-                                                      .isNotEmpty
-                                                  ? errors[0]
-                                                  : "An unknown error occurred.";
-                                              Fluttertoast.showToast(
-                                                  msg: errorMessage);
-                                            }
+                                          ToastUtil.showToast("Connection Request Sent");
+                                        } else {
+                                          setState(() {
+                                            isLoadingList[i] = false;
                                           });
-                                        },
-                                        title: "Connect Now"),
+                                          List<dynamic> errors = value['message']['error'];
+                                          String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                          Fluttertoast.showToast(msg: errorMessage);
+                                        }
+                                      });
+                                    },
+                                    title: "Connect Now"),
                                 bookmark: LikeButton(
                                   onTap: (isLiked) async {
                                     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
                                     if (result['status'] == true) {
                                       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                      // Fluttertoast.showToast("Bookmark Saved");
                                     } else {
 
                                     }

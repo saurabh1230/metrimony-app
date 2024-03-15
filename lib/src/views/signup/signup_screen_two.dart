@@ -8,7 +8,8 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
-
+import '../../utils/widgets/dropdown_buttons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreenTwo extends StatefulWidget {
 
@@ -30,7 +31,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
   final List<String> gender = ["M","F"];
   final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Marathi'];
-  final List<String> married = ["Unmarried","Married","Widowed","Divorced"];
+  final List<String> married = ["Unmarried","Widowed","Divorced"];
 
   final countryController = TextEditingController();
   final profileController = TextEditingController();
@@ -42,6 +43,9 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   bool picked = false;
   String selectedCountryName = '';
   String? selectedValue;
+
+  String? motherTongueValue = '';
+  String motherTongueFilter = '';
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +258,31 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   style: styleSatoshiBold(size: 16, color: Colors.black),),
               ),
               const SizedBox(height: 12,),
+              // Padding(
+              //   padding:
+              //   const EdgeInsets.symmetric(horizontal: 0.0),
+              //   child: SizedBox(
+              //     width: 1.sw,
+              //     child: CustomStyledDropdownButton(
+              //       items: const  [
+              //         "Hindi",
+              //         'Urdu',
+              //         "Punjabi",
+              //         'Bhojpuri',
+              //         'Marathi',
+              //       ],
+              //       selectedValue: motherTongueValue,
+              //       onChanged: (String? value) {
+              //         setState(() {
+              //           motherTongueValue = value;
+              //           motherTongueFilter = motherTongueValue ?? '';
+              //
+              //         });
+              //       },
+              //       title: 'Mother Tongue',
+              //     ),
+              //   ),
+              // ),
 
               textBox(
                 context: context,
@@ -344,7 +373,7 @@ class _ChipListState extends State<ChipList> {
         if (errorMessage.isNotEmpty)
           Text(
             errorMessage,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
       ],
     );

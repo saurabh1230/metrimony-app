@@ -151,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Navigator.pop(context);
                               },
                               click2: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (builder) => SignInScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (builder) => const  SignInScreen()));
                               },
                               heading: 'Delete this Account?',
                               subheading: ' This Account with will be permanently deleted',

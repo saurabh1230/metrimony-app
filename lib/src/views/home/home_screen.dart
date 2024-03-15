@@ -9,7 +9,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:bureau_couple/src/views/notification/notification.dart';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
@@ -500,7 +500,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 Text(
-                                  matches[i].religion ?? '',
+                                  matches[i].basicInfo?.religion ?? '',
                                   style: styleSatoshiRegular(size: 13, color: Colors.white),
                                 ),
                                 Text(
@@ -658,7 +658,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: 
             const Padding(
               padding: EdgeInsets.only(right: 14.0),
-              child: Icon(CupertinoIcons.person,
+              child: Icon(CupertinoIcons.bell,
                 color: Colors.black,
                 size: 26,
               ),

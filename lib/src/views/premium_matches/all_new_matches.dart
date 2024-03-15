@@ -470,7 +470,13 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                   dob: '$age yrs',
                   likedColor: Colors.grey,
                   unlikeColor: primaryColor,
-                  button: isLoadingList[i]
+                  button: matches[i].bookmark == 1 ?
+                  button(
+                      fontSize: 14,
+                      height: 30,
+                      width: 134,
+                      context: context, onTap: (){}, title: "Connection saved"):
+                  isLoadingList[i]
                       ? loadingButton(height: 30, width: 134, context: context)
                       : button(
                       fontSize: 14,
@@ -481,14 +487,12 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                         setState(() {
                           isLoadingList[i] = true;
                         });
-
                         sendRequestApi(memberId: matches[i].id.toString()).then((value) {
                           if (value['status'] == true) {
                             setState(() {
                               isLoadingList[i] = false;
                             });
                             ToastUtil.showToast("Connection Request Sent");
-                            print('done');
                           } else {
                             setState(() {
                               isLoadingList[i] = false;

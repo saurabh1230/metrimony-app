@@ -1,115 +1,7 @@
-//
-// import 'package:bureau_couple_app/src/constants/assets/assets.dart';
-// import 'package:bureau_couple_app/src/constants/textstyles.dart';
-// import 'package:bureau_couple_app/src/utils/widgets/buttons.dart';
-// import 'package:bureau_couple_app/src/utils/widgets/common_widgets.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:pin_code_fields/pin_code_fields.dart';
-// import '../../constants/colors/colors.dart';
-// import '../../constants/fonts.dart';
-// import '../../constants/sizedboxe.dart';
-// import '../../constants/textfield/textfield.dart';
-// import 'forgot_password_otp.dart';
-//
-// class ForgotPasswordScreen extends StatefulWidget {
-//   const ForgotPasswordScreen({super.key});
-//
-//   @override
-//   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
-// }
-//
-// class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-//   final emailController = TextEditingController();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         automaticallyImplyLeading: false,
-//         centerTitle: true,
-//         title: Text("Forgot Password",
-//         style: styleSatoshiBold(size: 16, color: Colors.black),),
-//        /* leading: Padding(
-//           padding: const EdgeInsets.only(left: 16.0),
-//           child: backButton(
-//             context: context,
-//             image: icArrowLeft,
-//             onTap: () {
-//               Navigator.pop(context);
-//
-//             },
-//           ),
-//         ),*/
-//       ),
-//       body: SingleChildScrollView(
-//         child: Form(
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//             child: Column(
-//               children: [
-//                 Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     sizedBox28(),
-//                     Text("Enter Your Email",
-//                       style: styleSatoshiBold(size: 14, color:Colors.black),),
-//
-//                     const SizedBox(height: 23,),
-//
-//                     Text("Email",
-//                       style: kManrope14Medium626262,),
-//                     sizedBox6(),
-//                     Padding(
-//                       padding: EdgeInsets.symmetric(horizontal: 0),
-//                     child: textBox(
-//                         context: context,
-//                         label: '',
-//                         controller: emailController,
-//                         hint: '',
-//                         radius: 32,
-//                         length: null,
-//                         validator: (value) {
-//                           return null;
-//                         }, onChanged: (value) {
-//
-//                     }
-//                       //   validator: (value) {
-//                       //   if (value == null || value.isEmpty) {
-//                       //     return 'Please enter your email address.';
-//                       //   }
-//                       //   if (!isValidEmail(value)) {
-//                       //     return 'Please enter a valid email address.';
-//                       //   }
-//                       //   return null;
-//                       // },
-//                     ),),
-//                     sizedBox10(),
-//                     Text("Please check your mail for otp",
-//                       style: styleSatoshiLight(size: 14, color:Colors.grey),),
-//                     sizedBox28(),
-//                     sizedBox16(),
-//                     button(context: context, onTap: () {
-//                       Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-//                       const ForgotPasswordOtpScreen()));
-//                     }, title: "Next")
-//
-//                   ],
-//                 ),
-//                 SizedBox(height: 24,),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../apis/forgot_password_api.dart';
@@ -494,8 +386,8 @@ class _ForgotChangePassSheetState extends State<ForgotChangePassSheet> {
                   hint: '',
                   length: null,
                   suffixIcon: _passwordVisible
-                      ?Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ?const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
                   validator: (value) {
                     return ;
                   }, bool: _passwordVisible, onChanged: (String ) {  }),
@@ -516,8 +408,8 @@ class _ForgotChangePassSheetState extends State<ForgotChangePassSheet> {
                   hint: '',
                   length: null,
                   suffixIcon: _passwordVisible
-                      ?Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ? const Icon(Icons.visibility)
+                      : const  Icon(Icons.visibility_off),
                   validator: (value) {
                     if (value != passwordController.text) {
                       return 'Passwords do not match';
@@ -578,7 +470,7 @@ class _ForgotChangePassSheetState extends State<ForgotChangePassSheet> {
     if (passwordController.text != confirmController.text) {
       // Show an error message or handle the case when passwords don't match
       // For now, you can print an error message
-      print('Passwords do not match');
+    
       return false;
     }
     return true;

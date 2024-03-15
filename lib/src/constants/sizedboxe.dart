@@ -10,8 +10,6 @@ sizedBox10() {
   return const SizedBox(height: 10,);
 }
 
-
-
 sizedBox18() {
   return const SizedBox(height: 18,);
 }

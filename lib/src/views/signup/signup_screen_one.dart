@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:colorful_safe_area/colorful_safe_area.dart';
 import '../../constants/fonts.dart';
 import '../../constants/shared_prefs.dart';
 import '../../constants/sizedboxe.dart';
 import '../../constants/textfield.dart';
-import '../../utils/state.dart';
-import 'package:provider/provider.dart';
-import '../../utils/widgets/buttons.dart';
 
 
 class SignUpScreenOne extends StatefulWidget {
@@ -121,7 +117,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                           }
                           return null;
                         },),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Text("Email",
                         style: kManrope14Medium626262,),
                       sizedBox6(),
@@ -142,7 +138,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                             }
                             return null;
                           },),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       Text("Phone",
                         style: kManrope14Medium626262,),
                       sizedBox6(),
@@ -161,7 +157,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                               SharedPrefs().setPhone(phNoController.text);
                             });
                       }, length: 10),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
 
                       Text("Password",
                         style: kManrope14Medium626262,),
@@ -178,8 +174,8 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                           hint: '',
                           length: null,
                           suffixIcon: _passwordVisible
-                              ?Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please set a password';
@@ -193,7 +189,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                           }),
                     ],
                   ),
-              SizedBox(height: 24,),
+              const SizedBox(height: 24,),
             ],
           ),
         ),

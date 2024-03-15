@@ -2,11 +2,10 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+
+
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../apis/members_api/request_apis.dart';
 import '../../apis/other_user_api/other_user_profile_details.dart';
@@ -129,7 +128,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         (index) => Container(
                       width: 40,
                       height: 6,
-                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
                         color: _currentIndex == index ? Colors.white : Colors.black.withOpacity(0.30),
@@ -164,7 +163,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         Text(
                           StringUtils.capitalize('$age yrs'),
                           style: styleSatoshiBold(size: 16, color: Colors.white),),
-                        SizedBox(width: 10,),
+                        const SizedBox(width: 10,),
                         Text(
                           StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
                           style: styleSatoshiBold(size: 16, color: Colors.white),),
@@ -190,7 +189,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 loading = false;
                               });
                               ToastUtil.showToast("Connection Request Sent");
-                              print('done');
+          
                             } else {
                               setState(() {
                                 loading = false;
@@ -240,7 +239,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           style: styleSatoshiBold(size: 16, color: color1C1C1c),),
                         sizedBox10(),
                         ReadMoreText(
-                          '${model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}" }',
+                          model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}",
                           trimLines: 2,
                           colorClickableText: Colors.pink,
                           trimMode: TrimMode.Line,
@@ -389,14 +388,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             text:
                             "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''
                         ),
-                        buildProfileRow(image: icChildrenIcon, title: 'Family', text: 'Father: ${model.data!.matches!.family?.fatherName ?? ""}, \nMother: ${model.data!.matches!.family?.motherName ?? "not added yet"},'),
-                        buildProfileRow(image: icReligionIcon, title: 'Religion / Community', text:  model.data!.matches?.religion ?? ""),
+                        buildProfileRow(image: icChildrenIcon, title: 'Family',
+                         text: 'Father: ${StringUtils.capitalize(model.data!.matches!.family?.fatherName ?? "")}, \nMother: ${StringUtils.capitalize(model.data!.matches!.family?.motherName ?? "")},'),
+                        buildProfileRow(image: icReligionIcon,
+                         title: 'Religion / Community',
+                          text: StringUtils.capitalize(model.data!.matches?.basicInfo?.religion  ?? "") ),
                         buildProfileRow(image: icMotherToungeIcon,
                             title: 'Mother Tongue',
-                            text: model.data!.matches?.motherTongue ?? ""),
+                            text: StringUtils.capitalize(model.data!.matches?.basicInfo?.motherTongue  ?? "")
+                            ),
                         buildProfileRow(image: icMarriedStatusPro,
                             title: 'Married Status',
-                            text: model.data!.matches?.maritalStatus ?? ""),
+                            text: StringUtils.capitalize(model.data!.matches?.basicInfo?.maritalStatus ?? "")
+                            ),
                         Text("Preference",
                           style: styleSatoshiBold(size: 16, color: color1C1C1c),),
                         sizedBox6(),
@@ -406,7 +410,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: customContainer(
                                   vertical: 8,
                                   child: Center(
-                                    child: Text(model.data!.matches?.religion ?? "",
+                                    child: Text(model.data!.matches?.basicInfo?.religion ?? "",
                                       style: styleSatoshiLight(size: 12, color: Colors.white),),
                                   ),
                                   radius: 16,
@@ -419,7 +423,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               child: customContainer(
                                   vertical: 8,
                                   child: Center(
-                                    child: Text(model.data!.matches?.maritalStatus ?? "",
+                                    child: Text(model.data!.matches?.basicInfo?.maritalStatus  ?? "",
                                       style: styleSatoshiLight(size: 12, color: Colors.white),
                                     ),
                                   ),
@@ -470,9 +474,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ],
                 ),
               ),
-
-
-
             ],
           ),
         ),

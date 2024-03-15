@@ -479,7 +479,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                                 ? 'Not Added'
                                 : basicInfo.gender.toString())
                             : genderController.text,
-                        data2: StringUtils.capitalize(genderController.text),
+                        data2: StringUtils.capitalize(genderController.text.contains("F") ? "Female" :"Male"),
                         isControllerTextEmpty: genderController.text.isEmpty,
                       ),
                       // child: CarRowWidget(favourites: favourites!,)
