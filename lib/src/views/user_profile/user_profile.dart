@@ -150,9 +150,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: styleSatoshiBold(size: 30, color: Colors.white),),
-                        SvgPicture.asset(icVerified,
-                          height: 24,
-                          width: 24,)
+
                       ],
                     ),
                     Text(

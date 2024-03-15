@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
    }
 
    List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
-  List<String> categoryTitle = ["Filter by Religion","Filter By Married Status"];
+  List<String> categoryTitle = ["Filter by Religion","Filter By Mother Tongue"];
   List<Color> color = [colorE2b93b,colorEb5757];
 
 
@@ -140,8 +140,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height: 40,
                                         width: 40,),
                                     ),
-                                progressIndicatorBuilder: (a, b, c) =>
-                                    customShimmer(height: 170, /*width: 0,*/),
+                                    progressIndicatorBuilder: (a, b, c) =>
+                                    customShimmer(height: 170,),
                               ),
                             ),
                           ),
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             maxLines: 2,
                             textAlign:TextAlign.center,
                             style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
-                          )
+                          ),
                         ],
                       ),
                     );
@@ -627,7 +627,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: CachedNetworkImage(
                       imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       errorWidget: (context, url, error) =>
                           Padding(
                             padding: const EdgeInsets.all(8.0),

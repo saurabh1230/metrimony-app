@@ -1,8 +1,10 @@
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../apis/profile_apis/education_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
@@ -79,6 +81,13 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
 
   }
 
+  DateTime _selectedTime = DateTime.now();
+  String time = "-";
+
+  int _feet = 5;
+  int _inches = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +148,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
           return careerInfo();
         },
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const  AlwaysScrollableScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
             child: Column(
@@ -182,30 +191,170 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                 sizedBox16(),
                 GestureDetector(
                   onTap: () {
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Height in feet',
-                          addTextField: TextFormField(
-                            keyboardType: TextInputType.number,
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
+                      builder: (BuildContext builder) {
 
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: heightController,
-                            decoration: AppTFDecoration(
-                                hint: 'Height').decoration(),
-                            //keyboardType: TextInputType.phone,
+                        // Create the modal bottom sheet widget containing the time picker and close button
+                        return SizedBox(
+                          height: MediaQuery.of(context).copyWith().size.height / 3,
+                          child: Column(
+                            children: [
+
+                              WillPopScope(
+                                onWillPop: () async {
+
+                                  return false;
+                                },
+                                child: SizedBox(
+                                  height:200,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: CupertinoPicker(
+                                          scrollController: FixedExtentScrollController(
+                                            initialItem: _feet - 5,
+                                          ),
+                                          itemExtent: 32,
+                                          onSelectedItemChanged: (index) {
+                                            setState(() {
+                                              _feet = index + 5;
+                                            });
+                                          },
+                                          children: List.generate(
+                                            7, // 7 feet in the range from 5 to 11
+                                                (index) => Center(child: Text('${index + 5}\'')),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: CupertinoPicker(
+                                          scrollController: FixedExtentScrollController(
+                                            initialItem: _inches,
+                                          ),
+                                          itemExtent: 32,
+                                          onSelectedItemChanged: (index) {
+                                            setState(() {
+                                              _inches = index;
+                                            });
+                                            print(' $_feet-${_inches.toString().padLeft(2, '0')}');
+                                          },
+                                          children: List.generate(
+                                            12, // 12 inches in a foot
+                                                (index) => Center(child: Text('$index\"')),
+                                          ),
+                                        ),
+                                      ),
+                                
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              // Time picker
+                              // Container(
+                              //   height: 300,
+                              //   child: CupertinoPicker(
+                              //     scrollController: FixedExtentScrollController(
+                              //       initialItem: _feet - 5,
+                              //     ),
+                              //     itemExtent: 32,
+                              //     onSelectedItemChanged: (index) {
+                              //       setState(() {
+                              //         _feet = index + 5;
+                              //       });
+                              //     },
+                              //     children: List.generate(
+                              //       7, // 7 feet in the range from 5 to 11
+                              //           (index) => Center(child: Text('${index + 5}\'')),
+                              //     ),
+                              //   ),
+                              // ),
+                              // Container(
+                              //   height: 200,
+                              //   child: CupertinoPicker(
+                              //     scrollController: FixedExtentScrollController(
+                              //       initialItem: _inches,
+                              //     ),
+                              //     itemExtent: 32,
+                              //     onSelectedItemChanged: (index) {
+                              //       setState(() {
+                              //         _inches = index;
+                              //       });
+                              //     },
+                              //     children: List.generate(
+                              //       12, // 12 inches in a foot
+                              //           (index) => Center(child: Text('$index\"')),
+                              //     ),
+                              //   ),
+                              // ),
+
+                              // Close button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                
+                                children: [
+                                  Flexible(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent, // Change the background color to red
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child:  Text('Close',
+                                      style: styleSatoshiMedium(
+                                      size: 13,
+                        color: Colors.white),),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  Flexible(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child:  Text('Save',
+                                      style: styleSatoshiMedium(
+                                          size: 13,
+                                          color: Colors.black),),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                            ],
                           ),
                         );
                       },
                     );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'Height in feet',
+                    //       addTextField: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {
+                    //
+                    //           });
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: heightController,
+                    //         decoration: AppTFDecoration(
+                    //             hint: 'Height').decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                   },
                   child: buildDataAddRow(title: 'Height',
                      data1: heightController.text.isEmpty

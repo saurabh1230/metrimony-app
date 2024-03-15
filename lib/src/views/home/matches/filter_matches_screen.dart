@@ -1,3 +1,4 @@
+import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -128,7 +129,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       maritalStatus: marriedFilter,
       religion: religionFilter,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      country: countyController.text, height: '5-11',
+      country: countyController.text, height: '', motherTongue: '',
     ).then((value) {
       matches.clear();
       setState(() {
@@ -158,7 +159,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       religion: religionFilter,
       country: countyController.text,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      height: '5-11',
+      height: '', motherTongue: '',
     ).then((value) {
       setState(() {
         if (value['status'] == true) {
@@ -385,7 +386,10 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
             child: Container(
               padding: const EdgeInsets.only(
                   right: 16.0, top: 6, bottom: 6, left: 10),
-              child: const Icon(Icons.filter_alt_outlined),
+              child:  Image.asset(icFilter,
+              height: 24,
+              width: 24,
+              color: Colors.black,),
             ),
           )
         ],
@@ -447,8 +451,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                     fontSize: 14,
                                     height: 30,
                                     width: 134,
-                                    context: context, onTap: (){}, title: "Connection saved"):
-                                isLoadingList[i]
+                                    context: context, onTap: (){}, title: "Request Sent"):
+                                      isLoadingList[i]
                                     ? loadingButton(height: 30, width: 134, context: context)
                                     : button(
                                     fontSize: 14,

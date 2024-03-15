@@ -464,7 +464,7 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                   userName: matches[i].firstname == null && matches[i].lastname == null
                       ? "user"
                       : '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? '')}',
-                  atributeReligion: "${matches[i].religion}",
+                  atributeReligion: "Religion: ${matches[i].basicInfo?.religion}",
                   profession: "",
                   Location: "${matches[i].address!.state ?? ""} ${matches[i].address!.country ?? ""}",
                   dob: '$age yrs',
@@ -475,7 +475,7 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                       fontSize: 14,
                       height: 30,
                       width: 134,
-                      context: context, onTap: (){}, title: "Connection saved"):
+                      context: context, onTap: (){}, title: "Request Sent"):
                   isLoadingList[i]
                       ? loadingButton(height: 30, width: 134, context: context)
                       : button(

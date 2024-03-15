@@ -322,7 +322,7 @@
 //   }
 // }
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
-import 'dart:async';
+import 'package:like_button/like_button.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
@@ -453,7 +453,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 16.0),
-              child: Text("Saved Matches"),
+              child: Text("Sortlisted"),
             ),
           )
         ],
@@ -475,7 +475,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         if (i < matches.length) {
                           DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
                           int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                          return otherUserdataHolder(
+                          return Column(
+                            children: [
+                            otherUserdataHolder(
                             context: context,
                             tap: () {
                               Navigator.push(
@@ -498,13 +500,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
                             likedColor: Colors.grey,
                             unlikeColor: primaryColor,
-                            button: 
-                            matches[i].bookmark == 1 ? 
+                            button:
+                            matches[i].bookmark == 1 ?
                             button(
-                              fontSize: 14,
+                                fontSize: 14,
                                 height: 30,
                                 width: 134,
-                              context: context, onTap: (){}, title: "Connection saved"):
+                                context: context, onTap: (){}, title: "Request Sent"):
                             isLoadingList[i]
                                 ? loadingButton(height: 30, width: 134, context: context)
                                 : button(
@@ -535,29 +537,31 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 },
                                 title: "Connect Now"),
                             bookmark:
-                            GestureDetector(
-                              onTap: () {
+                            LikeButton(
+                              onTap: (isLiked) async {
+                                var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
+                                if (result['status'] == true) {
+                                  Fluttertoast.showToast(msg: "Bookmark Saved");
+                                } else {
 
-                                setState(() {
-                                  like[i] = !like[i];
-                                });
-                                Timer timer = Timer(Duration(seconds: 2), () async {
-                                  setState(() {
-                                    like[i] = false;
-                                  });
-                                  var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                      if (result['status'] == true) {
-                                        Fluttertoast.showToast(msg: "Bookmark Saved");
-                                      } else {}
-                                });
+                                }
+
                               },
-                              child:like[i] ? Center(
-                              child: LoadingAnimationWidget.beat(
-                               size: 20, color: primaryColor,
-                              )):  Image.asset(icHeart,
-                              height: 24,
-                              width: 24,
-                              color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,),
+                              size: 22,
+                              circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                              bubblesColor: const BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.bookmark,
+                                  color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
+                                  size: 22,
+                                );
+                              },
+
                             ),
                             // bookmark: LikeButton(
                             //   onTap: (isLiked) async {
@@ -582,6 +586,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             // ),
                             bookMarkTap: () {},
                             dob: '$age yrs',
+                          )
+                            ],
                           );
                         } else {
                           if (isLoading) {
