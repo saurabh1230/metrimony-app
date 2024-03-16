@@ -9,7 +9,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:intl/intl.dart';
-
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
@@ -402,8 +401,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 ///*************************************************************
 
-                Text('New Matches',
-                  style: styleSatoshiBold(size: 18, color: Colors.black),),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                        AllNewMatchesScreen(response: widget.response,)));
+                  },
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('New Matches',
+                        style: styleSatoshiBold(size: 18, color: Colors.black),),
+                      Text('See All',
+                        style: styleSatoshiBold(size: 12, color: Colors.black),),
+                    ],
+                  ),
+                ),
                 Text("Members who joined recently",
                   style: styleSatoshiMedium(size: 14,
                     color: color1C1C1c.withOpacity(0.60),
@@ -518,10 +530,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 sizedBox16(),
-                button(context: context, onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                   AllNewMatchesScreen(response: widget.response,)));
-                }, title: 'See All New Matches'),
+                // button(context: context, onTap: () {
+                //
+                // }, title: 'See All New Matches'),
 
                 const SizedBox(height: 50,),
 

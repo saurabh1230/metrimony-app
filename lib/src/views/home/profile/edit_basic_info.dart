@@ -4,6 +4,8 @@ import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../../apis/profile_apis/basic_info_api.dart';
@@ -17,7 +19,7 @@ import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:shimmer/shimmer.dart';
 class EditBasicInfoScreen extends StatefulWidget {
   const EditBasicInfoScreen({super.key});
 
@@ -122,7 +124,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
       appBar: buildAppBar(context),
       bottomNavigationBar: buildBottombarPadding(context),
       body: isLoading
-          ? const Loading()
+          ? const BasicInfoShimmerWidget()
           : SingleChildScrollView(
               child: Padding(
                 padding:
@@ -1230,5 +1232,171 @@ class _DrinkingStatusBottomSheet extends State<DrinkingStatusBottomSheet> {
       _gIndex = 1;
     }
     super.initState();
+  }
+}
+
+
+
+class BasicInfoShimmerWidget extends StatelessWidget {
+  const BasicInfoShimmerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:
+      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        enabled: true,
+        child: Column(
+          children: [
+            Container(
+              height: 104,
+              width: 104,
+              clipBehavior: Clip.hardEdge,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+
+                shape: BoxShape.circle,
+              ),
+
+            ),
+            sizedBox16(),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 15,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16)
+                    ),
+                  ),
+                ),
+                SizedBox(width: 120,),
+
+                Expanded(
+                  child: Container(
+                    height: 15,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16)
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 15,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16)
+                    ),
+                  ),
+                ),
+                SizedBox(width: 120,),
+
+                Expanded(
+                  child: Container(
+                    height: 15,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16)
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 20,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

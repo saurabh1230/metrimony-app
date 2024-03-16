@@ -5,8 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-
-import '../../../apis/profile_apis/education_info_api.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../apis/profile_apis/physical_attributes_api.dart';
 import '../../../constants/assets.dart';
@@ -140,7 +139,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
           },  title: "Save"),
         ),
       ),
-      body:isLoading ? Loading() : CustomRefreshIndicator(
+      body: isLoading ? const AttributesShimmerWidget() : CustomRefreshIndicator(
         onRefresh: () {
           setState(() {
             isLoading = true;
@@ -164,7 +163,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                             maxLength: 40,
                             onChanged: (v) {
                               setState(() {
-
                               });
                             },
                             onEditingComplete: () {
@@ -623,6 +621,88 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
       ),
       title: Text("Physical Attributes",
         style: styleSatoshiBold(size: 18, color: Colors.black),
+      ),
+    );
+  }
+}
+
+
+class AttributesShimmerWidget extends StatelessWidget {
+  const AttributesShimmerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:
+      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        enabled: true,
+        child: Column(
+          children: [
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+
+          ],
+        ),
       ),
     );
   }

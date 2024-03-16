@@ -12,7 +12,7 @@ import '../../../models/family_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
-
+import 'package:shimmer/shimmer.dart';
 class EditFamilyInfoScreen extends StatefulWidget {
   const EditFamilyInfoScreen({super.key});
 
@@ -87,7 +87,7 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
     return Scaffold(
       appBar: buildAppBar(context),
       bottomNavigationBar: buildBottomBar(context),
-      body: isLoading ? Loading(): CustomRefreshIndicator(
+      body: isLoading ? const FamilyInfoShimmerWidget(): CustomRefreshIndicator(
         onRefresh: () {
           setState(() {
             isLoading = true;
@@ -465,6 +465,88 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
       ),
       title: Text("Family Info",
         style: styleSatoshiBold(size: 18, color: Colors.black),
+      ),
+    );
+  }
+}
+
+
+class FamilyInfoShimmerWidget extends StatelessWidget {
+  const FamilyInfoShimmerWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding:
+      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        enabled: true,
+        child: Column(
+          children: [
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+            sizedBox16(),
+            Container(
+              height: 15,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16)
+              ),
+            ),
+            sizedBox16(),
+
+
+          ],
+        ),
       ),
     );
   }

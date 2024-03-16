@@ -433,7 +433,7 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
         ),
       ),
       body: isLoading
-          ? const  Loading()
+          ? const ShimmerWidget()
           : Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10),
         child: LazyLoadScrollView(

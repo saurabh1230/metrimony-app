@@ -395,7 +395,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
         ],
       ),
       body: isLoading
-          ? Loading()
+          ? const ShimmerWidget()
           : RefreshIndicator(
               onRefresh: () {
                 setState(() {

@@ -70,14 +70,16 @@ Future<dynamic> unSaveBookMarkApi({
 }
 
 
-Future<dynamic> savedMatchesApi() async {
+Future<dynamic> savedMatchesApi({
+  required String page,
+}) async {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
   };
 
   var request = http.MultipartRequest(
       'POST',
-      Uri.parse('${baseUrl}bookmarkSaveMatches'));
+      Uri.parse('${baseUrl}bookmarkSaveMatches?page=$page'));
 
   request.headers.addAll(headers);
   print(request.fields);
