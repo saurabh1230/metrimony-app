@@ -2,11 +2,13 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
 
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../apis/members_api/bookmart_api.dart';
 import '../../apis/members_api/request_apis.dart';
 import '../../apis/other_user_api/other_user_profile_details.dart';
 import '../../constants/assets.dart';
@@ -64,6 +66,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   DateTime? birthDate;
   int age = 0;
   bool loading = false;
+
+  bool like = false;
 
   int _currentIndex = 0;
   @override
@@ -135,6 +139,62 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
                   ),
+                ),
+              ),
+              Positioned(
+                top: 40,
+                right:16,
+                child: GestureDetector(
+                  onTap: () async {
+                    // setState(() {
+                    //   setState(() {
+                    //     like = !like;
+                    //   });
+                    // });
+                    // if (model.data!.matches!. == 1) {
+                    //   var result = await unSaveBookMarkApi(
+                    //       memberId:model.data!.matches!.profileId.toString()
+                    //   );
+                    //   if (result['status'] == true) {
+                    //     Fluttertoast.showToast(msg: "Bookmark Saved");
+                    //   } else {
+                    //     // Handle failure case if needed
+                    //   }
+                    // } else {
+                    //   var result = await saveBookMartApi(
+                    //       memberId: model.data!.matches!.profileId.toString()
+                    //   );
+                    //   if (result['status'] == true) {
+                    //     Fluttertoast.showToast(msg: "Bookmark Saved");
+                    //   } else {
+                    //     // Handle failure case if needed
+                    //   }
+                    // }
+
+                  },
+                  child:
+                  // like[i] ?
+                  GestureDetector(
+                    onTap: () {
+                      // setState(() {
+                      //   like[i] = false;
+                      // });
+                    },
+                    child: Icon(
+                      Icons.bookmark,
+                      color: primaryColor,
+
+                      size: 22,
+                    ),
+                  )
+                  //     :
+                  // Icon(
+                  //   Icons.bookmark,
+                  //   color: matches[i].bookmark == 1
+                  //       ? primaryColor
+                  //       : Colors.grey,
+                  //   size: 22,
+                  // ),
                 ),
               ),
               Positioned(

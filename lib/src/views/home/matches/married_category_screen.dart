@@ -50,7 +50,7 @@ class _MarriedCategoryState extends State<MarriedCategory> {
     // matches.clear();
     getMatchesFilterApi(
       page: page.toString(),
-      maritalStatus: widget.response.data!.user!.maritalStatus.toString(),
+      maritalStatus: "Unmarried",
       religion: "",
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       country: '',
@@ -78,7 +78,7 @@ class _MarriedCategoryState extends State<MarriedCategory> {
     isLoading = true;
     getMatchesFilterApi(
       page: page.toString(),
-      maritalStatus:widget.response.data!.user!.maritalStatus.toString(),
+      maritalStatus: "Unmarried",
       religion: religionFilter,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '', motherTongue: '',
     ).then((value) {

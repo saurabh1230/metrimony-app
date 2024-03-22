@@ -17,7 +17,7 @@ class _IntroPageState extends State<IntroPage> {
   final pageController = PageController();
   bool animate1 = false;
   bool animate2 = true;
-  double percent = 0.0;
+  double percent = 0.1;
   double percent1 = 0.0;
   double percent2 = 0.0;
 

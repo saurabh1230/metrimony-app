@@ -74,3 +74,5 @@ const String icAddDataPlaceHolder = 'assets/icons/add-data-document-svgrepo-com.
 const String icPray = 'assets/icons/ic_pray.png';
 const String icMarried = 'assets/icons/ic_married.png';
 const String icHeartWelcome = 'assets/icons/ic_heart_welcome.png';
+const String icTick = 'assets/icons/tick.png';
+const String icX = 'assets/icons/cross.png';
