@@ -47,6 +47,9 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   String? motherTongueValue = '';
   String motherTongueFilter = '';
 
+  String? userTypeValue;
+  String userTypeFilter = '';
+
   @override
   Widget build(BuildContext context) {
 
@@ -251,14 +254,14 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                 onChanged: (value) {
                   SharedPrefs().setState(stateController.text);
                 },),
+              const SizedBox(height: 12,),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Mother Tongue",
                   textAlign: TextAlign.left,
                   style: styleSatoshiBold(size: 16, color: Colors.black),),
               ),
-              const SizedBox(height: 12,),
-              // Padding(
+              const SizedBox(height: 12,), // Padding(
               //   padding:
               //   const EdgeInsets.symmetric(horizontal: 0.0),
               //   child: SizedBox(
@@ -323,6 +326,43 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                 onChanged: (value) {
                   SharedPrefs().setProfession(professionController.text);
                 },),
+
+              sizedBox12(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("User Type",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),),
+              ),
+              const SizedBox(height: 12,),
+              SizedBox(
+                width: 1.sw,
+                child: CustomStyledDropdownButton(
+                  items: const  [
+                    "Exclusive",
+                    'Normal',
+                    "Premium",
+                  ],
+                  selectedValue: userTypeValue,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter usertype';
+                    }
+                    return null;
+                  },
+                  onChanged: (String? value) {
+                    setState(() {
+                      userTypeValue = value;
+                      userTypeFilter = userTypeValue ?? '';
+                      SharedPrefs().setUserType(userTypeFilter);
+
+                    });
+                    // print(userTypeFilter);
+                    // print('Check ======> Usetype${userTypeFilter}');
+                  },
+                  title: 'User Type',
+                ),
+              ),
 
 
             ],

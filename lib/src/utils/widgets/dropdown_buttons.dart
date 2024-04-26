@@ -11,12 +11,13 @@ class CustomStyledDropdownButton extends StatefulWidget {
   final List<String> items;
   final String? selectedValue;
   final Function(String?) onChanged;
+  final String? Function(String?)? validator;
 
   const CustomStyledDropdownButton({
     Key? key,
     required this.items,
     required this.onChanged,
-    this.selectedValue, required this.title,
+    this.selectedValue, required this.title, this.validator,
   }) : super(key: key);
 
   @override
@@ -28,7 +29,9 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
   Widget build(BuildContext context) {
     return DropdownButtonFormField2<String>(
       isExpanded: true,
+      validator: widget.validator,
       decoration: InputDecoration(
+
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 16,
               horizontal: 5),

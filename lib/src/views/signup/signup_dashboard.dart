@@ -136,7 +136,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                   context: context,
                   onTap: (){
                     if (_currentPage == 0) {
-                      if (SignUpScreenOne().validate()) {
+                      if (const SignUpScreenOne().validate()) {
                         _pageController.nextPage(
                           duration: Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
@@ -144,9 +144,9 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                     else if (_currentPage == 1) {
-                      if (SignUpScreenTwo().validate()) {
+                      if (const SignUpScreenTwo().validate()) {
                         _pageController.nextPage(
-                          duration: Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
@@ -167,17 +167,18 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            firstName: '${SharedPrefs().getName()}',
                            lastName: '${SharedPrefs().getLastName()}',
                            lookingFor: 'My Self',
-                           gender: '${SharedPrefs().getGender() == null ? "M" : SharedPrefs().getGender().toString()}',
+                           gender: SharedPrefs().getGender() == null ? "M" : SharedPrefs().getGender().toString(),
                            // gender: '${SharedPrefs().getGender()}',
                            motherTongue: '${SharedPrefs().getMotherTongue()}',
                            birthDate: '${SharedPrefs().getDob()}',
                            country: '${SharedPrefs().getCountry()}',
                            countryCode:  '${SharedPrefs().getCountryCode()}',
-                           maritalStatus: '${SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus().toString()}',
+                           maritalStatus: SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus().toString(),
                            // maritalStatus: 'Unmarried',
-                           photo: '$pickedImagePath',
-                           religion: '${SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString()}',
-                           profession: '${SharedPrefs().getProfession()}').then((value) async {
+                           photo: pickedImagePath,
+                           religion: SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString(),
+                           profession: '${SharedPrefs().getProfession()}',
+                           userType: '${SharedPrefs().getUserType()}').then((value) async {
                          if (value['status'] == 'success') {
                            setState(() {
                              loading = false;
@@ -205,7 +206,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            Fluttertoast.showToast(msg: errorMessage);
                          }
                        });
-                     };
+                     }
                      }
                   },
                   title:_currentPage == 2 ? 'Submit' :'Next'),

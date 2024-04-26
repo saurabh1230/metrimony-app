@@ -3,6 +3,7 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/string.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
+import 'package:bureau_couple/src/utils/widgets/custom_image_widget.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_career_info.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_education_screen.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_photos.dart';
@@ -275,54 +276,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                    child: CircularPercentIndicator(
-                      radius: 110.0,
-                      lineWidth: 7.0,
-                      percent: 1,
-                      center: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Container(
-                          clipBehavior: Clip.hardEdge,
-                          decoration :const BoxDecoration(
-                            shape: BoxShape.circle,
-                              color:Colors.white,
-                          ),
-                          child:
-                          GestureDetector(
-                            onTap:  () async {
-                              XFile? v = await _imgPicker.pickImage(
-                                  source: ImageSource.gallery);
-                              if (v != null) {
-                                setState(
-                                      () {
-                                    pickedImage = File(v.path);
-                                  },
-                                );
-                              }
-
-                            },
-                            child:pickedImage.path.isEmpty
-                                ? CachedNetworkImage(
-                              imageUrl: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) =>
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(icLogo,
-                                      height: 40,
-                                      width: 40,),
-                                  ),
-                              progressIndicatorBuilder: (a, b, c) =>
-                                  customShimmer(height: 80, /*width: 0,*/),
-                            ): Image.file(
-                              pickedImage,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      progressColor: const Color(0xff00a337),
-                    ),
+                    child: ClipOval(child: CustomImageWidget(image: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',height: 100,width: 100,)),
+                    // child: CircularPercentIndicator(
+                    //   radius: 110.0,
+                    //   lineWidth: 7.0,
+                    //   percent: 1,
+                    //   center: Padding(
+                    //     padding: const EdgeInsets.all(2.0),
+                    //     child: Container(
+                    //       clipBehavior: Clip.hardEdge,
+                    //       decoration :const BoxDecoration(
+                    //         shape: BoxShape.circle,
+                    //           color:Colors.white,
+                    //       ),
+                    //       child:
+                    //       GestureDetector(
+                    //         onTap:  () async {
+                    //           XFile? v = await _imgPicker.pickImage(
+                    //               source: ImageSource.gallery);
+                    //           if (v != null) {
+                    //             setState(
+                    //                   () {
+                    //                 pickedImage = File(v.path);
+                    //               },
+                    //             );
+                    //           }
+                    //
+                    //         },
+                    //         child:pickedImage.path.isEmpty
+                    //             ? CachedNetworkImage(
+                    //           imageUrl: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',
+                    //           fit: BoxFit.cover,
+                    //           errorWidget: (context, url, error) =>
+                    //               Padding(
+                    //                 padding: const EdgeInsets.all(8.0),
+                    //                 child: Image.asset(icLogo,
+                    //                   height: 40,
+                    //                   width: 40,),
+                    //               ),
+                    //           progressIndicatorBuilder: (a, b, c) =>
+                    //               customShimmer(height: 80, /*width: 0,*/),
+                    //         ): Image.file(
+                    //           pickedImage,
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   progressColor: const Color(0xff00a337),
+                    // ),
                   ),
                   sizedBox10(),
                   Padding(

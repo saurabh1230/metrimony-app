@@ -180,7 +180,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       //   like[i] = false;
                       // });
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.bookmark,
                       color: primaryColor,
 

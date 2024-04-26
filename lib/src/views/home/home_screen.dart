@@ -2,6 +2,7 @@ import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
+import 'package:bureau_couple/src/utils/widgets/custom_image_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -623,36 +624,37 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
               },
-              child: CircularPercentIndicator(
-                radius: 50.0,
-                lineWidth: 2.0,
-                percent: 1,
-                center: Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) =>
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(icLogo,
-                              height: 40,
-                              width: 40,),
-                          ),
-                      progressIndicatorBuilder: (a, b, c) =>
-                          customShimmer(height: 0, /*width: 0,*/),
-                    ),
-                  ),
-                ),
-                progressColor: colorGreen,
-              ),
+              child: ClipOval(child: CustomImageWidget(image: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',height: 45,width: 45,)),
+              // child: CircularPercentIndicator(
+              //   radius: 50.0,
+              //   lineWidth: 2.0,
+              //   percent: 1,
+              //   center: Padding(
+              //     padding: const EdgeInsets.all(0.0),
+              //     child: Container(
+              //       height: 45,
+              //       width: 45,
+              //       clipBehavior: Clip.hardEdge,
+              //       decoration: const BoxDecoration(
+              //           shape: BoxShape.circle
+              //       ),
+              //       child: CachedNetworkImage(
+              //         imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
+              //         fit: BoxFit.cover,
+              //         errorWidget: (context, url, error) =>
+              //             Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Image.asset(icLogo,
+              //                 height: 40,
+              //                 width: 40,),
+              //             ),
+              //         progressIndicatorBuilder: (a, b, c) =>
+              //             customShimmer(height: 0, /*width: 0,*/),
+              //       ),
+              //     ),
+              //   ),
+              //   progressColor: colorGreen,
+              // ),
             ),
             const SizedBox(width: 10,),
             Text(StringUtils.capitalize('${SharedPrefs().getUserName()}'),

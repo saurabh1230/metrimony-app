@@ -19,6 +19,7 @@ class SharedPrefs {
   String countryCode = 'countryCode';
   String motherTongue = 'motherTongue';
   String profession = 'profession';
+  String userType = 'userType';
   String dateOfBirth = 'dateOfBirth';
   String profileId = 'profileId';
   String maritalStatus = 'marital_status';
@@ -148,6 +149,19 @@ class SharedPrefs {
   Future setProfession(String sProfession) async {
     await init(); // Make sure to initialize SharedPreferences before using it
     return await _prefs?.setString(profession, sProfession);
+  }
+
+  Future setUserType(String sUserType) async {
+    await init(); // Make sure to initialize SharedPreferences before using it
+    return await _prefs?.setString(userType, sUserType);
+  }
+
+  String? getUserType() {
+    return _prefs?.getString(userType);
+  }
+  Future clearUserType() async {
+    await init();
+    return await _prefs?.remove(userType);
   }
 
   String? getProfession() {

@@ -21,6 +21,8 @@ Future<dynamic> signUpApi({
   required String maritalStatus,
   required String religion,
   required String profession,
+  required String userType,
+
   required String photo,
 }) async {
   var request = http.MultipartRequest(
@@ -44,6 +46,7 @@ Future<dynamic> signUpApi({
     'country_code':countryCode,
     'religion': religion,
     'profession': profession,
+    'user_type':userType,
     'agree': '1',
   });
   request.files.add(await http.MultipartFile.fromPath('image', photo));

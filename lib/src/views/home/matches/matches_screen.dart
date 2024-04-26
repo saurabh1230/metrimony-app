@@ -187,7 +187,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     'Religion: ${matches[i].basicInfo?.religion ?? ''}',
                                 profession: "Software Engineer",
                                 Location:
-                                    '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
+                                    '${matches[i].address!.state ?? ''}${matches[i].address!.country ?? ''}',
                                 likedColor: Colors.grey,
                                 unlikeColor: primaryColor,
                                 button:
@@ -244,20 +244,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                             title: "Connect Now"),
                                 bookmark: GestureDetector(
                                   onTap: () async {
-                                    setState(() {
-                                      setState(() {
-                                        like[i] = !like[i];
-                                      });
-                                    });
+                                      setState(() {like[i] = !like[i];});
                                     if (matches[i].bookmark == 1) {
-                                      var result = await unSaveBookMarkApi(
-                                          memberId: matches[i].profileId.toString()
-                                      );
-                                      if (result['status'] == true) {
-                                        Fluttertoast.showToast(msg: "Bookmark Saved");
-                                      } else {
-                                        // Handle failure case if needed
-                                      }
+                                      var result = await unSaveBookMarkApi(memberId: matches[i].profileId.toString());
+                                      if (result['status'] == true) {Fluttertoast.showToast(msg: "Bookmark Saved");}
+                                      else {}
                                     } else {
                                       var result = await saveBookMartApi(
                                           memberId: matches[i].profileId.toString()
@@ -277,13 +268,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                       //   like[i] = false;
                                       // });
                                     },
-                                    child: Icon(
-                                      Icons.bookmark,
-                                      color: primaryColor,
-
-                                      size: 22,
-                                    ),
-                                  ):
+                                    child: const Icon(
+                                      Icons.bookmark, color: primaryColor, size: 22,),):
                                   Icon(
                                     Icons.bookmark,
                                     color: matches[i].bookmark == 1
