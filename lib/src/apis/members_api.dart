@@ -61,6 +61,9 @@ Future<dynamic> getNewMatchesApi({
 Future<dynamic> getMatchesByGenderApi({
   required String gender,
   required String page,
+  required String religion,
+  required String height,
+  required String state,
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
@@ -68,6 +71,9 @@ Future<dynamic> getMatchesByGenderApi({
   var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}matches?page=$page'));
   request.fields.addAll({
     'gender': gender,
+    'religion': religion,
+    'height' : height,
+    "state" : state,
   });
   print(request.fields);
 
@@ -106,6 +112,60 @@ Future<dynamic> getMatchesFilterApi({
     'country' : country,
     'height' : height,
     'mother_tongue' : motherTongue,
+  });
+  print(request.fields);
+
+  request.headers.addAll(headers);
+  http.StreamedResponse response = await request.send();
+  var resp = jsonDecode(await response.stream.bytesToString());
+  print(resp);
+  print(headers);
+  if (response.statusCode == 200) {
+    return resp;
+  } else {
+    print(resp);
+    print(response.reasonPhrase);
+    print(response.statusCode);
+    return resp;
+  }
+}
+
+
+
+Future<dynamic> getConnectedMatchesApi({
+  required String page,
+}) async  {
+  var headers = {
+    'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
+  };
+  var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}interest/all?page=$page'));
+  request.headers.addAll(headers);
+  http.StreamedResponse response = await request.send();
+  var resp = jsonDecode(await response.stream.bytesToString());
+  print(resp);
+  print(headers);
+  if (response.statusCode == 200) {
+    return resp;
+  } else {
+    print(resp);
+    print(response.reasonPhrase);
+    print(response.statusCode);
+    return resp;
+  }
+}
+
+Future<dynamic> getReligionMatchesFilterApi({
+  required String religion,
+  required String page,
+  required String gender,
+}) async  {
+  var headers = {
+    'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
+  };
+  var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}matches?page=$page'));
+  request.fields.addAll({
+    'gender': gender,
+    'religion': religion,
   });
   print(request.fields);
 

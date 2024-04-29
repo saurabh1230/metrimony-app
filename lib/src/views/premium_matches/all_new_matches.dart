@@ -505,8 +505,7 @@ class _AllNewMatchesScreenState extends State<AllNewMatchesScreen> {
                         });
                       },
                       title: "Connect Now"),
-                  bookMarkTap: () {},
-                  height:"${matches[i].physicalAttributes!.height ?? ''} ft",
+                  height:"${matches[i].physicalAttributes!.height ?? ''} ft", bookmark: Icon(Icons.help),
                 );
               } else {
                 if (isLoading) {

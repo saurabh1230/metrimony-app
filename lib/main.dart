@@ -7,7 +7,7 @@ import 'package:bureau_couple/src/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'src/helper/get_di.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,7 @@ Future<void> main() async {
     [DeviceOrientation.portraitUp],
   );
   await SharedPrefs().init();
+  await di.init();
   runApp(const MyApp());
 }
 class MyHttpOverrides extends HttpOverrides {

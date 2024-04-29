@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
    }
 
    List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
-  List<String> categoryTitle = ["Filter by Religion","Filter By Mother Tongue"];
+  List<String> categoryTitle = ["Filter by Religion","Filter By Language"];
   List<Color> color = [colorE2b93b,colorEb5757];
 
 
@@ -664,16 +664,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       actions: [
-        GestureDetector(
+        GestureDetector(behavior: HitTestBehavior.translucent,
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
           },
             child: 
             const Padding(
               padding: EdgeInsets.only(right: 14.0),
-              child: Icon(CupertinoIcons.bell,
+              child: Icon(CupertinoIcons.bell_circle_fill,
                 color: Colors.black,
-                size: 26,
+                size: 30,
               ),
             )),
 

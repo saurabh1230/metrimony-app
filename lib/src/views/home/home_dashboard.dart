@@ -9,6 +9,8 @@ import 'package:bureau_couple/src/views/home/matches/matches_screen.dart';
 import 'package:bureau_couple/src/views/home/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'connect/connections.dart';
+
 bool isClick = false;
 class HomeDashboardScreen extends StatefulWidget {
   final LoginResponse response;
@@ -79,7 +81,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         body: [
            HomeScreen(response: widget.response,),
            MatchesScreen(response: widget.response,),
-           FilterMatchesScreen(response:  widget.response,),
+          ConnectionScreen(response: widget.response,),
+           // FilterMatchesScreen(response:  widget.response,),
           const ProfileScreen(),
         ][index],
         bottomNavigationBar: bottomBar(),
@@ -145,12 +148,12 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                   },
                   child: Column(
                     children: [
-                      Image.asset(icFilter,
+                      Image.asset(icConnect,
                         height: 24,
                         width: 24,
                         color: index ==2 ? primaryColor : color353839,),
                       const SizedBox(height: 5,),
-                      Text("Filter",style: styleSatoshiMedium(
+                      Text("Connected",style: styleSatoshiMedium(
                           size: 12,
                           color:index ==2 ? primaryColor : color353839,),)
                     ],

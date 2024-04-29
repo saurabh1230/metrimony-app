@@ -76,3 +76,4 @@ const String icMarried = 'assets/icons/ic_married.png';
 const String icHeartWelcome = 'assets/icons/ic_heart_welcome.png';
 const String icTick = 'assets/icons/tick.png';
 const String icX = 'assets/icons/cross.png';
+const String icConnect = 'assets/images/message-tick-svgrepo-com (1).png';

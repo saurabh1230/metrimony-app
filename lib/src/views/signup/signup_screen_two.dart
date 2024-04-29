@@ -354,7 +354,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     setState(() {
                       userTypeValue = value;
                       userTypeFilter = userTypeValue ?? '';
-                      SharedPrefs().setUserType(userTypeFilter);
+                      SharedPrefs().setUserType(userTypeFilter == "Exclusive" ? "1" :userTypeFilter == "Normal" ? "2" :"1");
 
                     });
                     // print(userTypeFilter);

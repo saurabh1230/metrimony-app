@@ -52,6 +52,8 @@ Future<dynamic> updateBasicInfo({
     'lastname': lastName,
     'firstname': firstName,
     "about_us" : aboutUs,
+    // "height" : "5.45",
+    "user_type" : "1"
 
   });
   print(request.fields);

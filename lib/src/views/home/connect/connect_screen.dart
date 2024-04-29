@@ -104,7 +104,20 @@ class _ConnectScreenState extends State<ConnectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar:  AppBar(
+    leading: Padding(
+    padding: const EdgeInsets.only(left: 16),
+    child: backButton(
+    context: context,
+    image: icArrowLeft,
+    onTap: () {
+    Navigator.pop(context);
+    }),),
+    centerTitle: false,
+    automaticallyImplyLeading: false,
+    title: Text("Notification",
+    style: styleSatoshiBold(size: 22, color: Colors.black),),
+    ),
       // appBar: AppBar(
       //   automaticallyImplyLeading: false,
       //   leading: Padding(
@@ -126,7 +139,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Connections",
+           /*   Text("Connections",
                 style: styleSatoshiBold(size: 16, color: color1C1C1c),
               ),
               sizedBox16(),
@@ -223,7 +236,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
                                                     width: 40,),
                                                 ),
                                             progressIndicatorBuilder: (a, b, c) =>
-                                                customShimmer(height: 0, /*width: 0,*/),
+                                                customShimmer(height: 0, *//*width: 0,*//*),
                                           ),
                                         ),
                                       ),
@@ -268,7 +281,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
               // buildDataRowBold(title: 'Connections', text: 'Change', onTap: () {
               //   // Navigator.push(context, MaterialPageRoute(builder: (builder) => const AllConnectionsScreen()));
               // }),
-              sizedBox16(),
+              sizedBox16(),*/
               // buildDataRowBold(title: 'Connection Requests', text: 'Change', onTap: () {
               //   Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectionRequestScreen()));
               // }),
@@ -359,7 +372,18 @@ class _ConnectScreenState extends State<ConnectScreen> {
                                           decoration : const BoxDecoration(
                                             shape: BoxShape.circle,
                                           ),
-                                          child: Image.asset(icDemoProfile,
+                                          child: CachedNetworkImage(
+                                            imageUrl:'$baseProfilePhotoUrl${request[i].user!.image}',
+                                            fit: BoxFit.cover,
+                                            errorWidget: (context, url, error) =>
+                                                Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Image.asset(icLogo,
+                                                    height: 40,
+                                                    width: 40,),
+                                                ),
+                                            progressIndicatorBuilder: (a, b, c) =>
+                                                customShimmer(height: 0, /*width: 0,*/),
                                           ),
                                         ),
                                       ),
@@ -554,8 +578,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
                                                   color: primaryColor
                                                 ),
                                               ),
-                                              child: Image.asset(icTick,
-                                              fit: BoxFit.cover,
+                                              child: Image.asset(icTick, fit: BoxFit.cover,
                                               color: primaryColor,),
                                             ),
                                           )
@@ -723,7 +746,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
         ),
       ),
       actions: [
-        GestureDetector(
+      /*  GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
             },
@@ -734,7 +757,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 color: Colors.black,
                 size: 26,
               ),
-            )),
+            )),*/
 
       ],
       automaticallyImplyLeading: false,

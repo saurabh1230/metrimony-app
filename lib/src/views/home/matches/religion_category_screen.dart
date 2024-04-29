@@ -1,12 +1,14 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
+import 'package:get/get.dart';
 import '../../../apis/members_api.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/string.dart';
+import '../../../controller/matches_controller.dart';
 import '../../../models/LoginResponse.dart';
 import '../../../models/matches_model.dart';
 import '../../../utils/urls.dart';
@@ -49,11 +51,10 @@ class _ReligionCategoryState extends State<ReligionCategory> {
     isLoading = true;
     // matches.clear();
     // matches.clear();
-    getMatchesFilterApi(
+    getReligionMatchesFilterApi(
       page: page.toString(),
-      maritalStatus: marriedFilter,
       religion: widget.response.data!.user!.religion.toString(),
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '', motherTongue: '',
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
     ).then((value) {
       matches.clear();
       setState(() {
@@ -77,11 +78,10 @@ class _ReligionCategoryState extends State<ReligionCategory> {
     isLoading = true;
     // matches.clear();
 
-    getMatchesFilterApi(
+    getReligionMatchesFilterApi(
       page: page.toString(),
-      maritalStatus: marriedFilter,
-      religion: widget.response.data!.user!.religion.toString(),
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '', motherTongue: '',
+      religion: "Hindu",
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
     ).then((value) {
       setState(() {
         if (value['status'] == true) {
@@ -121,124 +121,117 @@ class _ReligionCategoryState extends State<ReligionCategory> {
         ),
 
       ),
-      body: isLoading
-          ? const Loading()
-          : RefreshIndicator(
-        onRefresh: () {
-          setState(() {
-            isLoading = true;
-          });
-          return getMatches();
-        },
-        child: isLoading
-             ? const Loading()
-            : Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-          ),
-          child: LazyLoadScrollView(
-            isLoading: isLoading,
-            onEndOfPage: () {
-              loadMore();
-            },
-            child: ListView.separated(
-              itemCount: matches.length + 1,
-              itemBuilder: (context, i) {
-                if (i < matches.length) {
-                  DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
-                  int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                  return otherUserdataHolder(
-                    context: context,
-                    tap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (builder) => UserProfileScreen(
-                            userId: matches[i].id.toString(),
+      body: GetBuilder<MatchesController>(builder: (matchesControl) {
+        return isLoading
+            ? const Loading()
+            : RefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              isLoading = true;
+            });
+            return getMatches();
+          },
+          child: isLoading
+              ? const Loading()
+              : Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+            ),
+            child: LazyLoadScrollView(
+              isLoading: isLoading,
+              onEndOfPage: () {
+                loadMore();
+              },
+              child: ListView.separated(
+                itemCount: matches.length + 1,
+                itemBuilder: (context, i) {
+                  if (i < matches.length) {
+                    DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                    int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                    return otherUserdataHolder(
+                      context: context,
+                      tap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => UserProfileScreen(
+                              userId: matches[i].id.toString(),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    state:matches[i].basicInfo?.presentAddress?.state ?? '',
-                    height:"${matches[i].physicalAttributes!.height ?? ''} ft",
-                    imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                    userName: matches[i].firstname == null && matches[i].lastname == null
-                        ? "user"
-                        : '${StringUtils.capitalize(matches[i].firstname ?? "")} ${StringUtils.capitalize(matches[i].lastname ?? "user")}',
-                    atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
-                    profession: "Software Engineer",
-                    Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
-                    likedColor: Colors.grey,
-                    unlikeColor: primaryColor,
-                    button: isLoadingList[i]
-                        ? loadingButton(height: 30, width: 134, context: context)
-                        : button(
-                        fontSize: 14,
-                        height: 30,
-                        width: 134,
-                        context: context,
-                        onTap: () {
-                          setState(() {
-                            isLoadingList[i] = true;
-                          });
-                          sendRequestApi(memberId: matches[i].id.toString()).then((value) {
-                            if (value['status'] == true) {
-                              setState(() {
-                                isLoadingList[i] = false;
-                              });
-                              ToastUtil.showToast("Connection Request Sent");
-                              print('done');
-                            } else {
-                              setState(() {
-                                isLoadingList[i] = false;
-                              });
-
-                              List<dynamic> errors = value['message']['error'];
-                              String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                              Fluttertoast.showToast(msg: errorMessage);
-                            }
-                          });
-                        },
-                        title: "Connect Now"),
-                    bookmark: LikeButton(
-                      onTap: (isLiked) async {
-                        var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                        if (result['status'] == true) {
-                          Fluttertoast.showToast(msg: "Bookmark Saved");
-                        } else {}
-                      },
-                      size: 22,
-                      circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                      bubblesColor: const BubblesColor(
-                        dotPrimaryColor: Color(0xff33b5e5),
-                        dotSecondaryColor: Color(0xff0099cc),
-                      ),
-                      likeBuilder: (bool isLiked) {
-                        return Icon(
-                          Icons.bookmark,
-                          color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                          size: 22,
                         );
                       },
-                    ),
-                    bookMarkTap: () {},
-                    dob: '$age years old',
-                  );
-                } else {
-                  if (isLoading) {
-                    return customLoader(size: 40);
+                      state:matches[i].basicInfo?.presentAddress?.state ?? '',
+                      height:"${matches[i].physicalAttributes!.height ?? ''} ft",
+                      imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                      userName: matches[i].firstname == null && matches[i].lastname == null
+                          ? "user"
+                          : '${StringUtils.capitalize(matches[i].firstname ?? "")} ${StringUtils.capitalize(matches[i].lastname ?? "user")}',
+                      atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
+                      profession: "Software Engineer",
+                      Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
+                      likedColor: Colors.grey,
+                      unlikeColor: primaryColor,
+                      button: isLoadingList[i]
+                          ? loadingButton(height: 30, width: 134, context: context)
+                          : button(
+                          fontSize: 14,
+                          height: 30,
+                          width: 134,
+                          context: context,
+                          onTap: () {
+                            setState(() {
+                              isLoadingList[i] = true;
+                            });
+                            sendRequestApi(memberId: matches[i].id.toString()).then((value) {
+                              if (value['status'] == true) {
+                                setState(() {
+                                  isLoadingList[i] = false;
+                                });
+                                ToastUtil.showToast("Connection Request Sent");
+                                print('done');
+                              } else {
+                                setState(() {
+                                  isLoadingList[i] = false;
+                                });
+
+                                List<dynamic> errors = value['message']['error'];
+                                String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                Fluttertoast.showToast(msg: errorMessage);
+                              }
+                            });
+                          },
+                          title: "Connect Now"),
+                      bookmark: GestureDetector(
+                        onTap: () {
+                          print(matches[i].bookmark);
+                          matches[i].bookmark == 1 ?
+                          matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
+
+                          matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
+                          // getMatches();
+                        },
+                        child:  /*!matchesControl.isLoading ? */Icon(
+                          CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
+                          size: 22,)/* : const CircularProgressIndicator()*/,
+                      ),
+                      dob: '$age years old',
+                    );
                   } else {
-                    return Center(child: Text("All matches loaded"));
+                    if (isLoading) {
+                      return customLoader(size: 40);
+                    } else {
+                      return Center(child: Text("All matches loaded"));
+                    }
                   }
-                }
-              },
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(
-                height: 16,
+                },
+                separatorBuilder: (BuildContext context, int index) => const SizedBox(
+                  height: 16,
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

@@ -18,13 +18,12 @@ otherUserdataHolder({
   required String profession,
   required String Location,
   required String dob,
-  required Function() bookMarkTap,
   required Color likedColor,
   required Color unlikeColor,
   required Widget button,
   required String height,
   required String state,
-   Widget? bookmark,
+  required Widget bookmark,
 
 }) {
   return GestureDetector(
@@ -85,11 +84,7 @@ otherUserdataHolder({
                     ),
                     const SizedBox(width: 10,),
                     Expanded(
-                      child: bookmark ??likeButton(
-                          click: bookMarkTap,
-                          likedColor: likedColor,
-                          unlikeColor: unlikeColor
-                      ),
+                      child: bookmark,
                     ),
                   ],
                 ),

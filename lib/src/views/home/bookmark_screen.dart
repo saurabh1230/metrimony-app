@@ -296,7 +296,6 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                   //   },
                                   //
                                   // ),
-                                  bookMarkTap: () {},
                                   dob:'$age yrs',
                                   height:"",
                                   state:matches[i].profile?.basicInfo?.presentAddress?.state ?? '',

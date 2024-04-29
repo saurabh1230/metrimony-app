@@ -141,62 +141,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ),
-              Positioned(
+           /*   Positioned(
                 top: 40,
                 right:16,
                 child: GestureDetector(
-                  onTap: () async {
+                  onTap: () {
+                    model.data!.matches!.bookmark == 1 ?
+                    matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
+
+                    matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
                     // setState(() {
-                    //   setState(() {
-                    //     like = !like;
-                    //   });
+                    //   like[i] = false;
                     // });
-                    // if (model.data!.matches!. == 1) {
-                    //   var result = await unSaveBookMarkApi(
-                    //       memberId:model.data!.matches!.profileId.toString()
-                    //   );
-                    //   if (result['status'] == true) {
-                    //     Fluttertoast.showToast(msg: "Bookmark Saved");
-                    //   } else {
-                    //     // Handle failure case if needed
-                    //   }
-                    // } else {
-                    //   var result = await saveBookMartApi(
-                    //       memberId: model.data!.matches!.profileId.toString()
-                    //   );
-                    //   if (result['status'] == true) {
-                    //     Fluttertoast.showToast(msg: "Bookmark Saved");
-                    //   } else {
-                    //     // Handle failure case if needed
-                    //   }
-                    // }
-
                   },
-                  child:
-                  // like[i] ?
-                  GestureDetector(
-                    onTap: () {
-                      // setState(() {
-                      //   like[i] = false;
-                      // });
-                    },
-                    child: const Icon(
-                      Icons.bookmark,
-                      color: primaryColor,
+                  child: const Icon(
+                    Icons.bookmark,
+                    color: primaryColor,
 
-                      size: 22,
-                    ),
-                  )
-                  //     :
-                  // Icon(
-                  //   Icons.bookmark,
-                  //   color: matches[i].bookmark == 1
-                  //       ? primaryColor
-                  //       : Colors.grey,
-                  //   size: 22,
-                  // ),
+                    size: 22,
+                  ),
                 ),
-              ),
+              ),*/
               Positioned(
                 bottom: 26,
                 left: 26,
