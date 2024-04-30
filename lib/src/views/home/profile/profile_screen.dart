@@ -32,6 +32,7 @@ import 'dart:io';
 import 'change_password_sheet.dart';
 import 'edit_basic_info.dart';
 import 'edit_family_info.dart';
+import 'edit_preferred_matches.dart';
 import 'our_images_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -410,9 +411,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         sizedBox13(),
 
                         buildDataRowBold(title: 'Physical Attributes', text: 'Change', onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhysicalAttributesScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPreferenceScreen()));
                         }),
                         sizedBox13(),
+
+                     /*   Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            sizedBox20(),
+                            buildProfileRow(image: icLocationPro, title: 'Lives in',
+                                text: '${StringUtils.capitalize(profile.data?.user?.address!.city ?? '')}${profile.data?.user?.address!.state ?? ''}${profile.data?.user?.address!.country ?? ''}',
+                                onTap: () {}),
+                            buildProfileRow(image: icChildrenIcon, title: 'Family',
+                                text: 'Father Name: ${StringUtils.capitalize(profile.data?.user?.family?.fatherName ?? '')} \nMother Name: ${StringUtils.capitalize(profile.data?.user?.family?.motherName ?? '')}',
+                                onTap: () {}),
+                            buildProfileRow(image: icReligionIcon,
+                                title: 'Religion',
+                                text: profile.data?.user?.religion ?? 'Not Added Yet',
+                                onTap: () {
+
+                                }),
+                            buildProfileRow(image: icMotherToungeIcon, title: 'Mother Tongue',
+                                text: StringUtils.capitalize(profile.data?.user?.motherTongue ?? ''),
+                                onTap: () {}),
+                            sizedBox16(),
+
+                          ],
+                        ),*/
+                        
+
+
 
 
                         Column(
@@ -435,10 +463,128 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 text: StringUtils.capitalize(profile.data?.user?.motherTongue ?? ''),
                                 onTap: () {}),
                             sizedBox16(),
+                            buildDataRowBold(title: 'Partner Expectations', text: 'Change', onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPreferenceScreen()));
+                            }),
+                            sizedBox16(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                      )
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 18,bottom: 18,left: 22,right: 22),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Partner Expectation",
+                                          style: styleSatoshiRegular(size: 14, color: Colors.white),),
+                                        Text("",
+                                          style: styleSatoshiRegular(size: 16, color: Colors.white),)
+                                      ],
+                                    ),
+                                  ),
+
+                                ),
+                                sizedBox20(),
+                                buildProfileRow(image: icHeightIcon, title: 'Height',
+                                    text:
+                                    "${ profile.data?.user?.partnerExpectation?.minHeight} ft" ?? '', onTap: () {  }
+                                ),
+                                buildProfileRow(image: icChildrenIcon, title: 'Weight',
+                                    text: 'Min Weight: ${StringUtils.capitalize(profile.data?.user?.partnerExpectation?.minAge.toString() ?? "")}, \nMax Weight: ${StringUtils.capitalize(profile.data?.user?.partnerExpectation?.maxAge.toString() ?? "")},', onTap: () {  }),
+                                buildProfileRow(image: icReligionIcon,
+                                    title: 'Religion',
+                                    text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.religion.toString()?? ""), onTap: () {  } ),
+                                buildProfileRow(image: icMotherToungeIcon,
+                                    title: 'Mother Tongue',
+                                    text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.motherTongue  ?? ""), onTap: () {  }
+                                ),
+                                buildProfileRow(image: icMarriedStatusPro,
+                                    title: 'Profession',
+                                    text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.profession ?? ""), onTap: () {  }
+                                ),
+                                Text("Preference",
+                                  style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                                sizedBox6(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: customContainer(
+                                          vertical: 8,
+                                          child: Center(
+                                            child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
+                                              style: styleSatoshiLight(size: 12, color: Colors.white),),
+                                          ),
+                                          radius: 16,
+                                          color:  primaryColor,
+                                          click: () {}
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5,),
+                                    Expanded(
+                                      child: customContainer(
+                                          vertical: 8,
+                                          child: Center(
+                                            child: Text(profile.data?.user?.partnerExpectation?.minHeight  ?? "",
+                                              style: styleSatoshiLight(size: 12, color: Colors.white),
+                                            ),
+                                          ),
+                                          radius: 16,
+                                          color: primaryColor,
+                                          click: () {}
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5,),
+
+
+                                    Expanded(
+                                      child: customContainer(
+                                          vertical: 8,
+                                          child: Center(
+                                            child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
+                                              style: styleSatoshiLight(size: 12, color: Colors.white),
+                                            ),
+                                          ),
+                                          radius: 16,
+                                          color:  primaryColor,
+                                          click: () {}
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5,),
+                                    Expanded(
+                                      child: customContainer(
+                                          vertical: 8,
+                                          child: Center(
+                                            child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
+                                              style: styleSatoshiLight(size: 12, color: Colors.white),
+                                            ),
+                                          ),
+                                          radius: 16,
+                                          color:  primaryColor,
+                                          click: () {}
+                                      ),)
+
+                                  ],
+                                ),
+
+
+                                sizedBox14(),
+                                sizedBox10(),
+                                const SizedBox(height: 14,),
+                              ],
+                            ),
                             buildDataRowBold(title: 'Photos', text: 'Change', onTap: () {
                               Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
                             }),
                             sizedBox8(),
+
                             photos.isEmpty ||  photos == null  ?
 
                                 Center(child: GestureDetector(
@@ -492,14 +638,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
                                           fit: BoxFit.cover,
                                           errorWidget: (context, url, error) =>
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Image.asset(icLogo,
-                                                  height: 40,
-                                                  width: 40,),
-                                              ),
-                                          progressIndicatorBuilder: (a, b, c) =>
-                                              customShimmer(height: 0, /*width: 0,*/),
+                                              Padding(padding: const EdgeInsets.all(8.0),
+                                                child: Image.asset(icLogo, height: 40, width: 40,),),
+                                          progressIndicatorBuilder: (a, b, c) => customShimmer(height: 0, /*width: 0,*/),
                                         ),
                                       ),
                                     );
@@ -510,19 +651,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   right: 10,
                                   child: Row(
                                     children: [
-                                      customContainer(
-                                        vertical: 5,
-                                          horizontal: 10,
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(ic4Dots),
-                                              const SizedBox(width: 6,),
-                                              const Text("See All")
-
-                                            ],
-                                          ),
-                                          radius: 8,
-                                          color: Colors.white, click: () {
+                                      customContainer(vertical: 5, horizontal: 10, child: Row(
+                                            children: [SvgPicture.asset(ic4Dots), const SizedBox(width: 6,), const Text("See All")],),
+                                          radius: 8, color: Colors.white, click: () {
                                         Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
 
                                       })

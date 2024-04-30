@@ -1,4 +1,36 @@
-class MatchesModel {
+class MatchesMainModel {
+  int? currentPage;
+  List<Data>? data;
+
+
+  MatchesMainModel(
+      {this.currentPage,
+        this.data,
+      });
+
+  MatchesMainModel.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
+    }
+
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['current_page'] = this.currentPage;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
+class Data {
   int? id;
   int? profileId;
   String? firstname;
@@ -37,7 +69,7 @@ class MatchesModel {
 
 
 
-  MatchesModel({
+  Data({
     this.id,
     this.profileId,
     this.firstname,
@@ -77,7 +109,7 @@ class MatchesModel {
 
   });
 
-  MatchesModel.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     profileId = json['profile_id'];
     firstname = json['firstname'];

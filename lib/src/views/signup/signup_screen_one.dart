@@ -77,9 +77,11 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         style: kManrope14Medium626262,),
                       sizedBox6(),
                       textBox(
+                        capital: TextCapitalization.words,
                           context: context,
                           label: '',
                           controller: firstNameController,
+
                           hint: '',
                           length: 20,
                           onChanged: (value) {
@@ -101,6 +103,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         style: kManrope14Medium626262,),
                       sizedBox6(),
                       textBox(
+                        capital: TextCapitalization.words,
                           context: context,
                           label: '',
                           controller: lastNameController,

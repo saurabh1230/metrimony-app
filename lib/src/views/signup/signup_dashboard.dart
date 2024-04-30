@@ -173,7 +173,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            birthDate: '${SharedPrefs().getDob()}',
                            country: '${SharedPrefs().getCountry()}',
                            countryCode:  '${SharedPrefs().getCountryCode()}',
-                           maritalStatus: SharedPrefs().getMaritalStatus() == null ? "Unmarried" : SharedPrefs().getMaritalStatus().toString(),
+                           maritalStatus:"unmarried",
                            // maritalStatus: 'Unmarried',
                            photo: pickedImagePath,
                            religion: SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString(),

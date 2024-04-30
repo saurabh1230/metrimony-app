@@ -202,6 +202,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   print(response);
                                                   SharedPrefs().setLoginToken(response!.data!.accessToken.toString());
                                                   SharedPrefs().setUserName(response!.data!.user!.username.toString());
+                                                  SharedPrefs().setName(response!.data!.user!.firstname.toString());
                                                   SharedPrefs().setEmail((response!.data!.user!.email.toString()));
                                                   SharedPrefs().setPhone(response!.data!.user!.mobile.toString());
                                                   SharedPrefs().setProfileId(response!.data!.user!.profileId as int);

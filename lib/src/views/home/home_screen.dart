@@ -91,12 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // buildStack(),
-                Text("${matches.length} members looking for you",
+                Text("${matches.length} Members looking for you",
                 style: styleSatoshiBold(size: 18, color: color1C1C1c),),
                 // sizedBox10(),
                 isLoading ?
@@ -130,8 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shape: BoxShape.circle
                               ),
                               child: CachedNetworkImage(
-                                imageUrl:
-                                '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                imageUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                                 fit: BoxFit.fill,
                                 errorWidget: (context, url, error) =>
                                     Padding(
@@ -162,57 +161,60 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text('Category By Filter',
                   style: styleSatoshiBold(size: 18, color: Colors.black),),
                 sizedBox16(),
-                GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: categoryImage.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio:1.9,
-                  ),
-                  itemBuilder: (_, i) {
-                    List<Widget Function(BuildContext)> screenRoutes = [
-                          (_) =>ReligionCategory(response: widget.response,),
-                          (_) => MarriedCategory(response: widget.response,),
-                      // Add more screen routes as needed
-                    ];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: screenRoutes[i]),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: color[i],
-                          borderRadius: BorderRadius.circular(16)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                           Column(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Image.asset(categoryImage[i],
-                               height: 30,
-                               color: Colors.white,),
-                               sizedBox6(),
-                               Text(categoryTitle[i],
-                                 style: styleSatoshiBold(size: 10, color: Colors.white),),
-                             ],
-                           )
-
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                Row(children: [
+                  Image.asset(name)
+                ],)
+                // GridView.builder(
+                //   shrinkWrap: true,
+                //   itemCount: categoryImage.length,
+                //   physics: const NeverScrollableScrollPhysics(),
+                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                //     crossAxisCount: 2,
+                //     mainAxisSpacing: 8,
+                //     crossAxisSpacing: 8,
+                //     childAspectRatio:1.9,
+                //   ),
+                //   itemBuilder: (_, i) {
+                //     List<Widget Function(BuildContext)> screenRoutes = [
+                //           (_) =>ReligionCategory(response: widget.response,),
+                //           (_) => MarriedCategory(response: widget.response,),
+                //       // Add more screen routes as needed
+                //     ];
+                //     return GestureDetector(
+                //       onTap: () {
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(builder: screenRoutes[i]),
+                //         );
+                //       },
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //             color: color[i],
+                //           borderRadius: BorderRadius.circular(16)
+                //         ),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           crossAxisAlignment: CrossAxisAlignment.center,
+                //           children: [
+                //            Column(
+                //              mainAxisAlignment: MainAxisAlignment.center,
+                //              crossAxisAlignment: CrossAxisAlignment.center,
+                //              children: [
+                //                Image.asset(categoryImage[i],
+                //                height: 30,
+                //                color: Colors.white,),
+                //                sizedBox6(),
+                //                Text(categoryTitle[i],
+                //                  style: styleSatoshiBold(size: 10, color: Colors.white),),
+                //              ],
+                //            )
+                //
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
                 sizedBox16(),
                 ///-----------premium match section ------------------
               ///-----------premium match section ------------------
@@ -405,8 +407,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllNewMatchesScreen(response: widget.response,)));
+                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                    //     AllNewMatchesScreen(response: widget.response,)));
                   },
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -614,7 +616,13 @@ class _HomeScreenState extends State<HomeScreen> {
 //   }*/
 
   AppBar buildAppBar() {
-    return AppBar(
+    return AppBar(backgroundColor: primaryColor,
+
+      shape: const  RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(14),
+        ),
+      ),
       centerTitle: false,
       title: Padding(
         padding: const EdgeInsets.only(left: 6.0),
@@ -624,7 +632,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
               },
-              child: ClipOval(child: CustomImageWidget(image: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',height: 45,width: 45,)),
+              child: ClipOval(child: CustomImageWidget(image: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',height: 40,width: 40,)),
               // child: CircularPercentIndicator(
               //   radius: 50.0,
               //   lineWidth: 2.0,
@@ -657,8 +665,8 @@ class _HomeScreenState extends State<HomeScreen> {
               // ),
             ),
             const SizedBox(width: 10,),
-            Text(StringUtils.capitalize('${SharedPrefs().getUserName()}'),
-              style: styleSatoshiBold(size: 24, color: Colors.black),
+            Text(StringUtils.capitalize(widget.response.data!.user!.firstname!.toString()),
+              style: styleSatoshiBold(size: 18, color: Colors.white),
             ),
           ],
         ),
@@ -669,12 +677,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
           },
             child: 
-            const Padding(
-              padding: EdgeInsets.only(right: 14.0),
-              child: Icon(CupertinoIcons.bell_circle_fill,
-                color: Colors.black,
-                size: 30,
-              ),
+             Padding(
+              padding: const EdgeInsets.only(right: 14.0),
+              child: Image.asset(icBell,height: 30,color: Colors.white,)
             )),
 
       ],

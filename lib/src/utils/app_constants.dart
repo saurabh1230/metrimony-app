@@ -5,6 +5,8 @@ class AppConstants{
 
   static const String bookmarkSave = "bookmarkSave";
   static const String unSaveBookMark = "removeBookmark";
+  static const String matchesUrl = "matches";
+
 
 
 

@@ -71,6 +71,7 @@ class User {
   Family? family;
   List<CareerInfo>? careerInfo;
   List<EducationInfo>? educationInfo;
+  PartnerExpectation? partnerExpectation;
 
   User(
       {this.id,
@@ -102,7 +103,9 @@ class User {
         this.physicalAttributes,
         this.family,
         this.careerInfo,
-        this.educationInfo});
+        this.educationInfo,
+        this.partnerExpectation
+      });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -151,6 +154,9 @@ class User {
         educationInfo!.add(EducationInfo.fromJson(v));
       });
     }
+    partnerExpectation = json['partner_expectation'] != null
+        ? new PartnerExpectation.fromJson(json['partner_expectation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -197,6 +203,9 @@ class User {
     if (educationInfo != null) {
       data['education_info'] =
           educationInfo!.map((v) => v.toJson()).toList();
+    }
+    if (this.partnerExpectation != null) {
+      data['partner_expectation'] = this.partnerExpectation!.toJson();
     }
     return data;
   }
@@ -313,6 +322,112 @@ class BasicInfo {
     return data;
   }
 }
+
+class PartnerExpectation {
+  int? id;
+  int? userId;
+  String? generalRequirement;
+  String? country;
+  int? minAge;
+  int? maxAge;
+  String? minHeight;
+  String? maxWeight;
+  String? maritalStatus;
+  String? religion;
+  Null? complexion;
+  int? smokingStatus;
+  int? drinkingStatus;
+  List<String>? language;
+  String? minDegree;
+  String? profession;
+  Null? personality;
+  String? financialCondition;
+  Null? familyPosition;
+  String? createdAt;
+  String? updatedAt;
+  String? motherTongue;
+  String? community;
+
+  PartnerExpectation(
+      {this.id,
+        this.userId,
+        this.generalRequirement,
+        this.country,
+        this.minAge,
+        this.maxAge,
+        this.minHeight,
+        this.maxWeight,
+        this.maritalStatus,
+        this.religion,
+        this.complexion,
+        this.smokingStatus,
+        this.drinkingStatus,
+        this.language,
+        this.minDegree,
+        this.profession,
+        this.personality,
+        this.financialCondition,
+        this.familyPosition,
+        this.createdAt,
+        this.updatedAt,
+        this.motherTongue,
+        this.community});
+
+  PartnerExpectation.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    generalRequirement = json['general_requirement'];
+    country = json['country'];
+    minAge = json['min_age'];
+    maxAge = json['max_age'];
+    minHeight = json['min_height'];
+    maxWeight = json['max_weight'];
+    maritalStatus = json['marital_status'];
+    religion = json['religion'];
+    complexion = json['complexion'];
+    smokingStatus = json['smoking_status'];
+    drinkingStatus = json['drinking_status'];
+    language = json['language'].cast<String>();
+    minDegree = json['min_degree'];
+    profession = json['profession'];
+    personality = json['personality'];
+    financialCondition = json['financial_condition'];
+    familyPosition = json['family_position'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    motherTongue = json['mother_tongue'];
+    community = json['community'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['general_requirement'] = this.generalRequirement;
+    data['country'] = this.country;
+    data['min_age'] = this.minAge;
+    data['max_age'] = this.maxAge;
+    data['min_height'] = this.minHeight;
+    data['max_weight'] = this.maxWeight;
+    data['marital_status'] = this.maritalStatus;
+    data['religion'] = this.religion;
+    data['complexion'] = this.complexion;
+    data['smoking_status'] = this.smokingStatus;
+    data['drinking_status'] = this.drinkingStatus;
+    data['language'] = this.language;
+    data['min_degree'] = this.minDegree;
+    data['profession'] = this.profession;
+    data['personality'] = this.personality;
+    data['financial_condition'] = this.financialCondition;
+    data['family_position'] = this.familyPosition;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['mother_tongue'] = this.motherTongue;
+    data['community'] = this.community;
+    return data;
+  }
+}
+
 
 class PhysicalAttributes {
   int? id;

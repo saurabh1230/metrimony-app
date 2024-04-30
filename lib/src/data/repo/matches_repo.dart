@@ -35,5 +35,10 @@ class MatchesRepo {
     );
   }
 
+  Future<Response> getMatchesList(page) {
+    return apiClient.getData('${AppConstants.matchesUrl}?page$page');
+  }
+
+
 
 }

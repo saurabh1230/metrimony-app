@@ -144,12 +144,14 @@ textBox({
   required void Function(String)? onChanged,
   Iterable<String>? string,
   double ? radius,
+  TextCapitalization? capital,
 
 }) {
   return TextFormField(
     autofillHints: string,
     textInputAction: TextInputAction.next,
     controller: controller,
+    textCapitalization:capital ?? TextCapitalization.none,
     decoration: InputDecoration(
 
         isDense: true,

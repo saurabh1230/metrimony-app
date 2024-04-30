@@ -37,7 +37,7 @@ Future<dynamic> updateBasicInfo({
     'gender': gender,
     'profession': profession,
     'financial_condition': financialCondition,
-    'religion': religion,
+    'religion': "Muslim",
     'mother_tongue': motherTongue,
     'community': community,
     'smoking_status': smokingStatus,

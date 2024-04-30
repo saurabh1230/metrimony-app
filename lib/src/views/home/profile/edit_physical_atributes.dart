@@ -311,7 +311,9 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                                     child: ElevatedButton(
                                       onPressed: () {
                                         setState(() {
-                                          heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
+                                          // heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
+                                          heightController.text = '$_feet-${_inches.toString()}';
+                                          print(heightController);
                                         });
                                         Navigator.pop(context);
                                       },

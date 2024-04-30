@@ -5,12 +5,13 @@ import 'package:image_picker/image_picker.dart';
 import '../data/api/api_client.dart';
 import '../data/repo/matches_repo.dart';
 
+import '../models/matches_model.dart';
 import '../utils/app_constants.dart';
 
 class MatchesController extends GetxController implements GetxService {
-  final MatchesRepo profileRepo;
+  final MatchesRepo matchesRepo;
   final ApiClient apiClient;
-  MatchesController({required this.profileRepo, required this.apiClient, }) ;
+  MatchesController({required this.matchesRepo, required this.apiClient, }) ;
 
 
 
@@ -28,6 +29,60 @@ class MatchesController extends GetxController implements GetxService {
   XFile? get pickedImage => _pickedImage;
   XFile? get pickedCover => _pickedCover;
   int? get categoryIndex => _categoryIndex;
+
+
+
+  List<MatchesModel>? _matchesList;
+  List<MatchesModel>? get matchesList => _matchesList;
+
+  int? _matchesIndex = 0;
+  int? get matches => _matchesIndex;
+
+  List<int?> _matchesId = [];
+  List<int?> get mlaIds => _matchesId;
+  Future<void> getMatchesList(String page) async {
+    _isLoading = true;
+    try {
+      Response response = await matchesRepo.getMatchesList(page);
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = response.body['data']['members']['data'];
+        _matchesList ??= [];
+        _matchesList!.addAll(responseData.map((json) => MatchesModel.fromJson(json)).toList());
+        // Check if there are more pages
+        if (responseData.length == 0) {
+          // No more matches available
+          // _hasMoreMatches = false;
+        }
+      } else {
+        // Handle API error
+      }
+    } catch (error) {
+      // Handle network error
+    } finally {
+      _isLoading = false;
+      update();
+    }
+  }
+  // Future<void> getMatchesList(page) async {
+  //   _isLoading = true;
+  //   update();
+  //   try {
+  //     Response response = await matchesRepo.getMatchesList(page);
+  //     if (response.statusCode == 200) {
+  //       List<dynamic> responseData = response.body['data']['members']['data'];
+  //       _matchesList = responseData.map((json) => MatchesModel.fromJson(json)).toList();
+  //       _matchesId = [0, ..._matchesList!.map((e) => e.id)];
+  //     } else {
+  //       // ApiChecker.checkApi(response);
+  //     }
+  //   } catch (error) {
+  //     // Handle errors, such as network failures, here.
+  //     print("Error while fetching MLA list: $error");
+  //     // You might want to set _mlaList and _mlaIds to null or empty lists here.
+  //   }
+  //   _isLoading = false;
+  //   update();
+  // }
 
 
 /*
@@ -98,7 +153,7 @@ String? firstName,String? lastName,String? mobile, XFile? image,*/
     _isLoading = true;
     update();
 
-    Response response = await profileRepo.bookMarkSave(profileId);
+    Response response = await matchesRepo.bookMarkSave(profileId);
     if(response.statusCode == 200) {
       // Get.offAllNamed(RouteHelper.getSignInRoute());
       // showCustomSnackBar('Password Changed Successful', isError: false);
@@ -113,7 +168,7 @@ String? firstName,String? lastName,String? mobile, XFile? image,*/
     _isLoading = true;
     update();
 
-    Response response = await profileRepo.bookMarkUnSave(profileId);
+    Response response = await matchesRepo.bookMarkUnSave(profileId);
     if(response.statusCode == 200) {
       // Get.offAllNamed(RouteHelper.getSignInRoute());
       // showCustomSnackBar('Password Changed Successful', isError: false);

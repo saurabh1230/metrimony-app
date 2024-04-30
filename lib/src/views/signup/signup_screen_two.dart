@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:country_picker/country_picker.dart';
+import '../../constants/string.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
@@ -149,7 +150,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     },
                     defaultSelected: "M",
                   ),),
-              const SizedBox(height: 12,),
+           /*   const SizedBox(height: 12,),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Married Status",
@@ -169,7 +170,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     });
                   },
                   defaultSelected: "Unmarried",
-                ),),
+                ),),*/
               sizedBox12(),
               Align(
                 alignment: Alignment.centerLeft,
@@ -239,7 +240,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
               ),
               const SizedBox(height: 12,),
 
-              textBox(
+              textBox(  capital: TextCapitalization.words,
                 context: context,
                 label: '',
                 controller: stateController,
@@ -252,7 +253,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     return null;
                   },
                 onChanged: (value) {
-                  SharedPrefs().setState(stateController.text);
+                  SharedPrefs().setState( StringUtils.capitalize(stateController.text));
                 },),
               const SizedBox(height: 12,),
               Align(
@@ -287,7 +288,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
               //   ),
               // ),
 
-              textBox(
+              textBox(  capital: TextCapitalization.words,
                 context: context,
                 label: '',
                 controller: motherTongue,
@@ -300,7 +301,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     return null;
                   },
                 onChanged: (value) {
-                  SharedPrefs().setMotherTongue(motherTongue.text);
+                  SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongue.text));
+                  // SharedPrefs().setMotherTongue(motherTongue.text);
                 },),
               sizedBox12(),
               Align(
@@ -311,7 +313,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
               ),
               const SizedBox(height: 12,),
 
-              textBox(
+              textBox(  capital: TextCapitalization.words,
                 context: context,
                 label: '',
                 controller: professionController,
@@ -324,7 +326,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   return null;
                 },
                 onChanged: (value) {
-                  SharedPrefs().setProfession(professionController.text);
+                  // SharedPrefs().setProfession(professionController.text);
+                  SharedPrefs().setProfession( StringUtils.capitalize(professionController.text));
                 },),
 
               sizedBox12(),

@@ -70,7 +70,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   // bool like = false;
 
-  getMatches() {matches.clear();
+  getMatches() {
     isLoading = true;
     getMatchesByGenderApi(
       page: page.toString(),
@@ -82,6 +82,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       if (mounted) {
         setState(() {
           if (value['status'] == true) {
+            matches.clear();
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); //
@@ -97,7 +98,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     });
   }
 
-  loadMore() {matches.clear();
+  loadMore() {
     print('ndnd');
     // if (!isLoading) {
     isLoading = true;
@@ -110,7 +111,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     ).then((value) {
       if (mounted) {
         setState(() {
-          if (value['status'] == true) {
+          if (value['status'] == true) { matches.clear();
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); // Add false for each new match
@@ -324,10 +325,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     context: context,
                                     onTap: () {
                                       setState(() {
-                                        Navigator.pop(context);
-                                        isLoading = true;
+
                                         page = 1;
+                                        isLoading = true;
                                         getMatches();
+                                        Navigator.pop(context);
                                       });
                                     },
                                     title: "Apply")
@@ -394,7 +396,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     ),
                                   );
                                 },
-                                height:
+                                height:matches[i].physicalAttributes!.height == null ?
+                                    "" :
                                 "${matches[i].physicalAttributes!.height ??
                                     ''} ft",
                                 imgUrl:

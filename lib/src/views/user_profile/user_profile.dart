@@ -295,7 +295,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                               sizedBox6(),
                               Text(
-                                ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
+                                '' ,
+
+
+                                // ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
                                 textAlign: TextAlign.center,
                                 style: styleSatoshiMedium(
                                   size: 14,
