@@ -27,7 +27,7 @@ import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:like_button/like_button.dart';
 
 class MatchesScreen extends StatefulWidget {
   final LoginResponse response;
@@ -472,17 +472,27 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                       });
                                     },
                                     title: "Connect Now"),
-                                bookmark: GestureDetector(
+                                bookmark:
+
+                                 GestureDetector(
                                   onTap: () {
+                                    setState(() {
+                                      like[i] = !like[i];
+                                    });
                                     print(matches[i].bookmark);
                                     matches[i].bookmark == 1 ?
                                     matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-                                 matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                    getMatches();
+                                    matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
+                                    // getMatches();
                                   },
-                                  child:  /*!matchesControl.isLoading ?*/ Icon(
+                                  child: like[i] ?
+                                  Icon(
+                                    CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
+                                    size: 22,):
+
+                                   Icon(
                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
-                                    size: 22,) /*: const CircularProgressIndicator()*/,
+                                    size: 22,),
                                 ),
                                 /*GestureDetector(
                                           onTap: () async {

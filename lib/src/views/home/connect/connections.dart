@@ -118,16 +118,13 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
-          "Matches",
+          "Connected Matches",
           style: styleSatoshiBold(size: 20, color: Colors.black),
         ),
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (builder) => const SavedMatchesScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (builder) => const SavedMatchesScreen()));
             },
             child: const Padding(
               padding: EdgeInsets.only(right: 16.0),
@@ -244,7 +241,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                             ],
                                           ),
                                           Text(
-                                            matches[i].profile!.mobile.toString(),
+                                            matches[i].profile!.mobile.toString().substring(2),
                                             maxLines: 2,
                                             style: styleSatoshiMedium(
                                                 size: 13,

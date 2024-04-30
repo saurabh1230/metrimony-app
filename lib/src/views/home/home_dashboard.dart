@@ -81,7 +81,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         body: [
            HomeScreen(response: widget.response,),
            MatchesScreen(response: widget.response,),
-          ConnectionScreen(response: widget.response,),
+           ConnectionScreen(response: widget.response,),
            // FilterMatchesScreen(response:  widget.response,),
           const ProfileScreen(),
         ][index],
