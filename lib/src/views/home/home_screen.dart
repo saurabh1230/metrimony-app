@@ -161,60 +161,57 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text('Category By Filter',
                   style: styleSatoshiBold(size: 18, color: Colors.black),),
                 sizedBox16(),
-                Row(children: [
-                  Image.asset(name)
-                ],)
-                // GridView.builder(
-                //   shrinkWrap: true,
-                //   itemCount: categoryImage.length,
-                //   physics: const NeverScrollableScrollPhysics(),
-                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //     crossAxisCount: 2,
-                //     mainAxisSpacing: 8,
-                //     crossAxisSpacing: 8,
-                //     childAspectRatio:1.9,
-                //   ),
-                //   itemBuilder: (_, i) {
-                //     List<Widget Function(BuildContext)> screenRoutes = [
-                //           (_) =>ReligionCategory(response: widget.response,),
-                //           (_) => MarriedCategory(response: widget.response,),
-                //       // Add more screen routes as needed
-                //     ];
-                //     return GestureDetector(
-                //       onTap: () {
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(builder: screenRoutes[i]),
-                //         );
-                //       },
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //             color: color[i],
-                //           borderRadius: BorderRadius.circular(16)
-                //         ),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           crossAxisAlignment: CrossAxisAlignment.center,
-                //           children: [
-                //            Column(
-                //              mainAxisAlignment: MainAxisAlignment.center,
-                //              crossAxisAlignment: CrossAxisAlignment.center,
-                //              children: [
-                //                Image.asset(categoryImage[i],
-                //                height: 30,
-                //                color: Colors.white,),
-                //                sizedBox6(),
-                //                Text(categoryTitle[i],
-                //                  style: styleSatoshiBold(size: 10, color: Colors.white),),
-                //              ],
-                //            )
-                //
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: categoryImage.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio:1.9,
+                  ),
+                  itemBuilder: (_, i) {
+                    List<Widget Function(BuildContext)> screenRoutes = [
+                          (_) =>ReligionCategory(response: widget.response,),
+                          (_) => MarriedCategory(response: widget.response,),
+                      // Add more screen routes as needed
+                    ];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: screenRoutes[i]),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: color[i],
+                          borderRadius: BorderRadius.circular(16)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                           Column(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               Image.asset(categoryImage[i],
+                               height: 30,
+                               color: Colors.white,),
+                               sizedBox6(),
+                               Text(categoryTitle[i],
+                                 style: styleSatoshiBold(size: 10, color: Colors.white),),
+                             ],
+                           )
+
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 sizedBox16(),
                 ///-----------premium match section ------------------
               ///-----------premium match section ------------------
