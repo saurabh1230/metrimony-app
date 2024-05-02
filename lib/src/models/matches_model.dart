@@ -16,6 +16,8 @@ class MatchesModel {
   int? ev;
   int? sv;
   int? bookmark;
+  int? interestStatus;
+
   int? profileComplete;
   int? totalStep;
   String? verCodeSendAt;
@@ -30,6 +32,7 @@ class MatchesModel {
   String? maritalStatus;
   String? motherTongue;
   String? community;
+
   // String? physicalAttributes;
   String? limitation;
   BasicInfo? basicInfo;
@@ -55,6 +58,7 @@ class MatchesModel {
     this.ev,
     this.sv,
     this.bookmark,
+    this.interestStatus,
     this.profileComplete,
     this.totalStep,
     this.verCodeSendAt,
@@ -105,6 +109,7 @@ class MatchesModel {
     ev = json['ev'];
     sv = json['sv'];
     bookmark = json['bookmark'];
+    interestStatus = json['interestStatus'];
     profileComplete = json['profileComplete'];
     totalStep = json['totalStep'];
     verCodeSendAt = json['verCodeSendAt']?.toString();
@@ -152,6 +157,7 @@ class MatchesModel {
     data['ev'] = ev;
     data['sv'] = sv;
     data['bookmark'] = bookmark;
+    data['interestStatus'] = interestStatus;
     data['profileComplete'] = profileComplete;
     data['totalStep'] = totalStep;
     data['verCodeSendAt'] = verCodeSendAt;

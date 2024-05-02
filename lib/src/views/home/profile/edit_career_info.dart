@@ -14,6 +14,7 @@ import '../../../constants/textstyles.dart';
 import '../../../models/career_info_model.dart';
 import '../../../models/education_info_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
+import '../../../utils/widgets/customAppbar.dart';
 import '../../../utils/widgets/loader.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
@@ -69,7 +70,182 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar:  CustomAppBar(title: "Career Info",menuWidget: Row(children: [  selectedItemId.isNotEmpty
+          ? GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            careerInfoDeleteApi(id: selectedItemId).then((value) {
+              setState(() {});
+              if (value['status'] == true) {
+                setState(() {
+                  loading = false;
+                  isLoading ? Loading() : careerInfo();
+                });
+
+                // isLoading ? Loading() :careerInfo();
+                // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                // const KycWaitScreen()));
+
+                // ToastUtil.showToast("Login Successful");
+
+                ToastUtil.showToast("Deleted Successfully");
+                print('done');
+              } else {
+                setState(() {
+                  loading = false;
+                });
+
+                List<dynamic> errors = value['message']['error'];
+                String errorMessage = errors.isNotEmpty
+                    ? errors[0]
+                    : "An unknown error occurred.";
+                Fluttertoast.showToast(msg: errorMessage);
+              }
+            });
+          },
+          child: Icon(Icons.delete,color: Colors.white,))
+          : SizedBox(),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return EditDialogWidget(
+                          addTextField: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Career info",
+                                style: styleSatoshiBold(size: 18, color: Colors.black),),
+                              sizedBox16(),
+
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: buildTextFormField(context,
+                                        hint: 'company', controller: companyController),
+                                  ),
+                                  SizedBox(
+                                    width: 6,
+                                  ),
+                                  Expanded(
+                                    child: buildTextFormField(context,
+                                        hint: 'designation',
+                                        controller: designationController),
+                                  ),
+                                ],
+                              ),
+                              sizedBox16(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: buildTextFormField(context,
+                                        hint: 'start',
+                                        controller: startingYearController),
+                                  ),
+                                  SizedBox(
+                                    width: 6,
+                                  ),
+                                  Expanded(
+                                    child: buildTextFormField(context,
+                                        hint: 'end No',
+                                        controller: endingYearController,
+                                        keyboard: TextInputType.number),
+                                  ),
+                                ],
+                              ),
+                              sizedBox10(),
+                              sizedBox16(),
+                              loading
+                                  ? loadingElevatedButton(
+                                  context: context, color: primaryColor)
+                                  : elevatedButton(
+                                  color: primaryColor,
+                                  context: context,
+                                  onTap: () {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    careerInfoAddApi(
+                                      // id: career[0].id.toString(),
+                                        company: companyController.text,
+                                        designation: designationController.text,
+                                        startYear: startingYearController.text,
+                                        endYear: endingYearController.text)
+                                        .then((value) {
+                                      if (value['status'] == true) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+
+                                        // isLoading ? Loading() :careerInfo();
+                                        // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                                        // const KycWaitScreen()));
+
+                                        // ToastUtil.showToast("Login Successful");
+
+                                        ToastUtil.showToast("Updated Successfully");
+                                        print('done');
+                                      } else {
+                                        setState(() {
+                                          loading = false;
+                                        });
+
+                                        List<dynamic> errors =
+                                        value['message']['error'];
+                                        String errorMessage = errors.isNotEmpty
+                                            ? errors[0]
+                                            : "An unknown error occurred.";
+                                        Fluttertoast.showToast(msg: errorMessage);
+                                      }
+                                    });
+                                    /*   educationInfoAddApi(
+                                    institute: instituteController.text,
+                                    degree: degreeController.text,
+                                    fieldOfStudy: fieldOfStudyController.text,
+                                    regNO: resultController.text, start: startingYearController.text,
+                                    end: endingYearController.text, result: resultController.text,
+                                    outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
+                                  setState(() {
+                                  });
+                                  if (value['status'] == true) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+
+                                    // isLoading ? Loading() :careerInfo();
+                                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                                    // const KycWaitScreen()));
+
+                                    // ToastUtil.showToast("Login Successful");
+
+                                    ToastUtil.showToast("Updated Successfully");
+                                    print('done');
+                                  } else {
+                                    setState(() {
+                                      loading = false;
+                                    });
+
+
+                                    List<dynamic> errors = value['message']['error'];
+                                    String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                    Fluttertoast.showToast(msg: errorMessage);
+                                  }
+                                });*/
+                                  },
+                                  title: "Save")
+                            ],
+                          ));
+                    });
+              },
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Icon(Icons.add,color: Colors.white,),
+          ),
+        )],),),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -204,9 +380,9 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
 
 
                         },
-                        child: Image.asset(
-                          icAddImageHolder,
-                          height: 120,
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 50.0),
+                          child: DottedPlaceHolder(text: "Add Education Info"),
                         ),
                       )):
                       ListView.builder(

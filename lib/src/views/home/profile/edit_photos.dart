@@ -1,3 +1,4 @@
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,56 +55,57 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: backButton(
-              context: context,
-              image: icArrowLeft,
-              onTap: () {
-                Navigator.pop(context); // Pop back to SignUpOnboardScreen
-                SignUpOnboardScreen.pageViewKey.currentState?.navigateToPage(3);
-
-                // Navigator.push(context, MaterialPageRoute(
-                //     builder: (builder) =>
-                //     const HomeDashboardScreen()));
-              }),
-        ),
-        actions:  [
-
-          const SizedBox(width: 5,),
-          selectedItems.isNotEmpty ?
-           Padding(
-            padding: EdgeInsets.only(right: 12.0),
-            child: Row(
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (allImagesSelected) {
-                          // If all images are selected, clear the list
-                          selectedItems.clear();
-                        } else {
-                          // If not all images are selected, add all images
-                          selectedItems.addAll(images);
-                        }
-                        allImagesSelected = !allImagesSelected;
-                      });
-
-                    },
-                    child: Image.asset(icSelectAll,height: 24,
-                      width: 24,)),
-                Icon(Icons.delete),
-              ],
-            ),
-          ) :
-              SizedBox(),
-        ],
-      ),
+      appBar: CustomAppBar(title: "Photo",isBackButtonExist: true,),
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   leading: Padding(
+      //     padding: const EdgeInsets.only(left: 16),
+      //     child: backButton(
+      //         context: context,
+      //         image: icArrowLeft,
+      //         onTap: () {
+      //           Navigator.pop(context); // Pop back to SignUpOnboardScreen
+      //           SignUpOnboardScreen.pageViewKey.currentState?.navigateToPage(3);
+      //
+      //           // Navigator.push(context, MaterialPageRoute(
+      //           //     builder: (builder) =>
+      //           //     const HomeDashboardScreen()));
+      //         }),
+      //   ),
+      //   actions:  [
+      //
+      //     const SizedBox(width: 5,),
+      //     selectedItems.isNotEmpty ?
+      //      Padding(
+      //       padding: EdgeInsets.only(right: 12.0),
+      //       child: Row(
+      //         children: [
+      //           GestureDetector(
+      //               onTap: () {
+      //                 setState(() {
+      //                   if (allImagesSelected) {
+      //                     // If all images are selected, clear the list
+      //                     selectedItems.clear();
+      //                   } else {
+      //                     // If not all images are selected, add all images
+      //                     selectedItems.addAll(images);
+      //                   }
+      //                   allImagesSelected = !allImagesSelected;
+      //                 });
+      //
+      //               },
+      //               child: Image.asset(icSelectAll,height: 24,
+      //                 width: 24,)),
+      //           Icon(Icons.delete),
+      //         ],
+      //       ),
+      //     ) :
+      //         SizedBox(),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
           child :_pickedImages.isEmpty
               ? Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,23 +126,10 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                       // log(_pickedImages.toString());
                     }
                   },
-                  child: Center(
-                    child: Container(
-                      color: Colors.transparent,
-                      width: 160.w,
-                      // height: 160.h,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              icAddImageHolder,
-                            ),
-                            SizedBox(height: 16),
-                            Text("Add Photos"),
-                          ],
-                        ),
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: const Center(
+                      child: DottedPlaceHolder(text:'Add Photos',),
                     ),
                   ),
                 ),

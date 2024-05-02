@@ -145,9 +145,13 @@ textBox({
   Iterable<String>? string,
   double ? radius,
   TextCapitalization? capital,
+  bool? read,
+  Function()? tap,
 
 }) {
   return TextFormField(
+    readOnly:read ?? false,
+    onTap: tap,
     autofillHints: string,
     textInputAction: TextInputAction.next,
     controller: controller,

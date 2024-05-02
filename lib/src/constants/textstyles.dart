@@ -35,6 +35,9 @@ styleSatoshiLightItalic({required double? size, required Color color}) {
 styleSatoshiMedium({required double size, required Color color}) {
   return TextStyle(fontSize: size, color: color, fontFamily: SatoshiMedium);
 }
+styleSatoshiLarge({required double size, required Color color}) {
+  return TextStyle(fontSize: size, color: color, fontFamily: SatoshiMedium, fontWeight: FontWeight.w500);
+}
 styleSatoshiMediumItalic({required double size, required Color color}) {
   return TextStyle(fontSize: size, color: color, fontFamily: SatoshiMediumItalic);
 }

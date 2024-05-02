@@ -40,7 +40,6 @@ otherUserdataHolder({
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   color: colorDarkCyan.withOpacity(0.03),
-                  // color:Colors.red,
                   borderRadius: BorderRadius.circular(10)
               ),
               child: CachedNetworkImage(
@@ -78,8 +77,8 @@ otherUserdataHolder({
                         // child: Text(filteredNames[i],
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: styleSatoshiBold(
-                            size: 19, color: Colors.black),
+                        style: styleSatoshiLarge(
+                            size: 16, color: Colors.black),
                       ),
                     ),
                     const SizedBox(width: 10,),
@@ -122,14 +121,15 @@ otherUserdataHolder({
                     ),
                   ],
                 ),
+                const SizedBox(height: 10,),
                 Text(
-                  atributeReligion,
+                    atributeReligion,
                   maxLines: 2,
                   style: styleSatoshiMedium(
                       size: 13,
                       color: Colors.black.withOpacity(0.80)),
                 ),
-                const SizedBox(height: 3,),
+                const SizedBox(height: 4,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

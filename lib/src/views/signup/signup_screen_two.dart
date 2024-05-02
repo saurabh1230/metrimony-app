@@ -2,6 +2,7 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -41,12 +42,16 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   final genderController = TextEditingController();
   final motherTongue = TextEditingController();
   final professionController = TextEditingController();
+  final ageController = TextEditingController();
   bool picked = false;
   String selectedCountryName = '';
   String? selectedValue;
 
-  String? motherTongueValue = '';
+  String? motherTongueValue;
   String motherTongueFilter = '';
+
+  String? communityValue ;
+  String communityFilter = '';
 
   String? userTypeValue;
   String userTypeFilter = '';
@@ -146,10 +151,17 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     onChipSelected: (selectedGender) {
                       setState(() {
                         SharedPrefs().setGender(selectedGender);
+                        SharedPrefs().getGender();
                       });
                     },
                     defaultSelected: "M",
                   ),),
+          /* GestureDetector(
+             onTap: () {
+               print(SharedPrefs().getGender());
+               print(SharedPrefs().getReligion());
+             },
+               child: Text("data")),*/
            /*   const SizedBox(height: 12,),
               Align(
                 alignment: Alignment.centerLeft,
@@ -171,6 +183,31 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   },
                   defaultSelected: "Unmarried",
                 ),),*/
+              const SizedBox(height: 12,),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Age",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),),
+              ),
+              const SizedBox(height: 12,),
+
+              textBox(  capital: TextCapitalization.words,
+                context: context,
+                label: '',
+                controller: ageController,
+                hint: '',
+                length: null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your Age';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  SharedPrefs().setAge( StringUtils.capitalize(ageController.text));
+                },),
+              const SizedBox(height: 12,),
               sizedBox12(),
               Align(
                 alignment: Alignment.centerLeft,
@@ -258,61 +295,11 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
               const SizedBox(height: 12,),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Mother Tongue",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,), // Padding(
-              //   padding:
-              //   const EdgeInsets.symmetric(horizontal: 0.0),
-              //   child: SizedBox(
-              //     width: 1.sw,
-              //     child: CustomStyledDropdownButton(
-              //       items: const  [
-              //         "Hindi",
-              //         'Urdu',
-              //         "Punjabi",
-              //         'Bhojpuri',
-              //         'Marathi',
-              //       ],
-              //       selectedValue: motherTongueValue,
-              //       onChanged: (String? value) {
-              //         setState(() {
-              //           motherTongueValue = value;
-              //           motherTongueFilter = motherTongueValue ?? '';
-              //
-              //         });
-              //       },
-              //       title: 'Mother Tongue',
-              //     ),
-              //   ),
-              // ),
-
-              textBox(  capital: TextCapitalization.words,
-                context: context,
-                label: '',
-                controller: motherTongue,
-                hint: '',
-                length: null,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Mother Tongue';
-                    }
-                    return null;
-                  },
-                onChanged: (value) {
-                  SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongue.text));
-                  // SharedPrefs().setMotherTongue(motherTongue.text);
-                },),
-              sizedBox12(),
-              Align(
-                alignment: Alignment.centerLeft,
                 child: Text("Profession",
                   textAlign: TextAlign.left,
                   style: styleSatoshiBold(size: 16, color: Colors.black),),
               ),
               const SizedBox(height: 12,),
-
               textBox(  capital: TextCapitalization.words,
                 context: context,
                 label: '',
@@ -329,6 +316,131 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   // SharedPrefs().setProfession(professionController.text);
                   SharedPrefs().setProfession( StringUtils.capitalize(professionController.text));
                 },),
+             const SizedBox(height: 12,),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Community",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),),
+              ),
+              const SizedBox(height: 12,), // P
+              SizedBox(
+                width: 1.sw,
+                child: CustomStyledDropdownButton(
+                  items: const  [
+                    "Brahmin",
+                    "Rajput",
+                    'Kamma',
+                    "Yadav",
+                    'Gupta',
+                    'Sikh',
+                    'Punjabi',
+                    'Aggarwal',
+                    'Aggarwal',
+                  ],
+                  selectedValue: communityValue,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Community';
+                    }
+                    return null;
+                  },
+                  onChanged: (String? value) {
+                    setState(() {
+                      communityValue = value;
+                      communityFilter = communityValue ?? '';
+                      SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
+
+                    });
+
+                  },
+                  title: 'Community',
+                ),
+              ),
+              sizedBox12(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Mother Tongue",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),),
+              ),
+              const SizedBox(height: 12,), // P
+              SizedBox(
+                width: 1.sw,
+                child: CustomStyledDropdownButton(
+                  items: const  [
+                    "Hindi",
+                    "Bhojpuri",
+                    'Marathi',
+                    "Bengali",
+                    'Odia',
+                    'Gujarati',
+                    'Urdu',
+                    "Punjabi",
+                  ],
+                  selectedValue: motherTongueValue,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Mother Tongue';
+                    }
+                    return null;
+                  },
+                  onChanged: (String? value) {
+                    setState(() {
+                      motherTongueValue = value;
+                      motherTongueFilter = motherTongueValue ?? '';
+                      SharedPrefs().setMotherTongue(motherTongueFilter);
+
+                    });
+                    // print(userTypeFilter);
+                    // print('Check ======> Usetype${userTypeFilter}');
+                  },
+                  title: 'Mother Tongue',
+                ),
+              ),
+              // adding(
+    /*          SizedBox(
+                  width: 1.sw,
+                  child: CustomStyledDropdownButton(
+                    items: const  [
+                      "Hindi"
+                      "Bhojpuri",
+                      'Marathi',
+                      "Bengali",
+                      'Odia',
+                      'Gujarati',
+                    ],
+                    selectedValue: motherTongueValue,
+                    onChanged: (String? value) {
+                      setState(() {
+                        motherTongueValue = value;
+                        motherTongueFilter = motherTongueValue ?? '';
+                        SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongueFilter));
+
+                      });
+                    },
+                    title: 'Mother Tongue',
+                  ),
+                ),*/
+
+
+             /* textBox(  capital: TextCapitalization.words,
+                context: context,
+                label: '',
+                controller: motherTongue,
+                hint: '',
+                length: null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your Mother Tongue';
+                    }
+                    return null;
+                  },
+                onChanged: (value) {
+                  SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongue.text));
+                  // SharedPrefs().setMotherTongue(motherTongue.text);
+                },),*/
+
 
               sizedBox12(),
               Align(

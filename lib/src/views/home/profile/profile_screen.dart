@@ -3,6 +3,7 @@ import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/string.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/custom_image_widget.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_career_info.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_education_screen.dart';
@@ -106,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
 
-    final nameController = TextEditingController();
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final locationController = TextEditingController();
@@ -128,7 +129,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar2(title: "Profile",menuWidget:   Padding(
+        padding: const EdgeInsets.only(right: 16.0),
+        child: backButton(context: context, image: settings, onTap: () async {
+          final result = await showMenu(
+            context: context,
+            position: const RelativeRect.fromLTRB(20, 40, 0, 0), // Adjust the position as needed
+            items: [
+              PopupMenuItem<String>(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DeleteAccountDialog(
+                          titleButton1: 'Back',
+                          click1: () {Navigator.pop(context);},
+                          click2: () {Navigator.push(context, MaterialPageRoute(builder: (builder) => const  SignInScreen()));},
+                          heading: 'Delete this Account?',
+                          subheading: ' This Account with will be permanently deleted',
+                          mainButton: elevatedButton(
+                              height: 38, color: Colors.red, context: context, onTap: () {}, title: 'Delete Account',
+                              style: styleSatoshiLight(size: 14, color: Colors.white)),);});
+                },
+                value: 'Delete Account',
+                child: const Text('Delete Account'),
+              ),
+              PopupMenuItem<String>(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return const ChangePassSheet();
+                    },
+                  );
+                },
+                value: 'Change Password',
+                child: const Text('Change Password'),
+              ),
+              PopupMenuItem<String>(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return DeleteAccountDialog(
+                            titleButton1: 'Back',
+                            click1: () {
+                              Navigator.pop(context);
+                            },
+                            click2: () {
+                            },
+                            heading: 'Confirm Logout',
+                            subheading: 'Are you sure you want to Logout?',
+                            mainButton: loading
+                                ? loadingElevatedButton(
+                              height: 38,
+                              color: Colors.red,
+                              context: context,
+                            )
+                                : elevatedButton(
+                              height: 38,
+                              color: Colors.red,
+                              context: context,
+                              onTap: () {
+                                setState(() {
+                                  loading = true;
+                                });
+
+                                logOutApi().then((value) {
+                                  setState(() {});
+
+                                  if (value['status'] == 'ok') {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    SharedPrefs().setLoginFalse();
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (builder) => const SignInScreen()));
+
+                                    ToastUtil.showToast("Logout Successfully");
+                                  } else {
+                                    setState(() {
+                                      loading = false;
+                                    });
+
+                                    List<dynamic>? errors = value['message']['error'];
+                                    String errorMessage = errors?.isNotEmpty == true
+                                        ? errors![0]
+                                        : "An unknown error occurred.";
+                                    Fluttertoast.showToast(msg: errorMessage);
+                                  }
+                                });
+                              },
+                              title: 'Logout Account',
+                              style: styleSatoshiLight(size: 14, color: Colors.white),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+                value: 'Logout',
+                child:const Text('Logout'),
+              ),
+            ],
+          );
+
+          if (result != null) {
+            print('Selected: $result');
+          }
+        }),
+      ),),
+     /* appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
@@ -136,135 +254,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: styleSatoshiBold(size: 22, color: Colors.black),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: backButton(context: context, image: icSettings, onTap: () async {
-              final result = await showMenu(
-                context: context,
-                position: const RelativeRect.fromLTRB(20, 40, 0, 0), // Adjust the position as needed
-                items: [
-                  PopupMenuItem<String>(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DeleteAccountDialog(
-                              titleButton1: 'Back',
-                              click1: () {
-                                Navigator.pop(context);
-                              },
-                              click2: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (builder) => const  SignInScreen()));
-                              },
-                              heading: 'Delete this Account?',
-                              subheading: ' This Account with will be permanently deleted',
-                              mainButton: elevatedButton(
-                                  height: 38,
-                                  color: Colors.red,
-                                  context: context, onTap: () {
-                              }, title: 'Delete Account',
-                                  style: styleSatoshiLight(size: 14, color: Colors.white)),
-                            );
-                          });
-                    },
-                    value: 'Delete Account',
-                    child: const Text('Delete Account'),
-                  ),
-                  PopupMenuItem<String>(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (BuildContext context) {
-                          return const ChangePassSheet();
-                        },
-                      );
-                    },
-                    value: 'Change Password',
-                    child: const Text('Change Password'),
-                  ),
-                  PopupMenuItem<String>(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return StatefulBuilder(
-                            builder: (BuildContext context, StateSetter setState) {
-                              return DeleteAccountDialog(
-                                titleButton1: 'Back',
-                                click1: () {
-                                  Navigator.pop(context);
-                                },
-                                click2: () {
-                                },
-                                heading: 'Confirm Logout',
-                                subheading: 'Are you sure you want to Logout?',
-                                mainButton: loading
-                                    ? loadingElevatedButton(
-                                  height: 38,
-                                  color: Colors.red,
-                                  context: context,
-                                )
-                                    : elevatedButton(
-                                  height: 38,
-                                  color: Colors.red,
-                                  context: context,
-                                  onTap: () {
-                                    setState(() {
-                                      loading = true;
-                                    });
 
-                                    logOutApi().then((value) {
-                                      setState(() {});
-
-                                      if (value['status'] == 'ok') {
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                        SharedPrefs().setLoginFalse();
-
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (builder) => const SignInScreen()));
-
-                                        ToastUtil.showToast("Logout Successfully");
-                                      } else {
-                                        setState(() {
-                                          loading = false;
-                                        });
-
-                                        List<dynamic>? errors = value['message']['error'];
-                                        String errorMessage = errors?.isNotEmpty == true
-                                            ? errors![0]
-                                            : "An unknown error occurred.";
-                                        Fluttertoast.showToast(msg: errorMessage);
-                                      }
-                                    });
-                                  },
-                                  title: 'Logout Account',
-                                  style: styleSatoshiLight(size: 14, color: Colors.white),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                    value: 'Logout',
-                    child:const Text('Logout'),
-                  ),
-                ],
-              );
-
-              if (result != null) {
-                print('Selected: $result');
-              }
-            }),
-          ),
         ],
-      ),
-      body:isLoading ? const Loading(): Stack(
+      ),*/
+      body: isLoading ? const Loading(): Stack(
         children: [
           CustomRefreshIndicator(
             onRefresh: () {
@@ -275,66 +268,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Center(
-                      child: ClipOval(child: CustomImageWidget(image: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',height: 100,width: 100,)),
-                      // child: CircularPercentIndicator(
-                      //   radius: 110.0,
-                      //   lineWidth: 7.0,
-                      //   percent: 1,
-                      //   center: Padding(
-                      //     padding: const EdgeInsets.all(2.0),
-                      //     child: Container(
-                      //       clipBehavior: Clip.hardEdge,
-                      //       decoration :const BoxDecoration(
-                      //         shape: BoxShape.circle,
-                      //           color:Colors.white,
-                      //       ),
-                      //       child:
-                      //       GestureDetector(
-                      //         onTap:  () async {
-                      //           XFile? v = await _imgPicker.pickImage(
-                      //               source: ImageSource.gallery);
-                      //           if (v != null) {
-                      //             setState(
-                      //                   () {
-                      //                 pickedImage = File(v.path);
-                      //               },
-                      //             );
-                      //           }
-                      //
-                      //         },
-                      //         child:pickedImage.path.isEmpty
-                      //             ? CachedNetworkImage(
-                      //           imageUrl: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',
-                      //           fit: BoxFit.cover,
-                      //           errorWidget: (context, url, error) =>
-                      //               Padding(
-                      //                 padding: const EdgeInsets.all(8.0),
-                      //                 child: Image.asset(icLogo,
-                      //                   height: 40,
-                      //                   width: 40,),
-                      //               ),
-                      //           progressIndicatorBuilder: (a, b, c) =>
-                      //               customShimmer(height: 80, /*width: 0,*/),
-                      //         ): Image.file(
-                      //           pickedImage,
-                      //           fit: BoxFit.cover,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   progressColor: const Color(0xff00a337),
-                      // ),
-                    ),
+                    Center(child: ClipOval(child: CustomImageWidget(image: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
                     sizedBox10(),
                     GestureDetector(onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (builder) => const EditBasicInfoScreen()));
-                    },
+                          builder: (builder) => const EditBasicInfoScreen()));},
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                            Text("Basic Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
@@ -402,12 +344,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    buildInfoRow(title: 'Institute',
-                        text: profile.data?.user?.educationInfo![0].institution ?? '',
+                    /*buildInfoRow(title: 'Institute',
+                        text:  ' ${profile.data!.user!.educationInfo!.isEmpty ? "" :
+                        profile.data?.user?.educationInfo![0].institution.toString()}',
                         onTap: () {
-                        }),
+                        }),*/
                     buildInfoRow(title: 'Degree',
-                        text:  profile.data?.user?.educationInfo![0].degree  ?? '',
+                        text:
+                        ' ${profile.data!.user!.educationInfo!.isEmpty ? profile.data!.user!.educationInfo == null ? "": "" :
+                        profile.data?.user?.educationInfo![0].degree.toString()}',
                         onTap: () {
                         }),
                     /* buildInfoRow(title: 'State',
@@ -415,9 +360,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                         }),*/
                     buildInfoRow(title: 'Study',
-                        text: profile.data?.user?.educationInfo![0].fieldOfStudy ?? '',
-                        onTap: () {
-                        }),
+                        text: '${profile.data!.user!.educationInfo!.isEmpty ? "" :
+                        profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
+                        onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
                         builder: (builder) => const EditCareerInfoScreen()));},
@@ -429,41 +374,167 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'Company',
-                        text: profile.data?.user?.careerInfo![0].company ?? '',
-                        onTap: () {
-                        }),
+                        text: ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        profile.data?.user?.careerInfo![0].company.toString()}',
+                        onTap: () {}),
                     buildInfoRow(title: 'Designation',
-                        text:  profile.data?.user?.careerInfo![0].designation  ?? '',
-                        onTap: () {
-                        }),
+                        text: ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        profile.data?.user?.careerInfo![0].designation.toString()}',
+                        onTap: () {}),
                     sizedBox20(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Partner Expectations",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                        Image.asset(icEdit,height: 20,width: 20,),
-                      ],
+                    GestureDetector(onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (builder) => const EditPreferenceScreen()));
+                      },
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Partner Expectations",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                          Image.asset(icEdit,height: 20,width: 20,),
+                        ],
+                      ),
                     ),
                     buildInfoRow(title: 'Religion',
-                        text:  profile.data?.user?.partnerExpectation!.religion  ?? '',
+                        text:  profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.religion.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Profession',
-                        text:  profile.data?.user?.partnerExpectation!.profession  ?? '',
+                        text:  profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.profession.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Mother Tongue',
-                        text:  profile.data?.user?.partnerExpectation!.motherTongue  ?? '',
+                        text:  profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.motherTongue.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Community',
-                        text:  profile.data?.user?.partnerExpectation!.community  ?? '',
+                        text: profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.community.toString(),
                         onTap: () {
                         }),
+                    sizedBox20(),
+                    GestureDetector(onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (builder) => const EditPhysicalAttributesScreen()));
+
+                    },
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Physical Attributes",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                          Image.asset(icEdit,height: 20,width: 20,),
+                        ],
+                      ),
+                    ),
+                    buildInfoRow(title: 'Weight',
+                        text:  profile.data!.user!.physicalAttributes!.weight == null ? "" :
+                        profile.data!.user!.physicalAttributes!.weight.toString(),
+                        onTap: () {
+                        }),
+                    buildInfoRow(title: 'Height',
+                        text:  profile.data!.user!.physicalAttributes!.height == null ? "" :
+                        profile.data!.user!.physicalAttributes!.height.toString(),
+                        onTap: () {
+                        }),
+                    buildInfoRow(title: 'Blood Group',
+                        text:  profile.data!.user!.physicalAttributes!.bloodGroup== null ? "" :
+                        profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
+                        onTap: () {
+                        }),
+
+                    GestureDetector(onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (builder) => const EditPhotosScreen()));
+
+                    },
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Gallery",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                          Image.asset(icEdit,height: 20,width: 20,),
+                        ],
+                      ),
+                    ),
+                    sizedBox16(),
+
+                    photos.isEmpty ||  photos == null  ?
+                    Center(child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhotosScreen()));
+
+                      },
+                      child: const DottedPlaceHolder(text:'Add Photos',),)):
+                    Stack(
+                      children: [
+                        GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: photos.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 8,
+                            crossAxisSpacing: 8,
+                            childAspectRatio: 1,
+                          ),
+                          itemBuilder: (_, i) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PhotoViewScreen(
+                                      imageProvider: NetworkImage(
+                                        photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              behavior: HitTestBehavior.translucent,
+                              child: Container(
+                                height: 220,
+                                width: 130,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color:
+                                    Colors.grey,
+                                    width: 1,
+                                  ),
+                                  borderRadius: const  BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      Padding(padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset(icLogo, height: 40, width: 40,),),
+                                  progressIndicatorBuilder: (a, b, c) => customShimmer(height: 0, /*width: 0,*/),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Positioned(
+                          bottom: 10,
+                          right: 10,
+                          child: Row(
+                            children: [
+                              customContainer(vertical: 5, horizontal: 10, child: Row(
+                                children: [SvgPicture.asset(ic4Dots), const SizedBox(width: 6,), const Text("See All")],),
+                                  radius: 8, color: Colors.white, click: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
+
+                                  })
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    sizedBox16(),
                     // buildInfoRow(title: 'Mother Tongue',
                     //     text: profile.data?.user?.partnerExpectation!.motherTongue ?? '',
                     //     onTap: () {
                     //     }),
-                    Padding(
+               /*     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -547,7 +618,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }),
                           sizedBox13(),
 
-                       /*   Column(
+                       *//*   Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               sizedBox20(),
@@ -569,7 +640,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               sizedBox16(),
 
                             ],
-                          ),*/
+                          ),*//*
 
 
 
@@ -717,89 +788,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               }),
                               sizedBox8(),
 
-                              photos.isEmpty ||  photos == null  ?
 
-                                  Center(child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhotosScreen()));
-
-                                    },
-                                      child: Image.asset(
-                                        icAddImageHolder,
-                                        height: 120,
-                                      ),)):
-                              Stack(
-                                children: [
-                                  GridView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: photos.length,
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 8,
-                                      crossAxisSpacing: 8,
-                                      childAspectRatio: 1,
-                                    ),
-                                    itemBuilder: (_, i) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => PhotoViewScreen(
-                                                imageProvider: NetworkImage(
-                                                  photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        behavior: HitTestBehavior.translucent,
-                                        child: Container(
-                                          height: 220,
-                                          width: 130,
-                                          clipBehavior: Clip.hardEdge,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                              Colors.grey,
-                                              width: 1,
-                                            ),
-                                            borderRadius: const  BorderRadius.all(Radius.circular(10)),
-                                          ),
-                                          child: CachedNetworkImage(
-                                            imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
-                                            fit: BoxFit.cover,
-                                            errorWidget: (context, url, error) =>
-                                                Padding(padding: const EdgeInsets.all(8.0),
-                                                  child: Image.asset(icLogo, height: 40, width: 40,),),
-                                            progressIndicatorBuilder: (a, b, c) => customShimmer(height: 0, /*width: 0,*/),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Positioned(
-                                    bottom: 10,
-                                    right: 10,
-                                    child: Row(
-                                      children: [
-                                        customContainer(vertical: 5, horizontal: 10, child: Row(
-                                              children: [SvgPicture.asset(ic4Dots), const SizedBox(width: 6,), const Text("See All")],),
-                                            radius: 8, color: Colors.white, click: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
-
-                                        })
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
                               sizedBox28(),
                             ],
                           )
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -915,14 +910,17 @@ GestureDetector buildInfoRow({
                   ),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(text,
-                          maxLines: 2,
-                          style: styleSatoshiMedium(size: 14, color: color212121),
-                        ),
-                      ],
+                    child: Align(alignment: Alignment.centerRight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(text,
+                            maxLines: 2,
+                            textAlign: TextAlign.end,
+                            style: styleSatoshiMedium(size: 14, color: color212121),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

@@ -16,6 +16,7 @@ import '../../../constants/textstyles.dart';
 import '../../../models/attributes_model.dart';
 import '../../../models/preference_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
+import '../../../utils/widgets/customAppbar.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,6 +33,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
   final generalInfo = TextEditingController();
   final countryController = TextEditingController();
   final heightController = TextEditingController();
+  final maxHeightController = TextEditingController();
   final weightController = TextEditingController();
   final preferredReligionController = TextEditingController();
   final minAgeController = TextEditingController();
@@ -88,6 +90,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
     minAgeController.text= preferenceModel.minAge.toString() ?? '';
      maxAgeController.text= preferenceModel.maxAge.toString() ?? '';
      heightController.text= preferenceModel.minHeight.toString() ?? '';
+   maxHeightController.text= preferenceModel.max_height.toString() ?? '';
    weightController.text= preferenceModel.maxWeight.toString() ?? '';
     preferredReligionController.text= preferenceModel.religion.toString() ?? '';
     communityController.text= preferenceModel.community.toString() ?? '';
@@ -114,12 +117,15 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
   int _feet = 5;
   int _inches = 0;
 
+  int _feet2 = 5;
+  int _inches2 = 0;
+
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: const CustomAppBar(title: "Partner Expectation",),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -143,7 +149,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                 profession: preferredProfession.text,
                 minDegree: minimumDegreeController.text,
                 financialCondition: financialCondition.text,
-                language: languageController.text).then((value) {
+                language: languageController.text,
+                maxHeight: maxHeightController.text).then((value) {
               setState(() {
               });
               if (value['status'] == true) {
@@ -187,6 +194,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text("Partner Expectations",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                sizedBox16(),
                 GestureDetector(
                   onTap: () {
                     showDialog(
@@ -203,7 +212,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                               Navigator.pop(context); // Close the dialog
                             },
                             controller: generalInfo,
-                            decoration: AppTFDecoration(hint: 'Introduction')
+                            decoration: AppTFDecoration(hint: 'General Introduction')
                                 .decoration(),
                             //keyboardType: TextInputType.phone,
                           ),
@@ -215,10 +224,10 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                       Row(
                         children: [
                           Text(
-                            "Introduction",
+                            "General Information",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
                           ),
                           SizedBox(width: 3,),
                           Icon(
@@ -358,6 +367,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     data2: StringUtils.capitalize(maxAgeController.text),
                     isControllerTextEmpty: maxAgeController.text.isEmpty, widget: SizedBox(),),
                 ),
+
                 sizedBox16(),
                 GestureDetector(
                   onTap: () {
@@ -483,9 +493,9 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         setState(() {
-                                          // heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
-                                          heightController.text = '$_feet-${_inches.toString()}';
-                                          print(heightController);
+                                          heightController.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
+
+                                          print('$_feet.${_inches.toString().padLeft(1, '0')}');
                                         });
                                         Navigator.pop(context);
                                       },
@@ -536,6 +546,186 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           : heightController.text,
                       data2: heightController.text,
                       isControllerTextEmpty: heightController.text.isEmpty, widget: SizedBox()),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext builder) {
+
+                        // Create the modal bottom sheet widget containing the time picker and close button
+                        return SizedBox(
+                          height: MediaQuery.of(context).copyWith().size.height / 3,
+                          child: Column(
+                            children: [
+
+                              WillPopScope(
+                                onWillPop: () async {
+
+                                  return false;
+                                },
+                                child: SizedBox(
+                                  height:200,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: CupertinoPicker(
+                                          scrollController: FixedExtentScrollController(
+                                            initialItem: _feet2 - 5,
+                                          ),
+                                          itemExtent: 32,
+                                          onSelectedItemChanged: (index) {
+                                            setState(() {
+                                              _feet2 = index + 5;
+                                            });
+                                          },
+                                          children: List.generate(
+                                            7, // 7 feet in the range from 5 to 11
+                                                (index) => Center(child: Text('${index + 5}\'')),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: CupertinoPicker(
+                                          scrollController: FixedExtentScrollController(
+                                            initialItem: _inches2,
+                                          ),
+                                          itemExtent: 32,
+                                          onSelectedItemChanged: (index) {
+                                            setState(() {
+                                              _inches2 = index;
+                                            });
+                                            print(' $_feet2-${_inches2.toString().padLeft(2, '0')}');
+                                          },
+                                          children: List.generate(
+                                            12, // 12 inches in a foot
+                                                (index) => Center(child: Text('$index\"')),
+                                          ),
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              // Time picker
+                              // Container(
+                              //   height: 300,
+                              //   child: CupertinoPicker(
+                              //     scrollController: FixedExtentScrollController(
+                              //       initialItem: _feet - 5,
+                              //     ),
+                              //     itemExtent: 32,
+                              //     onSelectedItemChanged: (index) {
+                              //       setState(() {
+                              //         _feet = index + 5;
+                              //       });
+                              //     },
+                              //     children: List.generate(
+                              //       7, // 7 feet in the range from 5 to 11
+                              //           (index) => Center(child: Text('${index + 5}\'')),
+                              //     ),
+                              //   ),
+                              // ),
+                              // Container(
+                              //   height: 200,
+                              //   child: CupertinoPicker(
+                              //     scrollController: FixedExtentScrollController(
+                              //       initialItem: _inches,
+                              //     ),
+                              //     itemExtent: 32,
+                              //     onSelectedItemChanged: (index) {
+                              //       setState(() {
+                              //         _inches = index;
+                              //       });
+                              //     },
+                              //     children: List.generate(
+                              //       12, // 12 inches in a foot
+                              //           (index) => Center(child: Text('$index\"')),
+                              //     ),
+                              //   ),
+                              // ),
+
+                              // Close button
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+
+                                children: [
+                                  Flexible(
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent, // Change the background color to red
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child:  Text('Close',
+                                        style: styleSatoshiMedium(
+                                            size: 13,
+                                            color: Colors.white),),
+                                    ),
+                                  ),
+                                  SizedBox(width: 8,),
+                                  Flexible(
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          maxHeightController.text = '$_feet2.${_inches2.toString().padLeft(1, '0')}';
+                                          // maxHeightController.text = '$_feet2-${_inches2.toString()}';
+                                          print('$_feet2.${_inches2.toString().padLeft(1, '0')}');
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child:  Text('Save',
+                                        style: styleSatoshiMedium(
+                                            size: 13,
+                                            color: Colors.black),),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'Height in feet',
+                    //       addTextField: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {
+                    //
+                    //           });
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: heightController,
+                    //         decoration: AppTFDecoration(
+                    //             hint: 'Height').decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  },
+                  child: buildDataAddRow(title: 'Max Height ',
+                      data1: maxHeightController.text.isEmpty
+                          ? (preferenceModel.id == null || preferenceModel.minHeight == null || preferenceModel.minHeight!.isEmpty
+                          ? 'Not Added'
+                          : preferenceModel.minHeight.toString())
+                          : maxHeightController.text,
+                      data2: maxHeightController.text,
+                      isControllerTextEmpty: maxHeightController.text.isEmpty, widget: SizedBox()),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
 
@@ -679,6 +869,38 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                 ),
                 sizedBox16(),
                 GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MotherTongueSheet(
+                          privacyStatus: '',
+                          onPop: (val) {
+                            motherTongueController.text = val;
+                            print(motherTongueController.text);
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    title: 'Mother Tongue',
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    data1: motherTongueController.text.isEmpty
+                        ? (preferenceModel.id == null ||
+                        preferenceModel.motherTongue == null
+                        ? 'Not Added'
+                        : preferenceModel.motherTongue.toString())
+                        : motherTongueController.text,
+                    data2: motherTongueController.text,
+                    isControllerTextEmpty: motherTongueController.text.isEmpty,
+                  ),
+                ),
+           /*     GestureDetector(
                   onTap: () {
                     showDialog(
                       context: context,
@@ -712,43 +934,75 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     data2: StringUtils.capitalize(motherTongueController.text),
                     isControllerTextEmpty: motherTongueController.text.isEmpty, widget: SizedBox(),),
                   // child: CarRowWidget(favourites: favourites!,)
-                ),
+                ),*/
                 sizedBox16(),
                 GestureDetector(
+                  behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    showDialog(
+                    showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Community',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: communityController,
-                            decoration: AppTFDecoration(
-                                hint: 'Community').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
+                        return CommuitySheet(
+                          privacyStatus: '',
+                          onPop: (val) {
+                            communityController.text = val;
+                            print(communityController.text);
+                          },
                         );
                       },
                     );
                   },
-                  child: buildDataAddRow(title: 'Community',
+                  child: buildDataAddRow(
+                    title: 'Community',
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
                     data1: communityController.text.isEmpty
-                        ? (preferenceModel.id == null || preferenceModel.community == null || preferenceModel.community!.isEmpty
+                        ? (preferenceModel.id == null ||
+                        preferenceModel.community == null
                         ? 'Not Added'
-                        : preferenceModel.community!)
+                        : preferenceModel.community.toString())
                         : communityController.text,
-                    data2: StringUtils.capitalize(communityController.text),
-                    isControllerTextEmpty: communityController.text.isEmpty, widget: SizedBox(),),
-                  // child: CarRowWidget(favourites: favourites!,)
+                    data2: communityController.text,
+                    isControllerTextEmpty: communityController.text.isEmpty,
+                  ),
                 ),
+                // GestureDetector(
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'Community',
+                //           addTextField: TextFormField(
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {
+                //               });
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: communityController,
+                //             decoration: AppTFDecoration(
+                //                 hint: 'Community').decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(title: 'Community',
+                //     data1: communityController.text.isEmpty
+                //         ? (preferenceModel.id == null || preferenceModel.community == null || preferenceModel.community!.isEmpty
+                //         ? 'Not Added'
+                //         : preferenceModel.community!)
+                //         : communityController.text,
+                //     data2: StringUtils.capitalize(communityController.text),
+                //     isControllerTextEmpty: communityController.text.isEmpty, widget: SizedBox(),),
+                //   // child: CarRowWidget(favourites: favourites!,)
+                // ),
                 sizedBox16(),
                 GestureDetector(
                   onTap: () {
@@ -781,7 +1035,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                         ? 'Not Added'
                         : preferenceModel.minDegree!)
                         : minimumDegreeController.text,
-                    data2: StringUtils.capitalize(communityController.text),
+                    data2: StringUtils.capitalize(minimumDegreeController.text),
                     isControllerTextEmpty: minimumDegreeController.text.isEmpty, widget: SizedBox(),),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
@@ -918,7 +1172,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
           child: Row(
             children: [
               Text(
-                title,
+               title, style: styleSatoshiRegular(size: 14, color: color5E5E5E),
               ),
               const SizedBox(
                 width: 3,
@@ -1303,7 +1557,7 @@ class _ReligionSheet extends State<ReligionSheet> {
                   onTap: () => setState(() {
                     _gIndex = 2;
                     Navigator.of(context).pop();
-                    widget.onPop("Jain");
+                     widget.onPop("Jain");
                   }),
                   child: Container(
                     height: 44,
@@ -1435,6 +1689,589 @@ class _ReligionSheet extends State<ReligionSheet> {
       _gIndex = 4;
     } else if (widget.privacyStatus == "Marathi") {
       _gIndex = 5;
+    }
+    super.initState();
+  }
+}
+
+class MotherTongueSheet extends StatefulWidget {
+  final String privacyStatus;
+  final Function(String) onPop;
+
+  const MotherTongueSheet(
+      {Key? key, required this.privacyStatus, required this.onPop})
+      : super(key: key);
+
+  @override
+  State<MotherTongueSheet> createState() => _MotherTongueSheet();
+}
+
+class _MotherTongueSheet extends State<MotherTongueSheet> {
+  int _gIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Material(
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Select Mother Tongue",
+                  style: styleSatoshiMedium(size: 16, color: Colors.black),
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 0;
+                    Navigator.of(context).pop();
+                    widget.onPop("Hindi");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 0 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Hindi',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 0 ? Colors.white : Colors.black),
+                          // style: _gIndex == 0
+                          //     ? textColorF7E64114w400
+                          //     : ColorSelect.colorF7E641
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 1;
+                    Navigator.of(context).pop();
+                    widget.onPop("Bhojpuri");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 1 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Bhojpuri',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 1 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 2;
+                    Navigator.of(context).pop();
+                    widget.onPop("Marathi");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 2 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Marathi',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 2 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 3;
+                    Navigator.of(context).pop();
+                    widget.onPop("Bengali");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 3 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Bengali',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 3 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 4;
+                    Navigator.of(context).pop();
+                    widget.onPop("Odia");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 4 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Odia',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 4 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 5;
+                    Navigator.of(context).pop();
+                    widget.onPop("Gujarati");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 5 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Gujarati',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 5 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 6;
+                    Navigator.of(context).pop();
+                    widget.onPop("Punjabi");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 5 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Punjabi',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 6 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.privacyStatus == "Hindi") {
+      _gIndex = 0;
+    } else if (widget.privacyStatus == "Bhojpuri") {
+      _gIndex = 1;
+    }
+    else if (widget.privacyStatus == "Marathi") {
+      _gIndex = 2;
+    } else if (widget.privacyStatus == "Bengali") {
+      _gIndex = 3;
+    }  else if (widget.privacyStatus == "Odia") {
+      _gIndex = 4;
+    } else if (widget.privacyStatus == "Gujarati") {
+      _gIndex = 5;
+    } else if (widget.privacyStatus == "Punjabi") {
+      _gIndex = 6;
+    }
+    super.initState();
+  }
+}
+
+class CommuitySheet extends StatefulWidget {
+  final String privacyStatus;
+  final Function(String) onPop;
+
+  const CommuitySheet(
+      {Key? key, required this.privacyStatus, required this.onPop})
+      : super(key: key);
+
+  @override
+  State<CommuitySheet> createState() => _CommuitySheet();
+}
+
+class _CommuitySheet extends State<CommuitySheet> {
+  int _gIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Material(
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Select Community",
+                  style: styleSatoshiMedium(size: 16, color: Colors.black),
+                ),
+                sizedBox16(),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 0;
+                    Navigator.of(context).pop();
+                    widget.onPop("Brahmin");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 0 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Brahmin',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 0 ? Colors.white : Colors.black),
+                          // style: _gIndex == 0
+                          //     ? textColorF7E64114w400
+                          //     : ColorSelect.colorF7E641
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 1;
+                    Navigator.of(context).pop();
+                    widget.onPop("Rajput");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 1 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Rajput',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 1 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 2;
+                    Navigator.of(context).pop();
+                    widget.onPop("Kamma");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 2 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Kamma',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 2 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 3;
+                    Navigator.of(context).pop();
+                    widget.onPop("Yadav");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 3 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Yadav',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 3 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 4;
+                    Navigator.of(context).pop();
+                    widget.onPop("Gupta");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 4 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Gupta',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 4 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 5;
+                    Navigator.of(context).pop();
+                    widget.onPop("Muslim");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 5 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Muslim',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 5 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 6;
+                    Navigator.of(context).pop();
+                    widget.onPop("Sikh");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 6 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Sikh',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 6 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 7;
+                    Navigator.of(context).pop();
+                    widget.onPop("Punjabi");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 7 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Punjabi',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 7 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 8;
+                    Navigator.of(context).pop();
+                    widget.onPop("Aggarwal");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 8 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Aggarwal',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 8 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    if (widget.privacyStatus == "Brahmin") {
+      _gIndex = 0;
+    } else if (widget.privacyStatus == "Rajput") {
+      _gIndex = 1;
+    }
+    else if (widget.privacyStatus == "Kamma") {
+      _gIndex = 2;
+    } else if (widget.privacyStatus == "Yadav") {
+      _gIndex = 3;
+    }  else if (widget.privacyStatus == "Gupta") {
+      _gIndex = 4;
+    } else if (widget.privacyStatus == "Muslim") {
+      _gIndex = 5;
+    } else if (widget.privacyStatus == "Sikh") {
+      _gIndex = 6;
+    } else if (widget.privacyStatus == "Punjabi") {
+      _gIndex = 7;
+    } else if (widget.privacyStatus == "Aggarwal") {
+      _gIndex = 8;
     }
     super.initState();
   }

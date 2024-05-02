@@ -1,5 +1,6 @@
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../apis/profile_apis/physical_attributes_api.dart';
 import '../../../constants/assets.dart';
+import '../../../constants/colors.dart';
 import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
 import '../../../models/attributes_model.dart';
@@ -91,7 +93,8 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: const CustomAppBar(title: "Physical Attributes",isBackButtonExist: true,),
+      // appBar: buildAppBar(context),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -312,8 +315,8 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                                       onPressed: () {
                                         setState(() {
                                           // heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
-                                          heightController.text = '$_feet-${_inches.toString()}';
-                                          print(heightController);
+                                          heightController.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
+                                          print('$_feet.${_inches.toString().padLeft(1, '0')}');
                                         });
                                         Navigator.pop(context);
                                       },
@@ -572,7 +575,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
       children: [
         Expanded(
           child: Text(
-            title,
+            title, style: styleSatoshiRegular(size: 14, color: color5E5E5E),
           ),
         ),
         isControllerTextEmpty ?

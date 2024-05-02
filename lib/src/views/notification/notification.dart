@@ -58,10 +58,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     onTap: () {
                       setState(() {
                         if (allImagesSelected) {
-                          // If all images are selected, clear the list
                           selectedItems.clear();
                         } else {
-                          // If not all images are selected, add all images
                           selectedItems.addAll(name);
                         }
                         allImagesSelected = !allImagesSelected;

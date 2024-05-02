@@ -6,6 +6,7 @@ class PreferenceModel {
   int? minAge;
   int? maxAge;
   String? minHeight;
+  String? max_height;
   String? maxWeight;
   String? maritalStatus;
   String? religion;
@@ -28,6 +29,7 @@ class PreferenceModel {
         this.minAge,
         this.maxAge,
         this.minHeight,
+        this.max_height,
         this.maxWeight,
         this.maritalStatus,
         this.religion,
@@ -52,6 +54,7 @@ class PreferenceModel {
     minAge = json['min_age'];
     maxAge = json['max_age'];
     minHeight = json['min_height'];
+    max_height = json['max_height'];
     maxWeight = json['max_weight'];
     maritalStatus = json['marital_status'];
     religion = json['religion'];
@@ -79,6 +82,7 @@ class PreferenceModel {
     data['min_age'] = this.minAge;
     data['max_age'] = this.maxAge;
     data['min_height'] = this.minHeight;
+    data['max_height'] = this.max_height;
     data['max_weight'] = this.maxWeight;
     data['marital_status'] = this.maritalStatus;
     data['religion'] = this.religion;

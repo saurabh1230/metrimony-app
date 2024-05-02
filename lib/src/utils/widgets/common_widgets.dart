@@ -6,7 +6,7 @@ import '../../constants/assets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:like_button/like_button.dart';
-
+import 'package:dotted_border/dotted_border.dart';
 
 Widget backButton({
   required BuildContext context,
@@ -21,15 +21,7 @@ Widget backButton({
       child: SizedBox(
         height: 40,
         width: 40,
-        child: Material(
-          clipBehavior: Clip.hardEdge,
-          elevation:4,
-          borderRadius: BorderRadius.circular(40),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(image,
-            ),
-          ),
+        child: Image.asset(image,
         ),
       ),
     ),
@@ -199,4 +191,67 @@ Widget customCard({
         ),
     ),
   );
+}
+
+
+class AddButton extends StatelessWidget {
+  const AddButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(addbutton,height: 30,);
+  }
+}
+
+
+class SimmerTextHolder extends StatelessWidget {
+  final double? width;
+  const SimmerTextHolder({super.key, this.width});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 7, width: width ??1.sw,margin: const EdgeInsets.symmetric(horizontal: 3),
+      decoration: BoxDecoration(
+        color: Colors.grey[300], borderRadius: BorderRadius.circular(20),
+      ),);
+  }
+}
+
+
+class CustomShimmerEffect extends StatelessWidget {
+  final Widget child;
+  const CustomShimmerEffect({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      direction: ShimmerDirection.ltr, child: child,
+    );
+  }
+}
+
+
+class DottedPlaceHolder extends StatelessWidget {
+  final String text;
+  const DottedPlaceHolder({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(2),
+    dashPattern: [10, 10],
+    color: Colors.grey.shade400,
+    strokeWidth: 2,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        Icon(Icons.add,color:Colors.grey.shade400 ,),
+        Text(text,style: TextStyle(color: Colors.grey.shade400),)
+      ],),
+    ));
+  }
 }

@@ -26,6 +26,8 @@ class SharedPrefs {
   String religion = 'religion';
   String profilePhoto = 'profile_photo';
   String state = 'state';
+  String age = 'age';
+  String community = 'community';
 
   static SharedPreferences? _prefs;
 
@@ -146,6 +148,21 @@ class SharedPrefs {
     return await _prefs?.remove(state);
   }
 
+  Future setAge(String sState) async {
+    await init();
+    return await _prefs?.setString(age, sState);
+  }
+
+  String? getAge() {
+    return _prefs?.getString(age);
+  }
+
+  Future clearAge() async {
+    await init();
+    return await _prefs?.remove(age);
+  }
+
+
   Future setProfession(String sProfession) async {
     await init(); // Make sure to initialize SharedPreferences before using it
     return await _prefs?.setString(profession, sProfession);
@@ -196,6 +213,19 @@ class SharedPrefs {
   Future clearMotherTongue() async {
     await init();
     return await _prefs?.remove(motherTongue);
+  }
+
+  Future setCommunity(String sCommunity) async {
+    await init(); // Make sure to initialize SharedPreferences before using it
+    return await _prefs?.setString(community, sCommunity);
+  }
+
+  String? getCommunity() {
+    return _prefs?.getString(community);
+  }
+  Future clearCommunity() async {
+    await init();
+    return await _prefs?.remove(community);
   }
 
   Future setCountry(String sCountry) async {

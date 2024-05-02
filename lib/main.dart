@@ -43,13 +43,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) {
         return  GetMaterialApp(
-            theme: ThemeData(
-              primaryColor: primaryColor,//here.change this one
-            ),
-            debugShowCheckedModeBanner: false,
-            home: const SplashScreen(),
-          
-        );
+            theme: ThemeData(primaryColor: primaryColor,), debugShowCheckedModeBanner: false,
+            home: const SplashScreen(),);
         //Dashboard());
       },
     );

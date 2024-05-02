@@ -25,3 +25,8 @@ const Color colorE2b93b =Color(0xffe8c762);
 const Color colorEb5757 =Color(0xffed6868);
 const Color colorDarkCyan =Color(0xff005D6C);
  Color color000000Op51 = Color(0xff000000).withOpacity(0.51);
+const Color colorDA4F7A =Color(0xffDA4F7A);
+const Color color7BB972 =Color(0xff7BB972);
+const Color color7859BC =Color(0xff7859BC);
+const Color colorF2AB47=Color(0xffF2AB47);
+

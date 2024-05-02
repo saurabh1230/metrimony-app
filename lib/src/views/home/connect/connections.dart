@@ -114,15 +114,15 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(backgroundColor: primaryColor,
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
           "Connected Matches",
-          style: styleSatoshiBold(size: 20, color: Colors.black),
+          style: styleSatoshiBold(size: 20, color: Colors.white),
         ),
-        actions: [
-          GestureDetector(
+        actions: const [
+        /*  GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (builder) => const SavedMatchesScreen()));
             },
@@ -130,7 +130,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
               padding: EdgeInsets.only(right: 16.0),
               child: Text("Sortlisted"),
             ),
-          )
+          )*/
         ],
       ),
       body:  GetBuilder<MatchesController>(builder: (matchesControl) {
@@ -140,7 +140,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
             ? const Text("No Matches Yet")
             : SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16),
+            padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${matches.length} members found"),

@@ -178,7 +178,9 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                            photo: pickedImagePath,
                            religion: SharedPrefs().getReligion() == null ? "Hindu" : SharedPrefs().getReligion().toString(),
                            profession: '${SharedPrefs().getProfession()}',
-                           userType: '${SharedPrefs().getUserType()}'
+                           userType: '${SharedPrefs().getUserType()}',
+                           community:  '${SharedPrefs().getCommunity()}',
+                           age: '${SharedPrefs().getAge()}',
                        ).then((value) async {
                          if (value['status'] == 'success') {
                            setState(() {

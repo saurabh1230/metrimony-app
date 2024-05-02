@@ -76,6 +76,7 @@ dev_dependencies:
   carousel_slider: ^4.2.1
   get: ^4.6.6
   readmore: ^2.2.0
+  dotted_border: ^2.1.0
 
 
 

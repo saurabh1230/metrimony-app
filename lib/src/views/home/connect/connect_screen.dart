@@ -1,4 +1,5 @@
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -104,20 +105,21 @@ class _ConnectScreenState extends State<ConnectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
-    leading: Padding(
-    padding: const EdgeInsets.only(left: 16),
-    child: backButton(
-    context: context,
-    image: icArrowLeft,
-    onTap: () {
-    Navigator.pop(context);
-    }),),
-    centerTitle: false,
-    automaticallyImplyLeading: false,
-    title: Text("Notification",
-    style: styleSatoshiBold(size: 22, color: Colors.black),),
-    ),
+      appBar: const CustomAppBar(title: "Notification",isBackButtonExist: true,),
+    //   appBar:  AppBar(
+    // leading: Padding(
+    // padding: const EdgeInsets.only(left: 16),
+    // child: backButton(
+    // context: context,
+    // image: icArrowLeft,
+    // onTap: () {
+    // Navigator.pop(context);
+    // }),),
+    // centerTitle: false,
+    // automaticallyImplyLeading: false,
+    // title: Text("Notification",
+    // style: styleSatoshiBold(size: 22, color: Colors.black),),
+    // ),
       // appBar: AppBar(
       //   automaticallyImplyLeading: false,
       //   leading: Padding(
@@ -295,11 +297,10 @@ class _ConnectScreenState extends State<ConnectScreen> {
                   Center(
                     child: Column(
                       children: [
+                        // sizedBox16(),
+
                         sizedBox16(),
-                        Image.asset(icWaitPlaceHolder,
-                          height: 80,),
-                        sizedBox16(),
-                        Text("No Request Yet",
+                        Text("No Notifications",
 
                           style: styleSatoshiLight(size: 18, color: Colors.black),)
                       ],

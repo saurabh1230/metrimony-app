@@ -22,6 +22,9 @@ Future<dynamic> signUpApi({
   required String religion,
   required String profession,
   required String userType,
+  required String community,
+  required String age,
+
 
   required String photo,
 }) async {
@@ -47,6 +50,8 @@ Future<dynamic> signUpApi({
     'religion': religion,
     'profession': profession,
     'user_type':userType,
+     "community" : community,
+     "age" : age,
     'agree': '1',
   });
   request.files.add(await http.MultipartFile.fromPath('image', photo));

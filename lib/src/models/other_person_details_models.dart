@@ -1,3 +1,5 @@
+import 'dashboard_model.dart';
+
 class OtherProfileModel {
   bool? status;
   Data? data;
@@ -55,9 +57,13 @@ class User {
   String? lastname;
   int? lookingFor;
   String? username;
+  String? image;
+  PartnerExpectation? partnerExpectation;
+
+
   // Add other properties here
 
-  User({this.id, this.profileId, this.firstname, this.lastname, this.lookingFor, this.username});
+  User({this.id, this.profileId, this.firstname, this.lastname, this.lookingFor, this.username,  this.partnerExpectation});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -66,6 +72,10 @@ class User {
     lastname = json['lastname'];
     lookingFor = json['looking_for'];
     username = json['username'];
+    image = json['image'];
+    partnerExpectation = json['partner_expectation'] != null
+        ? new PartnerExpectation.fromJson(json['partner_expectation'])
+        : null;
     // Initialize other properties here
   }
 
@@ -77,6 +87,11 @@ class User {
     data['lastname'] = lastname;
     data['looking_for'] = lookingFor;
     data['username'] = username;
+    data['image'] = image;
+    if (this.partnerExpectation != null) {
+      data['partner_expectation'] = this.partnerExpectation!.toJson();
+    }
+
     return data;
   }
 }
@@ -119,6 +134,7 @@ class Matches {
   List<EducationInfo>? educationInfo;
   List<Galleries>? galleries;
   Address? address;
+  PartnerExpectation? partnerExpectation;
 
 
   Matches(
@@ -154,7 +170,8 @@ class Matches {
         this.family,
         this.careerInfo,
         this.educationInfo,
-        this.galleries
+        this.galleries,
+        this.partnerExpectation
  });
 
   Matches.fromJson(Map<String, dynamic> json) {
@@ -170,6 +187,7 @@ class Matches {
     mobile = json['mobile'];
     balance = json['balance'];
     status = json['status'];
+
 
     // kv = json['kv'];
     // ev = json['ev'];
@@ -206,6 +224,9 @@ class Matches {
     json['family'] != null ? new Family.fromJson(json['family']) : null;
     address =
     json['address'] != null ? new Address.fromJson(json['address']) : null;
+    partnerExpectation = json['partner_expectation'] != null
+        ? new PartnerExpectation.fromJson(json['partner_expectation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -259,6 +280,9 @@ class Matches {
     }
     if (this.address != null) {
       data['address'] = this.address!.toJson();
+    }
+    if (this.partnerExpectation != null) {
+      data['partner_expectation'] = this.partnerExpectation!.toJson();
     }
 
     return data;
@@ -659,6 +683,116 @@ class Galleries {
     data['id'] = this.id;
     data['user_id'] = this.userId;
     data['image'] = this.image;
+    return data;
+  }
+}
+
+class PartnerExpectation {
+  int? id;
+  int? userId;
+  String? generalRequirement;
+  String? country;
+  int? minAge;
+  int? maxAge;
+  String? minHeight;
+  String? maxHeight;
+  String? maxWeight;
+  String? maritalStatus;
+  String? religion;
+
+  int? smokingStatus;
+  int? drinkingStatus;
+  List<String>? language;
+  String? minDegree;
+  String? profession;
+
+  String? financialCondition;
+
+  String? createdAt;
+  String? updatedAt;
+  String? motherTongue;
+  String? community;
+
+  PartnerExpectation(
+      {this.id,
+        this.userId,
+        this.generalRequirement,
+        this.country,
+        this.minAge,
+        this.maxAge,
+        this.minHeight,
+        this.maxWeight,
+        this.maritalStatus,
+        this.religion,
+
+
+        this.smokingStatus,
+        this.drinkingStatus,
+        this.language,
+        this.minDegree,
+        this.profession,
+
+        this.financialCondition,
+
+        this.createdAt,
+        this.updatedAt,
+        this.motherTongue,
+        this.community,
+        this.maxHeight,
+      });
+
+  PartnerExpectation.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    generalRequirement = json['general_requirement'];
+    country = json['country'];
+    minAge = json['min_age'];
+    maxAge = json['max_age'];
+    minHeight = json['min_height'];
+    maxWeight = json['max_weight'];
+    maritalStatus = json['marital_status'];
+    religion = json['religion'];
+
+    smokingStatus = json['smoking_status'];
+    drinkingStatus = json['drinking_status'];
+    language = json['language'].cast<String>();
+    minDegree = json['min_degree'];
+
+    financialCondition = json['financial_condition'];
+
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    motherTongue = json['mother_tongue'];
+    community = json['community'];
+    maxHeight = json['max_height'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['general_requirement'] = this.generalRequirement;
+    data['country'] = this.country;
+    data['min_age'] = this.minAge;
+    data['max_age'] = this.maxAge;
+    data['min_height'] = this.minHeight;
+    data['max_height'] = this.minHeight;
+    data['max_weight'] = this.maxWeight;
+    data['marital_status'] = this.maritalStatus;
+    data['religion'] = this.religion;
+
+    data['smoking_status'] = this.smokingStatus;
+    data['drinking_status'] = this.drinkingStatus;
+    data['language'] = this.language;
+    data['min_degree'] = this.minDegree;
+    data['profession'] = this.profession;
+
+    data['financial_condition'] = this.financialCondition;
+
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['mother_tongue'] = this.motherTongue;
+    data['community'] = this.community;
     return data;
   }
 }

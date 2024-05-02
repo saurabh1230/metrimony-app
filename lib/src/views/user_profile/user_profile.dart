@@ -5,6 +5,7 @@ import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +23,8 @@ import '../../utils/widgets/buttons.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:readmore/readmore.dart';
+
+import '../../utils/widgets/custom_image_widget.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String userId;
@@ -66,10 +69,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   DateTime? birthDate;
   int age = 0;
   bool loading = false;
-
   bool like = false;
-
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     String? birthDateString = model.data?.matches?.basicInfo?.birthDate;
@@ -87,10 +89,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             children: [
               Column(
                 children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
+             Stack(
+              children: [
+               ClipRRect(
+                 borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(32),
                    bottomLeft:Radius.circular(32) ),
                 child: CarouselSlider.builder(
@@ -258,12 +260,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Introduction",
+                          "About",
                           style: styleSatoshiBold(size: 16, color: color1C1C1c),),
                         sizedBox10(),
                         ReadMoreText(
-                          model.data?.matches?.basicInfo?.aboutUs ?? "hi am ${model.data?.matches?.firstname ?? "User"}${model.data?.matches?.lastname ?? ""}",
-                          trimLines: 2,
+                          model.data?.matches?.basicInfo?.aboutUs ?? "",
+                          trimLines: 4,
                           colorClickableText: Colors.pink,
                           trimMode: TrimMode.Line,
                           trimCollapsedText: 'Show more',
@@ -273,12 +275,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ],
                     ),
-
-                    sizedBox10(),
+                    sizedBox16(),
                     Text(
                       "Professional Info",
                       style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                    sizedBox10(),
+                    // Text("Professional Info",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                    sizedBox16(),
                     Row(
                       children: [
                         Expanded(
@@ -295,10 +297,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                               sizedBox6(),
                               Text(
-                                '' ,
-
-
-                                // ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
+                                // '' ,
+                                ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
                                 textAlign: TextAlign.center,
                                 style: styleSatoshiMedium(
                                   size: 14,
@@ -387,114 +387,147 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              )
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 18,bottom: 18,left: 22,right: 22),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("User Details",
-                                  style: styleSatoshiRegular(size: 14, color: Colors.white),),
-                                Text("",
-                                  style: styleSatoshiRegular(size: 16, color: Colors.white),)
-                              ],
-                            ),
-                          ),
-
-                        ),
-                        sizedBox20(),
-                        buildProfileRow(image: icHeightIcon, title: 'Height',
-                            text:
-                            "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''
-                        ),
-                        buildProfileRow(image: icChildrenIcon, title: 'Family',
-                         text: 'Father: ${StringUtils.capitalize(model.data!.matches!.family?.fatherName ?? "")}, \nMother: ${StringUtils.capitalize(model.data!.matches!.family?.motherName ?? "")},'),
-                        buildProfileRow(image: icReligionIcon,
-                         title: 'Religion / Community',
-                          text: StringUtils.capitalize(model.data!.matches?.basicInfo?.religion  ?? "") ),
-                        buildProfileRow(image: icMotherToungeIcon,
-                            title: 'Mother Tongue',
-                            text: StringUtils.capitalize(model.data!.matches?.basicInfo?.motherTongue  ?? "")
-                            ),
-                        buildProfileRow(image: icMarriedStatusPro,
-                            title: 'Married Status',
-                            text: StringUtils.capitalize(model.data!.matches?.basicInfo?.maritalStatus ?? "")
-                            ),
-                        Text("Preference",
-                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                        sizedBox6(),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: customContainer(
-                                  vertical: 8,
-                                  child: Center(
-                                    child: Text(model.data!.matches?.basicInfo?.religion ?? "",
-                                      style: styleSatoshiLight(size: 12, color: Colors.white),),
-                                  ),
-                                  radius: 16,
-                                  color:  primaryColor,
-                                  click: () {}
-                              ),
-                            ),
-                            const SizedBox(width: 5,),
-                            Expanded(
-                              child: customContainer(
-                                  vertical: 8,
-                                  child: Center(
-                                    child: Text(model.data!.matches?.basicInfo?.maritalStatus  ?? "",
-                                      style: styleSatoshiLight(size: 12, color: Colors.white),
-                                    ),
-                                  ),
-                                  radius: 16,
-                                  color: primaryColor,
-                                  click: () {}
-                              ),
-                            ),
-                            const SizedBox(width: 5,),
-
-
-                            Expanded(
-                              child: customContainer(
-                                  vertical: 8,
-                                  child: Center(
-                                    child: Text(model.data!.matches!.address!.country.toString() ?? "",
-                                      style: styleSatoshiLight(size: 12, color: Colors.white),
-                                    ),
-                                  ),
-                                  radius: 16,
-                                  color:  primaryColor,
-                                  click: () {}
-                              ),
-                            ),
-                            const SizedBox(width: 5,),
-                            Expanded(
-                              child: customContainer(
-                                  vertical: 8,
-                                  child: Center(
-                                    child: Text(model.data!.matches!.basicInfo!.gender!.contains("F") ? "Female" :"Male" ?? "",
-                                      style: styleSatoshiLight(size: 12, color: Colors.white),
-                                    ),
-                                  ),
-                                  radius: 16,
-                                  color:  primaryColor,
-                                  click: () {}
-                              ),)
-
-                          ],
-                        ),
-
-
-                        sizedBox14(),
                         sizedBox10(),
-                        const SizedBox(height: 14,),
+                        Text(
+                          "Basic Info",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        // Text("Basic Info",style:styleSatoshiLarge(size: 16, color: Colors.black)),
+                        sizedBox16(),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              buildProfileRow(image: birthHolder, title: 'Age',
+                                  text: model.data!.matches?.basicInfo?.birthDate  ?? ""),
+                              const Divider(),
+                              buildProfileRow(image: icHeightIcon, title: 'Height',
+                                  text:
+                                  "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''
+                              ),
+                              const Divider(),
+
+                              buildProfileRow(image: icReligionIcon,
+                                  title: 'Religion',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.religion  ?? "") ),
+                              const Divider(),
+                              buildProfileRow(image: icMotherToungeIcon,
+                                  title: 'Mother Tongue',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.motherTongue  ?? "")
+                              ),
+                              const Divider(),
+                              buildProfileRow(image: icMarriedStatusPro,
+                                  title: 'Married Status',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.maritalStatus ?? "")
+                              ),
+
+                            ],),
+                          ),
+                        ),
+                        sizedBox16(),
+
+                        Card(
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  Column(
+                                    children: [Container(
+                                      height: 70,
+                                     ),
+                                      Image.asset(preferenceHolder,),
+                                    ],
+                                  ),
+                                  Positioned(top: 35,left: 0,right: 0,
+                                    child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                   padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                          image: model.data?.user?.image != null ? '$baseProfilePhotoUrl${model.data?.user?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                      ),),
+                                      Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                          padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                            image: model.data?.matches?.image != null ? '$baseProfilePhotoUrl${model.data?.matches?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                        ),),
+                                    ],),
+                                  ),
+                                  Positioned(bottom: 10,left: 12,right: 12,
+                                    child: Row(
+                                      children: [
+                                      Text("Your Match Preferences",style: styleSatoshiLight(size: 16, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                      Text("",style: styleSatoshiLight(size: 20, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                    ],),
+                                  )
+                                ],
+                              ),
+                              
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(children: [
+                                  buildPrefProfileRow(image: birthHolder, title: 'Age',
+                                      text:
+                                      model.data!.matches?.partnerExpectation?.maxAge.toString()  ?? "", icon:  crossholder
+                                  ),const Divider(),
+                                  buildPrefProfileRow(image: icHeightIcon, title: 'Height',
+                                      text:
+                                      "Min: ${ model.data!.matches?.partnerExpectation?.minHeight.toString()} Max: ${ model.data!.matches?.partnerExpectation?.maxHeight.toString()} ft" ?? '', icon: crossholder
+                                  ),const Divider(),
+                                  buildPrefProfileRow(image: icReligionIcon,
+                                      title: 'Religion',
+                                      text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.religion  ?? ""), icon : model.data!.matches?.basicInfo?.religion ==  model.data!.user!.partnerExpectation!.religion ?  tickHolder : crossholder),
+                                  const Divider(),
+                                  buildPrefProfileRow(image: icMotherToungeIcon,
+                                      title: 'Mother Tongue',
+                                      text: StringUtils.capitalize(model.data!.matches!.motherTongue == null ?"":
+                                          model.data!.matches!.motherTongue!.toString()), icon:  model.data!.matches?.basicInfo?.motherTongue ==  model.data!.user!.partnerExpectation!.motherTongue ? tickHolder :crossholder
+                                  ),const Divider(),
+                                  buildPrefProfileRow(image: weightHolder,
+                                      title: 'Weight',
+                                      text: StringUtils.capitalize('max ${model.data!.matches?.partnerExpectation?.maxWeight  ?? ""}'),icon: model.data!.matches?.physicalAttributes!.weight ==  model.data!.user?.partnerExpectation!.maxWeight ? crossholder : tickHolder
+                                  ),const Divider(),
+                                  buildPrefProfileRow(image: communityHolder,
+                                      title: 'Community',
+                                      text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.community ?? ""), icon:crossholder
+                                  ),
+                                ],),
+                              ),
+                            ],
+                          ),
+                        ),
+                        sizedBox14(),
+                        button(
+                            fontSize: 14,
+                            height: 45,
+                            width: double.infinity,
+                            context: context,
+                            onTap: () {
+                              setState(() {
+                                // like[i] = !like[i];
+                              });
+                              sendRequestApi(
+                                  memberId:model.data!.matches!.id!.toString(), )
+                                  .then((value) {
+                                if (value['status'] == true) {
+                                  setState(() {
+                                  });
+                                  ToastUtil.showToast(
+                                      "Connection Request Sent");
+                                } else {
+                                  setState(() {
+                                  });
+
+                                  List<dynamic> errors =
+                                  value['message']['error'];
+                                  String errorMessage = errors
+                                      .isNotEmpty
+                                      ? errors[0]
+                                      : "An unknown error occurred.";
+                                  Fluttertoast.showToast(
+                                      msg: errorMessage);
+                                }
+                              });
+                            },
+                            title:  "Connect Now"),
+                        sizedBox16(), sizedBox16(), sizedBox16(),
                       ],
                     ),
                   ],
@@ -534,7 +567,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     required String text,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(right: 18.0,bottom: 18),
+      padding: const EdgeInsets.only(right: 18.0,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -548,7 +581,47 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           const SizedBox(width: 20,),
           Expanded(
             flex: 5,
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                  style: styleSatoshiMedium(size: 14, color: color6C7378),),
+                SizedBox(
+                  width: 280,
+                  child: Text(text,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: styleSatoshiLarge(size: 14, color: Colors.black),),
+                ),
+              ],
+            ),
+          )
 
+        ],),
+    );
+  }
+
+
+  Padding buildPrefProfileRow({
+    required String image,
+    required String title,
+    required String text,
+    required String icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 18.0,),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: SvgPicture.asset(
+              image,
+              height: 48,
+              width: 48,
+            ),
+          ),
+          const SizedBox(width: 20,),
+          Expanded(
+            flex: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -559,12 +632,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: Text(text,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: styleSatoshiBold(size: 14, color: Colors.black),),
+                    style: styleSatoshiLarge(size: 14, color: Colors.black),),
                 ),
 
               ],
             ),
-          )
+          ),
+          // Expanded(child: Image.asset(icon,height: 18,))
 
         ],),
     );

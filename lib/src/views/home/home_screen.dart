@@ -4,6 +4,7 @@ import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/widgets/custom_image_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -13,10 +14,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
+import '../../apis/profile_apis/get_profile_api.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../constants/string.dart';
 import '../../models/matches_model.dart';
+import '../../models/profie_model.dart';
 import '../../utils/urls.dart';
 import '../premium_matches/all_new_matches.dart';
 import '../user_profile/user_profile.dart';
@@ -39,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
    bool loading =false;
    @override
    void initState() {
-
      super.initState();
      getMatches();
+     profileDetail();
    }
 
 
@@ -60,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
              for (var v in value['data']['members']['data']) {
                matches.add(MatchesModel.fromJson(v));
                isLoadingList.add(false); // Add false for each new match
-
              }
              isLoading = false;
              page++;
@@ -69,6 +71,28 @@ class _HomeScreenState extends State<HomeScreen> {
            }
          });
        }
+     });
+   }
+
+
+   ProfileModel  profile =  ProfileModel();
+   // bool isLoading = false;
+   profileDetail() {
+     isLoading = true;
+     var resp = getProfileApi();
+     resp.then((value) {
+       if(value['status'] == true) {
+         setState(() {
+           profile = ProfileModel.fromJson(value);
+           isLoading = false;
+           SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
+         });
+       } else {
+         setState(() {
+           isLoading = false;
+         });
+       }
+
      });
    }
 
@@ -89,336 +113,183 @@ class _HomeScreenState extends State<HomeScreen> {
           });
           return getMatches();
         },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 16),
+        child: !isLoading ?  SingleChildScrollView(
+          child:  Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // buildStack(),
-                Text("${matches.length} Members looking for you",
-                style: styleSatoshiBold(size: 18, color: color1C1C1c),),
-                // sizedBox10(),
-                isLoading ?
-                    customLoader(size: 30):
-                SizedBox(
-                  height: 140,
-                  child: ListView.separated(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                      itemCount: matches.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_,i) {
-                    return GestureDetector(
-                      onTap: () {
-
-                        Navigator.push(
-                            context, MaterialPageRoute(
-                            builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),)));
-
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex:2,
-                            child: Container(
-                              height: 65,
-                              width: 65,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                fit: BoxFit.fill,
-                                errorWidget: (context, url, error) =>
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(icLogo,
-                                        height: 40,
-                                        width: 40,),
-                                    ),
-                                    progressIndicatorBuilder: (a, b, c) =>
-                                    customShimmer(height: 170,),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                             '${StringUtils.capitalize(matches[i].firstname ?? '')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                            maxLines: 2,
-                            textAlign:TextAlign.center,
-                            style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
-                          ),
-                        ],
-                      ),
-                    );
-                  }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
-                ),
-                const SizedBox(height: 20,),
-
-                Text('Category By Filter',
-                  style: styleSatoshiBold(size: 18, color: Colors.black),),
-                sizedBox16(),
-                GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: categoryImage.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio:1.9,
-                  ),
-                  itemBuilder: (_, i) {
-                    List<Widget Function(BuildContext)> screenRoutes = [
-                          (_) =>ReligionCategory(response: widget.response,),
-                          (_) => MarriedCategory(response: widget.response,),
-                      // Add more screen routes as needed
-                    ];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: screenRoutes[i]),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: color[i],
-                          borderRadius: BorderRadius.circular(16)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                           Column(
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             children: [
-                               Image.asset(categoryImage[i],
-                               height: 30,
-                               color: Colors.white,),
-                               sizedBox6(),
-                               Text(categoryTitle[i],
-                                 style: styleSatoshiBold(size: 10, color: Colors.white),),
-                             ],
-                           )
-
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                sizedBox16(),
-                ///-----------premium match section ------------------
-              ///-----------premium match section ------------------
-              /*  GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (builder) => const AllPremiumMatchesScreen()));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Premium Matches',
-                      style: styleSatoshiBold(size: 18, color: Colors.black),),
-                      Row(
-                        children: [
-                          Text('See All',
-                            style: styleSatoshiBold(size: 14,
-                                color: color1C1C1c.withOpacity(0.60)),
-                          ),
-                          SizedBox(width: 5,),
-                          SvgPicture.asset("assets/icons/ic_small_arrow_right.svg")
-                        ],
+                      Text("${matches.length} Members looking for you",
+                      style: styleSatoshiBold(size: 18, color: color1C1C1c),),
+                      // sizedBox10(),
+                      isLoading ?
+                          customLoader(size: 30):
+                      SizedBox(
+                        height: 140,
+                        child: ListView.separated(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                            itemCount: matches.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_,i) {
+                          return GestureDetector(
+                            onTap: () {
+
+                              Navigator.push(
+                                  context, MaterialPageRoute(
+                                  builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),)));
+
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex:2,
+                                  child: Container(
+                                    height: 65,
+                                    width: 65,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                      fit: BoxFit.fill,
+                                      errorWidget: (context, url, error) =>
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.asset(icLogo,
+                                              height: 40,
+                                              width: 40,),
+                                          ),
+                                          progressIndicatorBuilder: (a, b, c) =>
+                                          customShimmer(height: 170,),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                   '${StringUtils.capitalize(matches[i].firstname ?? '')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                  maxLines: 2,
+                                  textAlign:TextAlign.center,
+                                  style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
+                                ),
+                              ],
+                            ),
+                          );
+                        }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
                       ),
+                      const SizedBox(height: 20,),
                     ],
                   ),
                 ),
-                Text("Recently upgraded Premium member",
-                  style: styleSatoshiMedium(size: 14,
-                      color: color1C1C1c.withOpacity(0.60),
-                  ),
-                ),
-                sizedBox18(),
-                SizedBox(
-                  height: 350,
-                  // width: 170,
-                  child: ListView.separated(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_,i) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(
-                              builder: (builder) => const UserProfileScreen(userId: '',))
-                          );
 
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 0.3,
-                            color: Colors.black.withOpacity(0.50))
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                // flex:2,
-                                child: Container(
-                                  // height: 65,
-                                  // width: 65,
-                                  decoration:  BoxDecoration(
-                                     borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  child: Image.asset("assets/icons/Rectangle 12051.png",
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 13,),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all( 12.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Jassica S.",
-                                        style: styleSatoshiBold(size: 18, color: Colors.black),
-                                      ),
-                                      sizedBox8(),
-                                      Text("5’ 4”, Hindi",
-                                        style: styleSatoshiLight(size: 13, color: Colors.black),
-                                      ),
-                                      Text("Agarwal,",
-                                        style: styleSatoshiLight(size: 13, color: Colors.black),
-                                      ),
-                                      Text("Mumbai, Maharashtra`",
-                                        style: styleSatoshiLight(size: 13, color: Colors.black),
-                                      ),
-                                      const Spacer(),
-                                      Center(
-                                        child:
-                                        button(
-                                          width: 164,
-                                          height: 33,
-                                          radius: 8,
-                                          context: context, onTap: () {},
-                                          title: "connect",
-                                          style: styleSatoshiMedium(size: 14, color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
-                ),
-                sizedBox20(),*/
-                ///-----------premium match section ------------------
-                ///-----------premium match section ------------------
-     /*           GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        const ProfileScreen()));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(11),
-                      image: const DecorationImage(image: AssetImage("assets/images/ic_goldbg.png"),
-                      fit: BoxFit.cover)
-                    ),
-                    child: Column(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text('Category By Filter',
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                    sizedBox16(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex:3,
-                              child: Text("Complete your profile for more responses",
-                                style: styleSatoshiBold(size: 16,
-                                  color: color1C1C1c,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 35,),
-                            Expanded(
-                              child: Container(
-                                height: 16,
-                                width: 16,
-                                decoration: const BoxDecoration(
-                                  color: colorE6C583,
-                                  shape: BoxShape.circle
-                                ),
-                              ),
-                            ),
+                        Expanded(
+                          child: GestureDetector(onTap :() {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: widget.response.data!.user!.religion!.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '',))
+                            );
 
-                          ],
+                          },
+                            child: Column(
+                              children: [
+                                Image.asset(fReligion,height: 55,),
+                                sizedBox6(),
+                                Text("Religion",style: styleSatoshiLight(size: 12, color: colorDA4F7A),)
+                              ],
+                            ),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              flex:3,
-                              child: Text("The first thing that members look for is your profile",
-                                style: styleSatoshiRegular(size: 14,
-                                  color: color1C1C1c,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 35,),
-                            Expanded(
-                              child: elevatedButton(
-                                height: 31,
-                                  radius: 18,
-                                  context: context,
-                                  onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                  const ProfileScreen()));
-                                  },
-                                  title: 'Edit',
-                              style: styleSatoshiBold(size: 12, color: primaryColor))
-                            ),
+                        Expanded(
+                          child: GestureDetector(onTap :() {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: profile.data!.user!.partnerExpectation!.maxWeight!.toString(),))
+                            );
 
-                          ],
+                          },
+                            child: Column(
+                              children: [
+                                Image.asset(fCommunity,height: 55,),
+                                sizedBox6(),
+                                Text("State",style: styleSatoshiLight(size: 12, color: color7BB972),)
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),*/
+                        Expanded(
+                          child: GestureDetector(onTap :() {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  profile.data!.user!.partnerExpectation!.maxWeight.toString(),))
+                            );},
+                            child: Column(
+                              children: [
+                                Image.asset(fAge,height: 55,),
+                                sizedBox6(),
+                                Text("Weight",style: styleSatoshiLight(size: 12, color: color7859BC),)
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '',))
+                            );
+                          },
+                            child: Column(
+                              children: [
+                                Image.asset(flanguage,height: 55,),
+                                sizedBox6(),
+                                Text("Language",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
+                              ],
+                            ),
+                          ),
+                        ),
 
-                ///*************************************************************
-
+                      ],),],),
+                ),
+                sizedBox16(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                    //     AllNewMatchesScreen(response: widget.response,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                        AllMatchesScreen(response: widget.response,)));
                   },
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('New Matches',
-                        style: styleSatoshiBold(size: 18, color: Colors.black),),
-                      Text('See All',
-                        style: styleSatoshiBold(size: 12, color: Colors.black),),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('New Matches',
+                          style: styleSatoshiBold(size: 18, color: Colors.black),),
+                        Text('See All',
+                          style: styleSatoshiBold(size: 12, color: Colors.black),),
+                      ],
+                    ),
                   ),
                 ),
-                Text("Members who joined recently",
-                  style: styleSatoshiMedium(size: 14,
-                    color: color1C1C1c.withOpacity(0.60),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text("All New Members ",
+                    style: styleSatoshiMedium(size: 14,
+                      color: color1C1C1c.withOpacity(0.60),
+                    ),
                   ),
                 ),
                 sizedBox14(),
@@ -426,109 +297,276 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: LoadingAnimationWidget.staggeredDotsWave(
                       color: primaryColor,
                       size: 60,
-                    )) else GridView.builder(
+                    )) else SizedBox(height: 200,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.only(left: 16),
                     shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
                     itemCount: matches.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 0.7,
-                     ),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (_, i) {
                       DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
                       int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context, MaterialPageRoute(
-                            builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: 400,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: const  BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0),),
-                            ),
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.3),
-                                BlendMode.srcOver,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(
+                              builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 200,width: 160,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: const  BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10.0),),
                               ),
-                              child: CachedNetworkImage(
-                                imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
-                                fit: BoxFit.fill,
-                                errorWidget: (context, url, error) =>
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(icLogo,
-                                        height: 40,
-                                        width: 40,),
-                                    ),
-                                progressIndicatorBuilder: (a, b, c) =>
-                                    customShimmer(height: 0, /*width: 0,*/),
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.3),
+                                  BlendMode.srcOver,
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset(icLogo,
+                                          height: 40,
+                                          width: 40,),
+                                      ),
+                                  progressIndicatorBuilder: (a, b, c) =>
+                                      customShimmer(height: 0, /*width: 0,*/),
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            bottom:0,
-                            left:20,
-                            right:20,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${StringUtils.capitalize(matches[i].firstname ?? 'User')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                  style: styleSatoshiBold(size: 18, color: Colors.white),),
-                                Row(
-                                  children: [
-                                    Row(
+                            Positioned(
+                              bottom:0,
+                              left:20,
+                              right:20,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '$age yrs',
-                                          style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                          '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: styleSatoshiBold(size: 14, color: Colors.white),),
+                                        Row(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '$age yrs',
+                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                ),
+                                                const SizedBox(width: 6,),
+                                                Container(
+                                                  height: 4,
+                                                  width: 4,
+                                                  decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white,
+                                                  ),),
+                                                const SizedBox(width: 6,),
+                                                Text(
+                                                  "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(width: 6,),
-                                        Container(
-                                          height: 4,
-                                          width: 4,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),),
-                                        const SizedBox(width: 6,),
-                                        Text(
-                                          "${matches[i].physicalAttributes!.height ?? ''} ft",
-                                          style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  matches[i].basicInfo?.religion ?? '',
+                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                ),
+                                                Text(overflow: TextOverflow.ellipsis,maxLines: 1,
+                                                  matches[i].basicInfo?.presentAddress?.state ?? '',
+
+                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                            AddButton()
+                                          ],
                                         ),
+
+                                        sizedBox18(),
                                       ],
                                     ),
-                                  ],
-                                ),
-                                Text(
-                                  matches[i].basicInfo?.religion ?? '',
-                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                ),
-                                Text(
-                                matches[i].basicInfo?.presentAddress?.state ?? '',
+                                  ),
 
-                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                ),
-                                sizedBox18(),
-                              ],
+
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                          ],
+                        ),
+                      );
+                    }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),
+                  ),
                 ),
+                sizedBox16(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                        AllMatchesScreen(response: widget.response,)));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Preferred Matches',
+                          style: styleSatoshiBold(size: 18, color: Colors.black),),
+                        Text('See All',
+                          style: styleSatoshiBold(size: 12, color: Colors.black),),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text("Members Based On your Preference",
+                    style: styleSatoshiMedium(size: 14,
+                      color: color1C1C1c.withOpacity(0.60),
+                    ),
+                  ),
+                ),
+                sizedBox14(),
+                if (isLoading) Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: primaryColor,
+                      size: 60,
+                    )) else SizedBox(height: 200,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.only(left: 16),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: matches.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, i) {
+                        DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                        int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context, MaterialPageRoute(
+                              builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 200,width: 160,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: const  BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10.0),),
+                              ),
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.3),
+                                  BlendMode.srcOver,
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                  fit: BoxFit.fill,
+                                  errorWidget: (context, url, error) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.asset(icLogo,
+                                          height: 40,
+                                          width: 40,),
+                                      ),
+                                  progressIndicatorBuilder: (a, b, c) =>
+                                      customShimmer(height: 0, /*width: 0,*/),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom:0,
+                              left:20,
+                              right:20,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                          style: styleSatoshiBold(size: 14, color: Colors.white),),
+                                        Row(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '$age yrs',
+                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                ),
+                                                const SizedBox(width: 6,),
+                                                Container(
+                                                  height: 4,
+                                                  width: 4,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                ),),
+                                                const SizedBox(width: 6,),
+                                                Text(
+                                                  "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  matches[i].basicInfo?.religion ?? '',
+                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                ),
+                                                Text(overflow: TextOverflow.ellipsis,maxLines: 1,
+                                                  matches[i].basicInfo?.presentAddress?.state ?? '',
+
+                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                            AddButton()
+                                          ],
+                                        ),
+
+                                        sizedBox18(),
+                                      ],
+                                    ),
+                                  ),
+
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                                        }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),
+                                      ),
+                    ),
                 sizedBox16(),
                 // button(context: context, onTap: () {
                 //
@@ -540,7 +578,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        ),
+        )
+            : const HomeShimmer(),
       ),
 
     );
@@ -617,7 +656,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       shape: const  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(14),
+          bottom: Radius.circular(0),
         ),
       ),
       centerTitle: false,
@@ -676,7 +715,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: 
              Padding(
               padding: const EdgeInsets.only(right: 14.0),
-              child: Image.asset(icBell,height: 30,color: Colors.white,)
+              child: Image.asset(icBell,height: 24,color: Colors.white,)
             )),
 
       ],
@@ -688,3 +727,139 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
+class HomeShimmer extends StatelessWidget {
+  const HomeShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomShimmerEffect(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // buildStack(),
+            Text("Members looking for you",
+              style: styleSatoshiBold(size: 18, color: color1C1C1c),),
+            sizedBox10(),
+            SizedBox(
+              height: 140,
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: 4,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (_,i) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(fReligion,height: 65,),
+                      Text(
+                        'User',
+                        maxLines: 2,
+                        textAlign:TextAlign.center,
+                        style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
+                    ],
+                  );
+                }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
+            ),
+            // const SizedBox(height: 20,),
+
+            Text('Category By Filter',
+              style: styleSatoshiBold(size: 16, color: Colors.black),),
+            sizedBox16(),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Image.asset(fReligion,height: 55,),
+                      sizedBox6(),
+                      Text("Religion",style: styleSatoshiLight(size: 12, color: colorDA4F7A),)
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Image.asset(fCommunity,height: 55,),
+                      sizedBox6(),
+                      Text("State",style: styleSatoshiLight(size: 12, color: color7BB972),)
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Image.asset(fAge,height: 55,),
+                      sizedBox6(),
+                      Text("Weight",style: styleSatoshiLight(size: 12, color: color7859BC),)
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Image.asset(flanguage,height: 55,),
+                      sizedBox6(),
+                      Text("Language",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
+                    ],
+                  ),
+                ),
+
+              ],),
+            sizedBox16(),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Preferred Matches',
+                  style: styleSatoshiBold(size: 18, color: Colors.black),),
+                Text('See All',
+                  style: styleSatoshiBold(size: 12, color: Colors.black),),
+              ],
+            ),
+            Text("Members Based On your Preference",
+              style: styleSatoshiMedium(size: 14,
+                color: color1C1C1c.withOpacity(0.60),
+              ),
+            ),
+            sizedBox14(),
+            GridView.builder(
+              shrinkWrap: true,
+              itemCount :2,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (_, i) {
+                return Stack(
+                  children: [
+                    Container(
+                      height: 400,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: const  BoxDecoration(color: Colors.grey,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0),),
+                      ),
+
+                    ),
+
+                  ],
+                );
+              },
+            ),
+            sizedBox16(),
+            // button(context: context, onTap: () {
+            //
+            // }, title: 'See All New Matches'),
+
+
+
+
+          ],
+        ),
+      ),
+    );
+  }
+}

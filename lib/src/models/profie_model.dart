@@ -331,18 +331,19 @@ class PartnerExpectation {
   int? minAge;
   int? maxAge;
   String? minHeight;
+  String? maxHeight;
   String? maxWeight;
   String? maritalStatus;
   String? religion;
-  Null? complexion;
+
   int? smokingStatus;
   int? drinkingStatus;
   List<String>? language;
   String? minDegree;
   String? profession;
-  Null? personality;
+
   String? financialCondition;
-  Null? familyPosition;
+
   String? createdAt;
   String? updatedAt;
   String? motherTongue;
@@ -356,18 +357,19 @@ class PartnerExpectation {
         this.minAge,
         this.maxAge,
         this.minHeight,
+        this.maxHeight,
         this.maxWeight,
         this.maritalStatus,
         this.religion,
-        this.complexion,
+
         this.smokingStatus,
         this.drinkingStatus,
         this.language,
         this.minDegree,
         this.profession,
-        this.personality,
+
         this.financialCondition,
-        this.familyPosition,
+
         this.createdAt,
         this.updatedAt,
         this.motherTongue,
@@ -381,18 +383,18 @@ class PartnerExpectation {
     minAge = json['min_age'];
     maxAge = json['max_age'];
     minHeight = json['min_height'];
+    maxHeight = json['max_height'];
     maxWeight = json['max_weight'];
     maritalStatus = json['marital_status'];
     religion = json['religion'];
-    complexion = json['complexion'];
+
     smokingStatus = json['smoking_status'];
     drinkingStatus = json['drinking_status'];
     language = json['language'].cast<String>();
     minDegree = json['min_degree'];
-    profession = json['profession'];
-    personality = json['personality'];
+
     financialCondition = json['financial_condition'];
-    familyPosition = json['family_position'];
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     motherTongue = json['mother_tongue'];
@@ -408,18 +410,19 @@ class PartnerExpectation {
     data['min_age'] = this.minAge;
     data['max_age'] = this.maxAge;
     data['min_height'] = this.minHeight;
+    data['max_height'] = this.maxHeight;
     data['max_weight'] = this.maxWeight;
     data['marital_status'] = this.maritalStatus;
     data['religion'] = this.religion;
-    data['complexion'] = this.complexion;
+
     data['smoking_status'] = this.smokingStatus;
     data['drinking_status'] = this.drinkingStatus;
     data['language'] = this.language;
     data['min_degree'] = this.minDegree;
     data['profession'] = this.profession;
-    data['personality'] = this.personality;
+
     data['financial_condition'] = this.financialCondition;
-    data['family_position'] = this.familyPosition;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['mother_tongue'] = this.motherTongue;

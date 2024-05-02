@@ -62,8 +62,13 @@ Future<dynamic> getMatchesByGenderApi({
   required String gender,
   required String page,
   required String religion,
-  required String height,
+  // required String height,
+  required String minHeight,
+  required String maxHeight,
   required String state,
+  required String maxWeight,
+  required String motherTongue,
+
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
@@ -72,8 +77,13 @@ Future<dynamic> getMatchesByGenderApi({
   request.fields.addAll({
     'gender': gender,
     'religion': religion,
-    'height' : height,
+    // 'height' : height,
     "state" : state,
+    "min_height" :minHeight,
+    "max_height" :maxHeight,
+    "max_weight" : maxWeight,
+    'mother_tongue' : motherTongue,
+
   });
   print(request.fields);
 
@@ -100,6 +110,9 @@ Future<dynamic> getMatchesFilterApi({
   required String country,
   required String height,
   required String motherTongue,
+  required String minHeight,
+  required String maxHeight,
+  required String maxWeight,
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
@@ -112,6 +125,9 @@ Future<dynamic> getMatchesFilterApi({
     'country' : country,
     'height' : height,
     'mother_tongue' : motherTongue,
+    "min_height" :minHeight,
+    "max_height" :maxHeight,
+    "max_weight" : maxWeight,
   });
   print(request.fields);
 

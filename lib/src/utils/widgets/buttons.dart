@@ -45,6 +45,42 @@ button({
   );
 }
 
+connectLoadingButton({
+  required BuildContext context,
+  double ? height,
+  double ? width,
+  double ? radius,
+  Color ? color,
+
+
+}) {
+  return Container(
+    width: width ??double.infinity,
+    height:height?? 48,
+    decoration:  BoxDecoration(
+      border: Border.all(
+          width: 0.6,
+          color: primaryColor,
+      ),
+      borderRadius: BorderRadius.circular(radius??32),
+      color:color ?? primaryColor,
+      // gradient:LinearGradient(
+      //   colors: [Color(0xffffffff), Color(0xfff7345f)],
+      //   stops: [0.001, 0.5],
+      //   begin: Alignment.topCenter,
+      //   end: Alignment.bottomCenter,
+      // )
+
+    ),
+    child: Center(
+      child: LoadingAnimationWidget.waveDots(
+        color: primaryColor,
+        size: 20,
+      ),
+    ),
+  );
+}
+
 loadingButton({
   required BuildContext context,
   double ? height,
@@ -246,3 +282,49 @@ socialMediaButton({
     ),
   );
 }
+
+connectButton({
+  required BuildContext context,
+  required Function() onTap,
+  required String title,
+  double ? height,
+  double ? width,
+  double ? radius,
+  double ? fontSize,
+  TextStyle  ? style,
+  Color ? color,
+  Widget? icon
+
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: width ??double.infinity,
+      height:height?? 48,
+      decoration:  BoxDecoration(
+        border: Border.all(
+            width: 0.6,
+            color: primaryColor
+        ),
+        borderRadius: BorderRadius.circular(radius??32),
+        color:color ?? Colors.white,
+        // gradient:LinearGradient(
+        //   colors: [Color(0xffffffff), Color(0xfff7345f)],
+        //   stops: [0.001, 0.5],
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        // )
+      ),
+      child: Center(
+        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon ?? Icon(Icons.add,color: primaryColor,size: 15,),
+            Text(title,
+              style:style ?? styleSatoshiBold(size: fontSize ??18, color: primaryColor),),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+

@@ -27,7 +27,7 @@ import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:like_button/like_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MatchesScreen extends StatefulWidget {
   final LoginResponse response;
@@ -40,11 +40,20 @@ class MatchesScreen extends StatefulWidget {
 
 class _MatchesScreenState extends State<MatchesScreen> {
   final TextEditingController searchController = TextEditingController();
+  final TextEditingController minHeight = TextEditingController();
+  final TextEditingController maxHeight = TextEditingController();
+  final TextEditingController maxWeightController = TextEditingController();
 
   List<MatchesModel> matches = [];
   List<MatchesModel> bookmarkList = [];
   List<bool> isLoadingList = [];
   List<bool> like = [];
+
+  int _feet = 5;
+  int _inches = 0;
+
+  int _feet2 = 5;
+  int _inches2 = 0;
 
   // List<bool> isbList = [];
   bool isLoading = false;
@@ -66,6 +75,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
   String? religionValue;
   String? marriedValue;
 
+  String? motherTongueValue;
+
+  String motherTongueFilter = '';
+
   final stateController = TextEditingController();
 
   // bool like = false;
@@ -76,8 +89,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
       page: page.toString(),
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       religion: religionFilter,
-      height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
-      state: stateController.text ,
+      // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
+      state: stateController.text,
+      minHeight: minHeight.text,
+      maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
     ).then((value) {
       if (mounted) {
         setState(() {
@@ -105,9 +120,12 @@ class _MatchesScreenState extends State<MatchesScreen> {
     getMatchesByGenderApi(
       religion: religionFilter,
       page: page.toString(),
-      height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8" ,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       state: stateController.text,
+      minHeight: minHeight.text,
+      maxHeight: maxHeight.text,
+      maxWeight: maxWeightController.text,
+      motherTongue: motherTongueFilter,
     ).then((value) {
       if (mounted) {
         setState(() {
@@ -128,15 +146,18 @@ class _MatchesScreenState extends State<MatchesScreen> {
     // }
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(backgroundColor: primaryColor,
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
           "Matches",
-          style: styleSatoshiBold(size: 20, color: Colors.black),
+          style: styleSatoshiBold(size: 20, color: Colors.white),
         ),
         actions: [
           GestureDetector(
@@ -146,9 +167,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                   MaterialPageRoute(
                       builder: (builder) => const SavedMatchesScreen()));
             },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: Text("Sortlisted"),
+            child:  Padding(
+              padding: const EdgeInsets.only(right: 16.0,),
+              child: SvgPicture.asset(sortList,color: Colors.white,),
             ),
           ),
           GestureDetector(
@@ -161,179 +182,360 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       builder: (BuildContext context, StateSetter setState) {
                         return Container(
                           width: 1.sw,
+                          height: 1.sh,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                sizedBox16(),
-                                Text(
-                                  "Select Preferred Matches",
-                                  style: styleSatoshiLight(
-                                      size: 12, color: Colors.black),
-                                ),
-                                sizedBox16(),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 0.0),
-                                  child: SizedBox(
-                                    width: 1.sw,
-                                    child: CustomStyledDropdownButton(
-                                      items: const  [
-                                        "Hindu",
-                                        'Muslim',
-                                        "Jain",
-                                        'Buddhist',
-                                        'Sikh',
-                                        'Marathi'
-                                      ],
-                                      selectedValue: religionValue,
-                                      onChanged: (String? value) {
-                                        setState(() {
-                                          religionValue = value;
-                                          religionFilter = religionValue ?? '';
-
-                                        });
-                                      },
-                                      title: 'Religion',
-                                    ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  sizedBox16(),
+                                  Text(
+                                    "Select Preferred Matches",
+                                    style: styleSatoshiLight(
+                                        size: 12, color: Colors.black),
                                   ),
-                                ),
-                                // sizedBox16(),
-                                /*    textBoxPickerField(
-                              onTap: () {
-                                showCountryPicker(
-                                  context: context,
-                                  countryListTheme: CountryListThemeData(
-                                    flagSize: 25,
-                                    backgroundColor: Colors.white,
-                                    textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
-                                    bottomSheetHeight: 500,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                    inputDecoration: InputDecoration(
-                                      // labelText: 'Search',
-                                      hintText: 'Start typing to search',
-                                      hintStyle: styleSatoshiBlack(size: 12, color: Colors.black),
-                                      prefixIcon: const Icon(Icons.search),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: const Color(0xFF8C98A8).withOpacity(0.2),
-                                        ),
+                                  sizedBox16(),
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.symmetric(horizontal: 0.0),
+                                    child: SizedBox(
+                                      width: 1.sw,
+                                      child: CustomStyledDropdownButton(
+                                        items: const  [
+                                          "Hindu",
+                                          'Muslim',
+                                          "Jain",
+                                          'Buddhist',
+                                          'Sikh',
+                                          'Marathi'
+                                        ],
+                                        selectedValue: religionValue,
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            religionValue = value;
+                                            religionFilter = religionValue ?? '';
+
+                                          });
+                                        },
+                                        title: 'Religion',
                                       ),
                                     ),
                                   ),
-                                  onSelect: (Country country) {
-                                    setState(() {
-                                      selectedCountryName = country.displayName.split(' ')[0] ?? '';
-                                      countyController.text = selectedCountryName;
-                                    });
-                                    setState(() {
-
-                                    });
-                                  },
-                                );
-                                setState(() {});
-                              },
-                              context: context,
-                              label: '',
-                              controller: countyController,
-                              hint: '',
-                              length: null,
-                              suffixIcon: const  Icon(Icons.visibility_off),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your Country';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                              }, icon: Icons.flag,),*/
-                                sizedBox16(),
-                                textBox(
-                                  context: context,
-                                  label: 'State',
-                                  controller: stateController,
-                                  hint: 'State',
-                                  length: null,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your State';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-
-                                  },),
                                   sizedBox16(),
-                            SfSlider(
-                              activeColor: primaryColor,
-                              min: 5.0,
-                              max: 7.0,
-                              value: _value,
-                              interval: 1, // Interval is 1 foot
-                              showTicks: true,
-                              showLabels: true,
-                              enableTooltip: true,
-                              minorTicksPerInterval: 0,
-                                stepSize: 1 ,// Disable minor ticks
-                              onChanged: (dynamic value) {
-                                setState(() {
-                                  _value = value;
-                                  height = value;
-                                  print(height);
+                                  Padding(
+                                    padding:
+                                    const EdgeInsets.symmetric(horizontal: 0.0),
+                                    child: SizedBox(
+                                      width: 1.sw,
+                                      child: CustomStyledDropdownButton(
+                                        items: const  [
+                                          "Hindi",
+                                          "Bhojpuri",
+                                          'Marathi',
+                                          "Bengali",
+                                          'Odia',
+                                          'Gujarati',
+                                        ],
+                                        selectedValue: motherTongueValue,
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            motherTongueValue = value;
+                                            motherTongueFilter = motherTongueValue ?? '';
 
-                                });
-                              },
-                              labelFormatterCallback: (dynamic value, String formattedValue) {
-                                int feet = value.floor();
-                                int inches = ((value - feet) * 12).round();
-                                if (inches == 12) {
-                                  feet++;
-                                  inches = 0;
-                                }
-                                return '$feet\' $inches"';
-                              },
-                            ),
-
-                                // SizedBox(
-                                //   width: 1.sw,
-                                //   child: CustomStyledDropdownButton(
-                                //     items: const  [
-                                //       "Unmarried",
-                                //       "Married",
-                                //       "Widowed",
-                                //       "Divorced"
-                                //     ],
-                                //     selectedValue: marriedValue,
-                                //     onChanged: (String? value) {
-                                //       setState(() {
-                                //         marriedValue = value;
-                                //         marriedFilter = marriedValue!;
-                                //
-                                //       });
-                                //     },
-                                //     title: 'Married Status',
-                                //   ),
-                                // ),
-                                sizedBox16(),
-                                elevatedButton(
-                                    color: primaryColor,
+                                          });
+                                        },
+                                        title: 'Mother Tongue',
+                                      ),
+                                    ),
+                                  ),
+                                  sizedBox16(),
+                                  textBox(
                                     context: context,
-                                    onTap: () {
-                                      setState(() {
-
-                                        page = 1;
-                                        isLoading = true;
-                                        getMatches();
-                                        Navigator.pop(context);
-                                      });
+                                    label: 'State',
+                                    controller: stateController,
+                                    hint: 'State',
+                                    length: null,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your State';
+                                      }
+                                      return null;
                                     },
-                                    title: "Apply")
-                              ],
+                                    onChanged: (value) {
+
+                                    },),
+                                    sizedBox16(),
+                                    Row(children: [
+                                     Expanded(child:  textBox(
+                                       read: true,
+                                       tap: () {
+                                         showModalBottomSheet(
+                                           context: context,
+                                           builder: (BuildContext builder) {
+
+                                             // Create the modal bottom sheet widget containing the time picker and close button
+                                             return SizedBox(
+                                               height: MediaQuery.of(context).copyWith().size.height / 3,
+                                               child: Column(
+                                                 children: [
+
+                                                   WillPopScope(
+                                                     onWillPop: () async {
+
+                                                       return false;
+                                                     },
+                                                     child: SizedBox(
+                                                       height:200,
+                                                       child: Row(
+                                                         children: [
+                                                           Expanded(
+                                                             child: CupertinoPicker(
+                                                               scrollController: FixedExtentScrollController(
+                                                                 initialItem: _feet - 5,
+                                                               ),
+                                                               itemExtent: 32,
+                                                               onSelectedItemChanged: (index) {
+                                                                 setState(() {
+                                                                   _feet = index + 5;
+                                                                 });
+                                                               },
+                                                               children: List.generate(
+                                                                 7, // 7 feet in the range from 5 to 11
+                                                                     (index) => Center(child: Text('${index + 5}\'')),
+                                                               ),
+                                                             ),
+                                                           ),
+                                                           Expanded(
+                                                             child: CupertinoPicker(
+                                                               scrollController: FixedExtentScrollController(
+                                                                 initialItem: _inches,
+                                                               ),
+                                                               itemExtent: 32,
+                                                               onSelectedItemChanged: (index) {
+                                                                 setState(() {
+                                                                   _inches = index;
+                                                                 });
+                                                                 print(' $_feet-${_inches.toString().padLeft(2, '0')}');
+                                                               },
+                                                               children: List.generate(
+                                                                 12, // 12 inches in a foot
+                                                                     (index) => Center(child: Text('$index\"')),
+                                                               ),
+                                                             ),
+                                                           ),
+
+                                                         ],
+                                                       ),
+                                                     ),
+                                                   ),
+                                                   Row(
+                                                     mainAxisAlignment: MainAxisAlignment.center,
+
+                                                     children: [
+                                                       Flexible(
+                                                         child: ElevatedButton(
+                                                           style: ElevatedButton.styleFrom(
+                                                             backgroundColor: Colors.redAccent, // Change the background color to red
+                                                           ),
+                                                           onPressed: () {
+                                                             Navigator.pop(context);
+                                                           },
+                                                           child:  Text('Close',
+                                                             style: styleSatoshiMedium(
+                                                                 size: 13,
+                                                                 color: Colors.white),),
+                                                         ),
+                                                       ),
+                                                       SizedBox(width: 8,),
+                                                       Flexible(
+                                                         child: ElevatedButton(
+                                                           onPressed: () {
+                                                             setState(() {
+                                                               minHeight.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
+                                                               // maxHeightController.text = '$_feet2-${_inches2.toString()}';
+                                                               print('$_feet.${_inches.toString().padLeft(1, '0')}');
+                                                             });
+                                                             Navigator.pop(context);
+                                                           },
+                                                           child:  Text('Save',
+                                                             style: styleSatoshiMedium(
+                                                                 size: 13,
+                                                                 color: Colors.black),),
+                                                         ),
+                                                       ),
+                                                     ],
+                                                   ),
+
+                                                 ],
+                                               ),
+                                             );
+                                           },
+                                         );
+                                       },
+                                       context: context,
+                                       label: 'Min Height',
+                                       controller: minHeight,
+                                       hint: 'Min Height',
+                                       length: null,
+                                       validator: (value) {
+                                         if (value == null || value.isEmpty) {
+                                           return 'Please enter Min Height';
+                                         }
+                                         return null;
+                                       },
+                                       onChanged: (value) {
+
+                                       },),),
+                                     sizedBoxWidth15(),
+                                      Expanded(child:  textBox(
+                                        read: true,
+                                        tap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext builder) {
+                                              // Create the modal bottom sheet widget containing the time picker and close button
+                                              return SizedBox(
+                                                height: MediaQuery.of(context).copyWith().size.height / 3,
+                                                child: Column(
+                                                  children: [
+                                                    WillPopScope(
+                                                      onWillPop: () async {
+                                                        return false;
+                                                      },
+                                                      child: SizedBox(
+                                                        height:200,
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: CupertinoPicker(
+                                                                scrollController: FixedExtentScrollController(
+                                                                  initialItem: _feet2 - 5,
+                                                                ),
+                                                                itemExtent: 32,
+                                                                onSelectedItemChanged: (index) {
+                                                                  setState(() {
+                                                                    _feet2 = index + 5;
+                                                                  });
+                                                                },
+                                                                children: List.generate(
+                                                                  7, // 7 feet in the range from 5 to 11
+                                                                      (index) => Center(child: Text('${index + 5}\'')),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: CupertinoPicker(
+                                                                scrollController: FixedExtentScrollController(
+                                                                  initialItem: _inches2,
+                                                                ),
+                                                                itemExtent: 32,
+                                                                onSelectedItemChanged: (index) {
+                                                                  setState(() {
+                                                                    _inches2 = index;
+                                                                  });
+                                                                  print(' $_feet2-${_inches2.toString().padLeft(2, '0')}');
+                                                                },
+                                                                children: List.generate(
+                                                                  12, // 12 inches in a foot
+                                                                      (index) => Center(child: Text('$index\"')),
+                                                                ),
+                                                              ),
+                                                            ),
+
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Row(mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Flexible(
+                                                          child: ElevatedButton(
+                                                            style: ElevatedButton.styleFrom(
+                                                              backgroundColor: Colors.redAccent, // Change the background color to red
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child:  Text('Close',
+                                                              style: styleSatoshiMedium(
+                                                                  size: 13,
+                                                                  color: Colors.white),),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 8,),
+                                                        Flexible(
+                                                          child: ElevatedButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                maxHeight.text = '$_feet2.${_inches2.toString().padLeft(1, '0')}';
+                                                                // maxHeightController.text = '$_feet2-${_inches2.toString()}';
+                                                                print('$_feet2.${_inches2.toString().padLeft(1, '0')}');
+                                                              });
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child:  Text('Save',
+                                                              style: styleSatoshiMedium(
+                                                                  size: 13,
+                                                                  color: Colors.black),),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        context: context,
+                                        label: 'Min Height',
+                                        controller: maxHeight,
+                                        hint: 'Min Height',
+                                        length: null,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter Min Height';
+                                          }
+                                          return null;
+                                        },
+                                        onChanged: (value) {
+
+                                        },),),
+
+                                    ],),
+                                  sizedBox16(),
+                                  textBox(
+                                    context: context,
+                                    label: 'Max Weight',
+                                    controller:maxWeightController,
+                                    hint: 'Max Weight',
+                                    length: null,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter Max Weight';
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                    },),
+                                  sizedBox16(),
+                                  elevatedButton(
+                                      color: primaryColor,
+                                      context: context,
+                                      onTap: () {
+                                        setState(() {
+
+                                          page = 1;
+                                          isLoading = true;
+                                          getMatches();
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                      title: "Apply")
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -344,10 +546,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
             child: Container(
               padding: const EdgeInsets.only(
                   right: 16.0, top: 6, bottom: 6, left: 10),
-              child:  Image.asset(icFilter,
-                height: 24,
-                width: 24,
-                color: Colors.black,),
+              child:  SvgPicture.asset(filter,
+                color: Colors.white,),
             ),
           )
         ],
@@ -359,7 +559,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             ? const Text("No Matches Yet")
             : SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16),
+            padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("${matches.length} members found"),
@@ -434,18 +634,18 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 //         title: "Request Sent")
                                 //     :
                                 isLoadingList[i]
-                                    ? loadingButton(
+                                    ? connectLoadingButton(color: Colors.white,
                                     height: 30,
                                     width: 134,
                                     context: context)
-                                    : button(
+                                    : connectButton(
                                     fontSize: 14,
                                     height: 30,
                                     width: 134,
                                     context: context,
                                     onTap: () {
                                       setState(() {
-                                        isLoadingList[i] = true;
+                                        like[i] = !like[i];
                                       });
                                       sendRequestApi(
                                           memberId: matches[i]
@@ -474,7 +674,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                         }
                                       });
                                     },
-                                    title: "Connect Now"),
+                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
                                 bookmark:
 
                                  GestureDetector(
@@ -578,8 +778,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           if (isLoading) {
                             return customLoader(size: 40);
                           } else {
-                            return const Center(
-                                child: Text("All matches loaded"));
+                            return const SizedBox();
                           }
                         }
                       },

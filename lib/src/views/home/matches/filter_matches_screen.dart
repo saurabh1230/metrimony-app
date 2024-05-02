@@ -28,8 +28,13 @@ import 'package:country_picker/country_picker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 class FilterMatchesScreen extends StatefulWidget {
   final LoginResponse response;
+  final String filter;
+  final String motherTongue;
+  final String minHeight;
+  final String maxHeight;
+  final String maxWeight;
 
-  const FilterMatchesScreen({super.key, required this.response});
+  const FilterMatchesScreen({super.key, required this.response, required this.filter, required this.motherTongue, required this.minHeight, required this.maxHeight, required this.maxWeight});
 
   @override
   State<FilterMatchesScreen> createState() => _FilterMatchesScreenState();
@@ -124,14 +129,13 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
 
   getMatches() {
     isLoading = true;
-
     // matches.clear();
     getMatchesFilterApi(
       page: page.toString(),
-      maritalStatus: marriedFilter,
-      religion: religionFilter,
+      maritalStatus: '',
+      religion: widget.filter,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      country: countyController.text, height: '', motherTongue: '',
+      country: '', height: '', motherTongue: widget.motherTongue, minHeight: '', maxHeight: '', maxWeight: widget.maxWeight,
     ).then((value) {
       matches.clear();
       setState(() {
@@ -151,11 +155,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
 
   loadMore() {
     print('ndnd');
-
     // if (!isLoading) {
     isLoading = true;
-
-
     getMatchesFilterApi(
       page: page.toString(),
       maritalStatus: marriedFilter,
@@ -163,6 +164,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
       country: countyController.text,
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       height: '', motherTongue: '',
+      minHeight: '', maxHeight: '', maxWeight: '',
     ).then((value) {
       setState(() {
         if (value['status'] == true) {
@@ -181,6 +183,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   }
 
   String? religionValue;
+  String? motherTongueValue;
+  String motherTongueFilter = '';
   String? marriedValue;
 
   String selectedCountryName = '';
@@ -249,57 +253,6 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                               ),
                             ),
                             // sizedBox16(),
-                        /*    textBoxPickerField(
-                              onTap: () {
-                                showCountryPicker(
-                                  context: context,
-                                  countryListTheme: CountryListThemeData(
-                                    flagSize: 25,
-                                    backgroundColor: Colors.white,
-                                    textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
-                                    bottomSheetHeight: 500,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                    inputDecoration: InputDecoration(
-                                      // labelText: 'Search',
-                                      hintText: 'Start typing to search',
-                                      hintStyle: styleSatoshiBlack(size: 12, color: Colors.black),
-                                      prefixIcon: const Icon(Icons.search),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: const Color(0xFF8C98A8).withOpacity(0.2),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onSelect: (Country country) {
-                                    setState(() {
-                                      selectedCountryName = country.displayName.split(' ')[0] ?? '';
-                                      countyController.text = selectedCountryName;
-                                    });
-                                    setState(() {
-
-                                    });
-                                  },
-                                );
-                                setState(() {});
-                              },
-                              context: context,
-                              label: '',
-                              controller: countyController,
-                              hint: '',
-                              length: null,
-                              suffixIcon: const  Icon(Icons.visibility_off),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your Country';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                              }, icon: Icons.flag,),*/
                             sizedBox16(),
                             textBox(
                               context: context,
@@ -316,6 +269,32 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                               onChanged: (value) {
 
                               },),
+                            Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 0.0),
+                              child: SizedBox(
+                                width: 1.sw,
+                                child: CustomStyledDropdownButton(
+                                  items: const  [
+                                    "Hindi",
+                                    "Bhojpuri",
+                                    'Marathi',
+                                    "Bengali",
+                                    'Odia',
+                                    'Gujarati',
+                                  ],
+                                  selectedValue: motherTongueValue,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      motherTongueValue = value;
+                                      motherTongueFilter = motherTongueValue ?? '';
+
+                                    });
+                                  },
+                                  title: 'Mother Tongue',
+                                ),
+                              ),
+                            ),
                           /*  sizedBox16(),
                             SfSlider(
                               activeColor: primaryColor,
@@ -511,7 +490,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                           if (isLoading) {
                             return customLoader(size: 40);
                           } else {
-                            return Center(child: Text("All matches loaded"));
+                            return SizedBox();
                           }
 
                         },
