@@ -25,6 +25,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../utils/widgets/custom_image_widget.dart';
+import '../home/profile/profile_screen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String userId;
@@ -81,7 +82,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     }
     return Scaffold(
       // appBar: buildAppBar(),
-      body: isLoading ? const Loading() :SingleChildScrollView(
+      body: isLoading ?  const UserProfileShimmer() :SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Column(
@@ -536,7 +537,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ],
           ),
         ),
-      ),
+      ) ,
 
     );
   }
@@ -673,3 +674,272 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 }
 
 
+class UserProfileShimmer extends StatelessWidget {
+  const UserProfileShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  CustomShimmerEffect(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius:  BorderRadius.only(
+                            bottomRight: Radius.circular(32),
+                            bottomLeft:Radius.circular(32) ),
+                        child: Container(
+                          color: Colors.grey.withOpacity(0.40),
+                          height: 400,
+                          width: double.infinity,
+                        )
+                      ),
+                      Positioned(
+                        bottom: 26,
+                        left: 26,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "User",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: styleSatoshiBold(size: 30, color: Colors.white),),
+        
+                              ],
+                            ),
+                            Text(
+                              StringUtils.capitalize("Religion"),
+                              style: styleSatoshiBold(size: 16, color: Colors.white),),
+                            Row(
+                              children: [
+                                Text(
+                                  StringUtils.capitalize('Yrs'),
+                                  style: styleSatoshiBold(size: 16, color: Colors.white),),
+                                const SizedBox(width: 10,),
+                                Text(
+                                  StringUtils.capitalize('Height'),
+                                  style: styleSatoshiBold(size: 16, color: Colors.white),),
+                              ],
+                            ),
+                            sizedBox16(),
+                            const SimmerTextHolder(width: 200,),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16,
+                            top: 30),
+                        child: backButton(
+                            context: context,
+                            image: icArrowLeft,
+                            onTap: () {
+                              Navigator.pop(context);
+                            }),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+        
+        
+              sizedBox20(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "About",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        sizedBox10(),
+                        ReadMoreText(
+                          '' ?? "",
+                          trimLines: 4,
+                          colorClickableText: Colors.pink,
+                          trimMode: TrimMode.Line,
+                          trimCollapsedText: 'Show more',
+                          trimExpandedText: ' Show less',
+                          moreStyle: styleSatoshiLight(size: 14, color: primaryColor),
+                          lessStyle: styleSatoshiLight(size: 14, color: primaryColor),
+                        ),
+                      ],
+                    ),
+                    sizedBox16(),
+                    Text(
+                      "Professional Info",
+                      style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                    // Text("Professional Info",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                    sizedBox16(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: SvgPicture.asset(icEducation,
+                                  height: 18,
+                                  width: 18,),
+                              ),
+                              sizedBox6(),
+                              Text(
+                                // '' ,
+                                'Degree',
+                                textAlign: TextAlign.center,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icUserBagIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                StringUtils.capitalize("Profession"),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              ),
+        
+                            ],
+                          ),
+                        ),
+        
+                      ],
+                    ),
+                    sizedBox12(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icUserHeightIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                "Height",
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),)
+                            ],
+                          ),
+                        ),
+        
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(icUserLocationIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                'Country',
+                                textAlign: TextAlign.center,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    sizedBox20(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        sizedBox10(),
+                        Text(
+                          "Basic Info",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        sizedBox16(),
+                        const SimmerTextHolder(),
+                        sizedBox16(),
+                        const SimmerTextHolder(width: 200,),
+                        sizedBox16(),
+                        const SimmerTextHolder(width: 160,),
+                        // Card(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(12.0),
+                        //     child: Column(children: [
+                        //       buildProfileRow(image: birthHolder, title: 'Age',
+                        //           text:  "Age", onTap: () {  }),
+                        //       const Divider(),
+                        //       buildProfileRow(image: icHeightIcon, title: 'Height',
+                        //           text:
+                        //            'Height', onTap: () {  }
+                        //       ),
+                        //       const Divider(),
+                        //
+                        //       buildProfileRow(image: icReligionIcon,
+                        //           title: 'Religion',
+                        //           text: "Religion", onTap: () {  } ),
+                        //       const Divider(),
+                        //       buildProfileRow(image: icMotherToungeIcon,
+                        //           title: 'Mother Tongue',
+                        //           text: "Mother Tongue", onTap: () {  }
+                        //       ),
+                        //       const Divider(),
+                        //       buildProfileRow(image: icMarriedStatusPro,
+                        //           title: 'Married Status',
+                        //           text: "Married Status", onTap: () {  }
+                        //       ),
+                        //
+                        //     ],),
+                        //   ),
+                        // ),
+                        // sizedBox16(),
+
+        
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

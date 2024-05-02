@@ -1,16 +1,10 @@
 import 'dart:async';
-import 'package:bureau_couple/src/apis/members_api.dart';
-import 'package:bureau_couple/src/apis/members_api/request_apis.dart';
+import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-import 'package:bureau_couple/src/constants/string.dart';
-import 'package:bureau_couple/src/constants/textfield.dart';
 import 'package:bureau_couple/src/controller/matches_controller.dart';
-import 'package:bureau_couple/src/utils/widgets/buttons.dart';
-import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
-import 'package:bureau_couple/src/utils/widgets/dropdown_buttons.dart';
+import 'package:bureau_couple/src/models/matches_model.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
-import 'package:bureau_couple/src/views/home/dashboard_widgets.dart';
-import 'package:bureau_couple/src/views/user_profile/user_profile.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -20,19 +14,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../constants/assets.dart';
-import '../../constants/colors.dart';
-import '../../constants/textstyles.dart';
-import '../../models/matches_model.dart';
 
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../apis/members_api.dart';
+import '../../apis/members_api/request_apis.dart';
+import '../../constants/assets.dart';
+import '../../constants/string.dart';
+import '../../constants/textfield.dart';
+import '../../constants/textstyles.dart';
+import '../../utils/widgets/buttons.dart';
+import '../../utils/widgets/common_widgets.dart';
+import '../../utils/widgets/dropdown_buttons.dart';
+import '../home/dashboard_widgets.dart';
+import '../user_profile/user_profile.dart';
+
 class AllMatchesScreen extends StatefulWidget {
+
   final LoginResponse response;
 
-  const AllMatchesScreen({Key? key, required this.response}) : super(key: key);
+  const AllMatchesScreen({Key? key, required this.response,}) : super(key: key);
 
   @override
   State<AllMatchesScreen> createState() => _AllMatchesScreenState();
@@ -71,19 +74,16 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
   String marriedFilter = '';
   double _value = 5.0;
   double height = 0;
-
   String? religionValue;
   String? marriedValue;
-
   String? motherTongueValue;
-
   String motherTongueFilter = '';
-
   final stateController = TextEditingController();
 
   // bool like = false;
 
   getMatches() {
+    // matches.clear();
     isLoading = true;
     getMatchesByGenderApi(
       page: page.toString(),
@@ -115,6 +115,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
 
   loadMore() {
     print('ndnd');
+    // matches.clear();
     // if (!isLoading) {
     isLoading = true;
     getMatchesByGenderApi(
@@ -152,7 +153,12 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: primaryColor,
+      appBar:  AppBar(backgroundColor: primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: Theme.of(context).cardColor,
+          onPressed: () => Navigator.pop(context),
+        ) ,
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
@@ -634,18 +640,20 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                 //         title: "Request Sent")
                                 //     :
                                 isLoadingList[i]
-                                    ? loadingButton(
+                                    ? connectLoadingButton(color: Colors.white,
                                     height: 30,
                                     width: 134,
                                     context: context)
-                                    : connectButton(
+                                    :
+                                connectButton(
+
                                     fontSize: 14,
                                     height: 30,
                                     width: 134,
                                     context: context,
                                     onTap: () {
                                       setState(() {
-                                        isLoadingList[i] = true;
+                                        like[i] = !like[i];
                                       });
                                       sendRequestApi(
                                           memberId: matches[i]
@@ -674,7 +682,8 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                         }
                                       });
                                     },
-                                    title: "Connect Now"),
+                                    showIcon: matches[i].interestStatus == 2 ? false : true,
+                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
                                 bookmark:
 
                                 GestureDetector(
@@ -778,8 +787,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                           if (isLoading) {
                             return customLoader(size: 40);
                           } else {
-                            return const Center(
-                                child: Text("All matches loaded"));
+                            return const SizedBox();
                           }
                         }
                       },

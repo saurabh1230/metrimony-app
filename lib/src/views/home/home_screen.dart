@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
+import '../../apis/members_api/request_apis.dart';
 import '../../apis/profile_apis/get_profile_api.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -25,7 +26,7 @@ import '../premium_matches/all_new_matches.dart';
 import '../user_profile/user_profile.dart';
 import 'connect/connect_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'matches/married_category_screen.dart';
 import 'matches/religion_category_screen.dart';
 import 'profile/edit_basic_info.dart';
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
    List<MatchesModel> matches = [];
 
    getMatches() {
+     matches.clear();
      isLoading = true;
      getNewMatchesApi(page: page.toString(),
        gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M",).then((value) {
@@ -82,11 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
      var resp = getProfileApi();
      resp.then((value) {
        if(value['status'] == true) {
-         setState(() {
+         // setState(() {
            profile = ProfileModel.fromJson(value);
            isLoading = false;
            SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
-         });
+         // });
        } else {
          setState(() {
            isLoading = false;
@@ -97,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
    }
 
    List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
-  List<String> categoryTitle = ["Filter by Religion","Filter By Language"];
-  List<Color> color = [colorE2b93b,colorEb5757];
+   List<String> categoryTitle = ["Filter by Religion","Filter By Language"];
+   List<Color> color = [colorE2b93b,colorEb5757];
 
 
 
@@ -270,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllMatchesScreen(response: widget.response,)));
+                        AllMatchesScreen(response: widget.response, )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -397,7 +399,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ],
                                             ),
-                                            AddButton()
+                                            AddButton(tap: () {
+                                              setState(() {
+                                                // like[i] = !like[i];
+                                              });
+                                              sendRequestApi(
+                                                  memberId: matches[i]
+                                                      .id
+                                                      .toString())
+                                                  .then((value) {
+                                                if (value['status'] == true) {
+                                                  setState(() {
+                                                    isLoadingList[i] = false;
+                                                  });
+                                                  ToastUtil.showToast(
+                                                      "Connection Request Sent");
+                                                } else {
+                                                  setState(() {
+                                                    isLoadingList[i] = false;
+                                                  });
+
+                                                  List<dynamic> errors =
+                                                  value['message']['error'];
+                                                  String errorMessage = errors
+                                                      .isNotEmpty
+                                                      ? errors[0]
+                                                      : "An unknown error occurred.";
+                                                  Fluttertoast.showToast(
+                                                      msg: errorMessage);
+                                                }
+                                              });
+                                            },)
                                           ],
                                         ),
 
@@ -548,7 +580,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ],
                                             ),
-                                            AddButton()
+                                            AddButton(tap: () {
+                                              setState(() {
+                                                // like[i] = !like[i];
+                                              });
+                                              sendRequestApi(
+                                                  memberId: matches[i]
+                                                      .id
+                                                      .toString())
+                                                  .then((value) {
+                                                if (value['status'] == true) {
+                                                  setState(() {
+                                                    isLoadingList[i] = false;
+                                                  });
+                                                  ToastUtil.showToast(
+                                                      "Connection Request Sent");
+                                                } else {
+                                                  setState(() {
+                                                    isLoadingList[i] = false;
+                                                  });
+
+                                                  List<dynamic> errors =
+                                                  value['message']['error'];
+                                                  String errorMessage = errors
+                                                      .isNotEmpty
+                                                      ? errors[0]
+                                                      : "An unknown error occurred.";
+                                                  Fluttertoast.showToast(
+                                                      msg: errorMessage);
+                                                }
+                                              });
+                                            },)
                                           ],
                                         ),
 
@@ -564,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       );
-                                        }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),
+                                        }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),
                                       ),
                     ),
                 sizedBox16(),

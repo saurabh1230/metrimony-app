@@ -257,7 +257,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         ],
       ),*/
-      body: isLoading ? const Loading(): Stack(
+      body: isLoading ? const BasicInfoShimmerWidget(): Stack(
         children: [
           CustomRefreshIndicator(
             onRefresh: () {
@@ -350,9 +350,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                         }),*/
                     buildInfoRow(title: 'Degree',
-                        text:
-                        ' ${profile.data!.user!.educationInfo!.isEmpty ? profile.data!.user!.educationInfo == null ? "": "" :
-                        profile.data?.user?.educationInfo![0].degree.toString()}',
+                        text:'${profile.data?.user?.educationInfo![0].degree.toString() ?? ""}',
+                        // ' ${profile.data!.user!.educationInfo!.isEmpty ? profile.data!.user!.educationInfo == null ? "": "" :
+                        // profile.data?.user?.educationInfo![0].degree.toString()}',
                         onTap: () {
                         }),
                     /* buildInfoRow(title: 'State',
@@ -360,8 +360,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                         }),*/
                     buildInfoRow(title: 'Study',
-                        text: '${profile.data!.user!.educationInfo!.isEmpty ? "" :
-                        profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
+                        text: profile.data?.user?.educationInfo![0].degree.toString() ?? "",
+                        // '${profile.data!.user!.educationInfo!.isEmpty ? "" :
+                        // profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
                         onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
@@ -374,12 +375,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'Company',
-                        text: ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        profile.data?.user?.careerInfo![0].company.toString()}',
+                        text:
+                        profile.data?.user?.careerInfo![0].company.toString() ?? "",
+                        // ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        // profile.data?.user?.careerInfo![0].company.toString()}',
                         onTap: () {}),
                     buildInfoRow(title: 'Designation',
-                        text: ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        profile.data?.user?.careerInfo![0].designation.toString()}',
+                        text:  profile.data?.user?.careerInfo![0].designation.toString() ?? "",
+                        // ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        // profile.data?.user?.careerInfo![0].designation.toString()}',
                         onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () {
@@ -394,23 +398,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'Religion',
-                        text:  profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.religion.toString(),
+                        text:  profile.data?.user?.partnerExpectation!.religion.toString() ?? "",
+                        // profile.data!.user!.partnerExpectation == null ? "" :
+                        // profile.data!.user!.partnerExpectation!.religion.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Profession',
-                        text:  profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.profession.toString(),
+                        text:  profile.data?.user?.partnerExpectation!.profession.toString() ?? "",
+                        // profile.data!.user!.partnerExpectation == null ? "" :
+                        // profile.data!.user!.partnerExpectation!.profession.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Mother Tongue',
-                        text:  profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.motherTongue.toString(),
+                        text:  profile.data?.user?.partnerExpectation!.motherTongue.toString() ?? "",
+                        // profile.data!.user!.partnerExpectation == null ? "" :
+                        // profile.data!.user!.partnerExpectation!.motherTongue.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Community',
-                        text: profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.community.toString(),
+                        text: profile.data?.user?.partnerExpectation!.community.toString() ?? "",
+                        // profile.data!.user!.partnerExpectation == null ? "" :
+                        // profile.data!.user!.partnerExpectation!.community.toString(),
                         onTap: () {
                         }),
                     sizedBox20(),
@@ -427,18 +435,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'Weight',
-                        text:  profile.data!.user!.physicalAttributes!.weight == null ? "" :
-                        profile.data!.user!.physicalAttributes!.weight.toString(),
+                        text:
+                        profile.data?.user?.physicalAttributes!.weight.toString() ?? "",
+                        // profile.data!.user!.physicalAttributes!.weight == null ? "" :
+                        // profile.data!.user!.physicalAttributes!.weight.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Height',
-                        text:  profile.data!.user!.physicalAttributes!.height == null ? "" :
-                        profile.data!.user!.physicalAttributes!.height.toString(),
+                        text: profile.data?.user?.physicalAttributes!.height.toString() ?? "",
+                        // profile.data!.user!.physicalAttributes!.height == null ? "" :
+                        // profile.data!.user!.physicalAttributes!.height.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Blood Group',
-                        text:  profile.data!.user!.physicalAttributes!.bloodGroup== null ? "" :
-                        profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
+                        text: profile.data?.user?.physicalAttributes!.bloodGroup.toString() ?? "",
+                        // profile.data!.user!.physicalAttributes!.bloodGroup== null ? "" :
+                        // profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
                         onTap: () {
                         }),
 
@@ -449,7 +461,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Gallery",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                          Text("Photos",style:styleSatoshiMedium(size: 16, color: primaryColor)),
                           Image.asset(icEdit,height: 20,width: 20,),
                         ],
                       ),

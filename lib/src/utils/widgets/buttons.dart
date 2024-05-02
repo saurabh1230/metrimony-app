@@ -293,7 +293,7 @@ connectButton({
   double ? fontSize,
   TextStyle  ? style,
   Color ? color,
-  Widget? icon
+  bool showIcon = false,
 
 }) {
   return GestureDetector(
@@ -318,7 +318,8 @@ connectButton({
       child: Center(
         child: Row(mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            icon ?? Icon(Icons.add,color: primaryColor,size: 15,),
+            if (showIcon) Icon(Icons.add, color: primaryColor, size: 15),
+            // Icon(Icons.add,color: primaryColor,size: 15,),
             Text(title,
               style:style ?? styleSatoshiBold(size: fontSize ??18, color: primaryColor),),
           ],
@@ -328,3 +329,46 @@ connectButton({
   );
 }
 
+connectWithoutIconButton({
+  required BuildContext context,
+  required Function() onTap,
+  required String title,
+  double ? height,
+  double ? width,
+  double ? radius,
+  double ? fontSize,
+  TextStyle  ? style,
+  Color ? color,
+
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      width: width ??double.infinity,
+      height:height?? 48,
+      decoration:  BoxDecoration(
+        border: Border.all(
+            width: 0.6,
+            color: primaryColor
+        ),
+        borderRadius: BorderRadius.circular(radius??32),
+        color:color ?? Colors.white,
+        // gradient:LinearGradient(
+        //   colors: [Color(0xffffffff), Color(0xfff7345f)],
+        //   stops: [0.001, 0.5],
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        // )
+      ),
+      child: Center(
+        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add,color: primaryColor,size: 15,),
+            Text(title,
+              style:style ?? styleSatoshiBold(size: fontSize ??18, color: primaryColor),),
+          ],
+        ),
+      ),
+    ),
+  );
+}

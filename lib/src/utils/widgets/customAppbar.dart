@@ -14,13 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(backgroundColor: Theme.of(context).primaryColor,
-
-     automaticallyImplyLeading: false,
-      shape: const  RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(0),
-        ),
-      ),
+     automaticallyImplyLeading: false, shape: const  RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(0),),),
       title: Text(title!, style: styleSatoshiBold(size: 18, color: Colors.white)),
       centerTitle: false,
       leading: isBackButtonExist ? IconButton(
@@ -52,7 +47,7 @@ class CustomAppBar2 extends StatelessWidget implements PreferredSizeWidget {
           bottom: Radius.circular(0),
         ),
       ),
-      title: Text(title!, style: styleSatoshiBold(size: 18, color: Colors.white)),
+      title: Text(title!, style: styleSatoshiLarge(size: 18, color: Colors.white)),
       centerTitle: false,
       elevation: 0,
       actions: menuWidget != null ? [menuWidget!] : null,

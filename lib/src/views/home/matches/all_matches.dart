@@ -130,13 +130,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
       if (mounted) {
         setState(() {
           if (value['status'] == true) { matches.clear();
-            for (var v in value['data']['members']['data']) {
-              matches.add(MatchesModel.fromJson(v));
-              isLoadingList.add(false); // Add false for each new match
-              like.add(false);
-            }
-            isLoading = false;
-            page++;
+          for (var v in value['data']['members']['data']) {
+            matches.add(MatchesModel.fromJson(v));
+            isLoadingList.add(false); // Add false for each new match
+            like.add(false);
+          }
+          isLoading = false;
+          page++;
           } else {
             isLoading = false;
           }
@@ -152,7 +152,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar:  AppBar(backgroundColor: primaryColor,
+      appBar:  AppBar(backgroundColor: primaryColor,
         centerTitle: false,
         automaticallyImplyLeading: false,
         title: Text(
@@ -265,246 +265,246 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     onChanged: (value) {
 
                                     },),
-                                    sizedBox16(),
-                                    Row(children: [
-                                     Expanded(child:  textBox(
-                                       read: true,
-                                       tap: () {
-                                         showModalBottomSheet(
-                                           context: context,
-                                           builder: (BuildContext builder) {
+                                  sizedBox16(),
+                                  Row(children: [
+                                    Expanded(child:  textBox(
+                                      read: true,
+                                      tap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (BuildContext builder) {
 
-                                             // Create the modal bottom sheet widget containing the time picker and close button
-                                             return SizedBox(
-                                               height: MediaQuery.of(context).copyWith().size.height / 3,
-                                               child: Column(
-                                                 children: [
+                                            // Create the modal bottom sheet widget containing the time picker and close button
+                                            return SizedBox(
+                                              height: MediaQuery.of(context).copyWith().size.height / 3,
+                                              child: Column(
+                                                children: [
 
-                                                   WillPopScope(
-                                                     onWillPop: () async {
+                                                  WillPopScope(
+                                                    onWillPop: () async {
 
-                                                       return false;
-                                                     },
-                                                     child: SizedBox(
-                                                       height:200,
-                                                       child: Row(
-                                                         children: [
-                                                           Expanded(
-                                                             child: CupertinoPicker(
-                                                               scrollController: FixedExtentScrollController(
-                                                                 initialItem: _feet - 5,
-                                                               ),
-                                                               itemExtent: 32,
-                                                               onSelectedItemChanged: (index) {
-                                                                 setState(() {
-                                                                   _feet = index + 5;
-                                                                 });
-                                                               },
-                                                               children: List.generate(
-                                                                 7, // 7 feet in the range from 5 to 11
-                                                                     (index) => Center(child: Text('${index + 5}\'')),
-                                                               ),
-                                                             ),
-                                                           ),
-                                                           Expanded(
-                                                             child: CupertinoPicker(
-                                                               scrollController: FixedExtentScrollController(
-                                                                 initialItem: _inches,
-                                                               ),
-                                                               itemExtent: 32,
-                                                               onSelectedItemChanged: (index) {
-                                                                 setState(() {
-                                                                   _inches = index;
-                                                                 });
-                                                                 print(' $_feet-${_inches.toString().padLeft(2, '0')}');
-                                                               },
-                                                               children: List.generate(
-                                                                 12, // 12 inches in a foot
-                                                                     (index) => Center(child: Text('$index\"')),
-                                                               ),
-                                                             ),
-                                                           ),
-
-                                                         ],
-                                                       ),
-                                                     ),
-                                                   ),
-                                                   Row(
-                                                     mainAxisAlignment: MainAxisAlignment.center,
-
-                                                     children: [
-                                                       Flexible(
-                                                         child: ElevatedButton(
-                                                           style: ElevatedButton.styleFrom(
-                                                             backgroundColor: Colors.redAccent, // Change the background color to red
-                                                           ),
-                                                           onPressed: () {
-                                                             Navigator.pop(context);
-                                                           },
-                                                           child:  Text('Close',
-                                                             style: styleSatoshiMedium(
-                                                                 size: 13,
-                                                                 color: Colors.white),),
-                                                         ),
-                                                       ),
-                                                       SizedBox(width: 8,),
-                                                       Flexible(
-                                                         child: ElevatedButton(
-                                                           onPressed: () {
-                                                             setState(() {
-                                                               minHeight.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
-                                                               // maxHeightController.text = '$_feet2-${_inches2.toString()}';
-                                                               print('$_feet.${_inches.toString().padLeft(1, '0')}');
-                                                             });
-                                                             Navigator.pop(context);
-                                                           },
-                                                           child:  Text('Save',
-                                                             style: styleSatoshiMedium(
-                                                                 size: 13,
-                                                                 color: Colors.black),),
-                                                         ),
-                                                       ),
-                                                     ],
-                                                   ),
-
-                                                 ],
-                                               ),
-                                             );
-                                           },
-                                         );
-                                       },
-                                       context: context,
-                                       label: 'Min Height',
-                                       controller: minHeight,
-                                       hint: 'Min Height',
-                                       length: null,
-                                       validator: (value) {
-                                         if (value == null || value.isEmpty) {
-                                           return 'Please enter Min Height';
-                                         }
-                                         return null;
-                                       },
-                                       onChanged: (value) {
-
-                                       },),),
-                                     sizedBoxWidth15(),
-                                      Expanded(child:  textBox(
-                                        read: true,
-                                        tap: () {
-                                          showModalBottomSheet(
-                                            context: context,
-                                            builder: (BuildContext builder) {
-                                              // Create the modal bottom sheet widget containing the time picker and close button
-                                              return SizedBox(
-                                                height: MediaQuery.of(context).copyWith().size.height / 3,
-                                                child: Column(
-                                                  children: [
-                                                    WillPopScope(
-                                                      onWillPop: () async {
-                                                        return false;
-                                                      },
-                                                      child: SizedBox(
-                                                        height:200,
-                                                        child: Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: CupertinoPicker(
-                                                                scrollController: FixedExtentScrollController(
-                                                                  initialItem: _feet2 - 5,
-                                                                ),
-                                                                itemExtent: 32,
-                                                                onSelectedItemChanged: (index) {
-                                                                  setState(() {
-                                                                    _feet2 = index + 5;
-                                                                  });
-                                                                },
-                                                                children: List.generate(
-                                                                  7, // 7 feet in the range from 5 to 11
-                                                                      (index) => Center(child: Text('${index + 5}\'')),
-                                                                ),
+                                                      return false;
+                                                    },
+                                                    child: SizedBox(
+                                                      height:200,
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: CupertinoPicker(
+                                                              scrollController: FixedExtentScrollController(
+                                                                initialItem: _feet - 5,
+                                                              ),
+                                                              itemExtent: 32,
+                                                              onSelectedItemChanged: (index) {
+                                                                setState(() {
+                                                                  _feet = index + 5;
+                                                                });
+                                                              },
+                                                              children: List.generate(
+                                                                7, // 7 feet in the range from 5 to 11
+                                                                    (index) => Center(child: Text('${index + 5}\'')),
                                                               ),
                                                             ),
-                                                            Expanded(
-                                                              child: CupertinoPicker(
-                                                                scrollController: FixedExtentScrollController(
-                                                                  initialItem: _inches2,
-                                                                ),
-                                                                itemExtent: 32,
-                                                                onSelectedItemChanged: (index) {
-                                                                  setState(() {
-                                                                    _inches2 = index;
-                                                                  });
-                                                                  print(' $_feet2-${_inches2.toString().padLeft(2, '0')}');
-                                                                },
-                                                                children: List.generate(
-                                                                  12, // 12 inches in a foot
-                                                                      (index) => Center(child: Text('$index\"')),
-                                                                ),
+                                                          ),
+                                                          Expanded(
+                                                            child: CupertinoPicker(
+                                                              scrollController: FixedExtentScrollController(
+                                                                initialItem: _inches,
+                                                              ),
+                                                              itemExtent: 32,
+                                                              onSelectedItemChanged: (index) {
+                                                                setState(() {
+                                                                  _inches = index;
+                                                                });
+                                                                print(' $_feet-${_inches.toString().padLeft(2, '0')}');
+                                                              },
+                                                              children: List.generate(
+                                                                12, // 12 inches in a foot
+                                                                    (index) => Center(child: Text('$index\"')),
                                                               ),
                                                             ),
+                                                          ),
 
-                                                          ],
-                                                        ),
+                                                        ],
                                                       ),
                                                     ),
-                                                    Row(mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        Flexible(
-                                                          child: ElevatedButton(
-                                                            style: ElevatedButton.styleFrom(
-                                                              backgroundColor: Colors.redAccent, // Change the background color to red
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+
+                                                    children: [
+                                                      Flexible(
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: Colors.redAccent, // Change the background color to red
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:  Text('Close',
+                                                            style: styleSatoshiMedium(
+                                                                size: 13,
+                                                                color: Colors.white),),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Flexible(
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              minHeight.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
+                                                              // maxHeightController.text = '$_feet2-${_inches2.toString()}';
+                                                              print('$_feet.${_inches.toString().padLeft(1, '0')}');
+                                                            });
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:  Text('Save',
+                                                            style: styleSatoshiMedium(
+                                                                size: 13,
+                                                                color: Colors.black),),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      context: context,
+                                      label: 'Min Height',
+                                      controller: minHeight,
+                                      hint: 'Min Height',
+                                      length: null,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter Min Height';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+
+                                      },),),
+                                    sizedBoxWidth15(),
+                                    Expanded(child:  textBox(
+                                      read: true,
+                                      tap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (BuildContext builder) {
+                                            // Create the modal bottom sheet widget containing the time picker and close button
+                                            return SizedBox(
+                                              height: MediaQuery.of(context).copyWith().size.height / 3,
+                                              child: Column(
+                                                children: [
+                                                  WillPopScope(
+                                                    onWillPop: () async {
+                                                      return false;
+                                                    },
+                                                    child: SizedBox(
+                                                      height:200,
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: CupertinoPicker(
+                                                              scrollController: FixedExtentScrollController(
+                                                                initialItem: _feet2 - 5,
+                                                              ),
+                                                              itemExtent: 32,
+                                                              onSelectedItemChanged: (index) {
+                                                                setState(() {
+                                                                  _feet2 = index + 5;
+                                                                });
+                                                              },
+                                                              children: List.generate(
+                                                                7, // 7 feet in the range from 5 to 11
+                                                                    (index) => Center(child: Text('${index + 5}\'')),
+                                                              ),
                                                             ),
-                                                            onPressed: () {
-                                                              Navigator.pop(context);
-                                                            },
-                                                            child:  Text('Close',
-                                                              style: styleSatoshiMedium(
-                                                                  size: 13,
-                                                                  color: Colors.white),),
                                                           ),
-                                                        ),
-                                                        SizedBox(width: 8,),
-                                                        Flexible(
-                                                          child: ElevatedButton(
-                                                            onPressed: () {
-                                                              setState(() {
-                                                                maxHeight.text = '$_feet2.${_inches2.toString().padLeft(1, '0')}';
-                                                                // maxHeightController.text = '$_feet2-${_inches2.toString()}';
-                                                                print('$_feet2.${_inches2.toString().padLeft(1, '0')}');
-                                                              });
-                                                              Navigator.pop(context);
-                                                            },
-                                                            child:  Text('Save',
-                                                              style: styleSatoshiMedium(
-                                                                  size: 13,
-                                                                  color: Colors.black),),
+                                                          Expanded(
+                                                            child: CupertinoPicker(
+                                                              scrollController: FixedExtentScrollController(
+                                                                initialItem: _inches2,
+                                                              ),
+                                                              itemExtent: 32,
+                                                              onSelectedItemChanged: (index) {
+                                                                setState(() {
+                                                                  _inches2 = index;
+                                                                });
+                                                                print(' $_feet2-${_inches2.toString().padLeft(2, '0')}');
+                                                              },
+                                                              children: List.generate(
+                                                                12, // 12 inches in a foot
+                                                                    (index) => Center(child: Text('$index\"')),
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
+
+                                                        ],
+                                                      ),
                                                     ),
+                                                  ),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Flexible(
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: Colors.redAccent, // Change the background color to red
+                                                          ),
+                                                          onPressed: () {
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:  Text('Close',
+                                                            style: styleSatoshiMedium(
+                                                                size: 13,
+                                                                color: Colors.white),),
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Flexible(
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              maxHeight.text = '$_feet2.${_inches2.toString().padLeft(1, '0')}';
+                                                              // maxHeightController.text = '$_feet2-${_inches2.toString()}';
+                                                              print('$_feet2.${_inches2.toString().padLeft(1, '0')}');
+                                                            });
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child:  Text('Save',
+                                                            style: styleSatoshiMedium(
+                                                                size: 13,
+                                                                color: Colors.black),),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
 
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        context: context,
-                                        label: 'Min Height',
-                                        controller: maxHeight,
-                                        hint: 'Min Height',
-                                        length: null,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return 'Please enter Min Height';
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (value) {
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      context: context,
+                                      label: 'Min Height',
+                                      controller: maxHeight,
+                                      hint: 'Min Height',
+                                      length: null,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter Min Height';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {
 
-                                        },),),
+                                      },),),
 
-                                    ],),
+                                  ],),
                                   sizedBox16(),
                                   textBox(
                                     context: context,
@@ -597,7 +597,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   );
                                 },
                                 height:matches[i].physicalAttributes!.height == null ?
-                                    "" :
+                                "" :
                                 "${matches[i].physicalAttributes!.height ??
                                     ''} ft",
                                 imgUrl:
@@ -680,7 +680,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
                                 bookmark:
 
-                                 GestureDetector(
+                                GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       like[i] = !like[i];
@@ -696,7 +696,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
                                     size: 22,):
 
-                                   Icon(
+                                  Icon(
                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
                                     size: 22,),
                                 ),
@@ -798,8 +798,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
           ),
         );
       }),);
-    }
-
   }
+
+}
 
 

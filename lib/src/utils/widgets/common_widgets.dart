@@ -151,7 +151,7 @@ likeButton({
     size: 22,
     circleColor:
     const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-    bubblesColor: BubblesColor(
+    bubblesColor: const BubblesColor(
       dotPrimaryColor: Color(0xff33b5e5),
       dotSecondaryColor: Color(0xff0099cc),
     ),
@@ -195,11 +195,14 @@ Widget customCard({
 
 
 class AddButton extends StatelessWidget {
-  const AddButton({super.key});
+  final Function() tap;
+  const AddButton({super.key, required this.tap});
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(addbutton,height: 30,);
+    return GestureDetector(onTap: tap,
+        behavior: HitTestBehavior.translucent,
+        child: Container(child: Image.asset(addbutton,height: 30,)));
   }
 }
 

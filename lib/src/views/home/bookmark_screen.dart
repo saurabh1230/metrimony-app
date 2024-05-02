@@ -1,4 +1,5 @@
 import 'package:bureau_couple/src/utils/urls.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -135,20 +136,21 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-       leading: Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: backButton(
-          context: context,
-          image: icArrowLeft,
-          onTap: () {
-            Navigator.pop(context);
-          }),),
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        title: Text("Sortlisted",
-          style: styleSatoshiBold(size: 22, color: Colors.black),),
-      ),
+      appBar: CustomAppBar(title: "Sortlisted",isBackButtonExist: true,),
+      // appBar: AppBar(
+      //  leading: Padding(
+      // padding: const EdgeInsets.only(left: 16),
+      // child: backButton(
+      //     context: context,
+      //     image: icArrowLeft,
+      //     onTap: () {
+      //       Navigator.pop(context);
+      //     }),),
+      //   centerTitle: false,
+      //   automaticallyImplyLeading: false,
+      //   title: Text("Sortlisted",
+      //     style: styleSatoshiBold(size: 22, color: Colors.black),),
+      // ),
       body: isLoading ? const ShimmerWidget() :
       CustomRefreshIndicator(
         onRefresh: () {
@@ -166,10 +168,10 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
           Center(
             child: Column(
               children: [
-                sizedBox16(),
-                Image.asset(icWaitPlaceHolder,
-                  height: 80,),
-                sizedBox16(),
+                // sizedBox16(),
+                // // Image.asset(icWaitPlaceHolder,
+                // //   height: 80,),
+                // sizedBox16(),
                 Text("No Sortlisted members",
 
                   style: styleSatoshiLight(size: 18, color: Colors.black),)
