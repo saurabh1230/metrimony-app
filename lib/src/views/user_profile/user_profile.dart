@@ -82,22 +82,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       age = birthDate != null ? DateTime.now().difference(birthDate!).inDays ~/ 365 : 0;
     }
     return Scaffold(
-      // appBar: CustomAppBar(title: ""),
-      // appBar: buildAppBar(),
-      body: isLoading ?  const UserProfileShimmer() :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+      body: isLoading ?  const UserProfileShimmer() : SingleChildScrollView(
+        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 0.0),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [ Column(
                 children: [
              Stack(
               children: [
                ClipRRect(
                  borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(32),
-                   bottomLeft:Radius.circular(32) ),
+                   bottomLeft:Radius.circular(32)),
                 child: CarouselSlider.builder(
                   itemCount: model.data?.matches?.galleries?.length ?? 0,
                   itemBuilder: (ctx, index, realIndex) {

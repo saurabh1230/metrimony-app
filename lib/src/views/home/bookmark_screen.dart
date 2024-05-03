@@ -152,18 +152,24 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
               matches.isEmpty
             ?
           Center(
-            child: Column(
-              children: [
-                Text("No Sortlisted members",
-
-                  style: styleSatoshiLight(size: 18, color: Colors.black),)
-              ],
-            ),
-          ) :
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0,right: 16,top: 100),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(child: Image.asset(noMatchesHolder,height: 100,)),
+                  sizedBox16(),
+                  const Center(child: Text("No Match Found Yet!")),
+                  sizedBox16(),
+                  connectWithoutIconButton(context: context, onTap: () {
+                    Navigator.pop(context);
+                  }, title: " Go back",iconWidget: Icon(Icons.arrow_back,color: primaryColor,))
+                ],
+              ),
+          ) ) :
           Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               sizedBox13(),
-              Text("${matches.length} matches sortlisted",
+              Text("${matches.length} matches shortlisted",
               style: styleSatoshiLight(size: 16, color: Colors.black),),
               sizedBox13(),
               Expanded(
@@ -181,20 +187,13 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                               if (i < matches.length) {
                                 DateTime? birthDate = matches[i].profile?.basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].profile!.basicInfo!.birthDate!) : null;
                                 int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-
                                 return otherUserdataHolder(
                                   context: context,
-                                  tap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (builder) =>
-                                                UserProfileScreen(
-                                                  userId:
+                                  tap: () {Navigator.push(context, MaterialPageRoute(
+                                            builder: (builder) => UserProfileScreen(userId:
                                                       matches[i].id.toString(),)));},
                                   imgUrl: '$baseProfilePhotoUrl${matches[i].profile?.image ?? ''}',
-                                  userName: matches[i].profile?.firstname == null &&
-                                          matches[i].profile?.lastname == null
+                                  userName: matches[i].profile?.firstname == null && matches[i].profile?.lastname == null
                                       ? "user"
                                       : '${StringUtils.capitalize(matches[i].profile?.firstname ?? 'User')} ${StringUtils.capitalize(matches[i].profile?.lastname ?? 'User')}',
                                   atributeReligion:

@@ -569,17 +569,14 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
             ? const ShimmerWidget()
             : matches.isEmpty && matches == null
             ? const Text("No Matches Yet")
-            : SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("${matches.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
-                // Text("${matches.length} members found"),
-                sizedBox10(),
-                Container(
-                  height: 1.sh, padding: const EdgeInsets.only(bottom: 200),
-                  child: LazyLoadScrollView(
+            : Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
+              child: Stack(
+                children: [
+                  Text("${matches.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
+                  // Text("${matches.length} members found"),
+                  sizedBox10(),
+                  LazyLoadScrollView(
                     isLoading: isLoading,
                     onEndOfPage: () {
                       if (val >= 8) {
@@ -813,12 +810,10 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                       ),
                     ),
                   ),
-                ),
 
-              ],
-            ),
-          ),
-        );
+                ],
+              ),
+            );
       }),);
   }
 

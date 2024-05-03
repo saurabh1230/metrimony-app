@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../constants/sizedboxe.dart';
+import '../../constants/textstyles.dart';
 
 class Loading extends StatelessWidget {
   const Loading({super.key});
@@ -47,31 +48,167 @@ class ShimmerWidget extends StatelessWidget {
     return CustomShimmerEffect(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 500,
-              width: 1.sw,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  color:  Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10)
-              ),
-              // child: Image.asset(images[i],
-            ),
-            sizedBox16(),
-            const SimmerTextHolder(width: 60,),
-            sizedBox16(),
-            const SimmerTextHolder(),
-            sizedBox16(),
-            const SimmerTextHolder(width: 230,),
-            sizedBox16(),
-            const SimmerTextHolder(),
-            sizedBox16(),
-            const SimmerTextHolder(width: 230,),
+        child: ListView.builder(
+          itemCount: 2,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (_, i ) {
+          return Column(crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 500,
+                    width: 1.sw,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                        color:  Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    // child: Image.asset(images[i],
+                  ),
+                  Container(
+                    child: Positioned(
+                      bottom: 0,
+                      left: 16,
+                      right: 16,
+                      child:
+                      Row(
+                        children: [
+                          Expanded(flex: 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SimmerTextHolder(),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Age',
+                                      overflow: TextOverflow.ellipsis, maxLines: 1,
+                                      style: styleSatoshiLarge(size: 16, color: Colors.white),),
+                                    const SizedBox(width: 6,),
+                                    Container(
+                                      height: 4,
+                                      width: 4,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6,),
 
-          ],
-        ),
+                                    Text(
+                                      'height',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
+                                    const SizedBox(width: 6,),
+                                    Container(
+                                      height: 4,
+                                      width: 4,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Religion',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: styleSatoshiMedium(
+                                          size: 16,
+                                          color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                                // const SizedBox(height: 10,),
+                                // Text(
+                                //   atributeReligion,
+                                //   maxLines: 2,
+                                //   style: styleSatoshiMedium(
+                                //       size: 16,
+                                //       color: Colors.white),
+                                // ),
+                                const SizedBox(height: 4,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
+                                    //   // child: Image.asset(icLocation,
+                                    //   //   color: Colors.white,
+                                    //   //   height: 17,
+                                    //   //   width: 17,),
+                                    // ),
+                                    const SizedBox(width: 2,),
+                                    Expanded(
+                                      flex: 10,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "India",
+                                            // '${matches[i].address!.country}',
+                                            // "New York, USA",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+
+                                            style: styleSatoshiLarge(
+                                                size: 16,
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(width: 3,),
+                                          Container(
+                                            height: 4,
+                                            width: 5,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 3,),
+
+                                          Text(
+                                            "Uttar Pradesh",
+
+                                            // '${matches[i].address!.country}',
+                                            // "New York, USA",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+
+                                            style: styleSatoshiMedium(
+                                                size: 16,
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                sizedBox16(),
+                                // button,
+
+
+                                sizedBox16(),
+                                // Align(alignment: Alignment.centerRight,
+                                //     child: Padding(
+                                //       padding: const EdgeInsets.only(right: 16.0),
+                                //       child: button,
+                                //     )),
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              sizedBox16(),
+
+
+            ],
+          );
+        })
       ),
     );
     // return ListView.separated(

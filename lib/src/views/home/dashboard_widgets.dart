@@ -8,9 +8,7 @@ import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizedboxe.dart';
 import '../../constants/textstyles.dart';
-import '../../utils/widgets/buttons.dart';
 import '../../utils/widgets/common_widgets.dart';
-import 'package:readmore/readmore.dart';
 import "package:flutter_screenutil/flutter_screenutil.dart";
 
 otherUserdataHolder({
@@ -44,7 +42,7 @@ otherUserdataHolder({
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   color: colorDarkCyan.withOpacity(0.03),
-                  borderRadius: BorderRadius.circular(10)
+                  borderRadius: BorderRadius.circular(20)
               ),
               child: CachedNetworkImage(
                 imageUrl: imgUrl, fit: BoxFit.fill,
@@ -52,8 +50,6 @@ otherUserdataHolder({
                       padding: const EdgeInsets.all(8.0),
                   child: Image.asset(icLogo, height: 40, width: 40,),),
                 progressIndicatorBuilder: (a, b, c) => customShimmer(height: 170, /*width: 0,*/),),
-              // child: Image.asset(images[i],
-              // height: 170,),
             ),
             Container(
               height: 500,
@@ -61,171 +57,162 @@ otherUserdataHolder({
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black.withOpacity(0.8), Colors.transparent],
-                    stops: [0, 10],
+                    colors: [Colors.black.withOpacity(1), Colors.transparent],
+                    stops: const [0, 10],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                  ),
-
-                  borderRadius: BorderRadius.circular(10)
+                  ), borderRadius: BorderRadius.circular(20)
               ),
               // child: Image.asset(images[i],
               // height: 170,),
             ),
-            Container(
-              child: Positioned(
-                bottom: 0,
-                left: 16,
-                right: 16,
-                child:
-                  Row(
-                    children: [
-                      Expanded(flex: 3,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    userName, overflow: TextOverflow.ellipsis, maxLines: 1,
-                                    style: styleSatoshiBold(
-                                        size: 16, color: Colors.white),
-                                  ),
+            Positioned(
+              bottom: 0,
+              left: 16,
+              right: 16,
+              child:
+                Row(
+                  children: [
+                    Expanded(flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  userName, overflow: TextOverflow.ellipsis, maxLines: 1,
+                                  style: styleSatoshiBold(
+                                      size: 16, color: Colors.white),
                                 ),
-                                const SizedBox(width: 10,),
-                               /* Expanded(
-                                  child: bookmark,
-                                ),*/
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '${dob}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                              ),
+                              const SizedBox(width: 10,),
+                             /* Expanded(
+                                child: bookmark,
+                              ),*/
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                '${dob}',
+                                overflow: TextOverflow.ellipsis, maxLines: 1,
+                                style: styleSatoshiLarge(size: 16, color: Colors.white),),
+                              const SizedBox(width: 6,),
+                              Container(
+                                height: 4,
+                                width: 4,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 6,),
 
-                                  style: styleSatoshiLarge(
-                                      size: 16,
-                                      color: Colors.white),
+                              Text(
+                                height,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
+                              const SizedBox(width: 6,),
+                              Container(
+                                height: 4,
+                                width: 4,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
                                 ),
-                                const SizedBox(width: 6,),
-                                Container(
-                                  height: 4,
-                                  width: 4,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(width: 6,),
+                              ),
+                              Text(
+                                atributeReligion,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                    size: 16,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          // const SizedBox(height: 10,),
+                          // Text(
+                          //   atributeReligion,
+                          //   maxLines: 2,
+                          //   style: styleSatoshiMedium(
+                          //       size: 16,
+                          //       color: Colors.white),
+                          // ),
+                          const SizedBox(height: 4,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
+                              //   // child: Image.asset(icLocation,
+                              //   //   color: Colors.white,
+                              //   //   height: 17,
+                              //   //   width: 17,),
+                              // ),
+                              const SizedBox(width: 2,),
+                              Expanded(
+                                flex: 10,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      Location,
+                                      // '${matches[i].address!.country}',
+                                      // "New York, USA",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
 
-                                Text(
-                                  height,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
-                                const SizedBox(width: 6,),
-                                Container(
-                                  height: 4,
-                                  width: 4,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  atributeReligion,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: styleSatoshiMedium(
-                                      size: 16,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            // const SizedBox(height: 10,),
-                            // Text(
-                            //   atributeReligion,
-                            //   maxLines: 2,
-                            //   style: styleSatoshiMedium(
-                            //       size: 16,
-                            //       color: Colors.white),
-                            // ),
-                            const SizedBox(height: 4,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
-                                //   // child: Image.asset(icLocation,
-                                //   //   color: Colors.white,
-                                //   //   height: 17,
-                                //   //   width: 17,),
-                                // ),
-                                const SizedBox(width: 2,),
-                                Expanded(
-                                  flex: 10,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        Location,
-                                        // '${matches[i].address!.country}',
-                                        // "New York, USA",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-
-                                        style: styleSatoshiLarge(
-                                            size: 16,
-                                            color: Colors.white),
+                                      style: styleSatoshiLarge(
+                                          size: 16,
+                                          color: Colors.white),
+                                    ),
+                                    const SizedBox(width: 3,),
+                                    Container(
+                                      height: 4,
+                                      width: 5,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
                                       ),
-                                      const SizedBox(width: 3,),
-                                      Container(
-                                        height: 4,
-                                        width: 5,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 3,),
+                                    ),
+                                    const SizedBox(width: 3,),
 
-                                      Text(
-                                        state,
+                                    Text(
+                                      state,
 
-                                        // '${matches[i].address!.country}',
-                                        // "New York, USA",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
+                                      // '${matches[i].address!.country}',
+                                      // "New York, USA",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
 
-                                        style: styleSatoshiMedium(
-                                            size: 16,
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
+                                      style: styleSatoshiMedium(
+                                          size: 16,
+                                          color: Colors.white),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            sizedBox16(),
-                            button,
+                              ),
+                            ],
+                          ),
+                          sizedBox16(),
+                          button,
 
 
-                            sizedBox16(),
-                            // Align(alignment: Alignment.centerRight,
-                            //     child: Padding(
-                            //       padding: const EdgeInsets.only(right: 16.0),
-                            //       child: button,
-                            //     )),
-                          ],
-                        ),
+                          sizedBox16(),
+                          // Align(alignment: Alignment.centerRight,
+                          //     child: Padding(
+                          //       padding: const EdgeInsets.only(right: 16.0),
+                          //       child: button,
+                          //     )),
+                        ],
                       ),
+                    ),
 
-                    ],
-                  ),
-              ),
+                  ],
+                ),
             ),
             // Positioned(
             //   bottom: 30,left: 20,right: 0,
