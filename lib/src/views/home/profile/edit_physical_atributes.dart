@@ -252,44 +252,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                                 ),
                               ),
 
-                              // Time picker
-                              // Container(
-                              //   height: 300,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _feet - 5,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _feet = index + 5;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       7, // 7 feet in the range from 5 to 11
-                              //           (index) => Center(child: Text('${index + 5}\'')),
-                              //     ),
-                              //   ),
-                              // ),
-                              // Container(
-                              //   height: 200,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _inches,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _inches = index;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       12, // 12 inches in a foot
-                              //           (index) => Center(child: Text('$index\"')),
-                              //     ),
-                              //   ),
-                              // ),
-
                               // Close button
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -334,30 +296,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                         );
                       },
                     );
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'Height in feet',
-                    //       addTextField: TextFormField(
-                    //         keyboardType: TextInputType.number,
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {
-                    //
-                    //           });
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: heightController,
-                    //         decoration: AppTFDecoration(
-                    //             hint: 'Height').decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
                   },
                   child: buildDataAddRow(title: 'Height',
                      data1: heightController.text.isEmpty

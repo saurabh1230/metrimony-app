@@ -34,13 +34,15 @@ Future<dynamic> getMatchesApi({
 Future<dynamic> getNewMatchesApi({
   required String page,
   required String gender,
+  required String religion,
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
   };
   var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}matches'));
   request.fields.addAll({
-    'gender': gender
+    'gender': gender,
+    "religion" : religion,
   });
   request.headers.addAll(headers);
   http.StreamedResponse response = await request.send();

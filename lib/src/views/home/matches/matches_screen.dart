@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'package:bureau_couple/src/controller/matches_controller.dart';
-import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../apis/members_api.dart';
-import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
@@ -50,6 +46,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   List<MatchesModel> bookmarkList = [];
   List<bool> isLoadingList = [];
   List<bool> like = [];
+  List<bool> request = [];
 
   int _feet = 5;
   int _inches = 0;
@@ -61,6 +58,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   bool isLoading = false;
   int page = 1;
   bool loading = false;
+  int val = 0;
 
   @override
   void initState() {
@@ -88,7 +86,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
       page: page.toString(),
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       religion: religionFilter,
-      // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
       state: stateController.text,
       minHeight: minHeight.text,
       maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
@@ -100,9 +97,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); //
-              like.add(false); // Add false for each new match
+              like.add(false);
+              request.add(false);
             }
             isLoading = false;
+            val = value.length;
             page++;
           } else {
             isLoading = false;
@@ -134,8 +133,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); // Add false for each new match
               like.add(false);
+              request.add(false);
             }
             isLoading = false;
+          val = value.length;
             page++;
           } else {
             isLoading = false;
@@ -164,9 +165,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (builder) => const SavedMatchesScreen()));
-            },
+                  MaterialPageRoute(builder: (builder) => const SavedMatchesScreen()));},
             child:  Padding(
               padding: const EdgeInsets.only(right: 16.0,),
               child: SvgPicture.asset(sortList,color: Colors.white,),
@@ -347,7 +346,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                                  color: Colors.white),),
                                                          ),
                                                        ),
-                                                       SizedBox(width: 8,),
+                                                       const SizedBox(width: 8,),
                                                        Flexible(
                                                          child: ElevatedButton(
                                                            onPressed: () {
@@ -409,16 +408,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                                           children: [
                                                             Expanded(
                                                               child: CupertinoPicker(
-                                                                scrollController: FixedExtentScrollController(
-                                                                  initialItem: _feet2 - 5,
-                                                                ),
-                                                                itemExtent: 32,
-                                                                onSelectedItemChanged: (index) {
-                                                                  setState(() {
-                                                                    _feet2 = index + 5;
-                                                                  });
-                                                                },
-                                                                children: List.generate(
+                                                                scrollController: FixedExtentScrollController(initialItem: _feet2 - 5,),
+                                                                itemExtent: 32, onSelectedItemChanged: (index) {
+                                                                  setState(() {_feet2 = index + 5;});
+                                                                }, children: List.generate(
                                                                   7, // 7 feet in the range from 5 to 11
                                                                       (index) => Center(child: Text('${index + 5}\'')),
                                                                 ),
@@ -562,14 +555,16 @@ class _MatchesScreenState extends State<MatchesScreen> {
             padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${matches.length} members found"),
+                Text("${matches.length} Matches Found",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
                 sizedBox10(),
                 Container(
                   height: 1.sh, padding: const EdgeInsets.only(bottom: 200),
                   child: LazyLoadScrollView(
                     isLoading: isLoading,
                     onEndOfPage: () {
-                      loadMore();
+                      if (val >= 8) {
+                        loadMore();
+                      }
                     },
                     child: ListView.separated(
                       itemCount: matches.length + 1,
@@ -599,7 +594,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 height:matches[i].physicalAttributes!.height == null ?
                                     "" :
                                 "${matches[i].physicalAttributes!.height ??
-                                    ''} ft",
+                                    ''}ft",
                                 imgUrl:
                                 '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                                 state: matches[i]
@@ -615,7 +610,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                         'User')} ${StringUtils.capitalize(
                                     matches[i].lastname ?? 'User')}',
                                 atributeReligion:
-                                'Religion: ${matches[i].basicInfo?.religion ??
+                                ' ${matches[i].basicInfo?.religion ??
                                     ''}',
                                 profession: "Software Engineer",
                                 Location:
@@ -633,14 +628,43 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 //         onTap: () {},
                                 //         title: "Request Sent")
                                 //     :
-                                isLoadingList[i]
-                                    ? connectLoadingButton(color: Colors.white,
-                                    height: 30,
-                                    width: 134,
-                                    context: context)
-                                    :
-                                connectButton(
+                                /*like[i] || matches[i].interestStatus == 2  ?
+                                TickButton(size: 50,
+                                  tap: () {  },):
+                                AddButton(size: 50,
+                                  tap: () {
+                                  setState(() {
+                                    // like[i] = !like[i];
+                                  });
+                                  sendRequestApi(
+                                      memberId: matches[i]
+                                          .id
+                                          .toString())
+                                      .then((value) {
+                                    if (value['status'] == true) {
+                                      setState(() {
+                                        isLoadingList[i] = false;
+                                      });
+                                      ToastUtil.showToast(
+                                          "Connection Request Sent");
+                                    } else {
+                                      setState(() {
+                                        isLoadingList[i] = false;
+                                      });
 
+                                      List<dynamic> errors =
+                                      value['message']['error'];
+                                      String errorMessage = errors
+                                          .isNotEmpty
+                                          ? errors[0]
+                                          : "An unknown error occurred.";
+                                      Fluttertoast.showToast(
+                                          msg: errorMessage);
+                                    }
+                                  });
+                                },),*/
+                              /*  like[i] ? connectLoadingButton(context: context) :*/
+                                connectButton(
                                     fontSize: 14,
                                     height: 30,
                                     width: 134,
@@ -700,88 +724,21 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
                                     size: 22,),
                                 ),
-                                /*GestureDetector(
-                                          onTap: () async {
-                                              setState(() {like[i] = !like[i];});
-                                            if (matches[i].bookmark == 1) {
-                                              var result = await unSaveBookMarkApi(memberId: matches[i].profileId.toString());
-                                              if (result['status'] == true) {Fluttertoast.showToast(msg: "Bookmark Saved");}
-                                              else {}
-                                            } else {
-                                              var result = await saveBookMartApi(
-                                                  memberId: matches[i].profileId.toString()
-                                              );
-                                              if (result['status'] == true) {
-                                                Fluttertoast.showToast(msg: "Bookmark Saved");
-                                              } else {
-                                                // Handle failure case if needed
-                                              }}},
-                                          child: like[i] ?
-                                          GestureDetector(
-                                            onTap: () {
-                                              // setState(() {
-                                              //   like[i] = false;
-                                              // });
-                                            },
-                                            child: const Icon(Icons.bookmark, color: primaryColor, size: 22,),):
-                                          Icon(Icons.bookmark, color: matches[i].bookmark == 1 ? primaryColor : Colors.grey, size: 22,),
-                                        ),*/
-                                // LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {
-                                //
-                                //     }
-                                //
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                //
-                                // ),
-                                // bookmark: LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {}
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                // ),
                                 dob: '$age yrs',
+                                text: '${matches[i].basicInfo?.aboutUs ??
+                              ''}',
                               )
                             ],
                           );
                         } else {
-                          if (isLoading) {
-                            return customLoader(size: 40);
+                          if (val >= 8 && isLoading) {
+                            return Center(
+                              child: SizedBox(),
+                            );
+                          } else if (val < 8) {
+                            return SizedBox.shrink();
                           } else {
-                            return const SizedBox();
+                            return SizedBox();
                           }
                         }
                       },

@@ -649,23 +649,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         isControllerTextEmpty: communityController.text.isEmpty,
                       ),
                     ),
-                 /*   GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        title: 'Community',
-                        widget:const  SizedBox(),
-                        data1: communityController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.community == null ||
-                                    basicInfo.community!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.community.toString())
-                            : communityController.text,
-                        data2: StringUtils.capitalize(communityController.text),
-                        isControllerTextEmpty: communityController.text.isEmpty,
-                      ),
-                    ),*/
+
                     sizedBox16(),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
@@ -699,48 +683,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         isControllerTextEmpty: financialCondition.text.isEmpty,
                       ),
                     ),
-                    // GestureDetector(
-                    //   behavior: HitTestBehavior.translucent,
-                    //   onTap: () {
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) {
-                    //         return NameEditDialogWidget(
-                    //           title: 'Financial Condition',
-                    //           addTextField: TextFormField(
-                    //             maxLength: 40,
-                    //             onChanged: (v) {
-                    //               setState(() {});
-                    //             },
-                    //             onEditingComplete: () {
-                    //               Navigator.pop(context); // Close the dialog
-                    //             },
-                    //             controller: financialCondition,
-                    //             decoration:
-                    //                 AppTFDecoration(hint: 'Financial Condition')
-                    //                     .decoration(),
-                    //           ),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    //   child: buildDataAddRow(
-                    //     title: 'Financial Condition',
-                    //     widget: const Icon(
-                    //       Icons.edit,
-                    //       size: 12,
-                    //     ),
-                    //     data1: financialCondition.text.isEmpty
-                    //         ? (basicInfo.id == null ||
-                    //                 basicInfo.financialCondition == null ||
-                    //                 basicInfo.financialCondition!.isEmpty
-                    //             ? 'Not Added'
-                    //             : basicInfo.financialCondition.toString())
-                    //         : financialCondition.text,
-                    //     data2: StringUtils.capitalize(financialCondition.text),
-                    //     isControllerTextEmpty: financialCondition.text.isEmpty,
-                    //   ),
-                    // ),
+
                     sizedBox16(),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
@@ -1076,19 +1019,6 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     );
   }
 
- /* AppBar buildAppBar(BuildContext context) {
-    return AppBar(backgroundColor: primaryColor,
-      automaticallyImplyLeading: false,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: Icon(Icons.arrow_back,color: Colors.white,),
-      ),
-      title: Text(
-        "Basic Info",
-        style: styleSatoshiBold(size: 18, color: Colors.white),
-      ),
-    );
-  }*/
 }
 
 class PrivacyStatusBottomSheet extends StatefulWidget {

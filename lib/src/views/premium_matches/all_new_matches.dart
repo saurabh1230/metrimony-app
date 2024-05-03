@@ -32,10 +32,11 @@ import '../home/dashboard_widgets.dart';
 import '../user_profile/user_profile.dart';
 
 class AllMatchesScreen extends StatefulWidget {
+  final String religionFilter;
 
   final LoginResponse response;
 
-  const AllMatchesScreen({Key? key, required this.response,}) : super(key: key);
+  const AllMatchesScreen({Key? key, required this.response, required this.religionFilter,}) : super(key: key);
 
   @override
   State<AllMatchesScreen> createState() => _AllMatchesScreenState();
@@ -81,19 +82,21 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
   final stateController = TextEditingController();
 
   // bool like = false;
+  int val = 0;
 
   getMatches() {
-    // matches.clear();
+
     isLoading = true;
     getMatchesByGenderApi(
-      page: page.toString(),
+      page: "1",
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      religion: religionFilter,
+      religion: widget.religionFilter,
       // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
       state: stateController.text,
       minHeight: minHeight.text,
       maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
     ).then((value) {
+      matches.clear();
       if (mounted) {
         setState(() {
           if (value['status'] == true) {
@@ -104,6 +107,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
               like.add(false); // Add false for each new match
             }
             isLoading = false;
+            val = value.length;
             page++;
           } else {
             isLoading = false;
@@ -115,7 +119,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
 
   loadMore() {
     print('ndnd');
-    // matches.clear();
+
     // if (!isLoading) {
     isLoading = true;
     getMatchesByGenderApi(
@@ -128,6 +132,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
       maxWeight: maxWeightController.text,
       motherTongue: motherTongueFilter,
     ).then((value) {
+      matches.clear();
       if (mounted) {
         setState(() {
           if (value['status'] == true) { matches.clear();
@@ -137,6 +142,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
             like.add(false);
           }
           isLoading = false;
+          val = value.length;
           page++;
           } else {
             isLoading = false;
@@ -568,14 +574,17 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
             padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${matches.length} members found"),
+                Text("${matches.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
+                // Text("${matches.length} members found"),
                 sizedBox10(),
                 Container(
                   height: 1.sh, padding: const EdgeInsets.only(bottom: 200),
                   child: LazyLoadScrollView(
                     isLoading: isLoading,
                     onEndOfPage: () {
-                      loadMore();
+                      if (val >= 8) {
+                        loadMore();
+                      }
                     },
                     child: ListView.separated(
                       itemCount: matches.length + 1,
@@ -605,7 +614,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                 height:matches[i].physicalAttributes!.height == null ?
                                 "" :
                                 "${matches[i].physicalAttributes!.height ??
-                                    ''} ft",
+                                    ''}ft",
                                 imgUrl:
                                 '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                                 state: matches[i]
@@ -621,7 +630,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                         'User')} ${StringUtils.capitalize(
                                     matches[i].lastname ?? 'User')}',
                                 atributeReligion:
-                                'Religion: ${matches[i].basicInfo?.religion ??
+                                ' ${matches[i].basicInfo?.religion ??
                                     ''}',
                                 profession: "Software Engineer",
                                 Location:
@@ -639,14 +648,8 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                 //         onTap: () {},
                                 //         title: "Request Sent")
                                 //     :
-                                isLoadingList[i]
-                                    ? connectLoadingButton(color: Colors.white,
-                                    height: 30,
-                                    width: 134,
-                                    context: context)
-                                    :
+                                like[i] ? connectLoadingButton(context: context) :
                                 connectButton(
-
                                     fontSize: 14,
                                     height: 30,
                                     width: 134,
@@ -684,9 +687,81 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                     },
                                     showIcon: matches[i].interestStatus == 2 ? false : true,
                                     title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
-                                bookmark:
+                               /* like[i] || matches[i].interestStatus == 2  ?
+                                TickButton(size: 50,
+                                  tap: () {  },):
+                                AddButton(size: 50,
+                                  tap: () {
+                                    setState(() {
+                                      // like[i] = !like[i];
+                                    });
+                                    sendRequestApi(
+                                        memberId: matches[i]
+                                            .id
+                                            .toString())
+                                        .then((value) {
+                                      if (value['status'] == true) {
+                                        setState(() {
+                                          isLoadingList[i] = false;
+                                        });
+                                        ToastUtil.showToast(
+                                            "Connection Request Sent");
+                                      } else {
+                                        setState(() {
+                                          isLoadingList[i] = false;
+                                        });
 
-                                GestureDetector(
+                                        List<dynamic> errors =
+                                        value['message']['error'];
+                                        String errorMessage = errors
+                                            .isNotEmpty
+                                            ? errors[0]
+                                            : "An unknown error occurred.";
+                                        Fluttertoast.showToast(
+                                            msg: errorMessage);
+                                      }
+                                    });
+                                  },),*/
+                                /*  connectButton(
+
+                                    fontSize: 14,
+                                    height: 30,
+                                    width: 134,
+                                    context: context,
+                                    onTap: () {
+                                      setState(() {
+                                        like[i] = !like[i];
+                                      });
+                                      sendRequestApi(
+                                          memberId: matches[i]
+                                              .id
+                                              .toString())
+                                          .then((value) {
+                                        if (value['status'] == true) {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
+                                          ToastUtil.showToast(
+                                              "Connection Request Sent");
+                                        } else {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
+
+                                          List<dynamic> errors =
+                                          value['message']['error'];
+                                          String errorMessage = errors
+                                              .isNotEmpty
+                                              ? errors[0]
+                                              : "An unknown error occurred.";
+                                          Fluttertoast.showToast(
+                                              msg: errorMessage);
+                                        }
+                                      });
+                                    },
+                                    showIcon: matches[i].interestStatus == 2 ? false : true,
+                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),*/
+                                bookmark: GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       like[i] = !like[i];
@@ -706,90 +781,31 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
                                     size: 22,),
                                 ),
-                                /*GestureDetector(
-                                          onTap: () async {
-                                              setState(() {like[i] = !like[i];});
-                                            if (matches[i].bookmark == 1) {
-                                              var result = await unSaveBookMarkApi(memberId: matches[i].profileId.toString());
-                                              if (result['status'] == true) {Fluttertoast.showToast(msg: "Bookmark Saved");}
-                                              else {}
-                                            } else {
-                                              var result = await saveBookMartApi(
-                                                  memberId: matches[i].profileId.toString()
-                                              );
-                                              if (result['status'] == true) {
-                                                Fluttertoast.showToast(msg: "Bookmark Saved");
-                                              } else {
-                                                // Handle failure case if needed
-                                              }}},
-                                          child: like[i] ?
-                                          GestureDetector(
-                                            onTap: () {
-                                              // setState(() {
-                                              //   like[i] = false;
-                                              // });
-                                            },
-                                            child: const Icon(Icons.bookmark, color: primaryColor, size: 22,),):
-                                          Icon(Icons.bookmark, color: matches[i].bookmark == 1 ? primaryColor : Colors.grey, size: 22,),
-                                        ),*/
-                                // LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {
-                                //
-                                //     }
-                                //
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                //
-                                // ),
-                                // bookmark: LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {}
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                // ),
                                 dob: '$age yrs',
+                                text: '${matches[i].basicInfo?.aboutUs ??
+                                    ''}',
                               )
                             ],
                           );
-                        } else {
-                          if (isLoading) {
-                            return customLoader(size: 40);
+                        }
+                        else {
+                          if (val >= 8 && isLoading) {
+                            return Center(
+                              child: SizedBox(),
+                            );
+                          } else if (val < 8) {
+                            return SizedBox.shrink();
                           } else {
-                            return const SizedBox();
+                            return SizedBox();
                           }
                         }
+                        // else {
+                        //   if (isLoading) {
+                        //     return customLoader(size: 40);
+                        //   } else {
+                        //     return const SizedBox();
+                        //   }
+                        // }
                       },
                       separatorBuilder: (BuildContext context, int index) =>
                       const SizedBox(

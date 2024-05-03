@@ -126,11 +126,6 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
                       onTap: () {
                         if (selectedItems.isEmpty) {
 
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             selectedItems()));
                         } else {
                           if (selectedItems.contains(name[i])) {
                             setState(() {
@@ -295,52 +290,6 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
                                           });
                                         },
                                         title: "Accept"),
-                                 /*   isLoadingList[i] ? elevatedSmallLoadingButton(
-                                        paddingVerticle: 6,
-                                        paddinghorizontal: 16,
-                                        context: context):
-                                    elevatedSmallButton(
-                                        paddingVerticle: 6,
-                                        paddinghorizontal: 16,
-                                        color: primaryColor,
-                                        context: context, onTap: () {
-                                          setState(() {
-                                            isLoadingList[i] = true;
-                                          });
-                                      acceptRequestApi(id:
-                                      request[i].id.toString()
-                                        // id: career[0].id.toString(),
-                                      )
-                                          .then((value) {
-                                        if (value['status'] == true) {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-
-                                          // isLoading ? Loading() :careerInfo();
-                                          // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                          // const KycWaitScreen()));
-
-                                          // ToastUtil.showToast("Login Successful");
-
-                                          ToastUtil.showToast("Request Accepted");
-                                          print('done');
-                                        } else {
-                                          setState(() {
-                                            loading = false;
-                                          });
-
-                                          List<dynamic> errors =
-                                          value['message']['error'];
-                                          String errorMessage = errors.isNotEmpty
-                                              ? errors[0]
-                                              : "An unknown error occurred.";
-                                          Fluttertoast.showToast(msg: errorMessage);
-                                        }
-                                      });
-                                    },
-                                        title: "Accept",
-                                        style: styleSatoshiLight(size: 12, color: Colors.white)),*/
                                   ],
                                 ),
                               ],

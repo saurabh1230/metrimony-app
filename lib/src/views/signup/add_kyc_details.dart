@@ -162,26 +162,6 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                     ),
                     const SizedBox(height: 20,),
 
-                    // Text("Joining Date",
-                    //   style: kManrope14Medium626262,),
-                    // sizedBox6(),
-                    // textBoxPickerField(
-                    //   onTap: () {
-                    //     _showDatePickerBottomSheet();
-                    //   },
-                    //   context: context,
-                    //   label: '',
-                    //   controller: joiningDateController,
-                    //   hint: '',
-                    //   length: 20,
-                    //   onChanged: (value) {
-                    //   },
-                    //   validator: (value) {
-                    //     if (value == null || value.isEmpty) {
-                    //       return 'Please enter Joining Date';
-                    //     }
-                    //     return null;
-                    //   }, icon: Icons.calendar_month,),
                     const SizedBox(height: 30,),
                     loading ?
                     loadingButton(context: context) :

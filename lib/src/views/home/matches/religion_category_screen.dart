@@ -214,7 +214,7 @@ class _ReligionCategoryState extends State<ReligionCategory> {
                           CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
                           size: 22,)/* : const CircularProgressIndicator()*/,
                       ),
-                      dob: '$age years old',
+                      dob: '$age years old', text: '',
                     );
                   } else {
                     if (isLoading) {

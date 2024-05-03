@@ -700,80 +700,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
                                     size: 22,),
                                 ),
-                                /*GestureDetector(
-                                          onTap: () async {
-                                              setState(() {like[i] = !like[i];});
-                                            if (matches[i].bookmark == 1) {
-                                              var result = await unSaveBookMarkApi(memberId: matches[i].profileId.toString());
-                                              if (result['status'] == true) {Fluttertoast.showToast(msg: "Bookmark Saved");}
-                                              else {}
-                                            } else {
-                                              var result = await saveBookMartApi(
-                                                  memberId: matches[i].profileId.toString()
-                                              );
-                                              if (result['status'] == true) {
-                                                Fluttertoast.showToast(msg: "Bookmark Saved");
-                                              } else {
-                                                // Handle failure case if needed
-                                              }}},
-                                          child: like[i] ?
-                                          GestureDetector(
-                                            onTap: () {
-                                              // setState(() {
-                                              //   like[i] = false;
-                                              // });
-                                            },
-                                            child: const Icon(Icons.bookmark, color: primaryColor, size: 22,),):
-                                          Icon(Icons.bookmark, color: matches[i].bookmark == 1 ? primaryColor : Colors.grey, size: 22,),
-                                        ),*/
-                                // LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {
-                                //
-                                //     }
-                                //
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                //
-                                // ),
-                                // bookmark: LikeButton(
-                                //   onTap: (isLiked) async {
-                                //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                //     if (result['status'] == true) {
-                                //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                //     } else {}
-                                //   },
-                                //   size: 22,
-                                //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.bookmark,
-                                //       color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                //       size: 22,
-                                //     );
-                                //   },
-                                // ),
-                                dob: '$age yrs',
+
+                                dob: '$age yrs', text: '',
                               )
                             ],
                           );

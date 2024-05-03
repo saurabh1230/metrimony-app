@@ -39,7 +39,6 @@ class _MarriedCategoryState extends State<MarriedCategory> {
   void initState() {
     super.initState();
     getMatches();
-
   }
 
   List<MatchesModel> matches = [];
@@ -60,7 +59,10 @@ class _MarriedCategoryState extends State<MarriedCategory> {
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       country: '',
       height: '',
-      motherTongue: widget.response.data!.user!.motherTongue.toString(), minHeight: '', maxHeight: '', maxWeight: '',
+      motherTongue: widget.response.data!.user!.motherTongue.toString(),
+      minHeight: '',
+      maxHeight: '',
+      maxWeight: '',
     ).then((value) {
       matches.clear();
       setState(() {
@@ -85,7 +87,13 @@ class _MarriedCategoryState extends State<MarriedCategory> {
       page: page.toString(),
       maritalStatus: "Unmarried",
       religion: religionFilter,
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M", country: '', height: '', motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '',
+      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      country: '',
+      height: '',
+      motherTongue: '',
+      minHeight: '',
+      maxHeight: '',
+      maxWeight: '',
     ).then((value) {
       setState(() {
         if (value['status'] == true) {
@@ -119,127 +127,189 @@ class _MarriedCategoryState extends State<MarriedCategory> {
                 Navigator.pop(context);
               }),
         ),
-        title: Text('Matches',
-          style: styleSatoshiBold(size: 18, color: Colors.black),),),
+        title: Text(
+          'Matches',
+          style: styleSatoshiBold(size: 18, color: Colors.black),
+        ),
+      ),
       body: GetBuilder<MatchesController>(builder: (matchesControl) {
         return isLoading
             ? const Loading()
             : RefreshIndicator(
-          onRefresh: () {
-            setState(() {
-              isLoading = true;
-            });
-            return getMatches();
-          },
-          child: isLoading
-              ? const Loading()
-              : SingleChildScrollView(
-                child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                            ),
-                            child: Column(
-                              children: [
-                                Container(height: 1.sh,
-                                  child: LazyLoadScrollView(
-                                                isLoading: isLoading,
-                                                onEndOfPage: () {
-                                                  loadMore();
-                                                },
-                                                child: ListView.separated(
-                                                  itemCount: matches.length + 1,
-                                                  itemBuilder: (context, i) {
-                                                    if (i < matches.length) {
-                                                      DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
-                                                      int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                                                      return otherUserdataHolder(
-                                                        context: context,
-                                                        tap: () {
-                                                          Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (builder) => UserProfileScreen(
-                                      userId: matches[i].id.toString(),
+                onRefresh: () {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  return getMatches();
+                },
+                child: isLoading
+                    ? const Loading()
+                    : SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 1.sh,
+                                child: LazyLoadScrollView(
+                                  isLoading: isLoading,
+                                  onEndOfPage: () {
+                                    loadMore();
+                                  },
+                                  child: ListView.separated(
+                                    itemCount: matches.length + 1,
+                                    itemBuilder: (context, i) {
+                                      if (i < matches.length) {
+                                        DateTime? birthDate =
+                                            matches[i].basicInfo != null
+                                                ? DateFormat('yyyy-MM-dd')
+                                                    .parse(matches[i]
+                                                        .basicInfo!
+                                                        .birthDate!)
+                                                : null;
+                                        int age = birthDate != null
+                                            ? DateTime.now()
+                                                    .difference(birthDate)
+                                                    .inDays ~/
+                                                365
+                                            : 0;
+                                        return otherUserdataHolder(
+                                          context: context,
+                                          tap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (builder) =>
+                                                    UserProfileScreen(
+                                                  userId:
+                                                      matches[i].id.toString(),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          height:
+                                              "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                          imgUrl:
+                                              '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                          state: matches[i]
+                                                  .basicInfo
+                                                  ?.presentAddress
+                                                  ?.state ??
+                                              '',
+                                          userName: matches[i].firstname ==
+                                                      null &&
+                                                  matches[i].lastname == null
+                                              ? "user"
+                                              : '${StringUtils.capitalize(matches[i].firstname ?? "")} ${StringUtils.capitalize(matches[i].lastname ?? "user")}',
+                                          atributeReligion:
+                                              'Religion: ${matches[i].religion ?? ""}',
+                                          profession: "Software Engineer",
+                                          Location:
+                                              '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
+                                          likedColor: Colors.grey,
+                                          unlikeColor: primaryColor,
+                                          button: isLoadingList[i]
+                                              ? loadingButton(
+                                                  height: 30,
+                                                  width: 134,
+                                                  context: context)
+                                              : button(
+                                                  fontSize: 14,
+                                                  height: 30,
+                                                  width: 134,
+                                                  context: context,
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isLoadingList[i] = true;
+                                                    });
+                                                    print(matches[i]
+                                                        .id
+                                                        .toString());
+                                                    sendRequestApi(
+                                                            memberId: matches[i]
+                                                                .id
+                                                                .toString())
+                                                        .then((value) {
+                                                      if (value['status'] ==
+                                                          true) {
+                                                        setState(() {
+                                                          isLoadingList[i] =
+                                                              false;
+                                                        });
+                                                        ToastUtil.showToast(
+                                                            "Connection Request Sent");
+                                                        print('done');
+                                                      } else {
+                                                        setState(() {
+                                                          isLoadingList[i] =
+                                                              false;
+                                                        });
+
+                                                        List<dynamic> errors =
+                                                            value['message']
+                                                                ['error'];
+                                                        String errorMessage =
+                                                            errors.isNotEmpty
+                                                                ? errors[0]
+                                                                : "An unknown error occurred.";
+                                                        Fluttertoast.showToast(
+                                                            msg: errorMessage);
+                                                      }
+                                                    });
+                                                  },
+                                                  title: "Connect Now"),
+                                          bookmark: GestureDetector(
+                                            onTap: () {
+                                              print(matches[i].bookmark);
+                                              matches[i].bookmark == 1
+                                                  ? matchesControl
+                                                      .unSaveBookmarkApi(
+                                                          matches[i]
+                                                              .profileId
+                                                              .toString())
+                                                  : matchesControl
+                                                      .bookMarkSaveApi(
+                                                          matches[i]
+                                                              .profileId
+                                                              .toString());
+                                              // getMatches();
+                                            },
+                                            child: /*!matchesControl.isLoading ?*/
+                                                Icon(
+                                              CupertinoIcons.heart_fill,
+                                              color: matches[i].bookmark == 1
+                                                  ? primaryColor
+                                                  : Colors.grey,
+                                              size: 22,
+                                            ) /*: const CircularProgressIndicator()*/,
+                                          ),
+                                          dob: '$age years old', text: '',
+                                        );
+                                      } else {
+                                        if (isLoading) {
+                                          return customLoader(size: 40);
+                                        } else {
+                                          return const Center(
+                                              child:
+                                                  Text("All matches loaded"));
+                                        }
+                                      }
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const SizedBox(
+                                      height: 16,
                                     ),
                                   ),
-                                                          );
-                                                        },
-                                                        height:"${matches[i].physicalAttributes!.height ?? ''} ft",
-                                                        imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                                        state:matches[i].basicInfo?.presentAddress?.state ?? '',
-                                                        userName: matches[i].firstname == null && matches[i].lastname == null
-                                  ? "user"
-                                  : '${StringUtils.capitalize(matches[i].firstname ?? "")} ${StringUtils.capitalize(matches[i].lastname ?? "user")}',
-                                                        atributeReligion: 'Religion: ${matches[i].religion ?? ""}',
-                                                        profession: "Software Engineer",
-                                                        Location: '${matches[i].address!.state ?? 'Not added Yet'}${matches[i].address!.country ?? 'Not added Yet'}',
-                                                        likedColor: Colors.grey,
-                                                        unlikeColor: primaryColor,
-                                                        button: isLoadingList[i]
-                                  ? loadingButton(height: 30, width: 134, context: context)
-                                  : button(
-                                  fontSize: 14,
-                                  height: 30,
-                                  width: 134,
-                                  context: context,
-                                  onTap: () {
-                                    setState(() {
-                                      isLoadingList[i] = true;
-                                    });
-                                    print(matches[i].id.toString());
-                                    sendRequestApi(memberId: matches[i].id.toString()).then((value) {
-                                      if (value['status'] == true) {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-                                        ToastUtil.showToast("Connection Request Sent");
-                                        print('done');
-                                      } else {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-                                                
-                                        List<dynamic> errors = value['message']['error'];
-                                        String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                        Fluttertoast.showToast(msg: errorMessage);
-                                      }
-                                    });
-                                  },
-                                  title: "Connect Now"),
-                                                        bookmark: GestureDetector(
-                                                          onTap: () {
-                                  print(matches[i].bookmark);
-                                  matches[i].bookmark == 1 ?
-                                  matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-                                                
-                                  matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                  // getMatches();
-                                                          },
-                                                          child:  /*!matchesControl.isLoading ?*/ Icon(
-                                  CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
-                                  size: 22,) /*: const CircularProgressIndicator()*/,
-                                                        ),
-                                                        dob: '$age years old',
-                                                      );
-                                                    } else {
-                                                      if (isLoading) {
-                                                        return customLoader(size: 40);
-                                                      } else {
-                                                        return Center(child: Text("All matches loaded"));
-                                                      }
-                                                    }
-                                                  },
-                                                  separatorBuilder: (BuildContext context, int index) => const SizedBox(
-                                                    height: 16,
-                                                  ),
-                                                ),
-                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-              ),
-        );
+                        ),
+                      ),
+              );
       }),
     );
   }

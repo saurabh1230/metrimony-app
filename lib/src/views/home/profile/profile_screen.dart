@@ -1,6 +1,6 @@
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-import 'package:bureau_couple/src/constants/string.dart';
+
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
@@ -246,17 +246,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         }),
       ),),
-     /* appBar: AppBar(
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Profile",
-          style: styleSatoshiBold(size: 22, color: Colors.black),
-        ),
-        actions: [
-
-        ],
-      ),*/
       body: isLoading ? const BasicInfoShimmerWidget(): Stack(
         children: [
           CustomRefreshIndicator(
@@ -344,25 +333,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    /*buildInfoRow(title: 'Institute',
-                        text:  ' ${profile.data!.user!.educationInfo!.isEmpty ? "" :
-                        profile.data?.user?.educationInfo![0].institution.toString()}',
-                        onTap: () {
-                        }),*/
                     buildInfoRow(title: 'Degree',
-                        text:'${profile.data?.user?.educationInfo![0].degree.toString() ?? ""}',
-                        // ' ${profile.data!.user!.educationInfo!.isEmpty ? profile.data!.user!.educationInfo == null ? "": "" :
-                        // profile.data?.user?.educationInfo![0].degree.toString()}',
+                        text:/*'${profile.data?.user?.educationInfo![0].degree.toString() ?? ""}',*/
+                        ' ${profile.data!.user!.educationInfo!.isEmpty ? profile.data!.user!.educationInfo == null ? "": "" :
+                        profile.data?.user?.educationInfo![0].degree.toString()}',
                         onTap: () {
                         }),
-                    /* buildInfoRow(title: 'State',
-                        text: profile.data?.user?.address?.state ?? '',
+                     /*buildInfoRow(title: 'State',
+                        text: *//*profile.data?.user?.address?.state ?? '',*//*
+                        '${profile.data!.user!.educationInfo!.isEmpty ? "" :
+                        profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
                         onTap: () {
                         }),*/
                     buildInfoRow(title: 'Study',
-                        text: profile.data?.user?.educationInfo![0].degree.toString() ?? "",
-                        // '${profile.data!.user!.educationInfo!.isEmpty ? "" :
-                        // profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
+                        text: /*profile.data?.user?.educationInfo![0].degree.toString() ?? "",*/
+                        '${profile.data!.user!.educationInfo!.isEmpty ? "" :
+                        profile.data?.user?.educationInfo?[0].fieldOfStudy.toString()}',
                         onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
@@ -376,14 +362,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     buildInfoRow(title: 'Company',
                         text:
-                        profile.data?.user?.careerInfo![0].company.toString() ?? "",
-                        // ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        // profile.data?.user?.careerInfo![0].company.toString()}',
+                        /*profile.data?.user?.careerInfo![0].company.toString() ?? "",*/
+                        ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        profile.data?.user?.careerInfo![0].company.toString()}',
                         onTap: () {}),
                     buildInfoRow(title: 'Designation',
-                        text:  profile.data?.user?.careerInfo![0].designation.toString() ?? "",
-                        // ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        // profile.data?.user?.careerInfo![0].designation.toString()}',
+                        text:  /*profile.data?.user?.careerInfo![0].designation.toString() ?? "",*/
+                        ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
+                        profile.data?.user?.careerInfo![0].designation.toString()}',
                         onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () {
@@ -398,27 +384,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'Religion',
-                        text:  profile.data?.user?.partnerExpectation!.religion.toString() ?? "",
-                        // profile.data!.user!.partnerExpectation == null ? "" :
-                        // profile.data!.user!.partnerExpectation!.religion.toString(),
+                        text:  /*profile.data?.user?.partnerExpectation!.religion.toString() ?? "",*/
+                        profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.religion.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Profession',
-                        text:  profile.data?.user?.partnerExpectation!.profession.toString() ?? "",
-                        // profile.data!.user!.partnerExpectation == null ? "" :
-                        // profile.data!.user!.partnerExpectation!.profession.toString(),
+                        text:  /*profile.data?.user?.partnerExpectation!.profession.toString() ?? "",*/
+                        profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.profession.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Mother Tongue',
-                        text:  profile.data?.user?.partnerExpectation!.motherTongue.toString() ?? "",
-                        // profile.data!.user!.partnerExpectation == null ? "" :
-                        // profile.data!.user!.partnerExpectation!.motherTongue.toString(),
+                        text:  /*profile.data?.user?.partnerExpectation!.motherTongue.toString() ?? "",*/
+                        profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.motherTongue.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Community',
-                        text: profile.data?.user?.partnerExpectation!.community.toString() ?? "",
-                        // profile.data!.user!.partnerExpectation == null ? "" :
-                        // profile.data!.user!.partnerExpectation!.community.toString(),
+                        text:/* profile.data?.user?.partnerExpectation!.community.toString() ?? "",*/
+                        profile.data!.user!.partnerExpectation == null ? "" :
+                        profile.data!.user!.partnerExpectation!.community.toString(),
                         onTap: () {
                         }),
                     sizedBox20(),
@@ -542,271 +528,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     sizedBox16(),
-                    // buildInfoRow(title: 'Mother Tongue',
-                    //     text: profile.data?.user?.partnerExpectation!.motherTongue ?? '',
-                    //     onTap: () {
-                    //     }),
-               /*     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Text(
-                              StringUtils.capitalize("${profile.data?.user?.firstname ?? 'User'} ${profile.data?.user?.lastname ?? ''}",),
-                              textAlign: TextAlign.center, maxLines: 2,
-                              style: styleSatoshiBold(size: 18, color: Colors.black),),),
-                          sizedBox20(),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (builder) => const EditBasicInfoScreen()));
-                            },
-                            behavior: HitTestBehavior.translucent,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("About Yourself",
-                                  style: styleSatoshiBold(size: 16, color: color1C1C1c),
-                                ),
-                                Image.asset(icArrowRight,
-                                  height: 18,
-                                  width: 18,)
-                              ],
-                            ),
-                          ),
-                         const SizedBox(height: 10,),
-
-                          Text(profile.data?.user?.basicInfo?.aboutUs ?? "",
-                            maxLines: 2,
-                            style: styleSatoshiMedium(size: 14, color: color212121),
-                          ),
-                          // buildDataRowBold(title: 'Account Info', text: 'gfg', onTap: () {
-                          //   Navigator.push(context, MaterialPageRoute(
-                          //       builder: (builder) => const EditBasicInfoScreen()));
-                          // }),
-                          sizedBox13(),
-                          buildDataRowBold(title: 'Account Info', text: '', onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (builder) => const EditBasicInfoScreen()));
-                          }),
-                          sizedBox13(),
-                          buildInfoRow(title: 'Email*',
-                             text: profile.data?.user?.email ?? '',
-                              onTap: () {
-                          }),
-                          sizedBox13(),
-                          buildInfoRow(title: 'Phone Number',
-                          text: profile.data?.user?.mobile ?? '',
-                              onTap: () {
-
-                          }),
-                          sizedBox13(),
-                          buildInfoRow(title: 'Location',
-                              text: profile.data?.user?.address?.country ?? '',
-                              onTap: () {
-
-                          }),
-
-                          sizedBox40(),
-                          buildDataRowBold(title: 'Education', text: 'Change', onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditEducationScreen()));
-                          }),
-
-                          sizedBox13(),
-                          buildDataRowBold(title: 'Career Info', text: 'Change', onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditCareerInfoScreen()));
-                          }),
-                          sizedBox13(),
-
-
-                          buildDataRowBold(title: 'Family Info', text: 'Change', onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditFamilyInfoScreen()));
-                          }),
-                          sizedBox13(),
-
-                          buildDataRowBold(title: 'Physical Attributes', text: 'Change', onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPreferenceScreen()));
-                          }),
-                          sizedBox13(),
-
-                       *//*   Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              sizedBox20(),
-                              buildProfileRow(image: icLocationPro, title: 'Lives in',
-                                  text: '${StringUtils.capitalize(profile.data?.user?.address!.city ?? '')}${profile.data?.user?.address!.state ?? ''}${profile.data?.user?.address!.country ?? ''}',
-                                  onTap: () {}),
-                              buildProfileRow(image: icChildrenIcon, title: 'Family',
-                                  text: 'Father Name: ${StringUtils.capitalize(profile.data?.user?.family?.fatherName ?? '')} \nMother Name: ${StringUtils.capitalize(profile.data?.user?.family?.motherName ?? '')}',
-                                  onTap: () {}),
-                              buildProfileRow(image: icReligionIcon,
-                                  title: 'Religion',
-                                  text: profile.data?.user?.religion ?? 'Not Added Yet',
-                                  onTap: () {
-
-                                  }),
-                              buildProfileRow(image: icMotherToungeIcon, title: 'Mother Tongue',
-                                  text: StringUtils.capitalize(profile.data?.user?.motherTongue ?? ''),
-                                  onTap: () {}),
-                              sizedBox16(),
-
-                            ],
-                          ),*//*
-
-
-
-
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              sizedBox20(),
-                              buildProfileRow(image: icLocationPro, title: 'Lives in',
-                                  text: '${StringUtils.capitalize(profile.data?.user?.address!.city ?? '')}${profile.data?.user?.address!.state ?? ''}${profile.data?.user?.address!.country ?? ''}',
-                                  onTap: () {}),
-                              buildProfileRow(image: icChildrenIcon, title: 'Family',
-                              text: 'Father Name: ${StringUtils.capitalize(profile.data?.user?.family?.fatherName ?? '')} \nMother Name: ${StringUtils.capitalize(profile.data?.user?.family?.motherName ?? '')}',
-                                  onTap: () {}),
-                              buildProfileRow(image: icReligionIcon,
-                                  title: 'Religion',
-                              text: profile.data?.user?.religion ?? 'Not Added Yet',
-                                  onTap: () {
-
-                              }),
-                              buildProfileRow(image: icMotherToungeIcon, title: 'Mother Tongue',
-                                  text: StringUtils.capitalize(profile.data?.user?.motherTongue ?? ''),
-                                  onTap: () {}),
-                              sizedBox16(),
-                              buildDataRowBold(title: 'Partner Expectations', text: 'Change', onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPreferenceScreen()));
-                              }),
-                              sizedBox16(),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                        color: primaryColor,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20),
-                                        )
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 18,bottom: 18,left: 22,right: 22),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Partner Expectation",
-                                            style: styleSatoshiRegular(size: 14, color: Colors.white),),
-                                          Text("",
-                                            style: styleSatoshiRegular(size: 16, color: Colors.white),)
-                                        ],
-                                      ),
-                                    ),
-
-                                  ),
-                                  sizedBox20(),
-                                  buildProfileRow(image: icHeightIcon, title: 'Height',
-                                      text:
-                                      "${ profile.data?.user?.partnerExpectation?.minHeight} ft" ?? '', onTap: () {  }
-                                  ),
-                                  buildProfileRow(image: icChildrenIcon, title: 'Weight',
-                                      text: 'Min Weight: ${StringUtils.capitalize(profile.data?.user?.partnerExpectation?.minAge.toString() ?? "")}, \nMax Weight: ${StringUtils.capitalize(profile.data?.user?.partnerExpectation?.maxAge.toString() ?? "")},', onTap: () {  }),
-                                  buildProfileRow(image: icReligionIcon,
-                                      title: 'Religion',
-                                      text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.religion.toString()?? ""), onTap: () {  } ),
-                                  buildProfileRow(image: icMotherToungeIcon,
-                                      title: 'Mother Tongue',
-                                      text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.motherTongue  ?? ""), onTap: () {  }
-                                  ),
-                                  buildProfileRow(image: icMarriedStatusPro,
-                                      title: 'Profession',
-                                      text: StringUtils.capitalize(profile.data?.user?.partnerExpectation?.profession ?? ""), onTap: () {  }
-                                  ),
-                                  Text("Preference",
-                                    style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                                  sizedBox6(),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: customContainer(
-                                            vertical: 8,
-                                            child: Center(
-                                              child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
-                                                style: styleSatoshiLight(size: 12, color: Colors.white),),
-                                            ),
-                                            radius: 16,
-                                            color:  primaryColor,
-                                            click: () {}
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5,),
-                                      Expanded(
-                                        child: customContainer(
-                                            vertical: 8,
-                                            child: Center(
-                                              child: Text(profile.data?.user?.partnerExpectation?.minHeight  ?? "",
-                                                style: styleSatoshiLight(size: 12, color: Colors.white),
-                                              ),
-                                            ),
-                                            radius: 16,
-                                            color: primaryColor,
-                                            click: () {}
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5,),
-
-
-                                      Expanded(
-                                        child: customContainer(
-                                            vertical: 8,
-                                            child: Center(
-                                              child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
-                                                style: styleSatoshiLight(size: 12, color: Colors.white),
-                                              ),
-                                            ),
-                                            radius: 16,
-                                            color:  primaryColor,
-                                            click: () {}
-                                        ),
-                                      ),
-                                      const SizedBox(width: 5,),
-                                      Expanded(
-                                        child: customContainer(
-                                            vertical: 8,
-                                            child: Center(
-                                              child: Text(profile.data?.user?.partnerExpectation?.minHeight ?? "",
-                                                style: styleSatoshiLight(size: 12, color: Colors.white),
-                                              ),
-                                            ),
-                                            radius: 16,
-                                            color:  primaryColor,
-                                            click: () {}
-                                        ),)
-
-                                    ],
-                                  ),
-
-
-                                  sizedBox14(),
-                                  sizedBox10(),
-                                  const SizedBox(height: 14,),
-                                ],
-                              ),
-                              buildDataRowBold(title: 'Photos', text: 'Change', onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
-                              }),
-                              sizedBox8(),
-
-
-                              sizedBox28(),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),*/
                   ],
                 ),
               ),

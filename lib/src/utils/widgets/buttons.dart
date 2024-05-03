@@ -329,6 +329,53 @@ connectButton({
   );
 }
 
+connectButtonLoading({
+  required BuildContext context,
+
+  double ? height,
+  double ? width,
+  double ? radius,
+  double ? fontSize,
+  TextStyle  ? style,
+  Color ? color,
+  bool showIcon = false,
+
+}) {
+  return Container(
+    width: width ??double.infinity,
+    height:height?? 48,
+    decoration:  BoxDecoration(
+      border: Border.all(
+          width: 0.6,
+          color: primaryColor
+      ),
+      borderRadius: BorderRadius.circular(radius??32),
+      color:color ?? Colors.white,
+      // gradient:LinearGradient(
+      //   colors: [Color(0xffffffff), Color(0xfff7345f)],
+      //   stops: [0.001, 0.5],
+      //   begin: Alignment.topCenter,
+      //   end: Alignment.bottomCenter,
+      // )
+    ),
+    child: Center(
+      child: Row(mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (showIcon) Icon(Icons.add, color: primaryColor, size: 15),
+          // Icon(Icons.add,color: primaryColor,size: 15,),
+          Center(
+            child: LoadingAnimationWidget.waveDots(
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+
 connectWithoutIconButton({
   required BuildContext context,
   required Function() onTap,
@@ -339,6 +386,7 @@ connectWithoutIconButton({
   double ? fontSize,
   TextStyle  ? style,
   Color ? color,
+  Widget? iconWidget,
 
 }) {
   return GestureDetector(
@@ -363,7 +411,7 @@ connectWithoutIconButton({
       child: Center(
         child: Row(mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add,color: primaryColor,size: 15,),
+            iconWidget ?? Icon(Icons.add,color: primaryColor,size: 15,),
             Text(title,
               style:style ?? styleSatoshiBold(size: fontSize ??18, color: primaryColor),),
           ],

@@ -8,11 +8,9 @@ import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart'
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import '../../apis/members_api.dart';
 import '../../apis/members_api/request_apis.dart';
 import '../../apis/profile_apis/get_profile_api.dart';
@@ -45,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
    void initState() {
      super.initState();
      getMatches();
+     getPreferredMatch();
      profileDetail();
+
    }
 
 
@@ -53,18 +53,44 @@ class _HomeScreenState extends State<HomeScreen> {
    bool isLoading = false;
    int page = 1;
    List<MatchesModel> matches = [];
+   List<MatchesModel> preferredMatches = [];
+   List<bool> like = [];
 
    getMatches() {
      matches.clear();
      isLoading = true;
      getNewMatchesApi(page: page.toString(),
-       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M",).then((value) {
+       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M", religion: '',).then((value) {
        if (mounted) {
          setState(() {
            if (value['status'] == true) {
              for (var v in value['data']['members']['data']) {
                matches.add(MatchesModel.fromJson(v));
-               isLoadingList.add(false); // Add false for each new match
+               isLoadingList.add(false);
+               like.add(false); // // Add false for each new match
+             }
+             isLoading = false;
+             page++;
+           } else {
+             isLoading = false;
+           }
+         });
+       }
+     });
+   }
+
+   getPreferredMatch() {
+     preferredMatches.clear();
+     isLoading = true;
+     getNewMatchesApi(page: page.toString(),
+       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M", religion: widget.response.data!.user!.religion!.toString(),).then((value) {
+       if (mounted) {
+         setState(() {
+           if (value['status'] == true) {
+             for (var v in value['data']['members']['data']) {
+               preferredMatches.add(MatchesModel.fromJson(v));
+               isLoadingList.add(false);
+               like.add(false); // // Add false for each new match
              }
              isLoading = false;
              page++;
@@ -87,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
          // setState(() {
            profile = ProfileModel.fromJson(value);
            isLoading = false;
+           like.add(false); //
            SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
          // });
        } else {
@@ -110,11 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: buildAppBar(),
       body: CustomRefreshIndicator(
         onRefresh: () {
-          setState(() {
-            isLoading = true;
-          });
+          setState(() {isLoading = true;});
           return getMatches();
-        },
+          },
         child: !isLoading ?  SingleChildScrollView(
           child:  Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 16),
@@ -126,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${matches.length} Members looking for you",
+                      Text("${matches.length} Members for you",
                       style: styleSatoshiBold(size: 18, color: color1C1C1c),),
                       // sizedBox10(),
                       isLoading ?
@@ -203,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: widget.response.data!.user!.religion!.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '',))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: widget.response.data!.user!.religion!.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: 'Religion',))
                             );
 
                           },
@@ -220,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: profile.data!.user!.partnerExpectation!.maxWeight!.toString(),))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: profile.data!.user!.partnerExpectation!.maxWeight!.toString(), based: 'State',))
                             );
 
                           },
@@ -228,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Image.asset(fCommunity,height: 55,),
                                 sizedBox6(),
-                                Text("State",style: styleSatoshiLight(size: 12, color: color7BB972),)
+                                Text("State",style: styleSatoshiLight(size: 12, color: colorF27047),)
                               ],
                             ),
                           ),
@@ -237,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  profile.data!.user!.partnerExpectation!.maxWeight.toString(),))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  profile.data!.user!.partnerExpectation!.maxWeight.toString(), based: 'Weight',))
                             );},
                             child: Column(
                               children: [
@@ -252,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap: () {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '',))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '', based: 'Language',))
                             );
                           },
                             child: Column(
@@ -272,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllMatchesScreen(response: widget.response, )));
+                        AllMatchesScreen(response: widget.response, religionFilter: '', )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -399,6 +424,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ],
                                             ),
+                                            like[i] || matches[i].interestStatus == 2  ?
+                                            TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
                                                 // like[i] = !like[i];
@@ -453,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllMatchesScreen(response: widget.response,)));
+                        AllMatchesScreen(response: widget.response, religionFilter: widget.response.data!.user!.religion!.toString(),)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -485,16 +512,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.only(left: 16),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: matches.length,
+                      itemCount: preferredMatches.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (_, i) {
-                        DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                        DateTime? birthDate = preferredMatches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(preferredMatches[i].basicInfo!.birthDate!) : null;
                         int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context, MaterialPageRoute(
-                              builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
+                              builder: (builder) =>  UserProfileScreen(userId:preferredMatches[i].id.toString(),))
                           );
                         },
                         child: Stack(
@@ -511,7 +538,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BlendMode.srcOver,
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                  imageUrl: preferredMatches[i].image != null ? '$baseProfilePhotoUrl${preferredMatches[i].image}' : '',
                                   fit: BoxFit.fill,
                                   errorWidget: (context, url, error) =>
                                       Padding(
@@ -536,7 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                          '${StringUtils.capitalize(preferredMatches[i].firstname ?? '')} ${StringUtils.capitalize(preferredMatches[i].lastname ?? 'User')}',
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                           style: styleSatoshiBold(size: 14, color: Colors.white),),
@@ -558,7 +585,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),),
                                                 const SizedBox(width: 6,),
                                                 Text(
-                                                  "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                                  "${preferredMatches[i].physicalAttributes!.height ?? ''} ft",
                                                   style: styleSatoshiRegular(size: 10, color: Colors.white),
                                                 ),
                                               ],
@@ -570,22 +597,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Column(crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  matches[i].basicInfo?.religion ?? '',
+                                                  preferredMatches[i].basicInfo?.religion ?? '',
                                                   style: styleSatoshiRegular(size: 13, color: Colors.white),
                                                 ),
                                                 Text(overflow: TextOverflow.ellipsis,maxLines: 1,
-                                                  matches[i].basicInfo?.presentAddress?.state ?? '',
+                                                  preferredMatches[i].basicInfo?.presentAddress?.state ?? '',
 
                                                   style: styleSatoshiRegular(size: 13, color: Colors.white),
                                                 ),
                                               ],
                                             ),
+
+                                            like[i] || preferredMatches[i].interestStatus == 2  ?
+                                            TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
-                                                // like[i] = !like[i];
+                                                like[i] = !like[i];
                                               });
                                               sendRequestApi(
-                                                  memberId: matches[i]
+                                                  memberId: preferredMatches[i]
                                                       .id
                                                       .toString())
                                                   .then((value) {
@@ -630,10 +660,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                     ),
                 sizedBox16(),
-                // button(context: context, onTap: () {
-                //
-                // }, title: 'See All New Matches'),
-
                 const SizedBox(height: 50,),
 
 
@@ -647,71 +673,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-// /*  Stack buildStack() {
-//     return Stack(
-//             children: [
-//               Column(
-//                 children: [
-//                   SizedBox(height: 60,),
-//                   Container(
-//                       child: SvgPicture.asset(icHomeProfileHolder)),
-//                 ],
-//               ),
-//               Center(
-//                 child: CircularPercentIndicator(
-//                   radius: 120.0,
-//                   lineWidth: 7.0,
-//                   percent: 1,
-//                   center: Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Container(
-//                       height: 100,
-//                       width: 100,
-//                       clipBehavior: Clip.hardEdge,
-//                       decoration: const BoxDecoration(
-//                         shape: BoxShape.circle
-//                       ),
-//                       child: CachedNetworkImage(
-//                         imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-//                         fit: BoxFit.cover,
-//                         errorWidget: (context, url, error) =>
-//                             Padding(
-//                               padding: const EdgeInsets.all(8.0),
-//                               child: Image.asset(icLogo,
-//                                 height: 40,
-//                                 width: 40,),
-//                             ),
-//                         progressIndicatorBuilder: (a, b, c) =>
-//                             customShimmer(height: 0, *//*width: 0,*//*),
-//                       ),
-//                     ),
-//                   ),
-//                   progressColor: colorGreen,
-//                 ),
-//               ),
-//               Positioned(
-//                 bottom: 19,
-//                 left: 20,
-//                 right: 20,
-//                 child: Center(
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         // response?.data?.user?.username?.toString() ?? 'User',
-//                         "${SharedPrefs().getUserName()}",
-//                         style: styleSatoshiBold(size: 22, color: Colors.white),),
-//                       Text(
-//                         "${SharedPrefs().getProfileId()}",
-//                         // "LV-8768787",
-//                         style: styleSatoshiBold(size: 15, color: Colors.white),),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           );
-//   }*/
+
 
   AppBar buildAppBar() {
     return AppBar(backgroundColor: primaryColor,
@@ -731,36 +693,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
               },
               child: ClipOval(child: CustomImageWidget(image: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',height: 40,width: 40,)),
-              // child: CircularPercentIndicator(
-              //   radius: 50.0,
-              //   lineWidth: 2.0,
-              //   percent: 1,
-              //   center: Padding(
-              //     padding: const EdgeInsets.all(0.0),
-              //     child: Container(
-              //       height: 45,
-              //       width: 45,
-              //       clipBehavior: Clip.hardEdge,
-              //       decoration: const BoxDecoration(
-              //           shape: BoxShape.circle
-              //       ),
-              //       child: CachedNetworkImage(
-              //         imageUrl:'$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
-              //         fit: BoxFit.cover,
-              //         errorWidget: (context, url, error) =>
-              //             Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Image.asset(icLogo,
-              //                 height: 40,
-              //                 width: 40,),
-              //             ),
-              //         progressIndicatorBuilder: (a, b, c) =>
-              //             customShimmer(height: 0, /*width: 0,*/),
-              //       ),
-              //     ),
-              //   ),
-              //   progressColor: colorGreen,
-              // ),
+
             ),
             const SizedBox(width: 10,),
             Text(StringUtils.capitalize(widget.response.data!.user!.firstname!.toString()),
@@ -912,13 +845,6 @@ class HomeShimmer extends StatelessWidget {
               },
             ),
             sizedBox16(),
-            // button(context: context, onTap: () {
-            //
-            // }, title: 'See All New Matches'),
-
-
-
-
           ],
         ),
       ),

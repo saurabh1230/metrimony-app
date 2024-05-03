@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +17,14 @@ class Loading extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          width: 1.sw,
-          height: 1.sh,
+          width: 1.sw, height: 1.sh,
           color: Colors.grey.withOpacity(0.1),
           child: Center(
             child: LoadingAnimationWidget.flickr(
               leftDotColor: const Color(0xFF0063DC),
               rightDotColor: primaryColor,
               size: 50,
-            ),
-          ),
-        ),
-      ),
-    );
+            ),),),),);
   }
 }
 
@@ -48,137 +44,178 @@ class ShimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 16),
-      itemCount: 7,
-      itemBuilder: (context, i) {
-        return Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          enabled: true,
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 160,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        // color:Colors.red,
-                        borderRadius: BorderRadius.circular(10)),
-
-                    // child: Image.asset(images[i],
-                    // height: 170,),
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16)
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      sizedBox16(),
-                      Row(
-                        children: [
-
-                          Expanded(
-                            child: Container(
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16)
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      sizedBox16(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 10,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16)
-                                    ),
-                                  ),
-                                ),
-                                const Expanded(
-                                  flex: 1,
-                                  child: SizedBox(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      sizedBox16(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 10,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16)
-                                    ),
-                                  ),
-                                ),
-                                const Expanded(
-                                  flex: 2,
-                                  child: SizedBox(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
+    return CustomShimmerEffect(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 500,
+              width: 1.sw,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  color:  Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              // child: Image.asset(images[i],
             ),
-          ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) => const SizedBox(
-        height: 16,
+            sizedBox16(),
+            const SimmerTextHolder(width: 60,),
+            sizedBox16(),
+            const SimmerTextHolder(),
+            sizedBox16(),
+            const SimmerTextHolder(width: 230,),
+            sizedBox16(),
+            const SimmerTextHolder(),
+            sizedBox16(),
+            const SimmerTextHolder(width: 230,),
+
+          ],
+        ),
       ),
     );
+    // return ListView.separated(
+    //   padding: EdgeInsets.symmetric(horizontal: 16,vertical: 16),
+    //   itemCount: 7,
+    //   itemBuilder: (context, i) {
+    //     return  Container(
+    //       height: 500,
+    //       width: 1.sw,
+    //       clipBehavior: Clip.hardEdge,
+    //       decoration: BoxDecoration(
+    //           color: Colors.grey,
+    //           borderRadius: BorderRadius.circular(10)
+    //       ),
+    //       // child: Image.asset(images[i],
+    //     );
+    //     // return Shimmer.fromColors(
+    //     //   baseColor: Colors.grey.shade300,
+    //     //   highlightColor: Colors.grey.shade100,
+    //     //   enabled: true,
+    //     //   child: Container(
+    //     //     child: Row(
+    //     //       mainAxisAlignment: MainAxisAlignment.start,
+    //     //       crossAxisAlignment: CrossAxisAlignment.center,
+    //     //       children: [
+    //     //         Expanded(
+    //     //           child: Container(
+    //     //             height: 160,
+    //     //             clipBehavior: Clip.hardEdge,
+    //     //             decoration: BoxDecoration(
+    //     //                 color: Colors.white,
+    //     //                 // color:Colors.red,
+    //     //                 borderRadius: BorderRadius.circular(10)),
+    //     //
+    //     //             // child: Image.asset(images[i],
+    //     //             // height: 170,),
+    //     //           ),
+    //     //         ),
+    //     //         const SizedBox(
+    //     //           width: 20,
+    //     //         ),
+    //     //         Expanded(
+    //     //           flex: 2,
+    //     //           child: Column(
+    //     //             mainAxisAlignment: MainAxisAlignment.start,
+    //     //             crossAxisAlignment: CrossAxisAlignment.start,
+    //     //             children: [
+    //     //               Row(
+    //     //                 children: [
+    //     //                   Expanded(
+    //     //                     flex: 4,
+    //     //                     child: Container(
+    //     //                       height: 10,
+    //     //                       decoration: BoxDecoration(
+    //     //                           color: Colors.white,
+    //     //                           borderRadius: BorderRadius.circular(16)
+    //     //                       ),
+    //     //                     ),
+    //     //                   ),
+    //     //                 ],
+    //     //               ),
+    //     //               sizedBox16(),
+    //     //               Row(
+    //     //                 children: [
+    //     //
+    //     //                   Expanded(
+    //     //                     child: Container(
+    //     //                       height: 10,
+    //     //                       decoration: BoxDecoration(
+    //     //                           color: Colors.white,
+    //     //                           borderRadius: BorderRadius.circular(16)
+    //     //                       ),
+    //     //                     ),
+    //     //                   ),
+    //     //
+    //     //                 ],
+    //     //               ),
+    //     //               sizedBox16(),
+    //     //               Row(
+    //     //                 mainAxisAlignment: MainAxisAlignment.start,
+    //     //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //     //                 children: [
+    //     //                   Expanded(
+    //     //                     flex: 10,
+    //     //                     child: Row(
+    //     //                       children: [
+    //     //                         Expanded(
+    //     //                           child: Container(
+    //     //                             height: 10,
+    //     //                             decoration: BoxDecoration(
+    //     //                                 color: Colors.white,
+    //     //                                 borderRadius: BorderRadius.circular(16)
+    //     //                             ),
+    //     //                           ),
+    //     //                         ),
+    //     //                         const Expanded(
+    //     //                           flex: 1,
+    //     //                           child: SizedBox(),
+    //     //                         ),
+    //     //                       ],
+    //     //                     ),
+    //     //                   ),
+    //     //                 ],
+    //     //               ),
+    //     //               sizedBox16(),
+    //     //               Row(
+    //     //                 mainAxisAlignment: MainAxisAlignment.start,
+    //     //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //     //                 children: [
+    //     //                   Expanded(
+    //     //                     flex: 10,
+    //     //                     child: Row(
+    //     //                       children: [
+    //     //                         Expanded(
+    //     //                           child: Container(
+    //     //                             height: 10,
+    //     //                             decoration: BoxDecoration(
+    //     //                                 color: Colors.white,
+    //     //                                 borderRadius: BorderRadius.circular(16)
+    //     //                             ),
+    //     //                           ),
+    //     //                         ),
+    //     //                         const Expanded(
+    //     //                           flex: 2,
+    //     //                           child: SizedBox(),
+    //     //                         ),
+    //     //                       ],
+    //     //                     ),
+    //     //                   ),
+    //     //                 ],
+    //     //               ),
+    //     //             ],
+    //     //           ),
+    //     //         )
+    //     //       ],
+    //     //     ),
+    //     //   ),
+    //
+    //     // );
+    //   },
+    //   separatorBuilder: (BuildContext context, int index) => const SizedBox(
+    //     height: 16,
+    //   ),
+    // );
   }
 }
 

@@ -375,13 +375,6 @@ class _EditFamilyInfoScreenState extends State<EditFamilyInfoScreen> {
                  String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
                  Fluttertoast.showToast(msg: errorMessage);
 
-                 // isLoading ? Loading() :careerInfo();
-                 // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                 // const KycWaitScreen()));
-
-                 // ToastUtil.showToast("Login Successful");
-
-                 // ToastUtil.showToast("Updated Successfully");
                  print('done');
                } else {
                  setState(() {

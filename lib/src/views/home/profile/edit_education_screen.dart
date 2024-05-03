@@ -216,6 +216,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
 
                                     setState(() {
                                       loading = false;
+                                      educationInfo();
                                     });
                                     instituteController.clear();
                                     degreeController.clear();
@@ -261,6 +262,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: button(context: context, onTap: () {
+            Navigator.pop(context);
           },  title: "Save"),
         ),
       ),
@@ -377,8 +379,8 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                                                 regNO: resultController.text, start: startingYearController.text,
                                                 end: endingYearController.text, result: resultController.text,
                                                 outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
-                                              setState(() {
-                                              });
+                                            /*  setState(() {
+                                              });*/
                                               if (value['status'] == true) {
                                                 setState(() {
                                                   loading = false;

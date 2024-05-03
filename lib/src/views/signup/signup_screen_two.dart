@@ -336,7 +336,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     'Sikh',
                     'Punjabi',
                     'Aggarwal',
-                    'Aggarwal',
+                    'Muslim',
+                    "Marathi"
                   ],
                   selectedValue: communityValue,
                   validator: (value) {

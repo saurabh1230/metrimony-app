@@ -1,9 +1,10 @@
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -81,6 +82,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       age = birthDate != null ? DateTime.now().difference(birthDate!).inDays ~/ 365 : 0;
     }
     return Scaffold(
+      // appBar: CustomAppBar(title: ""),
       // appBar: buildAppBar(),
       body: isLoading ?  const UserProfileShimmer() :SingleChildScrollView(
         child: Padding(
@@ -124,6 +126,26 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ),
+                Positioned(bottom: 0,
+                  child: Container(
+                    height: 200,
+                    width: 1.sw,
+                    margin: EdgeInsets.symmetric(horizontal: 0),
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.black.withOpacity(0.8), Colors.transparent],
+                          stops: [0, 10],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
+
+                        borderRadius: BorderRadius.circular(32)
+                    ),
+                    // child: Image.asset(images[i],
+                    // height: 170,),
+                  ),
+                ),
               Positioned(
                 top: 40,
                 left: 0,
@@ -165,75 +187,262 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
               ),*/
-              Positioned(
-                bottom: 26,
-                left: 26,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: styleSatoshiBold(size: 30, color: Colors.white),),
+                Positioned(
+                  bottom: 30,left: 40,right: 0,
+                  child: Row(
+                    children: [
+                      Expanded(flex: 3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                      "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
+                                    overflow: TextOverflow.ellipsis, maxLines: 1,
+                                    style: styleSatoshiBold(
+                                        size: 16, color: Colors.white),
+                                  ),
+                                ),
+                                const SizedBox(width: 10,),
+                                /* Expanded(
+                              child: bookmark,
+                            ),*/
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  StringUtils.capitalize('$age yrs'),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
 
-                      ],
-                    ),
-                    Text(
-                      StringUtils.capitalize(model.data?.matches?.religion ?? ''),
-                      style: styleSatoshiBold(size: 16, color: Colors.white),),
-                    Row(
-                      children: [
-                        Text(
-                          StringUtils.capitalize('$age yrs'),
-                          style: styleSatoshiBold(size: 16, color: Colors.white),),
-                        const SizedBox(width: 10,),
-                        Text(
-                          StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
-                          style: styleSatoshiBold(size: 16, color: Colors.white),),
-                      ],
-                    ),
-                    sizedBox16(),
-                    loading ? loadingButton(
-                        height: 30,
-                        width: 134,
-                        context: context) :button(
-                        fontSize: 14,
-                        height: 30,
-                        width: 134,
-                        context: context,
-                        onTap: () {
+                                  style: styleSatoshiLarge(
+                                      size: 16,
+                                      color: Colors.white),
+                                ),
+                                const SizedBox(width: 6,),
+                                Container(
+                                  height: 4,
+                                  width: 4,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 6,),
+
+                                Text(
+                                  StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
+                                const SizedBox(width: 6,),
+                                Container(
+                                  height: 4,
+                                  width: 4,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(width: 6,),
+                                Text(
+                                  StringUtils.capitalize(model.data?.matches?.religion ?? ''),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: styleSatoshiMedium(
+                                      size: 16,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            // const SizedBox(height: 10,),
+                            // Text(
+                            //   atributeReligion,
+                            //   maxLines: 2,
+                            //   style: styleSatoshiMedium(
+                            //       size: 16,
+                            //       color: Colors.white),
+                            // ),
+                            const SizedBox(height: 4,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
+                                //   // child: Image.asset(icLocation,
+                                //   //   color: Colors.white,
+                                //   //   height: 17,
+                                //   //   width: 17,),
+                                // ),
+                                const SizedBox(width: 2,),
+                                Expanded(
+                                  flex: 10,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${model.data!.matches!.address!.state ?? ''}${model.data!.matches!.address!.country
+                                             ?? ''}',
+                                        // '${matches[i].address!.country}',
+                                        // "New York, USA",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+
+                                        style: styleSatoshiLarge(
+                                            size: 16,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(width: 3,),
+                                      Container(
+                                        height: 4,
+                                        width: 5,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3,),
+
+                                      // Text(
+                                      //   model.data!.matches!.address!.state
+                                      //
+                                      //   // '${matches[i].address!.country}',
+                                      //   // "New York, USA",
+                                      //   overflow: TextOverflow.ellipsis,
+                                      //   maxLines: 2,
+                                      //
+                                      //   style: styleSatoshiMedium(
+                                      //       size: 16,
+                                      //       color: Colors.white),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+
+                            sizedBox16(),
+                            // Align(alignment: Alignment.centerRight,
+                            //     child: Padding(
+                            //       padding: const EdgeInsets.only(right: 16.0),
+                            //       child: button,
+                            //     )),
+                          ],
+                        ),
+                      ),
+                   /*   Expanded(child:    *//* like[i] || matches[i].interestStatus == 2  ?*//*
+                      TickButton(size: 50,
+                        tap: () {  },)
+                     *//*       :
+                      AddButton(size: 50,
+                        tap: () {
                           setState(() {
-                            loading = true;
+                            // like[i] = !like[i];
                           });
-                          sendRequestApi(memberId: model.data!.matches!.id!.toString())
+                          sendRequestApi(
+                              memberId: matches[i]
+                                  .id
+                                  .toString())
                               .then((value) {
                             if (value['status'] == true) {
                               setState(() {
-                                loading = false;
+                                isLoadingList[i] = false;
                               });
-                              ToastUtil.showToast("Connection Request Sent");
-          
+                              ToastUtil.showToast(
+                                  "Connection Request Sent");
                             } else {
                               setState(() {
-                                loading = false;
+                                isLoadingList[i] = false;
                               });
 
                               List<dynamic> errors =
                               value['message']['error'];
-                              String errorMessage = errors.isNotEmpty
+                              String errorMessage = errors
+                                  .isNotEmpty
                                   ? errors[0]
                                   : "An unknown error occurred.";
-                              Fluttertoast.showToast(msg: errorMessage);
+                              Fluttertoast.showToast(
+                                  msg: errorMessage);
                             }
                           });
-                        },
-                        title: "Connect Now")
-                  ],
+                        },),*//*
+                ),*/
+                    ],
+                  ),
                 ),
-              ),
+              // Positioned(
+              //   bottom: 26,
+              //   left: 26,
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Row(
+              //         children: [
+              //           Text(
+              //             "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
+              //             overflow: TextOverflow.ellipsis,
+              //             maxLines: 1,
+              //             style: styleSatoshiLarge(size: 22, color: Colors.white),),
+              //
+              //         ],
+              //       ),
+              //       Text(
+              //         StringUtils.capitalize(model.data?.matches?.religion ?? ''),
+              //         style: styleSatoshiBold(size: 16, color: Colors.white),),
+              //       Row(
+              //         children: [
+              //           Text(
+              //             StringUtils.capitalize('$age yrs'),
+              //             style: styleSatoshiBold(size: 16, color: Colors.white),),
+              //           const SizedBox(width: 10,),
+              //           Text(
+              //             StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
+              //             style: styleSatoshiBold(size: 16, color: Colors.white),),
+              //         ],
+              //       ),
+              //       sizedBox16(),
+              //       loading ? loadingButton(
+              //           height: 30,
+              //           width: 134,
+              //           context: context) :button(
+              //           fontSize: 14,
+              //           height: 30,
+              //           width: 134,
+              //           context: context,
+              //           onTap: () {
+              //             setState(() {
+              //               loading = true;
+              //             });
+              //             sendRequestApi(memberId: model.data!.matches!.id!.toString())
+              //                 .then((value) {
+              //               if (value['status'] == true) {
+              //                 setState(() {
+              //                   loading = false;
+              //                 });
+              //                 ToastUtil.showToast("Connection Request Sent");
+              //
+              //               } else {
+              //                 setState(() {
+              //                   loading = false;
+              //                 });
+              //
+              //                 List<dynamic> errors =
+              //                 value['message']['error'];
+              //                 String errorMessage = errors.isNotEmpty
+              //                     ? errors[0]
+              //                     : "An unknown error occurred.";
+              //                 Fluttertoast.showToast(msg: errorMessage);
+              //               }
+              //             });
+              //           },
+              //           title: "Connect Now")
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 16,
                     top: 30),
@@ -277,66 +486,122 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                     sizedBox16(),
+                    Card(
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Column(
+                                children: [Container(
+                                  height: 70,
+                                ),
+                                  Image.asset(preferenceHolder,),
+                                ],
+                              ),
+                              Positioned(top: 35,left: 0,right: 0,
+                                child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                        image: model.data?.user?.image != null ? '$baseProfilePhotoUrl${model.data?.user?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                    ),),
+                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                        image: model.data?.matches?.image != null ? '$baseProfilePhotoUrl${model.data?.matches?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                    ),),
+                                  ],),
+                              ),
+                              Positioned(bottom: 10,left: 12,right: 12,
+                                child: Row(
+                                  children: [
+                                    Text("Your Match Preferences",style: styleSatoshiLight(size: 16, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                    Text("",style: styleSatoshiLight(size: 20, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                  ],),
+                              )
+                            ],
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              buildPrefProfileRow(image: birthHolder, title: 'Age',
+                                  text:
+                                  model.data!.matches?.partnerExpectation?.maxAge.toString()  ?? "",
+                                  icon:  crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: icHeightIcon, title: 'Height',
+                                  text:
+                                  "Min: ${model.data!.matches?.partnerExpectation?.minHeight.toString()} "
+                                      "Max: ${ model.data!.matches?.partnerExpectation?.maxHeight.toString()} ft" ?? '', icon:  crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: icReligionIcon,
+                                  title: 'Religion',
+                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.religion  ?? ""), icon : model.data!.matches?.basicInfo?.religion ==  model.data!.user!.partnerExpectation!.religion ?  tickHolder : crossholder),
+                              const Divider(),
+                              buildPrefProfileRow(image: icMotherToungeIcon,
+                                  title: 'Mother Tongue',
+                                  text: StringUtils.capitalize(model.data!.matches!.motherTongue == null ?"":
+                                  model.data!.matches!.motherTongue!.toString()), icon:  model.data!.matches?.basicInfo?.motherTongue ==  model.data!.user!.partnerExpectation!.motherTongue ? tickHolder :crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: weightHolder,
+                                  title: 'Weight',
+                                  text: StringUtils.capitalize('max ${model.data!.matches?.partnerExpectation?.maxWeight  ?? ""}'),icon: model.data!.matches?.physicalAttributes!.weight ==  model.data!.user?.partnerExpectation!.maxWeight! ? crossholder : tickHolder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: communityHolder,
+                                  title: 'Community',
+                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.community ?? ""), icon:crossholder
+                              ),
+                            ],),
+                          ),
+                        ],
+                      ),
+                    ),
+                    sizedBox16(),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        sizedBox10(),
+                        Text(
+                          "Basic Info",
+                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
+                        // Text("Basic Info",style:styleSatoshiLarge(size: 16, color: Colors.black)),
+                        sizedBox16(),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              buildProfileRow(image: birthHolder, title: 'Age',
+                                  text: model.data!.matches?.basicInfo?.birthDate  ?? ""),
+                              const Divider(),
+                              buildProfileRow(image: icHeightIcon, title: 'Height',
+                                  text: "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''),
+                              const Divider(),
+                              buildProfileRow(image: icReligionIcon,
+                                  title: 'Religion',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.religion  ?? "") ),
+                              const Divider(),
+                              buildProfileRow(image: icMotherToungeIcon,
+                                  title: 'Mother Tongue',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.motherTongue  ?? "")
+                              ),
+                              const Divider(),
+                              buildProfileRow(image: icMarriedStatusPro,
+                                  title: 'Married Status',
+                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.maritalStatus ?? "")
+                              ),
+
+                            ],),
+                          ),
+                        ),
+                      ],
+                    ),
+                    sizedBox16(),
                     Text(
                       "Professional Info",
                       style: styleSatoshiBold(size: 16, color: color1C1C1c),),
                     // Text("Professional Info",style:styleSatoshiMedium(size: 16, color: primaryColor)),
                     sizedBox16(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                },
-                                child: SvgPicture.asset(icEducation,
-                                  height: 18,
-                                  width: 18,),
-                              ),
-                              sizedBox6(),
-                              Text(
-                                // '' ,
-                                ' ${model.data?.matches?.educationInfo?[0].degree ?? "" }',
-                                textAlign: TextAlign.center,
-                                style: styleSatoshiMedium(
-                                  size: 14,
-                                  color: Colors.black.withOpacity(0.70),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                icUserBagIcon,
-                                height: 20,
-                                width: 20,),
-                              sizedBox6(),
-                              Text(
-                                StringUtils.capitalize(model.data!.matches!.basicInfo!.profession ?? ""),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: styleSatoshiMedium(
-                                  size: 14,
-                                  color: Colors.black.withOpacity(0.70),
-                                ),
-                              ),
-
-                            ],
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    sizedBox12(),
                     Row(
                       children: [
                         Expanded(
@@ -384,153 +649,93 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ],
                     ),
-                    sizedBox20(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    sizedBox16(),
+                    Row(
                       children: [
-                        sizedBox10(),
-                        Text(
-                          "Basic Info",
-                          style: styleSatoshiBold(size: 16, color: color1C1C1c),),
-                        // Text("Basic Info",style:styleSatoshiLarge(size: 16, color: Colors.black)),
-                        sizedBox16(),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(children: [
-                              buildProfileRow(image: birthHolder, title: 'Age',
-                                  text: model.data!.matches?.basicInfo?.birthDate  ?? ""),
-                              const Divider(),
-                              buildProfileRow(image: icHeightIcon, title: 'Height',
-                                  text:
-                                  "${model.data?.matches?.physicalAttributes?.height} ft" ?? ''
-                              ),
-                              const Divider(),
-
-                              buildProfileRow(image: icReligionIcon,
-                                  title: 'Religion',
-                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.religion  ?? "") ),
-                              const Divider(),
-                              buildProfileRow(image: icMotherToungeIcon,
-                                  title: 'Mother Tongue',
-                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.motherTongue  ?? "")
-                              ),
-                              const Divider(),
-                              buildProfileRow(image: icMarriedStatusPro,
-                                  title: 'Married Status',
-                                  text: StringUtils.capitalize(model.data!.matches?.basicInfo?.maritalStatus ?? "")
-                              ),
-
-                            ],),
-                          ),
-                        ),
-                        sizedBox16(),
-
-                        Card(
+                        Expanded(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Stack(
-                                children: [
-                                  Column(
-                                    children: [Container(
-                                      height: 70,
-                                     ),
-                                      Image.asset(preferenceHolder,),
-                                    ],
-                                  ),
-                                  Positioned(top: 35,left: 0,right: 0,
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
-                                   padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
-                                          image: model.data?.user?.image != null ? '$baseProfilePhotoUrl${model.data?.user?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
-                                      ),),
-                                      Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
-                                          padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
-                                            image: model.data?.matches?.image != null ? '$baseProfilePhotoUrl${model.data?.matches?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
-                                        ),),
-                                    ],),
-                                  ),
-                                  Positioned(bottom: 10,left: 12,right: 12,
-                                    child: Row(
-                                      children: [
-                                      Text("Your Match Preferences",style: styleSatoshiLight(size: 16, color: Colors.white),overflow: TextOverflow.ellipsis,),
-                                      Text("",style: styleSatoshiLight(size: 20, color: Colors.white),overflow: TextOverflow.ellipsis,),
-                                    ],),
-                                  )
-                                ],
+                              GestureDetector(
+                                onTap: () {
+                                },
+                                child: SvgPicture.asset(icEducation,
+                                  height: 18,
+                                  width: 18,),
                               ),
-                              
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(children: [
-                                  buildPrefProfileRow(image: birthHolder, title: 'Age',
-                                      text:
-                                      model.data!.matches?.partnerExpectation?.maxAge.toString()  ?? "", icon:  crossholder
-                                  ),const Divider(),
-                                  buildPrefProfileRow(image: icHeightIcon, title: 'Height',
-                                      text:
-                                      "Min: ${ model.data!.matches?.partnerExpectation?.minHeight.toString()} Max: ${ model.data!.matches?.partnerExpectation?.maxHeight.toString()} ft" ?? '', icon: crossholder
-                                  ),const Divider(),
-                                  buildPrefProfileRow(image: icReligionIcon,
-                                      title: 'Religion',
-                                      text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.religion  ?? ""), icon : model.data!.matches?.basicInfo?.religion ==  model.data!.user!.partnerExpectation!.religion ?  tickHolder : crossholder),
-                                  const Divider(),
-                                  buildPrefProfileRow(image: icMotherToungeIcon,
-                                      title: 'Mother Tongue',
-                                      text: StringUtils.capitalize(model.data!.matches!.motherTongue == null ?"":
-                                          model.data!.matches!.motherTongue!.toString()), icon:  model.data!.matches?.basicInfo?.motherTongue ==  model.data!.user!.partnerExpectation!.motherTongue ? tickHolder :crossholder
-                                  ),const Divider(),
-                                  buildPrefProfileRow(image: weightHolder,
-                                      title: 'Weight',
-                                      text: StringUtils.capitalize('max ${model.data!.matches?.partnerExpectation?.maxWeight  ?? ""}'),icon: model.data!.matches?.physicalAttributes!.weight ==  model.data!.user?.partnerExpectation!.maxWeight ? crossholder : tickHolder
-                                  ),const Divider(),
-                                  buildPrefProfileRow(image: communityHolder,
-                                      title: 'Community',
-                                      text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.community ?? ""), icon:crossholder
-                                  ),
-                                ],),
+                              sizedBox6(),
+                              Text('${model.data?.matches?.educationInfo?[0].degree ?? "" }',
+                                textAlign: TextAlign.center, style: styleSatoshiMedium(size: 14,
+                                  color: Colors.black.withOpacity(0.70),),
                               ),
                             ],
                           ),
                         ),
-                        sizedBox14(),
-                        button(
-                            fontSize: 14,
-                            height: 45,
-                            width: double.infinity,
-                            context: context,
-                            onTap: () {
-                              setState(() {
-                                // like[i] = !like[i];
-                              });
-                              sendRequestApi(
-                                  memberId:model.data!.matches!.id!.toString(), )
-                                  .then((value) {
-                                if (value['status'] == true) {
-                                  setState(() {
-                                  });
-                                  ToastUtil.showToast(
-                                      "Connection Request Sent");
-                                } else {
-                                  setState(() {
-                                  });
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                icUserBagIcon,
+                                height: 20,
+                                width: 20,),
+                              sizedBox6(),
+                              Text(
+                                StringUtils.capitalize(model.data!.matches!.basicInfo!.profession ?? ""),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSatoshiMedium(
+                                  size: 14,
+                                  color: Colors.black.withOpacity(0.70),
+                                ),
+                              ),
 
-                                  List<dynamic> errors =
-                                  value['message']['error'];
-                                  String errorMessage = errors
-                                      .isNotEmpty
-                                      ? errors[0]
-                                      : "An unknown error occurred.";
-                                  Fluttertoast.showToast(
-                                      msg: errorMessage);
-                                }
-                              });
-                            },
-                            title:  "Connect Now"),
-                        sizedBox16(), sizedBox16(), sizedBox16(),
+                            ],
+                          ),
+                        ),
+
                       ],
                     ),
+                    sizedBox16(),
+
+
+                    sizedBox14(),
+                    button(
+                        fontSize: 14,
+                        height: 45,
+                        width: double.infinity,
+                        context: context,
+                        onTap: () {
+                          setState(() {
+                            // like[i] = !like[i];
+                          });
+                          sendRequestApi(
+                            memberId:model.data!.matches!.id!.toString(), )
+                              .then((value) {
+                            if (value['status'] == true) {
+                              setState(() {
+                              });
+                              ToastUtil.showToast(
+                                  "Connection Request Sent");
+                            } else {
+                              setState(() {
+                              });
+
+                              List<dynamic> errors =
+                              value['message']['error'];
+                              String errorMessage = errors
+                                  .isNotEmpty
+                                  ? errors[0]
+                                  : "An unknown error occurred.";
+                              Fluttertoast.showToast(
+                                  msg: errorMessage);
+                            }
+                          });
+                        },
+                        title:  "Connect Now"),
                   ],
                 ),
               ),

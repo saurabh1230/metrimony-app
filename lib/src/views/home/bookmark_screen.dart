@@ -137,20 +137,6 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Sortlisted",isBackButtonExist: true,),
-      // appBar: AppBar(
-      //  leading: Padding(
-      // padding: const EdgeInsets.only(left: 16),
-      // child: backButton(
-      //     context: context,
-      //     image: icArrowLeft,
-      //     onTap: () {
-      //       Navigator.pop(context);
-      //     }),),
-      //   centerTitle: false,
-      //   automaticallyImplyLeading: false,
-      //   title: Text("Sortlisted",
-      //     style: styleSatoshiBold(size: 22, color: Colors.black),),
-      // ),
       body: isLoading ? const ShimmerWidget() :
       CustomRefreshIndicator(
         onRefresh: () {
@@ -168,10 +154,6 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
           Center(
             child: Column(
               children: [
-                // sizedBox16(),
-                // // Image.asset(icWaitPlaceHolder,
-                // //   height: 80,),
-                // sizedBox16(),
                 Text("No Sortlisted members",
 
                   style: styleSatoshiLight(size: 18, color: Colors.black),)
@@ -209,12 +191,8 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                             builder: (builder) =>
                                                 UserProfileScreen(
                                                   userId:
-                                                      matches[i].id.toString(),
-                                                )));
-                                  },
-                                  imgUrl:
-                                      '$baseProfilePhotoUrl${matches[i].profile?.image ?? ''}',
-
+                                                      matches[i].id.toString(),)));},
+                                  imgUrl: '$baseProfilePhotoUrl${matches[i].profile?.image ?? ''}',
                                   userName: matches[i].profile?.firstname == null &&
                                           matches[i].profile?.lastname == null
                                       ? "user"
@@ -223,7 +201,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                       " Religion: ${StringUtils.capitalize(matches[i].profile?.basicInfo?.religion ?? "")}",
                                   profession: "Software Engineer",
                                   Location:
-                                      "${matches[i].profile?.basicInfo?.presentAddress?.country ?? ""}",
+                                      matches[i].profile?.basicInfo?.presentAddress?.country ?? "",
                                   likedColor: Colors.grey,
                                   unlikeColor: primaryColor,
                                   button:button(
@@ -236,10 +214,8 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                               // isLoadingList[i] = true;
                                             });
 
-                                            sendRequestApi(
-                                                    memberId:
-                                                        matches[i].id.toString()
-                                                    // id: career[0].id.toString(),
+                                            sendRequestApi(memberId: matches[i].id.toString()
+
                                                     )
                                                 .then((value) {
                                               if (value['status'] == true) {
@@ -265,42 +241,11 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                             });
                                           },
                                           title: "Connect Now"),
-                                  bookmark: SizedBox(),
-                                  /*Icon(
-                                    Icons.bookmark,
-                                    color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                    size: 22,
-                                  ),*/
-                                  // bookmark: LikeButton(
-                                  //   onTap: (isLiked) async {
-                                  //     var result = await saveBookMartApi(memberId: matches[i].profileId.toString());
-                                  //     if (result['status'] == true) {
-                                  //       Fluttertoast.showToast(msg: "Bookmark Saved");
-                                  //       // Fluttertoast.showToast("Bookmark Saved");
-                                  //     } else {
-                                  //
-                                  //     }
-                                  //
-                                  //   },
-                                  //   size: 22,
-                                  //   circleColor: const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                                  //   bubblesColor: const BubblesColor(
-                                  //     dotPrimaryColor: Color(0xff33b5e5),
-                                  //     dotSecondaryColor: Color(0xff0099cc),
-                                  //   ),
-                                  //
-                                  //   likeBuilder: (bool isLiked) {
-                                  //     // return Icon(
-                                  //     //   Icons.bookmark,
-                                  //     //   color: matches[i].bookmark == 0 ? Colors.grey : primaryColor,
-                                  //     //   size: 22,
-                                  //     // );
-                                  //   },
-                                  //
-                                  // ),
+                                  bookmark: const SizedBox(),
                                   dob:'$age yrs',
                                   height:"",
                                   state:matches[i].profile?.basicInfo?.presentAddress?.state ?? '',
+                                  text: matches[i].profile?.basicInfo?.aboutUs ?? '',
                                 );
                               }
                               if (isLoading) {

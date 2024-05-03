@@ -56,53 +56,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: CustomAppBar(title: "Photo",isBackButtonExist: true,),
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   leading: Padding(
-      //     padding: const EdgeInsets.only(left: 16),
-      //     child: backButton(
-      //         context: context,
-      //         image: icArrowLeft,
-      //         onTap: () {
-      //           Navigator.pop(context); // Pop back to SignUpOnboardScreen
-      //           SignUpOnboardScreen.pageViewKey.currentState?.navigateToPage(3);
-      //
-      //           // Navigator.push(context, MaterialPageRoute(
-      //           //     builder: (builder) =>
-      //           //     const HomeDashboardScreen()));
-      //         }),
-      //   ),
-      //   actions:  [
-      //
-      //     const SizedBox(width: 5,),
-      //     selectedItems.isNotEmpty ?
-      //      Padding(
-      //       padding: EdgeInsets.only(right: 12.0),
-      //       child: Row(
-      //         children: [
-      //           GestureDetector(
-      //               onTap: () {
-      //                 setState(() {
-      //                   if (allImagesSelected) {
-      //                     // If all images are selected, clear the list
-      //                     selectedItems.clear();
-      //                   } else {
-      //                     // If not all images are selected, add all images
-      //                     selectedItems.addAll(images);
-      //                   }
-      //                   allImagesSelected = !allImagesSelected;
-      //                 });
-      //
-      //               },
-      //               child: Image.asset(icSelectAll,height: 24,
-      //                 width: 24,)),
-      //           Icon(Icons.delete),
-      //         ],
-      //       ),
-      //     ) :
-      //         SizedBox(),
-      //   ],
-      // ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
@@ -234,29 +188,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
               SizedBox(
                 height: 38,
               ),
-              /*Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                height: 54,
-                child: Row(
-                  children: [
-                    Expanded(
-                   *//*   child: MainButton(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => TPostFormScreen(
-                                  pickedImages: _pickedImages,
-                                  onPop: (val) {
-                                    widget.onPop(val);
-                                  },
-                                )));
-                          },
-                          title: "Continue".tr(),
-                          textStyleColor: Colors.white,
-                          backgroundColor: ThemeColor.primarycolor),
-                    )*//*
-                  ],
-                ),
-              ),*/
+
               SizedBox(
                 height: 16,
               ),
@@ -317,132 +249,6 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
               }, title: "Add")
             ],
           ),
-       /*   child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                  child: GestureDetector(
-                    onTap:  () async {
-                      XFile? v = await _imgPicker.pickImage(
-                          source: ImageSource.gallery);
-                      if (v != null) {
-                        setState(
-                              () {
-                                _picker = File(v.path);
-                          },
-                        );
-                      }
-
-                    },
-                    child: Container(
-                      height: 160,
-                      width: 160,
-                      padding: EdgeInsets.all(24),
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-
-                        // color: Colors.redAccent,
-                        border: Border.all(
-                          width: 0.5,
-                          color: Colors.grey
-                        ),
-                          borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: pickedImage.path.isEmpty
-                          ? Image.asset(
-                        icAddImageHolder,
-                        fit: BoxFit.cover,
-                      )  : Image.file(
-                        pickedImage,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-              ),
-              sizedBox8(),
-              Center(
-                child: Text(
-                  "Add Photos",
-                  style: styleSatoshiLight(size: 16, color: Colors.black),
-                ),
-              ),
-
-              sizedBox16(),
-              Text(
-                "All Photos",
-                style: styleSatoshiBold(size: 16, color: Colors.black),
-              ),
-              sizedBox14(),
-              SizedBox(
-                height: 500,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: images.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 1,
-                  ),
-                  itemBuilder: (_, i) {
-                    return GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onLongPress: () {
-                        if (selectedItems.isEmpty) {
-                          setState(() {
-                            selectedItems.add(images[i]);
-                          });
-                        }
-                      },
-                      onTap: () {
-                        if (selectedItems.isEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PhotoViewScreen(
-                                imageProvider: AssetImage(images[i]),
-                              ),
-                            ),
-                          );
-
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             selectedItems()));
-                        } else {
-                          if (selectedItems.contains(images[i])) {
-                            setState(() {
-                              selectedItems.remove(images[i]);
-                            });
-                          } else {
-                            setState(() {
-                              selectedItems.add(images[i]);
-                            });
-                          }
-                        }
-
-                      },
-                      child: Container(
-                        height: 220,
-                        width: 130,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: selectedItems.contains(images[i])
-                                ? primaryColor // Border color for selected or long-pressed items
-                                : Colors.grey,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Image.asset(images[i]),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),*/
         ),
       ),
     );

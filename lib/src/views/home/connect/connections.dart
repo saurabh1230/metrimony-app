@@ -59,7 +59,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
   LoginResponse? response;
 
-  // bool like = false;
+
 
   getMatches() {
     isLoading = true;
@@ -123,15 +123,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           style: styleSatoshiBold(size: 20, color: Colors.white),
         ),
         actions: const [
-        /*  GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (builder) => const SavedMatchesScreen()));
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 16.0),
-              child: Text("Sortlisted"),
-            ),
-          )*/
+
         ],
       ),
       body:  GetBuilder<MatchesController>(builder: (matchesControl) {
@@ -323,17 +315,12 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                                 height: 30,
                                                 width: 134,
                                                 context: context,
-                                                onTap: () {
-
-                                                },
-                                                title: "Connected"),
-
-                                          ],
+                                                onTap: () {},
+                                                title: "Connected"),],
                                         ),
                                       )
                                     ],
                                   ),
-
                                 ),
                               )
                             ],
@@ -342,8 +329,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           if (isLoading) {
                             return customLoader(size: 40);
                           } else {
-                            return const Center(
-                                child: Text("All matches loaded"));
+                            return const SizedBox();
                           }
                         }
                       },

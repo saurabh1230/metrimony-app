@@ -100,13 +100,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
     minimumDegreeController.text= preferenceModel.minDegree.toString() ?? '';
     financialCondition.text= preferenceModel.financialCondition.toString() ?? '';
     languageController.text= preferenceModel.language.toString() ?? '';
-/*    countryController.text = physicalData.complexion.toString() ?? '';
-    heightController.text =physicalData.height.toString() ?? '';
-    weightController.text =physicalData.weight.toString() ?? '';
-    preferredReligionController.text = physicalData.bloodGroup.toString()?? '';
-    eyeColorController.text =physicalData.eyeColor.toString() ?? '';
-    hairColorController.text = physicalData.hairColor.toString() ?? '';
-    disablityController.text =physicalData.disability.toString() ?? '';*/
+
 
 
   }
@@ -431,43 +425,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                                 ),
                               ),
 
-                              // Time picker
-                              // Container(
-                              //   height: 300,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _feet - 5,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _feet = index + 5;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       7, // 7 feet in the range from 5 to 11
-                              //           (index) => Center(child: Text('${index + 5}\'')),
-                              //     ),
-                              //   ),
-                              // ),
-                              // Container(
-                              //   height: 200,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _inches,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _inches = index;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       12, // 12 inches in a foot
-                              //           (index) => Center(child: Text('$index\"')),
-                              //     ),
-                              //   ),
-                              // ),
+
 
                               // Close button
                               Row(
@@ -513,30 +471,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                         );
                       },
                     );
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'Height in feet',
-                    //       addTextField: TextFormField(
-                    //         keyboardType: TextInputType.number,
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {
-                    //
-                    //           });
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: heightController,
-                    //         decoration: AppTFDecoration(
-                    //             hint: 'Height').decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
+
                   },
                   child: buildDataAddRow(title: 'Min Height ',
                       data1: heightController.text.isEmpty
@@ -611,45 +546,6 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                                 ),
                               ),
 
-                              // Time picker
-                              // Container(
-                              //   height: 300,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _feet - 5,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _feet = index + 5;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       7, // 7 feet in the range from 5 to 11
-                              //           (index) => Center(child: Text('${index + 5}\'')),
-                              //     ),
-                              //   ),
-                              // ),
-                              // Container(
-                              //   height: 200,
-                              //   child: CupertinoPicker(
-                              //     scrollController: FixedExtentScrollController(
-                              //       initialItem: _inches,
-                              //     ),
-                              //     itemExtent: 32,
-                              //     onSelectedItemChanged: (index) {
-                              //       setState(() {
-                              //         _inches = index;
-                              //       });
-                              //     },
-                              //     children: List.generate(
-                              //       12, // 12 inches in a foot
-                              //           (index) => Center(child: Text('$index\"')),
-                              //     ),
-                              //   ),
-                              // ),
-
-                              // Close button
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
 
@@ -693,30 +589,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                         );
                       },
                     );
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'Height in feet',
-                    //       addTextField: TextFormField(
-                    //         keyboardType: TextInputType.number,
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {
-                    //
-                    //           });
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: heightController,
-                    //         decoration: AppTFDecoration(
-                    //             hint: 'Height').decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
+
                   },
                   child: buildDataAddRow(title: 'Max Height ',
                       data1: maxHeightController.text.isEmpty
@@ -900,41 +773,6 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     isControllerTextEmpty: motherTongueController.text.isEmpty,
                   ),
                 ),
-           /*     GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Mother Tongue',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: motherTongueController,
-                            decoration: AppTFDecoration(
-                                hint: 'Mother Tongue').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(title: 'Mother Tongue',
-                    data1: motherTongueController.text.isEmpty
-                        ? (preferenceModel.id == null || preferenceModel.motherTongue == null || preferenceModel.motherTongue!.isEmpty
-                        ? 'Not Added'
-                        : preferenceModel.motherTongue.toString())
-                        : motherTongueController.text,
-                    data2: StringUtils.capitalize(motherTongueController.text),
-                    isControllerTextEmpty: motherTongueController.text.isEmpty, widget: SizedBox(),),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),*/
                 sizedBox16(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -968,41 +806,6 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     isControllerTextEmpty: communityController.text.isEmpty,
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     showDialog(
-                //       context: context,
-                //       builder: (BuildContext context) {
-                //         return NameEditDialogWidget(
-                //           title: 'Community',
-                //           addTextField: TextFormField(
-                //             maxLength: 40,
-                //             onChanged: (v) {
-                //               setState(() {
-                //               });
-                //             },
-                //             onEditingComplete: () {
-                //               Navigator.pop(context); // Close the dialog
-                //             },
-                //             controller: communityController,
-                //             decoration: AppTFDecoration(
-                //                 hint: 'Community').decoration(),
-                //             //keyboardType: TextInputType.phone,
-                //           ),
-                //         );
-                //       },
-                //     );
-                //   },
-                //   child: buildDataAddRow(title: 'Community',
-                //     data1: communityController.text.isEmpty
-                //         ? (preferenceModel.id == null || preferenceModel.community == null || preferenceModel.community!.isEmpty
-                //         ? 'Not Added'
-                //         : preferenceModel.community!)
-                //         : communityController.text,
-                //     data2: StringUtils.capitalize(communityController.text),
-                //     isControllerTextEmpty: communityController.text.isEmpty, widget: SizedBox(),),
-                //   // child: CarRowWidget(favourites: favourites!,)
-                // ),
                 sizedBox16(),
                 GestureDetector(
                   onTap: () {
@@ -1909,7 +1712,7 @@ class _MotherTongueSheet extends State<MotherTongueSheet> {
                     // width: 78,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: _gIndex == 5 ? primaryColor : Colors.transparent,
+                      color: _gIndex == 6 ? primaryColor : Colors.transparent,
                     ),
                     child: Center(
                         child: Text(
@@ -1917,6 +1720,35 @@ class _MotherTongueSheet extends State<MotherTongueSheet> {
                           style: styleSatoshiLight(
                               size: 14,
                               color: _gIndex == 6 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 7;
+                    Navigator.of(context).pop();
+                    widget.onPop("Urdu");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 7 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Urdu',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 7 ? Colors.white : Colors.black),
                           // style
                           // : _gIndex == 1
                           //     ? kManRope_500_16_white
@@ -1949,6 +1781,8 @@ class _MotherTongueSheet extends State<MotherTongueSheet> {
       _gIndex = 5;
     } else if (widget.privacyStatus == "Punjabi") {
       _gIndex = 6;
+    }  else if (widget.privacyStatus == "Urdu") {
+      _gIndex = 7;
     }
     super.initState();
   }
@@ -2242,6 +2076,65 @@ class _CommuitySheet extends State<CommuitySheet> {
                         )),
                   ),
                 ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 9;
+                    Navigator.of(context).pop();
+                    widget.onPop("Muslim");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 9 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Muslim',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 9 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    _gIndex = 10;
+                    Navigator.of(context).pop();
+                    widget.onPop("Marathi");
+                  }),
+                  child: Container(
+                    height: 44,
+                    // width: 78,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: _gIndex == 10 ? primaryColor : Colors.transparent,
+                    ),
+                    child: Center(
+                        child: Text(
+                          'Marathi',
+                          style: styleSatoshiLight(
+                              size: 14,
+                              color: _gIndex == 10 ? Colors.white : Colors.black),
+                          // style
+                          // : _gIndex == 1
+                          //     ? kManRope_500_16_white
+                          //     : kManRope_500_16_626A6A,
+                        )),
+                  ),
+                ),
+
 
               ],
             ),
@@ -2272,6 +2165,10 @@ class _CommuitySheet extends State<CommuitySheet> {
       _gIndex = 7;
     } else if (widget.privacyStatus == "Aggarwal") {
       _gIndex = 8;
+    } else if (widget.privacyStatus == "Muslim") {
+      _gIndex = 9;
+    }  else if (widget.privacyStatus == "Marathi") {
+      _gIndex = 10;
     }
     super.initState();
   }

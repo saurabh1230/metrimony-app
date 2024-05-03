@@ -247,25 +247,5 @@ class _AllPremiumMatchesScreenState extends State<AllPremiumMatchesScreen> {
     });
   }
 
-/*  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      centerTitle: false,
-      automaticallyImplyLeading: false,
-      title: Text("Matches",
-        style: styleSatoshiBold(size: 22, color: Colors.black),),
-      actions: [
-        backButton(context: context,
-            image: icSearch,
-            onTap: (){}),
-        SizedBox(width: 10,),
-        Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: backButton(context: context, image: icFilter, onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(
-                builder: (builder) => FilterMatchesScreen()));
-          }),
-        ),
-      ],
-    );
-  }*/
+
 }

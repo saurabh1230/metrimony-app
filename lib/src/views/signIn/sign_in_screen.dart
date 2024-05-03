@@ -123,15 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         }, onChanged: (value) {
 
                                     }
-                                      //   validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email address.';
-                                      //   }
-                                      //   if (!isValidEmail(value)) {
-                                      //     return 'Please enter a valid email address.';
-                                      //   }
-                                      //   return null;
-                                      // },
+
                                     ),
                                     sizedBox20(),
                                     Text("Password",
@@ -209,15 +201,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   SharedPrefs().setLoginTrue();
                                                   SharedPrefs().setProfilePhoto(response!.data!.user!.image.toString());
                                                   SharedPrefs().setLoginGender(response!.data!.user!.gender.toString());
-                                                  // SharedPrefs().setLoginGender(value['data']['user']['gender']);
-                                                  // SharedPrefs().setLoginToken(value['data']['access_token']);
-                                                  // SharedPrefs().setUserName(value['data']['user']['username']);
-                                                  // SharedPrefs().setEmail(value['data']['user']['email']);
-                                                  // SharedPrefs().setPhone(value['data']['user']['mobile']);
-                                                  // SharedPrefs().setProfileId(value['data']['user']['profile_id'] as int);
-                                                  // SharedPrefs().setLoginTrue();
-                                                  // SharedPrefs().setProfilePhoto(value['data']['user']['image']);
-                                                  // SharedPrefs().setLoginGender(value['data']['user']['gender']);
                                                   SharedPrefs().setLoginEmail(emailController.text);
                                                   SharedPrefs().setLoginPassword(passwordController.text);
                                                   Navigator.push(context, MaterialPageRoute(builder: (builder) =>
@@ -231,46 +214,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   print("fkfm");
                                                   Fluttertoast.showToast(msg: "please check your account");
 
-                                                  // List<dynamic> errors = value['message']['error'];
-                                                  // String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                                  // Fluttertoast.showToast(msg: errorMessage);
                                                 }
                                               });
-                                              /*setState(() {
-                                                loading = true;
-                                              });
-                                              loginApi(
-                                                password: passwordController.text,
-                                                userName: emailController.text,
-                                              ).then((value) {
-                                                response = value;
-                                                if (response?.status != null &&
-                                                    response!.status == 'success') {
-                                                  setState(() {
-                                                    loading = false;
-                                                  });
-                                                  SharedPrefs().setLoginToken(response!.data!.accessToken.toString());
-                                                  SharedPrefs().setUserName(response!.data!.user!.username.toString());
-                                                  SharedPrefs().setEmail(response!.data!.user!.email.toString());
-                                                  SharedPrefs().setPhone(response!.data!.user!.mobile.toString());
-                                                  // SharedPrefs().setProfileId(value['data']['user']['profile_id']);
-                                                  SharedPrefs().setLoginTrue();
-                                                  SharedPrefs().setLoginEmail(emailController.text);
-                                                  SharedPrefs().setLoginPassword(passwordController.text);
-                                                  Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                                      HomeDashboardScreen(response: response!,)));
-                                                  ToastUtil.showToast("Login Successful");
-
-                                                }
-                                                else if(value['status'] == 'error'){
-                                                  setState(() {
-                                                    loading = false;
-                                                  });
-                                                  List<dynamic> errors = value['message']['error'];
-                                                  String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                                  Fluttertoast.showToast(msg: errorMessage);
-                                                }
-                                              });*/
                                             }
                                           } else {
                                             setState(() {

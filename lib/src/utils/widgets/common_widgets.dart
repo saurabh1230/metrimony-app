@@ -196,15 +196,31 @@ Widget customCard({
 
 class AddButton extends StatelessWidget {
   final Function() tap;
-  const AddButton({super.key, required this.tap});
+  final double? size;
+  const AddButton({super.key, required this.tap, this.size});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(onTap: tap,
         behavior: HitTestBehavior.translucent,
-        child: Container(child: Image.asset(addbutton,height: 30,)));
+        child: Container(child: Image.asset(addbutton, height: size ?? 30,)));
   }
 }
+
+class TickButton extends StatelessWidget {
+  final Function() tap;
+  final double? size;
+
+  const TickButton({super.key, required this.tap,  this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(onTap: tap,
+        behavior: HitTestBehavior.translucent,
+        child: Image.asset(tickButton,height:size ?? 30,));
+  }
+}
+
 
 
 class SimmerTextHolder extends StatelessWidget {

@@ -100,25 +100,6 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
           padding: EdgeInsets.only(right: 12.0),
           child: Row(
             children: [
-/*
-              GestureDetector(
-                  onTap: () {
-
-
-                   *//* setState(() {
-                      if (allImagesSelected) {
-                        // If all images are selected, clear the list
-                        selectedItems.clear();
-                      } else {
-                        // If not all images are selected, add all images
-                        selectedItems.addAll(images);
-                      }
-                      allImagesSelected = !allImagesSelected;
-                    });*//*
-
-                  },
-                  child: Image.asset(icSelectAll,height: 24,
-                    width: 24,)),*/
               GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -223,42 +204,6 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                             selectedItemId = photos[i].id.toString(); // Set the ID of the selected item
                           });
                         },
-                        /*  onLongPress: () {
-                            if (selectedItems.isEmpty) {
-                              setState(() {
-                                selectedItems.add(photos[i].id.toString());
-                              });
-                            }
-                          },*/
-                        /*  onTap: () {
-                            if (selectedItems.isEmpty) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PhotoViewScreen(
-                                    imageProvider: AssetImage(photos[i].image.toString()),
-                                  ),
-                                ),
-                              );
-
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             selectedItems()));
-                            } else {
-                              if (selectedItems.contains(photos[i].id.toString())) {
-                                setState(() {
-                                  selectedItems.remove(photos[i].id.toString());
-                                });
-                              } else {
-                                setState(() {
-                                  selectedItems.add(photos[i].id.toString());
-                                });
-                              }
-                            }
-
-                          },*/
                           child: Container(
                             height: 220,
                             width: 130,

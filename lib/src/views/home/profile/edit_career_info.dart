@@ -1,6 +1,7 @@
 
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:bureau_couple/src/models/other_person_details_models.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,11 +83,6 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                   isLoading ? Loading() : careerInfo();
                 });
 
-                // isLoading ? Loading() :careerInfo();
-                // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                // const KycWaitScreen()));
-
-                // ToastUtil.showToast("Login Successful");
 
                 ToastUtil.showToast("Deleted Successfully");
                 print('done');
@@ -126,7 +122,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                     child: buildTextFormField(context,
                                         hint: 'company', controller: companyController),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 6,
                                   ),
                                   Expanded(
@@ -179,11 +175,6 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                           loading = false;
                                         });
 
-                                        // isLoading ? Loading() :careerInfo();
-                                        // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                        // const KycWaitScreen()));
-
-                                        // ToastUtil.showToast("Login Successful");
 
                                         ToastUtil.showToast("Updated Successfully");
                                         print('done');
@@ -200,39 +191,6 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                         Fluttertoast.showToast(msg: errorMessage);
                                       }
                                     });
-                                    /*   educationInfoAddApi(
-                                    institute: instituteController.text,
-                                    degree: degreeController.text,
-                                    fieldOfStudy: fieldOfStudyController.text,
-                                    regNO: resultController.text, start: startingYearController.text,
-                                    end: endingYearController.text, result: resultController.text,
-                                    outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
-                                  setState(() {
-                                  });
-                                  if (value['status'] == true) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-
-                                    // isLoading ? Loading() :careerInfo();
-                                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                    // const KycWaitScreen()));
-
-                                    // ToastUtil.showToast("Login Successful");
-
-                                    ToastUtil.showToast("Updated Successfully");
-                                    print('done');
-                                  } else {
-                                    setState(() {
-                                      loading = false;
-                                    });
-
-
-                                    List<dynamic> errors = value['message']['error'];
-                                    String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                    Fluttertoast.showToast(msg: errorMessage);
-                                  }
-                                });*/
                                   },
                                   title: "Save")
                             ],
@@ -241,8 +199,8 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
               },
             );
           },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+          child: const Padding(
+            padding: EdgeInsets.only(right: 16.0),
             child: Icon(Icons.add,color: Colors.white,),
           ),
         )],),),
@@ -252,7 +210,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
           child: button(
               context: context,
               onTap: () {
-                print(selectedItemId);
+                Navigator.pop(context);
               },
               title: "Save"),
         ),
@@ -350,6 +308,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                                       Navigator.pop(context);
                                                       setState(() {
                                                         loading = false;
+                                                         careerInfo();
                                                       });
                                                       companyController.clear();
                                                       designationController.clear();
@@ -382,7 +341,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                         },
                         child: const Padding(
                           padding: EdgeInsets.only(top: 50.0),
-                          child: DottedPlaceHolder(text: "Add Education Info"),
+                          child: DottedPlaceHolder(text: "Add Career Info"),
                         ),
                       )):
                       ListView.builder(
@@ -641,11 +600,6 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                       loading = false;
                                     });
 
-                                    // isLoading ? Loading() :careerInfo();
-                                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                    // const KycWaitScreen()));
-
-                                    // ToastUtil.showToast("Login Successful");
 
                                     ToastUtil.showToast("Updated Successfully");
                                     print('done');
@@ -662,39 +616,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                     Fluttertoast.showToast(msg: errorMessage);
                                   }
                                 });
-                                /*   educationInfoAddApi(
-                                    institute: instituteController.text,
-                                    degree: degreeController.text,
-                                    fieldOfStudy: fieldOfStudyController.text,
-                                    regNO: resultController.text, start: startingYearController.text,
-                                    end: endingYearController.text, result: resultController.text,
-                                    outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
-                                  setState(() {
-                                  });
-                                  if (value['status'] == true) {
-                                    setState(() {
-                                      loading = false;
-                                    });
 
-                                    // isLoading ? Loading() :careerInfo();
-                                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                                    // const KycWaitScreen()));
-
-                                    // ToastUtil.showToast("Login Successful");
-
-                                    ToastUtil.showToast("Updated Successfully");
-                                    print('done');
-                                  } else {
-                                    setState(() {
-                                      loading = false;
-                                    });
-
-
-                                    List<dynamic> errors = value['message']['error'];
-                                    String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                    Fluttertoast.showToast(msg: errorMessage);
-                                  }
-                                });*/
                               },
                               title: "Save")
                     ],
