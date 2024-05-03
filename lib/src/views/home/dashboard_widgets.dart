@@ -96,10 +96,15 @@ otherUserdataHolder({
                           ),
                           Row(
                             children: [
-                              Text(
-                                '${dob}',
-                                overflow: TextOverflow.ellipsis, maxLines: 1,
-                                style: styleSatoshiLarge(size: 16, color: Colors.white),),
+                              Container( padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8),
+                                decoration : BoxDecoration(
+                                color: Colors.greenAccent,borderRadius: BorderRadius.circular(12)
+                              ),
+                                child: Text(
+                                  '${dob}',
+                                  overflow: TextOverflow.ellipsis, maxLines: 1,
+                                  style: styleSatoshiLarge(size: 16, color: Colors.black),),
+                              ),
                               const SizedBox(width: 6,),
                               Container(
                                 height: 4,
