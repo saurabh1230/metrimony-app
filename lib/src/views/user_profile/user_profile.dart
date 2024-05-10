@@ -480,79 +480,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ],
                     ),
-                    sizedBox16(),
-                    Card(
-                      child: Column(
-                        children: [
-                          Stack(
-                            children: [
-                              Column(
-                                children: [Container(
-                                  height: 70,
-                                ),
-                                  Image.asset(preferenceHolder,),
-                                ],
-                              ),
-                              Positioned(top: 35,left: 0,right: 0,
-                                child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
-                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
-                                        image: model.data?.user?.image != null ? '$baseProfilePhotoUrl${model.data?.user?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
-                                    ),),
-                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
-                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
-                                        image: model.data?.matches?.image != null ? '$baseProfilePhotoUrl${model.data?.matches?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
-                                    ),),
-                                  ],),
-                              ),
-                              Positioned(bottom: 10,left: 12,right: 12,
-                                child: Row(
-                                  children: [
-                                    Text("Your Match Preferences",style: styleSatoshiLight(size: 16, color: Colors.white),overflow: TextOverflow.ellipsis,),
-                                    Text("",style: styleSatoshiLight(size: 20, color: Colors.white),overflow: TextOverflow.ellipsis,),
-                                  ],),
-                              )
-                            ],
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(children: [
-                              buildPrefProfileRow(image: birthHolder, title: 'Age',
-                                  text:
-                                  model.data!.matches?.partnerExpectation?.maxAge.toString()  ?? "",
-                                  icon:  crossholder
-                              ),const Divider(),
-                              buildPrefProfileRow(image: icHeightIcon, title: 'Height',
-                                  text:
-                                  "Min: ${model.data!.matches?.partnerExpectation?.minHeight.toString()} "
-                                      "Max: ${ model.data!.matches?.partnerExpectation?.maxHeight.toString()} ft" ?? '', icon:  crossholder
-                              ),const Divider(),
-                              buildPrefProfileRow(image: icReligionIcon,
-                                  title: 'Religion',
-                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.religion  ?? ""), icon : model.data!.matches?.basicInfo?.religion ==  model.data!.user!.partnerExpectation!.religion ?  tickHolder : crossholder),
-                              const Divider(),
-                              buildPrefProfileRow(image: icMotherToungeIcon,
-                                  title: 'Mother Tongue',
-                                  text: StringUtils.capitalize(model.data!.matches!.motherTongue == null ?"":
-                                  model.data!.matches!.motherTongue!.toString()), icon:  model.data!.matches?.basicInfo?.motherTongue ==  model.data!.user!.partnerExpectation!.motherTongue ? tickHolder :crossholder
-                              ),const Divider(),
-                              buildPrefProfileRow(image: weightHolder,
-                                  title: 'Weight',
-                                  text: StringUtils.capitalize('max ${model.data!.matches?.partnerExpectation?.maxWeight  ?? ""}'),icon: model.data!.matches?.physicalAttributes!.weight ==  model.data!.user?.partnerExpectation!.maxWeight! ? crossholder : tickHolder
-                              ),const Divider(),
-                              buildPrefProfileRow(image: communityHolder,
-                                  title: 'Community',
-                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.community ?? ""), icon:crossholder
-                              ),
-                            ],),
-                          ),
-                        ],
-                      ),
-                    ),
-                    sizedBox16(),
-
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -695,6 +622,80 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                     sizedBox16(),
+
+                    Card(
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              Column(
+                                children: [Container(
+                                  height: 70,
+                                ),
+                                  Image.asset(preferenceHolder,),
+                                ],
+                              ),
+                              Positioned(top: 35,left: 0,right: 0,
+                                child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                        image: model.data?.user?.image != null ? '$baseProfilePhotoUrl${model.data?.user?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                    ),),
+                                    Center(child: Container(decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.grey.withOpacity(0.40)),
+                                      padding: const EdgeInsets.all(4), child: ClipOval(child: CustomImageWidget(
+                                        image: model.data?.matches?.image != null ? '$baseProfilePhotoUrl${model.data?.matches?.image}' : 'fallback_image_url_here',height: 70,width: 70,)),
+                                    ),),
+                                  ],),
+                              ),
+                              Positioned(bottom: 10,left: 12,right: 12,
+                                child: Row(
+                                  children: [
+                                    Text("Your Match Preferences",style: styleSatoshiLight(size: 16, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                    Text("",style: styleSatoshiLight(size: 20, color: Colors.white),overflow: TextOverflow.ellipsis,),
+                                  ],),
+                              )
+                            ],
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(children: [
+                              buildPrefProfileRow(image: birthHolder, title: 'Age',
+                                  text:
+                                  model.data!.matches?.partnerExpectation?.maxAge.toString()  ?? "",
+                                  icon:  crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: icHeightIcon, title: 'Height',
+                                  text:
+                                  "Min: ${model.data!.matches?.partnerExpectation?.minHeight.toString()} "
+                                      "Max: ${ model.data!.matches?.partnerExpectation?.maxHeight.toString()} ft" ?? '', icon:  crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: icReligionIcon,
+                                  title: 'Religion',
+                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.religion  ?? ""), icon : model.data!.matches?.basicInfo?.religion ==  model.data!.user!.partnerExpectation!.religion ?  tickHolder : crossholder),
+                              const Divider(),
+                              buildPrefProfileRow(image: icMotherToungeIcon,
+                                  title: 'Mother Tongue',
+                                  text: StringUtils.capitalize(model.data!.matches!.motherTongue == null ?"":
+                                  model.data!.matches!.motherTongue!.toString()), icon:  model.data!.matches?.basicInfo?.motherTongue ==  model.data!.user!.partnerExpectation!.motherTongue ? tickHolder :crossholder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: weightHolder,
+                                  title: 'Weight',
+                                  text: StringUtils.capitalize('max ${model.data!.matches?.partnerExpectation?.maxWeight  ?? ""}'),icon: model.data!.matches?.physicalAttributes!.weight ==  model.data!.user?.partnerExpectation!.maxWeight! ? crossholder : tickHolder
+                              ),const Divider(),
+                              buildPrefProfileRow(image: communityHolder,
+                                  title: 'Community',
+                                  text: StringUtils.capitalize(model.data!.matches?.partnerExpectation?.community ?? ""), icon:crossholder
+                              ),
+                            ],),
+                          ),
+                        ],
+                      ),
+                    ),
+                    sizedBox16(),
+
+
 
 
                     sizedBox14(),
