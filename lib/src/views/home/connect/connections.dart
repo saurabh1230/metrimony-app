@@ -168,159 +168,157 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                   ),
                                 );
                               },
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Container(
-                                          height: 160,
-                                          clipBehavior: Clip.hardEdge,
-                                          decoration: BoxDecoration(
-                                              color: colorDarkCyan.withOpacity(0.03),
-                                              // color:Colors.red,
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                            '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
-                                            fit: BoxFit.fill,
-                                            errorWidget: (context, url, error) =>
-                                                Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Image.asset(icLogo,
-                                                    height: 40,
-                                                    width: 40,),
-                                                ),
-                                            progressIndicatorBuilder: (a, b, c) =>
-                                                customShimmer(height: 170, /*width: 0,*/),
-                                          ),
-
-                                          // child: Image.asset(images[i],
-                                          // height: 170,),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 160,
+                                        clipBehavior: Clip.hardEdge,
+                                        decoration: BoxDecoration(
+                                            color: colorDarkCyan.withOpacity(0.03),
+                                            // color:Colors.red,
+                                            borderRadius: BorderRadius.circular(10)
                                         ),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                          '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, url, error) =>
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Image.asset(icLogo,
+                                                  height: 40,
+                                                  width: 40,),
+                                              ),
+                                          progressIndicatorBuilder: (a, b, c) =>
+                                              customShimmer(height: 170, /*width: 0,*/),
+                                        ),
+
+                                        // child: Image.asset(images[i],
+                                        // height: 170,),
                                       ),
-                                      const SizedBox(width: 20,),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 4,
-                                                  child: Text(
-                                                    '${StringUtils.capitalize(
-                                                  matches[i].profile!.firstname.toString())} ${StringUtils.capitalize(
-                                                        matches[i].profile!.lastname.toString())}',
-                                                    // child: Text(filteredNames[i],
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                    style: styleSatoshiBold(
-                                                        size: 19, color: Colors.black),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10,),
-
-
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  matches[i].profile!.email.toString(),
+                                    ),
+                                    const SizedBox(width: 20,),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 4,
+                                                child: Text(
+                                                  '${StringUtils.capitalize(
+                                                matches[i].profile!.firstname.toString())} ${StringUtils.capitalize(
+                                                      matches[i].profile!.lastname.toString())}',
+                                                  // child: Text(filteredNames[i],
                                                   overflow: TextOverflow.ellipsis,
-                                                  maxLines: 2,
-
-                                                  style: styleSatoshiMedium(
-                                                      size: 13,
-                                                      color: Colors.black.withOpacity(
-                                                          0.70)),
+                                                  maxLines: 1,
+                                                  style: styleSatoshiBold(
+                                                      size: 19, color: Colors.black),
                                                 ),
-                                                const SizedBox(width: 6,),
+                                              ),
+                                              const SizedBox(width: 10,),
 
-                                              ],
-                                            ),
-                                            Text(
-                                              matches[i].profile!.mobile.toString().substring(2),
-                                              maxLines: 2,
-                                              style: styleSatoshiMedium(
-                                                  size: 13,
-                                                  color: Colors.black.withOpacity(0.80)),
-                                            ),
-                                            const SizedBox(height: 3,),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: Image.asset(icLocation,
-                                                    height: 17,
-                                                    width: 17,),
+
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                matches[i].profile!.email.toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+
+                                                style: styleSatoshiMedium(
+                                                    size: 13,
+                                                    color: Colors.black.withOpacity(
+                                                        0.70)),
+                                              ),
+                                              const SizedBox(width: 6,),
+
+                                            ],
+                                          ),
+                                          Text(
+                                            matches[i].profile!.mobile.toString().substring(2),
+                                            maxLines: 2,
+                                            style: styleSatoshiMedium(
+                                                size: 13,
+                                                color: Colors.black.withOpacity(0.80)),
+                                          ),
+                                          const SizedBox(height: 3,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Image.asset(icLocation,
+                                                  height: 17,
+                                                  width: 17,),
+                                              ),
+                                              const SizedBox(width: 2,),
+                                              Expanded(
+                                                flex: 10,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      // 'Location',
+                                                      '${matches[i].profile!.basicInfo!.presentAddress!.city}',
+                                                      // "New York, USA",
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+
+                                                      style: styleSatoshiMedium(
+                                                          size: 13,
+                                                          color: Colors.black.withOpacity(
+                                                              0.70)),
+                                                    ),
+                                                    SizedBox(width: 3,),
+                                                    Container(
+                                                      height: 4,
+                                                      width: 5,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 3,),
+
+                                                    Text(
+                                                      '${matches[i].profile!.basicInfo!.presentAddress!.state}',
+
+                                                      // '${matches[i].address!.country}',
+                                                      // "New York, USA",
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+
+                                                      style: styleSatoshiMedium(
+                                                          size: 13,
+                                                          color: Colors.black.withOpacity(
+                                                              0.70)),
+                                                    ),
+                                                  ],
                                                 ),
-                                                const SizedBox(width: 2,),
-                                                Expanded(
-                                                  flex: 10,
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        // 'Location',
-                                                        '${matches[i].profile!.basicInfo!.presentAddress!.city}',
-                                                        // "New York, USA",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 2,
-
-                                                        style: styleSatoshiMedium(
-                                                            size: 13,
-                                                            color: Colors.black.withOpacity(
-                                                                0.70)),
-                                                      ),
-                                                      SizedBox(width: 3,),
-                                                      Container(
-                                                        height: 4,
-                                                        width: 5,
-                                                        decoration: BoxDecoration(
-                                                          shape: BoxShape.circle,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                      SizedBox(width: 3,),
-
-                                                      Text(
-                                                        '${matches[i].profile!.basicInfo!.presentAddress!.state}',
-
-                                                        // '${matches[i].address!.country}',
-                                                        // "New York, USA",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 2,
-
-                                                        style: styleSatoshiMedium(
-                                                            size: 13,
-                                                            color: Colors.black.withOpacity(
-                                                                0.70)),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
+                                          ),
 
 
-                                            sizedBox16(),
-                                            connectButton(
-                                                fontSize: 14,
-                                                height: 30,
-                                                width: 134,
-                                                context: context,
-                                                onTap: () {},
-                                                title: "Connected"),],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                          sizedBox16(),
+                                          connectButton(
+                                              fontSize: 14,
+                                              height: 30,
+                                              width: 134,
+                                              context: context,
+                                              onTap: () {},
+                                              title: "Connected"),],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               )
                             ],

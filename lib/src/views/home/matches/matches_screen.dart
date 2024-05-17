@@ -58,7 +58,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   bool isLoading = false;
   int page = 1;
   bool loading = false;
-  int val = 0;
+  // int val = 0;
 
   @override
   void initState() {
@@ -93,7 +93,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       if (mounted) {
         setState(() {
           if (value['status'] == true) {
-            matches.clear();
+            // matches.clear();
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); //
@@ -101,7 +101,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               request.add(false);
             }
             isLoading = false;
-            val = value.length;
+            // val = value.length;
             page++;
           } else {
             isLoading = false;
@@ -112,10 +112,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 
   loadMore() {
+
     print('ndnd');
     // matches.clear();
     // if (!isLoading) {
-    isLoading = true;
+    // isLoading = true;
     getMatchesByGenderApi(
       religion: religionFilter,
       page: page.toString(),
@@ -128,18 +129,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
     ).then((value) {
       if (mounted) {
         setState(() {
-          if (value['status'] == true) { matches.clear();
+          if (value['status'] == true) {
+            // matches.clear();
             for (var v in value['data']['members']['data']) {
               matches.add(MatchesModel.fromJson(v));
               isLoadingList.add(false); // Add false for each new match
               like.add(false);
               request.add(false);
             }
-            isLoading = false;
-          val = value.length;
+            // isLoading = false;
+          // val = value.length;
             page++;
           } else {
-            isLoading = false;
+            // isLoading = false;
           }
         });
       }
@@ -551,7 +553,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
             : matches.isEmpty && matches == null
             ? const Text("No Matches Yet")
             : Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
+              padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 0),
               child: Stack(
                 children: [
                   Text("${matches.length} Matches Found",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
@@ -561,9 +563,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     child: LazyLoadScrollView(
                       isLoading: isLoading,
                       onEndOfPage: () {
-                        if (val >= 8) {
+                        // if (val >= 8) {
                           loadMore();
-                        }
+                        // }
                       },
                       child: ListView.separated(
                         itemCount: matches.length + 1,
@@ -618,51 +620,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   likedColor: Colors.grey,
                                   unlikeColor: primaryColor,
                                   button:
-                                  // matches[i].bookmark == 1
-                                  //     ? button(
-                                  //         fontSize: 14,
-                                  //         height: 30,
-                                  //         width: 134,
-                                  //         context: context,
-                                  //         onTap: () {},
-                                  //         title: "Request Sent")
-                                  //     :
-                                  /*like[i] || matches[i].interestStatus == 2  ?
-                                  TickButton(size: 50,
-                                    tap: () {  },):
-                                  AddButton(size: 50,
-                                    tap: () {
-                                    setState(() {
-                                      // like[i] = !like[i];
-                                    });
-                                    sendRequestApi(
-                                        memberId: matches[i]
-                                            .id
-                                            .toString())
-                                        .then((value) {
-                                      if (value['status'] == true) {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-                                        ToastUtil.showToast(
-                                            "Connection Request Sent");
-                                      } else {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-
-                                        List<dynamic> errors =
-                                        value['message']['error'];
-                                        String errorMessage = errors
-                                            .isNotEmpty
-                                            ? errors[0]
-                                            : "An unknown error occurred.";
-                                        Fluttertoast.showToast(
-                                            msg: errorMessage);
-                                      }
-                                    });
-                                  },),*/
-                                /*  like[i] ? connectLoadingButton(context: context) :*/
                                   connectButton(
                                       fontSize: 14,
                                       height: 30,
@@ -729,15 +686,23 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 )
                               ],
                             );
-                          } else {
-                            if (val >= 8 && isLoading) {
-                              return SizedBox();
-                            } else if (val < 8) {
-                              return SizedBox.shrink();
-                            } else {
-                              return SizedBox();
-                            }
                           }
+                          if (isLoading) {
+                            return customLoader(size: 40);
+                          } else if (isLoading) {
+                            return customLoader(size: 40);
+                          } else {
+                            return Center(child: Text(""));
+                          }
+                          // else {
+                          //   if (/*val >= 8 && */isLoading) {
+                          //     return SizedBox();
+                          //   } else if (val < 8) {
+                          //     return SizedBox.shrink();
+                          //   } else {
+                          //     return SizedBox();
+                          //   }
+                          // }
                         },
                         separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(

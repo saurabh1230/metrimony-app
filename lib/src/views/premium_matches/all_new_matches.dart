@@ -88,7 +88,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
 
     isLoading = true;
     getMatchesByGenderApi(
-      page: "1",
+      page: page.toString(),
       gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
       religion: widget.religionFilter,
       // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
@@ -96,7 +96,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
       minHeight: minHeight.text,
       maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
     ).then((value) {
-      matches.clear();
+      // matches.clear();
       if (mounted) {
         setState(() {
           if (value['status'] == true) {
@@ -107,7 +107,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
               like.add(false); // Add false for each new match
             }
             isLoading = false;
-            val = value.length;
+            // val = value.length;
             page++;
           } else {
             isLoading = false;
@@ -132,17 +132,17 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
       maxWeight: maxWeightController.text,
       motherTongue: motherTongueFilter,
     ).then((value) {
-      matches.clear();
+      // matches.clear();
       if (mounted) {
         setState(() {
-          if (value['status'] == true) { matches.clear();
+          if (value['status'] == true) {
           for (var v in value['data']['members']['data']) {
             matches.add(MatchesModel.fromJson(v));
             isLoadingList.add(false); // Add false for each new match
             like.add(false);
           }
           isLoading = false;
-          val = value.length;
+          // val = value.length;
           page++;
           } else {
             isLoading = false;
@@ -570,243 +570,253 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
             : matches.isEmpty && matches == null
             ? const Text("No Matches Yet")
             : Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
+              padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 0),
               child: Stack(
                 children: [
                   Text("${matches.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
                   // Text("${matches.length} members found"),
                   sizedBox10(),
-                  LazyLoadScrollView(
-                    isLoading: isLoading,
-                    onEndOfPage: () {
-                      if (val >= 8) {
-                        loadMore();
-                      }
-                    },
-                    child: ListView.separated(
-                      itemCount: matches.length + 1,
-                      itemBuilder: (context, i) {
-                        if (i < matches.length) {
-                          DateTime? birthDate = matches[i].basicInfo != null
-                              ? DateFormat('yyyy-MM-dd')
-                              .parse(matches[i].basicInfo!.birthDate!)
-                              : null;
-                          int age = birthDate != null
-                              ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                          return Column(
-                            children: [
-                              otherUserdataHolder(
-                                context: context,
-                                tap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (builder) =>
-                                          UserProfileScreen(
-                                            userId: matches[i].id.toString(),
-                                          ),
-                                    ),
-                                  );
-                                },
-                                height:matches[i].physicalAttributes!.height == null ?
-                                "" :
-                                "${matches[i].physicalAttributes!.height ??
-                                    ''}ft",
-                                imgUrl:
-                                '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                state: matches[i]
-                                    .basicInfo
-                                    ?.presentAddress
-                                    ?.state ??
-                                    '',
-                                userName: matches[i].firstname == null &&
-                                    matches[i].lastname == null
-                                    ? "user"
-                                    : '${StringUtils.capitalize(
-                                    matches[i].firstname ??
-                                        'User')} ${StringUtils.capitalize(
-                                    matches[i].lastname ?? 'User')}',
-                                atributeReligion:
-                                ' ${matches[i].basicInfo?.religion ??
-                                    ''}',
-                                profession: "Software Engineer",
-                                Location:
-                                '${matches[i].address!.state ?? ''}${matches[i]
-                                    .address!.country ?? ''}',
-                                likedColor: Colors.grey,
-                                unlikeColor: primaryColor,
-                                button:
-                                // matches[i].bookmark == 1
-                                //     ? button(
-                                //         fontSize: 14,
-                                //         height: 30,
-                                //         width: 134,
-                                //         context: context,
-                                //         onTap: () {},
-                                //         title: "Request Sent")
-                                //     :
-                                like[i] ? connectLoadingButton(context: context) :
-                                connectButton(
-                                    fontSize: 14,
-                                    height: 30,
-                                    width: 134,
-                                    context: context,
-                                    onTap: () {
-                                      setState(() {
-                                        like[i] = !like[i];
-                                      });
-                                      sendRequestApi(
-                                          memberId: matches[i]
-                                              .id
-                                              .toString())
-                                          .then((value) {
-                                        if (value['status'] == true) {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-                                          ToastUtil.showToast(
-                                              "Connection Request Sent");
-                                        } else {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-
-                                          List<dynamic> errors =
-                                          value['message']['error'];
-                                          String errorMessage = errors
-                                              .isNotEmpty
-                                              ? errors[0]
-                                              : "An unknown error occurred.";
-                                          Fluttertoast.showToast(
-                                              msg: errorMessage);
-                                        }
-                                      });
-                                    },
-                                    showIcon: matches[i].interestStatus == 2 ? false : true,
-                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
-                               /* like[i] || matches[i].interestStatus == 2  ?
-                                TickButton(size: 50,
-                                  tap: () {  },):
-                                AddButton(size: 50,
-                                  tap: () {
-                                    setState(() {
-                                      // like[i] = !like[i];
-                                    });
-                                    sendRequestApi(
-                                        memberId: matches[i]
-                                            .id
-                                            .toString())
-                                        .then((value) {
-                                      if (value['status'] == true) {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-                                        ToastUtil.showToast(
-                                            "Connection Request Sent");
-                                      } else {
-                                        setState(() {
-                                          isLoadingList[i] = false;
-                                        });
-
-                                        List<dynamic> errors =
-                                        value['message']['error'];
-                                        String errorMessage = errors
-                                            .isNotEmpty
-                                            ? errors[0]
-                                            : "An unknown error occurred.";
-                                        Fluttertoast.showToast(
-                                            msg: errorMessage);
-                                      }
-                                    });
-                                  },),*/
-                                /*  connectButton(
-
-                                    fontSize: 14,
-                                    height: 30,
-                                    width: 134,
-                                    context: context,
-                                    onTap: () {
-                                      setState(() {
-                                        like[i] = !like[i];
-                                      });
-                                      sendRequestApi(
-                                          memberId: matches[i]
-                                              .id
-                                              .toString())
-                                          .then((value) {
-                                        if (value['status'] == true) {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-                                          ToastUtil.showToast(
-                                              "Connection Request Sent");
-                                        } else {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-
-                                          List<dynamic> errors =
-                                          value['message']['error'];
-                                          String errorMessage = errors
-                                              .isNotEmpty
-                                              ? errors[0]
-                                              : "An unknown error occurred.";
-                                          Fluttertoast.showToast(
-                                              msg: errorMessage);
-                                        }
-                                      });
-                                    },
-                                    showIcon: matches[i].interestStatus == 2 ? false : true,
-                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),*/
-                                bookmark: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      like[i] = !like[i];
-                                    });
-                                    print(matches[i].bookmark);
-                                    matches[i].bookmark == 1 ?
-                                    matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-                                    matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                    // getMatches();
-                                  },
-                                  child: like[i] ?
-                                  Icon(
-                                    CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
-                                    size: 22,):
-
-                                  Icon(
-                                    CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
-                                    size: 22,),
-                                ),
-                                dob: '$age yrs',
-                                text: '${matches[i].basicInfo?.aboutUs ??
-                                    ''}',
-                              )
-                            ],
-                          );
-                        }
-                        else {
-                          if (val >= 8 && isLoading) {
-                            return Center(
-                              child: SizedBox(),
-                            );
-                          } else if (val < 8) {
-                            return SizedBox.shrink();
-                          } else {
-                            return SizedBox();
-                          }
-                        }
-                        // else {
-                        //   if (isLoading) {
-                        //     return customLoader(size: 40);
-                        //   } else {
-                        //     return const SizedBox();
-                        //   }
+                  Padding(
+                    padding:  const EdgeInsets.only(top: 35.0),
+                    child: LazyLoadScrollView(
+                      isLoading: isLoading,
+                      onEndOfPage: () {
+                        // if (val >= 8) {
+                          loadMore();
                         // }
                       },
-                      separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                        height: 16,
+                      child: ListView.separated(
+                        itemCount: matches.length + 1,
+                        itemBuilder: (context, i) {
+                          if (i < matches.length) {
+                            DateTime? birthDate = matches[i].basicInfo != null
+                                ? DateFormat('yyyy-MM-dd')
+                                .parse(matches[i].basicInfo!.birthDate!)
+                                : null;
+                            int age = birthDate != null
+                                ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                            return Column(
+                              children: [
+                                otherUserdataHolder(
+                                  context: context,
+                                  tap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (builder) =>
+                                            UserProfileScreen(
+                                              userId: matches[i].id.toString(),
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                  height:matches[i].physicalAttributes!.height == null ?
+                                  "" :
+                                  "${matches[i].physicalAttributes!.height ??
+                                      ''}ft",
+                                  imgUrl:
+                                  '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                  state: matches[i]
+                                      .basicInfo
+                                      ?.presentAddress
+                                      ?.state ??
+                                      '',
+                                  userName: matches[i].firstname == null &&
+                                      matches[i].lastname == null
+                                      ? "user"
+                                      : '${StringUtils.capitalize(
+                                      matches[i].firstname ??
+                                          'User')} ${StringUtils.capitalize(
+                                      matches[i].lastname ?? 'User')}',
+                                  atributeReligion:
+                                  ' ${matches[i].basicInfo?.religion ??
+                                      ''}',
+                                  profession: "Software Engineer",
+                                  Location:
+                                  '${matches[i].address!.state ?? ''}${matches[i]
+                                      .address!.country ?? ''}',
+                                  likedColor: Colors.grey,
+                                  unlikeColor: primaryColor,
+                                  button:
+                                  // matches[i].bookmark == 1
+                                  //     ? button(
+                                  //         fontSize: 14,
+                                  //         height: 30,
+                                  //         width: 134,
+                                  //         context: context,
+                                  //         onTap: () {},
+                                  //         title: "Request Sent")
+                                  //     :
+                                  like[i] ? connectLoadingButton(context: context) :
+                                  connectButton(
+                                      fontSize: 14,
+                                      height: 30,
+                                      width: 134,
+                                      context: context,
+                                      onTap: () {
+                                        setState(() {
+                                          like[i] = !like[i];
+                                        });
+                                        sendRequestApi(
+                                            memberId: matches[i]
+                                                .id
+                                                .toString())
+                                            .then((value) {
+                                          if (value['status'] == true) {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+                                            ToastUtil.showToast(
+                                                "Connection Request Sent");
+                                          } else {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+
+                                            List<dynamic> errors =
+                                            value['message']['error'];
+                                            String errorMessage = errors
+                                                .isNotEmpty
+                                                ? errors[0]
+                                                : "An unknown error occurred.";
+                                            Fluttertoast.showToast(
+                                                msg: errorMessage);
+                                          }
+                                        });
+                                      },
+                                      showIcon: matches[i].interestStatus == 2 ? false : true,
+                                      title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
+                                 /* like[i] || matches[i].interestStatus == 2  ?
+                                  TickButton(size: 50,
+                                    tap: () {  },):
+                                  AddButton(size: 50,
+                                    tap: () {
+                                      setState(() {
+                                        // like[i] = !like[i];
+                                      });
+                                      sendRequestApi(
+                                          memberId: matches[i]
+                                              .id
+                                              .toString())
+                                          .then((value) {
+                                        if (value['status'] == true) {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
+                                          ToastUtil.showToast(
+                                              "Connection Request Sent");
+                                        } else {
+                                          setState(() {
+                                            isLoadingList[i] = false;
+                                          });
+
+                                          List<dynamic> errors =
+                                          value['message']['error'];
+                                          String errorMessage = errors
+                                              .isNotEmpty
+                                              ? errors[0]
+                                              : "An unknown error occurred.";
+                                          Fluttertoast.showToast(
+                                              msg: errorMessage);
+                                        }
+                                      });
+                                    },),*/
+                                  /*  connectButton(
+
+                                      fontSize: 14,
+                                      height: 30,
+                                      width: 134,
+                                      context: context,
+                                      onTap: () {
+                                        setState(() {
+                                          like[i] = !like[i];
+                                        });
+                                        sendRequestApi(
+                                            memberId: matches[i]
+                                                .id
+                                                .toString())
+                                            .then((value) {
+                                          if (value['status'] == true) {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+                                            ToastUtil.showToast(
+                                                "Connection Request Sent");
+                                          } else {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+
+                                            List<dynamic> errors =
+                                            value['message']['error'];
+                                            String errorMessage = errors
+                                                .isNotEmpty
+                                                ? errors[0]
+                                                : "An unknown error occurred.";
+                                            Fluttertoast.showToast(
+                                                msg: errorMessage);
+                                          }
+                                        });
+                                      },
+                                      showIcon: matches[i].interestStatus == 2 ? false : true,
+                                      title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),*/
+                                  bookmark: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        like[i] = !like[i];
+                                      });
+                                      print(matches[i].bookmark);
+                                      matches[i].bookmark == 1 ?
+                                      matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
+                                      matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
+                                      // getMatches();
+                                    },
+                                    child: like[i] ?
+                                    Icon(
+                                      CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
+                                      size: 22,):
+
+                                    Icon(
+                                      CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
+                                      size: 22,),
+                                  ),
+                                  dob: '$age yrs',
+                                  text: matches[i].basicInfo?.aboutUs ??
+                                      '',
+                                )
+                              ],
+                            );
+                          }
+                          if (isLoading) {
+                            return customLoader(size: 40);
+                          } else if (isLoading) {
+                            return customLoader(size: 40);
+                          } else {
+                            return const Center(child: Text(""));
+                          }
+                          // else {
+                          //   if (val >= 8 && isLoading) {
+                          //     return Center(
+                          //       child: SizedBox(),
+                          //     );
+                          //   } else if (val < 8) {
+                          //     return SizedBox.shrink();
+                          //   } else {
+                          //     return SizedBox();
+                          //   }
+                          // }
+                          // else {
+                          //   if (isLoading) {
+                          //     return customLoader(size: 40);
+                          //   } else {
+                          //     return const SizedBox();
+                          //   }
+                          // }
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                          height: 16,
+                        ),
                       ),
                     ),
                   ),

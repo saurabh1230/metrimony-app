@@ -123,19 +123,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
                 Positioned(bottom: 0,
                   child: Container(
-                    height: 200,
+                    height: 170,
                     width: 1.sw,
-                    margin: EdgeInsets.symmetric(horizontal: 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 0),
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Colors.black.withOpacity(0.8), Colors.transparent],
-                          stops: [0, 10],
+                          stops: const [0, 10],
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                        ),
-
-                        borderRadius: BorderRadius.circular(32)
+                        ), borderRadius: BorderRadius.circular(32)
                     ),
                     // child: Image.asset(images[i],
                     // height: 170,),
@@ -279,8 +277,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        '${model.data!.matches!.address!.state ?? ''}${model.data!.matches!.address!.country
-                                             ?? ''}',
+                                        model.data!.matches!.address!.country
+                                             ?? '',
                                         // '${matches[i].address!.country}',
                                         // "New York, USA",
                                         overflow: TextOverflow.ellipsis,
@@ -301,18 +299,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       ),
                                       const SizedBox(width: 3,),
 
-                                      // Text(
-                                      //   model.data!.matches!.address!.state
-                                      //
-                                      //   // '${matches[i].address!.country}',
-                                      //   // "New York, USA",
-                                      //   overflow: TextOverflow.ellipsis,
-                                      //   maxLines: 2,
-                                      //
-                                      //   style: styleSatoshiMedium(
-                                      //       size: 16,
-                                      //       color: Colors.white),
-                                      // ),
+                                      Text(
+                                        model.data!.matches!.basicInfo!.presentAddress!.state
+                                            ?? '',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+
+                                        style: styleSatoshiMedium(
+                                            size: 16,
+                                            color: Colors.white),
+                                      ),
                                     ],
                                   ),
                                 ),

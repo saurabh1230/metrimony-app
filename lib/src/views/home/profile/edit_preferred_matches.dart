@@ -825,7 +825,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             },
                             controller: minimumDegreeController,
                             decoration: AppTFDecoration(
-                                hint: 'Minimum Degre').decoration(),
+                                hint: 'Minimum Degree').decoration(),
                             //keyboardType: TextInputType.phone,
                           ),
                         );

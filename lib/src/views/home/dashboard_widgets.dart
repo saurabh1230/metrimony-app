@@ -57,8 +57,8 @@ otherUserdataHolder({
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.black.withOpacity(1), Colors.transparent],
-                    stops: const [0, 10],
+                    colors: [Colors.black.withOpacity(0.8), Colors.transparent],
+                    stops: const [0, 8],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                   ), borderRadius: BorderRadius.circular(20)
