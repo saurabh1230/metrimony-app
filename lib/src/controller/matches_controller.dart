@@ -38,8 +38,6 @@ class MatchesController extends GetxController implements GetxService {
   int? _matchesIndex = 0;
   int? get matches => _matchesIndex;
 
-  List<int?> _matchesId = [];
-  List<int?> get mlaIds => _matchesId;
   Future<void> getMatchesList(String page) async {
     _isLoading = true;
     try {
