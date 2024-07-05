@@ -393,7 +393,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         // );
                       },
                       child: buildDataAddRow(
-                        widget: SizedBox(),
+                        widget: const SizedBox(),
                         title: 'User Name',
                         data1: userNameController.text.isEmpty
                             ? (mainInfo == null ||

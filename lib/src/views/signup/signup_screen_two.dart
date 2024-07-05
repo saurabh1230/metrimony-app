@@ -104,13 +104,14 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     child: ChipList(
                       elements: gender,
                       onChipSelected: (selectedGender) {
-                        setState(() {
-                          authControl.setGender(
-                              selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
-                          );
-                          // SharedPrefs().setGender(selectedGender);
-                          // SharedPrefs().getGender();
-                        });
+                        authControl.setGender(
+                            selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
+                        );
+                        // setState(() {
+                        //
+                        //   // SharedPrefs().setGender(selectedGender);
+                        //   // SharedPrefs().getGender();
+                        // });
                       },
                       defaultSelected: "Male",
                     ),),

@@ -194,12 +194,12 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                       return null;
                     },
                     onChanged: (String? value) {
-                      setState(() {
-                        cadarValue = value;
-                        cadarFilter = cadarValue ?? '';
-                        SharedPrefs().setMotherTongue(cadarFilter);
-
-                      });
+                      // setState(() {
+                      //   cadarValue = value;
+                      //   cadarFilter = cadarValue ?? '';
+                      //   SharedPrefs().setMotherTongue(cadarFilter);
+                      //
+                      // });
                       // print(userTypeFilter);
                       // print('Check ======> Usetype${userTypeFilter}');
                     },
@@ -342,9 +342,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                         },
                         onTap: () { Get.find<AuthController>().showDatePicker(context); },
                         onChanged: (value) {
-                         setState(() {
-                           authControl.setPostingStartDate(authControl.from.toString());
-                         });
+                          authControl.setPostingStartDate(authControl.from.toString());
 
                         },
                         readOnly:  true,
@@ -363,9 +361,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                           return null;
                         },
                         onChanged: (value) {
-                          setState(() {
-                            authControl.setPostingEndDate(endDateController.text);
-                          });
+                          authControl.setPostingEndDate(endDateController.text);
 
                         },
                         hintText:"Ending date",
@@ -375,8 +371,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   ],
                 ),
                 const SizedBox(height: 20,),
-                Text('Education Info',
-                  style: kManrope25Black,),
+                Text('Education Info', style: kManrope25Black,),
                 const SizedBox(height: 20,),
                 CustomTextField(hintText: "Highest Degree",
                 controller: highestDegreeController,
