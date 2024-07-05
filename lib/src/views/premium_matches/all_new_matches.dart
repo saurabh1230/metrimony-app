@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-import 'package:bureau_couple/src/controller/matches_controller.dart';
+
 import 'package:bureau_couple/src/models/matches_model.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
@@ -48,7 +49,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
   final TextEditingController maxHeight = TextEditingController();
   final TextEditingController maxWeightController = TextEditingController();
 
-  List<MatchesModel> matches = [];
+  // List<MatchesModel> matches = [];
   List<MatchesModel> bookmarkList = [];
   List<bool> isLoadingList = [];
   List<bool> like = [];
@@ -67,7 +68,17 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
   @override
   void initState() {
     super.initState();
-    getMatches();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<MatchesController>().getMatchesList(
+          "1",
+          widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+          widget.religionFilter,
+          stateController.text,
+          minHeight.text,
+          maxHeight.text,
+          maxWeightController.text,
+          motherTongueFilter);
+    });
   }
 
   LoginResponse? response;
@@ -83,81 +94,109 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
 
   // bool like = false;
   int val = 0;
+  //
+  // getMatches() {
+  //
+  //   isLoading = true;
+  //   getMatchesByGenderApi(
+  //     page: page.toString(),
+  //     gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+  //     religion: widget.religionFilter,
+  //     // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
+  //     state: stateController.text,
+  //     minHeight: minHeight.text,
+  //     maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
+  //   ).then((value) {
+  //     // matches.clear();
+  //     if (mounted) {
+  //       setState(() {
+  //         if (value['status'] == true) {
+  //           matches.clear();
+  //           for (var v in value['data']['members']['data']) {
+  //             matches.add(MatchesModel.fromJson(v));
+  //             isLoadingList.add(false); //
+  //             like.add(false); // Add false for each new match
+  //           }
+  //           isLoading = false;
+  //           // val = value.length;
+  //           page++;
+  //         } else {
+  //           isLoading = false;
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  //
+  // loadMore() {
+  //   print('ndnd');
+  //
+  //   // if (!isLoading) {
+  //   isLoading = true;
+  //   getMatchesByGenderApi(
+  //     religion: religionFilter,
+  //     page: page.toString(),
+  //     gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+  //     state: stateController.text,
+  //     minHeight: minHeight.text,
+  //     maxHeight: maxHeight.text,
+  //     maxWeight: maxWeightController.text,
+  //     motherTongue: motherTongueFilter,
+  //   ).then((value) {
+  //     // matches.clear();
+  //     if (mounted) {
+  //       setState(() {
+  //         if (value['status'] == true) {
+  //         for (var v in value['data']['members']['data']) {
+  //           matches.add(MatchesModel.fromJson(v));
+  //           isLoadingList.add(false); // Add false for each new match
+  //           like.add(false);
+  //         }
+  //         isLoading = false;
+  //         // val = value.length;
+  //         page++;
+  //         } else {
+  //           isLoading = false;
+  //         }
+  //       });
+  //     }
+  //   });
+  //   // }
+  // }
 
-  getMatches() {
 
-    isLoading = true;
-    getMatchesByGenderApi(
-      page: page.toString(),
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      religion: widget.religionFilter,
-      // height: height == 5.0 ? "5-6" : height == 6.0  ? "6-7" : "7-8",
-      state: stateController.text,
-      minHeight: minHeight.text,
-      maxHeight: maxHeight.text, maxWeight: maxWeightController.text, motherTongue: motherTongueFilter,
-    ).then((value) {
-      // matches.clear();
-      if (mounted) {
-        setState(() {
-          if (value['status'] == true) {
-            matches.clear();
-            for (var v in value['data']['members']['data']) {
-              matches.add(MatchesModel.fromJson(v));
-              isLoadingList.add(false); //
-              like.add(false); // Add false for each new match
-            }
-            isLoading = false;
-            // val = value.length;
-            page++;
-          } else {
-            isLoading = false;
-          }
-        });
-      }
-    });
-  }
-
-  loadMore() {
-    print('ndnd');
-
-    // if (!isLoading) {
-    isLoading = true;
-    getMatchesByGenderApi(
-      religion: religionFilter,
-      page: page.toString(),
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      state: stateController.text,
-      minHeight: minHeight.text,
-      maxHeight: maxHeight.text,
-      maxWeight: maxWeightController.text,
-      motherTongue: motherTongueFilter,
-    ).then((value) {
-      // matches.clear();
-      if (mounted) {
-        setState(() {
-          if (value['status'] == true) {
-          for (var v in value['data']['members']['data']) {
-            matches.add(MatchesModel.fromJson(v));
-            isLoadingList.add(false); // Add false for each new match
-            like.add(false);
-          }
-          isLoading = false;
-          // val = value.length;
-          page++;
-          } else {
-            isLoading = false;
-          }
-        });
-      }
-    });
-    // }
-  }
-
-
-
+  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
+    Get.find<MatchesController>().setOffset(1);
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent &&
+          Get.find<MatchesController>().matchesList != null &&
+          !Get.find<MatchesController>().isLoading) {
+        // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
+        if (Get.find<MatchesController>().offset < 8) {
+          print(
+              "print ===========> offset before ${Get.find<MatchesController>().offset}");
+          // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
+          // customPrint('end of the page');
+          Get.find<MatchesController>()
+              .setOffset(Get.find<MatchesController>().offset + 1);
+          Get.find<MatchesController>().showBottomLoader();
+          Get.find<MatchesController>().getMatchesList(
+              Get.find<MatchesController>().offset.toString(),
+              widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+              religionFilter,
+              stateController.text,
+              minHeight.text,
+              maxHeight.text,
+              maxWeightController.text,
+              motherTongueFilter);
+          Get.find<MatchesController>().offset.toString();
+        }
+      }
+    });
     return Scaffold(
       appBar:  AppBar(backgroundColor: primaryColor,
         leading: IconButton(
@@ -539,9 +578,18 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                       onTap: () {
                                         setState(() {
 
-                                          page = 1;
-                                          isLoading = true;
-                                          getMatches();
+                                          // page = 1;
+                                          // isLoading = true;
+                                          Get.find<MatchesController>().getMatchesList(
+                                              "1",
+                                              widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+                                              religionFilter,
+                                              stateController.text,
+                                              minHeight.text,
+                                              maxHeight.text,
+                                              maxWeightController.text,
+                                              motherTongueFilter);
+                                          // getMatches();
                                           Navigator.pop(context);
                                         });
                                       },
@@ -565,128 +613,118 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
         ],
       ),
       body:  GetBuilder<MatchesController>(builder: (matchesControl) {
-        return isLoading
-            ? const ShimmerWidget()
-            : matches.isEmpty && matches == null
-            ? const Text("No Matches Yet")
-            : Padding(
+        return
+
+          matchesControl.matchesList != null ? matchesControl.matchesList!.isNotEmpty ? Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 0),
               child: Stack(
                 children: [
-                  Text("${matches.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
+                  Text("${matchesControl.matchesList!.length} Match Found Based on Preference",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
                   // Text("${matches.length} members found"),
                   sizedBox10(),
                   Padding(
                     padding:  const EdgeInsets.only(top: 35.0),
-                    child: LazyLoadScrollView(
-                      isLoading: isLoading,
-                      onEndOfPage: () {
-                        // if (val >= 8) {
-                          loadMore();
-                        // }
-                      },
-                      child: ListView.separated(
-                        itemCount: matches.length + 1,
-                        itemBuilder: (context, i) {
-                          if (i < matches.length) {
-                            DateTime? birthDate = matches[i].basicInfo != null
-                                ? DateFormat('yyyy-MM-dd')
-                                .parse(matches[i].basicInfo!.birthDate!)
-                                : null;
-                            int age = birthDate != null
-                                ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                            return Column(
-                              children: [
-                                otherUserdataHolder(
+                    child: ListView.separated(
+                      itemCount: matchesControl.matchesList!.length,
+                      itemBuilder: (context, i) {
+                        DateTime? birthDate = matchesControl.matchesList![i].basicInfo != null
+                            ? DateFormat('yyyy-MM-dd')
+                            .parse(matchesControl.matchesList![i].basicInfo!.birthDate!)
+                            : null;
+                        int age = birthDate != null
+                            ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                        return Column(
+                          children: [
+                            otherUserdataHolder(
+                              context: context,
+                              tap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (builder) =>
+                                        UserProfileScreen(
+                                          userId: matchesControl.matchesList![i].id.toString(),
+                                        ),
+                                  ),
+                                );
+                              },
+                              height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
+                              "" :
+                              "${matchesControl.matchesList![i].physicalAttributes!.height ??
+                                  ''}ft",
+                              imgUrl:
+                              '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
+                              state: matchesControl.matchesList![i]
+                                  .basicInfo
+                                  ?.presentAddress
+                                  ?.state ??
+                                  '',
+                              userName: matchesControl.matchesList![i].firstname == null &&
+                                  matchesControl.matchesList![i].lastname == null
+                                  ? "user"
+                                  : '${StringUtils.capitalize(
+                                  matchesControl.matchesList![i].firstname ??
+                                      'User')} ${StringUtils.capitalize(
+                                  matchesControl.matchesList![i].lastname ?? 'User')}',
+                              atributeReligion:
+                              ' ${matchesControl.matchesList![i].basicInfo?.religion ??
+                                  ''}',
+                              profession: "Software Engineer",
+                              Location:
+                              '${matchesControl.matchesList![i].address!.state ?? ''}${matchesControl.matchesList![i]
+                                  .address!.country ?? ''}',
+                              likedColor: Colors.grey,
+                              unlikeColor: primaryColor,
+                              button:
+                              // matches[i].bookmark == 1
+                              //     ? button(
+                              //         fontSize: 14,
+                              //         height: 30,
+                              //         width: 134,
+                              //         context: context,
+                              //         onTap: () {},
+                              //         title: "Request Sent")
+                              //     :
+                              // like[i] ? connectLoadingButton(context: context) :
+                              connectButton(
+                                  fontSize: 14,
+                                  height: 30,
+                                  width: 134,
                                   context: context,
-                                  tap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (builder) =>
-                                            UserProfileScreen(
-                                              userId: matches[i].id.toString(),
-                                            ),
-                                      ),
-                                    );
-                                  },
-                                  height:matches[i].physicalAttributes!.height == null ?
-                                  "" :
-                                  "${matches[i].physicalAttributes!.height ??
-                                      ''}ft",
-                                  imgUrl:
-                                  '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                  state: matches[i]
-                                      .basicInfo
-                                      ?.presentAddress
-                                      ?.state ??
-                                      '',
-                                  userName: matches[i].firstname == null &&
-                                      matches[i].lastname == null
-                                      ? "user"
-                                      : '${StringUtils.capitalize(
-                                      matches[i].firstname ??
-                                          'User')} ${StringUtils.capitalize(
-                                      matches[i].lastname ?? 'User')}',
-                                  atributeReligion:
-                                  ' ${matches[i].basicInfo?.religion ??
-                                      ''}',
-                                  profession: "Software Engineer",
-                                  Location:
-                                  '${matches[i].address!.state ?? ''}${matches[i]
-                                      .address!.country ?? ''}',
-                                  likedColor: Colors.grey,
-                                  unlikeColor: primaryColor,
-                                  button:
-                                  // matches[i].bookmark == 1
-                                  //     ? button(
-                                  //         fontSize: 14,
-                                  //         height: 30,
-                                  //         width: 134,
-                                  //         context: context,
-                                  //         onTap: () {},
-                                  //         title: "Request Sent")
-                                  //     :
-                                  like[i] ? connectLoadingButton(context: context) :
-                                  connectButton(
-                                      fontSize: 14,
-                                      height: 30,
-                                      width: 134,
-                                      context: context,
-                                      onTap: () {
+                                  onTap: () {
+                                    // setState(() {
+                                    //   like[i] = !like[i];
+                                    // });
+                                    sendRequestApi(
+                                        memberId: matchesControl.matchesList![i]
+                                            .id
+                                            .toString())
+                                        .then((value) {
+                                      if (value['status'] == true) {
                                         setState(() {
-                                          like[i] = !like[i];
+                                          isLoadingList[i] = false;
                                         });
-                                        sendRequestApi(
-                                            memberId: matches[i]
-                                                .id
-                                                .toString())
-                                            .then((value) {
-                                          if (value['status'] == true) {
-                                            setState(() {
-                                              isLoadingList[i] = false;
-                                            });
-                                            ToastUtil.showToast(
-                                                "Connection Request Sent");
-                                          } else {
-                                            setState(() {
-                                              isLoadingList[i] = false;
-                                            });
+                                        ToastUtil.showToast(
+                                            "Connection Request Sent");
+                                      } else {
+                                        setState(() {
+                                          isLoadingList[i] = false;
+                                        });
 
-                                            List<dynamic> errors =
-                                            value['message']['error'];
-                                            String errorMessage = errors
-                                                .isNotEmpty
-                                                ? errors[0]
-                                                : "An unknown error occurred.";
-                                            Fluttertoast.showToast(
-                                                msg: errorMessage);
-                                          }
-                                        });
-                                      },
-                                      showIcon: matches[i].interestStatus == 2 ? false : true,
-                                      title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
-                                 /* like[i] || matches[i].interestStatus == 2  ?
+                                        List<dynamic> errors =
+                                        value['message']['error'];
+                                        String errorMessage = errors
+                                            .isNotEmpty
+                                            ? errors[0]
+                                            : "An unknown error occurred.";
+                                        Fluttertoast.showToast(
+                                            msg: errorMessage);
+                                      }
+                                    });
+                                  },
+                                  showIcon: matchesControl.matchesList![i].interestStatus == 2 ? false : true,
+                                  title:  matchesControl.matchesList![i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
+                              /* like[i] || matches[i].interestStatus == 2  ?
                                   TickButton(size: 50,
                                     tap: () {  },):
                                   AddButton(size: 50,
@@ -721,7 +759,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                         }
                                       });
                                     },),*/
-                                  /*  connectButton(
+                              /*  connectButton(
 
                                       fontSize: 14,
                                       height: 30,
@@ -760,70 +798,75 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                       },
                                       showIcon: matches[i].interestStatus == 2 ? false : true,
                                       title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),*/
-                                  bookmark: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        like[i] = !like[i];
-                                      });
-                                      print(matches[i].bookmark);
-                                      matches[i].bookmark == 1 ?
-                                      matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-                                      matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                      // getMatches();
-                                    },
-                                    child: like[i] ?
-                                    Icon(
-                                      CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
-                                      size: 22,):
+                              bookmark: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    like[i] = !like[i];
+                                  });
+                                  print(matchesControl.matchesList![i].bookmark);
+                                  matchesControl.matchesList![i].bookmark == 1 ?
+                                  matchesControl.unSaveBookmarkApi(matchesControl.matchesList![i].profileId.toString()) :
+                                  matchesControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString());
+                                  // getMatches();
+                                },
+                                child: /*like[i] ?
+                                  Icon(
+                                    CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
+                                    size: 22,):*/
 
-                                    Icon(
-                                      CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
-                                      size: 22,),
-                                  ),
-                                  dob: '$age yrs',
-                                  text: matches[i].basicInfo?.aboutUs ??
-                                      '',
-                                )
-                              ],
-                            );
-                          }
-                          if (isLoading) {
-                            return customLoader(size: 40);
-                          } else if (isLoading) {
-                            return customLoader(size: 40);
-                          } else {
-                            return const Center(child: Text(""));
-                          }
-                          // else {
-                          //   if (val >= 8 && isLoading) {
-                          //     return Center(
-                          //       child: SizedBox(),
-                          //     );
-                          //   } else if (val < 8) {
-                          //     return SizedBox.shrink();
-                          //   } else {
-                          //     return SizedBox();
-                          //   }
-                          // }
-                          // else {
-                          //   if (isLoading) {
-                          //     return customLoader(size: 40);
-                          //   } else {
-                          //     return const SizedBox();
-                          //   }
-                          // }
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                          height: 16,
-                        ),
+                                Icon(
+                                  CupertinoIcons.heart_fill, color:  /*matchesControl.matchesList![i].bookmark == 1 ? primaryColor :*/ Colors.grey,
+                                  size: 22,),
+                              ),
+                              dob: '$age yrs',
+                              text: matchesControl.matchesList![i].basicInfo?.aboutUs ??
+                                  '',
+                            )
+                          ],
+                        );
+                        // else {
+                        //   if (val >= 8 && isLoading) {
+                        //     return Center(
+                        //       child: SizedBox(),
+                        //     );
+                        //   } else if (val < 8) {
+                        //     return SizedBox.shrink();
+                        //   } else {
+                        //     return SizedBox();
+                        //   }
+                        // }
+                        // else {
+                        //   if (isLoading) {
+                        //     return customLoader(size: 40);
+                        //   } else {
+                        //     return const SizedBox();
+                        //   }
+                        // }
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(
+                        height: 16,
                       ),
                     ),
                   ),
+                  if (matchesControl.isLoading)
+                    Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20),
+                          child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<
+                                  Color>(
+                                  Theme.of(context).primaryColor)),
+                        ))
+                  else
+                    const SizedBox(),
 
                 ],
               ),
-            );
+            ) :
+          Text('No Matches Yet',) : const ShimmerWidget();
+
       }),);
   }
 

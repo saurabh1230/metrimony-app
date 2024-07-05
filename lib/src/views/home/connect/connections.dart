@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:bureau_couple/src/controller/matches_controller.dart';
+import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';

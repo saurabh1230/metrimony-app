@@ -1,18 +1,20 @@
 
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:country_picker/country_picker.dart';
 import '../../constants/string.dart';
-import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 class SignUpScreenTwo extends StatefulWidget {
 
   const SignUpScreenTwo({super.key,});
@@ -31,18 +33,21 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   final ImagePicker _imgPicker = ImagePicker();
 
   final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["M","F"];
-  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Marathi'];
+  final List<String> gender = ["Male","Female","Other"];
+  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
   final List<String> married = ["Unmarried","Widowed","Divorced"];
-
   final countryController = TextEditingController();
   final profileController = TextEditingController();
   final countyController = TextEditingController();
     final stateController = TextEditingController();
+  final districtController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
   final genderController = TextEditingController();
   final motherTongue = TextEditingController();
   final professionController = TextEditingController();
   final ageController = TextEditingController();
+  final _communityController = TextEditingController();
   bool picked = false;
   String selectedCountryName = '';
   String? selectedValue;
@@ -58,433 +63,272 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().getReligionsList();
+      Get.find<AuthController>().getCommunityList();
+      Get.find<AuthController>().getMotherTongueList();
+
+    });
+    String? selectedSuggestion;
+
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: SignUpScreenTwo._formKey2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // SizedBox(height: 50,),
-
-             /* Center(
-                child: pickedImage.path.isEmpty
-                    ? GestureDetector(
-                  onTap:  () async {
-                    XFile? v = await _imgPicker.pickImage(
-                        source: ImageSource.gallery);
-                    if (v != null) {
-                      setState(
-                            () {
-                          pickedImage = File(v.path);
-                        },
-                      );
-                    }
-
-                  },
-                      child: Image.asset(
-                                      icProfilePlaceHolder,
-                                      fit: BoxFit.cover,
-                                      height: 130,
-                                    ),
-                    )
-                    : Image.file(
-                  pickedImage,
-                  height: 130,
-                  fit: BoxFit.cover,
-                ),
-              ),*/
-              const  SizedBox(height: 30,),
-              /*Align(
-                alignment: Alignment.centerLeft,
-                child: Text("This profile is for",
-                textAlign: TextAlign.left,
-                style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              Align(
+      body: GetBuilder<AuthController>(builder: (authControl) {
+        print(authControl.religionList);
+        return (authControl.communityList == null || authControl.communityList!.isEmpty ||
+            authControl.religionList == null || authControl.religionList!.isEmpty ||
+            authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty) ?
+        const Center(child: CircularProgressIndicator()) :
+         SingleChildScrollView(
+          child: Form(
+            key: SignUpScreenTwo._formKey2,
+            child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // SizedBox(height: 50,),
+                Text('Personal Info',
+                  style: kManrope25Black,),
+                const SizedBox(height: 20,),
+                Align(
                   alignment: Alignment.centerLeft,
-                  child: ChipList(
-                    elements: elements,
-                    onChipSelected: (selectedProfile) {
-                      // Handle selected profile
-                      print(selectedProfile);
-                      setState(() {
-                        SharedPrefs().setProfileFor(selectedProfile);
-                      });
-                    },
-                    defaultSelected: 'My Self',
-                  ),),*/
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Religion",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: ChipList(
-                  elements: religion,
-                  onChipSelected: (selectReligion) {
-                    // Handle selected profile
-                    setState(() {
-                      SharedPrefs().setReligion(selectReligion);
-                    });
-                  },
-                  defaultSelected: 'Hindu',
-                ),),
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Gender",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                  child: ChipList(
-                    elements: gender,
-                    onChipSelected: (selectedGender) {
-                      setState(() {
-                        SharedPrefs().setGender(selectedGender);
-                        SharedPrefs().getGender();
-                      });
-                    },
-                    defaultSelected: "M",
-                  ),),
-          /* GestureDetector(
-             onTap: () {
-               print(SharedPrefs().getGender());
-               print(SharedPrefs().getReligion());
-             },
-               child: Text("data")),*/
-           /*   const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Married Status",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: ChipList(
-                  elements: married,
-                  onChipSelected: (marriedStatus) {
-                    // Handle selected gender
-      
-                    setState(() {
-                      SharedPrefs().setMaritalStatus(marriedStatus);
-                    });
-                  },
-                  defaultSelected: "Unmarried",
-                ),),*/
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Age",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-
-              textBox(  capital: TextCapitalization.words,
-                context: context,
-                label: '',
-                controller: ageController,
-                hint: '',
-                length: null,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your Age';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  SharedPrefs().setAge( StringUtils.capitalize(ageController.text));
-                },),
-              const SizedBox(height: 12,),
-              sizedBox12(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Country",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              textBoxPickerField(
-                  onTap: () {
-                    showCountryPicker(
-                      context: context,
-                      countryListTheme: CountryListThemeData(
-                        flagSize: 25,
-                        backgroundColor: Colors.white,
-                        textStyle: const TextStyle(fontSize: 16, color: Colors.blueGrey),
-                        bottomSheetHeight: 500,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
-                        inputDecoration: InputDecoration(
-                          labelText: 'Search',
-                          hintText: 'Start typing to search',
-                          prefixIcon: const Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: const Color(0xFF8C98A8).withOpacity(0.2),
-                            ),
-                          ),
-                        ),
-                      ),
-                      onSelect: (Country country) {
+                  child: Text("Gender",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                ),
+                const SizedBox(height: 12,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: ChipList(
+                      elements: gender,
+                      onChipSelected: (selectedGender) {
                         setState(() {
-                          selectedCountryName = country.displayName.split(' ')[0] ?? '';
-                          countyController.text = selectedCountryName;
-                        });
-                        setState(() {
-                          SharedPrefs().setCountry(selectedCountryName);
-                          SharedPrefs().setCountryCode(country.countryCode);
+                          authControl.setGender(
+                              selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
+                          );
+                          // SharedPrefs().setGender(selectedGender);
+                          // SharedPrefs().getGender();
                         });
                       },
+                      defaultSelected: "Male",
+                    ),),
+                ),
+                const SizedBox(height: 20,),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Religion",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                ),
+                const SizedBox(height: 12,),
+            Wrap(
+              spacing: 8.0,
+              children: authControl.religionList!.map((religion) {
+                return ChoiceChip(
+                  selectedColor: color4B164C.withOpacity(0.80),
+                  backgroundColor: Colors.white,
+                  label: Text(
+                    religion.name!,
+                    style: TextStyle(
+                      color: authControl.religionMainIndex == religion.id
+                          ? Colors.white
+                          : Colors.black.withOpacity(0.80),
+                    ),
+                  ),
+                  selected: authControl.religionMainIndex == religion.id,
+                  onSelected: (selected) {
+                    if (selected) {
+                      authControl.setReligionMainIndex(religion.id, true);
+                    }
+                  },
+                );
+              }).toList(),
+            ),
+
+
+                const SizedBox(height: 20,),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Community",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                ),
+                const SizedBox(height: 12,),
+
+                Wrap(
+                  spacing: 8.0, // Adjust spacing as needed
+                  children: authControl.communityList!.map((religion) {
+                    return ChoiceChip(
+                      selectedColor: color4B164C.withOpacity(0.80),
+                      backgroundColor: Colors.white,
+
+                      label: Text(religion.name! ,style: TextStyle(color: authControl.communityMainIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                      selected: authControl.communityMainIndex == religion.id,
+                      onSelected: (selected) {
+                        if (selected) {
+                          authControl.setCommunityMainListIndex(religion.id, true);
+                        }
+                      },
                     );
-                    setState(() {});
-                    },
-                  context: context,
-                  label: '',
-                  controller: countyController,
-                  hint: '',
-                  length: null,
-                  suffixIcon: const  Icon(Icons.visibility_off),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Country';
-                    }
-                    return null;
-                  },
-                onChanged: (value) {
-                    }, icon: Icons.flag,),
-              sizedBox12(),
-           
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("State",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-
-              textBox(  capital: TextCapitalization.words,
-                context: context,
-                label: '',
-                controller: stateController,
-                hint: '',
-                length: null,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your State';
-                    }
-                    return null;
-                  },
-                onChanged: (value) {
-                  SharedPrefs().setState( StringUtils.capitalize(stateController.text));
-                },),
-              const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Profession",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              textBox(  capital: TextCapitalization.words,
-                context: context,
-                label: '',
-                controller: professionController,
-                hint: '',
-                length: null,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your Profession';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  // SharedPrefs().setProfession(professionController.text);
-                  SharedPrefs().setProfession( StringUtils.capitalize(professionController.text));
-                },),
-             const SizedBox(height: 12,),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Community",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,), // P
-              SizedBox(
-                width: 1.sw,
-                child: CustomStyledDropdownButton(
-                  items: const  [
-                    "Brahmin",
-                    "Rajput",
-                    'Kamma',
-                    "Yadav",
-                    'Gupta',
-                    'Sikh',
-                    'Punjabi',
-                    'Aggarwal',
-                    'Muslim',
-                    "Marathi"
-                  ],
-                  selectedValue: communityValue,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Community';
-                    }
-                    return null;
-                  },
-                  onChanged: (String? value) {
-                    setState(() {
-                      communityValue = value;
-                      communityFilter = communityValue ?? '';
-                      SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
-
-                    });
-
-                  },
-                  title: 'Community',
+                  }).toList(),
                 ),
-              ),
-              sizedBox12(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Mother Tongue",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,), // P
-              SizedBox(
-                width: 1.sw,
-                child: CustomStyledDropdownButton(
-                  items: const  [
-                    "Hindi",
-                    "Bhojpuri",
-                    'Marathi',
-                    "Bengali",
-                    'Odia',
-                    'Gujarati',
-                    'Urdu',
-                    "Punjabi",
-                  ],
-                  selectedValue: motherTongueValue,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter Mother Tongue';
-                    }
-                    return null;
-                  },
-                  onChanged: (String? value) {
-                    setState(() {
-                      motherTongueValue = value;
-                      motherTongueFilter = motherTongueValue ?? '';
-                      SharedPrefs().setMotherTongue(motherTongueFilter);
+                const SizedBox(height: 20,),
 
-                    });
-                    // print(userTypeFilter);
-                    // print('Check ======> Usetype${userTypeFilter}');
-                  },
-                  title: 'Mother Tongue',
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Mother Tongue",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),
-              ),
-              // adding(
-    /*          SizedBox(
+                const SizedBox(height: 12,),
+                Wrap(
+                  spacing: 8.0, // Adjust spacing as needed
+                  children: authControl.motherTongueList!.map((religion) {
+                    return ChoiceChip(
+                      selectedColor: color4B164C.withOpacity(0.80),
+                      backgroundColor: Colors.white,
+
+                      label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                      selected: authControl.motherTongueIndex == religion.id,
+                      onSelected: (selected) {
+                        if (selected) {
+                          authControl.setMotherTongueIndex(religion.id, true);
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+
+
+                const SizedBox(height: 20,),
+
+
+              /*  Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Community",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                ),
+                const SizedBox(height: 12,), // P
+                // TypeAheadField<String>(
+                //   textFieldConfiguration: TextFieldConfiguration(
+                //     onTap: () {_communityController.clear();},
+                //     controller: _communityController,
+                //     enabled: authControl.isLoading ? false : true,
+                //     decoration:  InputDecoration(
+                //       labelText: authControl.isLoading ? 'Please Wait' : selectedSuggestion == null ? "Select MLA" : "$selectedSuggestion",
+                //       border: OutlineInputBorder(),
+                //     ),
+                //   ),
+                //   suggestionsCallback: (pattern) async {
+                //     // Map MlaModel objects to their names and filter based on the pattern
+                //     final suggestions = authControl.communityList!
+                //         .where((element) => element.name!.toLowerCase().contains(pattern.toLowerCase()))
+                //         .map((mlaModel) => mlaModel.name!)
+                //         .toList();
+                //     return suggestions;
+                //   },
+                //   itemBuilder: (context, String suggestion) {
+                //     return ListTile(
+                //       title: Text(suggestion),
+                //     );
+                //   },
+                //   onSuggestionSelected: (String suggestion) {
+                //     final selectedItem = authControl.communityList!.firstWhere(
+                //             (element) => element.name == suggestion);
+                //     final selectedIndex = authControl.communityList!.indexOf(selectedItem) + 1;
+                //     authControl.setCommunityMainListIndex(selectedIndex, true);
+                //     selectedSuggestion = suggestion;
+                //     _communityController.text = suggestion;
+                //   },
+                //
+                // ),
+
+                SizedBox(
                   width: 1.sw,
                   child: CustomStyledDropdownButton(
                     items: const  [
-                      "Hindi"
+                      "Brahmin",
+                      "Rajput",
+                      'Kamma',
+                      "Yadav",
+                      'Gupta',
+                      'Sikh',
+                      'Punjabi',
+                      'Aggarwal',
+                      'Muslim',
+                      "Marathi"
+                    ],
+                    selectedValue: communityValue,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Community';
+                      }
+                      return null;
+                    },
+                    onChanged: (String? value) {
+                      setState(() {
+                        communityValue = value;
+                        communityFilter = communityValue ?? '';
+                        SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
+
+                      });
+
+                    },
+                    title: 'Community',
+                  ),
+                ),
+                sizedBox12(),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Mother Tongue",
+                    textAlign: TextAlign.left,
+                    style: styleSatoshiBold(size: 16, color: Colors.black),),
+                ),
+                const SizedBox(height: 12,), // P
+                SizedBox(
+                  width: 1.sw,
+                  child: CustomStyledDropdownButton(
+                    items: const  [
+                      "Hindi",
                       "Bhojpuri",
                       'Marathi',
                       "Bengali",
                       'Odia',
                       'Gujarati',
+                      'Urdu',
+                      "Punjabi",
                     ],
                     selectedValue: motherTongueValue,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter Mother Tongue';
+                      }
+                      return null;
+                    },
                     onChanged: (String? value) {
                       setState(() {
                         motherTongueValue = value;
                         motherTongueFilter = motherTongueValue ?? '';
-                        SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongueFilter));
+                        SharedPrefs().setMotherTongue(motherTongueFilter);
 
                       });
                     },
                     title: 'Mother Tongue',
                   ),
                 ),*/
+                // adding
 
-
-             /* textBox(  capital: TextCapitalization.words,
-                context: context,
-                label: '',
-                controller: motherTongue,
-                hint: '',
-                length: null,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your Mother Tongue';
-                    }
-                    return null;
-                  },
-                onChanged: (value) {
-                  SharedPrefs().setMotherTongue( StringUtils.capitalize(motherTongue.text));
-                  // SharedPrefs().setMotherTongue(motherTongue.text);
-                },),*/
-
-
-              sizedBox12(),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("User Type",
-                  textAlign: TextAlign.left,
-                  style: styleSatoshiBold(size: 16, color: Colors.black),),
-              ),
-              const SizedBox(height: 12,),
-              SizedBox(
-                width: 1.sw,
-                child: CustomStyledDropdownButton(
-                  items: const  [
-                    "Exclusive",
-                    'Normal',
-                    "Premium",
-                  ],
-                  selectedValue: userTypeValue,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter usertype';
-                    }
-                    return null;
-                  },
-                  onChanged: (String? value) {
-                    setState(() {
-                      userTypeValue = value;
-                      userTypeFilter = userTypeValue ?? '';
-                      SharedPrefs().setUserType(userTypeFilter == "Exclusive" ? "1" :userTypeFilter == "Normal" ? "2" :"1");
-
-                    });
-                    // print(userTypeFilter);
-                    // print('Check ======> Usetype${userTypeFilter}');
-                  },
-                  title: 'User Type',
-                ),
-              ),
-
-
-            ],
+                sizedBox12(),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+    } )
+
     );
   }
 }

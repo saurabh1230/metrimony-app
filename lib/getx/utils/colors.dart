@@ -1,0 +1,33 @@
+import 'dart:ui';
+
+const Color primaryColor = Color(0xfff9436b);
+const Color colorBlack = Color(0xff101010);
+const Color lightGrey = Color(0xff333336);
+const Color color626262 = Color(0xff626262);
+const Color color4271EC = Color(0xff4271EC);
+const Color color828282 = Color(0xff828282);
+const Color colorD9D9D9 = Color(0xffD9D9D9);
+const Color colorDCDCDC= Color(0xffDCDCDC);
+const Color color4F4F4F = Color(0xff4F4F4F);
+const Color color353839 = Color(0xff353839);
+const Color colorGreen = Color(0xff00a337);
+const Color color1C1C1c = Color(0xff1C1C1c);
+const Color colorE6C583= Color(0xffE6C583);
+ Color color4B164C = const Color(0xff4B164C);
+const Color color22172A = Color(0xff22172A);
+const Color color14152B= Color(0xff14152B);
+const Color colorCECECE= Color(0xffCECECE);
+const Color color6C7378= Color(0xff6C7378);
+const Color colorOnxy= Color(0xff3e3e3e);
+const Color color212121 =Color(0xff212121);
+const Color color5E5E5E =Color(0xff5E5E5E);
+const Color colorE2b93b =Color(0xffe8c762);
+const Color colorEb5757 =Color(0xffed6868);
+const Color colorDarkCyan =Color(0xff005D6C);
+ Color color000000Op51 = Color(0xff000000).withOpacity(0.51);
+const Color colorDA4F7A =Color(0xffDA4F7A);
+const Color color7BB972 =Color(0xff7BB972);
+const Color color7859BC =Color(0xff7859BC);
+const Color colorF2AB47=Color(0xffF2AB47);
+const Color colorF27047=Color(0xffF27047);
+

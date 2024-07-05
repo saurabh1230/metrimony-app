@@ -1,3 +1,5 @@
+import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
+import 'package:bureau_couple/getx/features/screens/auth/register/register_one.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/views/signup/signup_dashboard.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,8 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
       color: Colors.white,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Padding(
@@ -85,6 +89,9 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                     button(
                         context: context,
                         onTap: (){
+                          // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                          //     RegisterOne()));
+
                           Navigator.push(context, MaterialPageRoute(builder: (builder) =>
                               SignUpOnboardScreen()));
                         },

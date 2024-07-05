@@ -1,5 +1,6 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
-import 'package:bureau_couple/src/constants/shared_prefs.dart';
+import 'package:get/get.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,8 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
   void initState() {
     _selectedDate = DateTime.now();
     pickedImage = File(""); // I
+    DateTime today = DateTime.now();
+    _selectedDate = today.subtract(const Duration(days: 18 * 365));
     super.initState();
   }
 
@@ -42,9 +45,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
   }
 
   Future<String> _saveImage(File image) async {
-    // Implement saving logic here
-    // For example, you can save it to the document directory
-    // and return the file path.
     return image.path;
   }
 
@@ -52,72 +52,79 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: GetBuilder<AuthController>(builder: (authControl) {
+        return  SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 50,),
+              GestureDetector(
+                // onTap: _pickImage
+                onTap: () async {
+                  XFile? v = await _imgPicker.pickImage(
+                      source: ImageSource.gallery);
+                  if (v != null) {
+                    setState(
+                          () {
+                        pickedImage = File(v.path);
+                      },
+                    );
+                    widget.onImagePicked(v.path);
+                  }
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 50,),
-            GestureDetector(
-             // onTap: _pickImage
-             onTap: () async {
-               XFile? v = await _imgPicker.pickImage(
-                source: ImageSource.gallery);
-                    if (v != null) {
-                setState(
-                  () {
-                pickedImage = File(v.path);
-                 },
-               );
-                widget.onImagePicked(v.path);
-    }
+                },
+                child: Container(
+                  height: 104,
+                  width:  104,
+                  clipBehavior: Clip.hardEdge,
+                  decoration:  const BoxDecoration(
+                    shape: BoxShape.circle,
 
-              },
-              child: Container(
-                height: 104,
-                width:  104,
-               clipBehavior: Clip.hardEdge,
-               decoration:  const BoxDecoration(
-                 shape: BoxShape.circle,
-
-               ) ,
-               child: pickedImage.path.isEmpty
+                  ) ,
+                  child: pickedImage.path.isEmpty
                       ? Image.asset(icProfilePlaceHolder,
-                 )
-                 : Image.file(
-                  pickedImage,
-                  fit: BoxFit.cover,
+                  )
+                      : Image.file(
+                    pickedImage,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            sizedBox20(),
-            Text("What is your birthday?",
-            style: styleSatoshiBold(size: 25, color: Colors.black),),
-            sizedBox13(),
-            Text("Your age information will be updated on your profile page and this will displayed publicly on your profile.",
-              style: styleSatoshiLight(size: 14, color: color828282),
-            textAlign: TextAlign.center,),
-            SizedBox(
-              height: 250,
-              child: ScrollDatePicker(
-                selectedDate: _selectedDate,
-                locale: Locale('en'),
-                onDateTimeChanged: (DateTime value) {
-                  setState(() {
-                    _selectedDate = value;
-                    final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                    String formattedDate = formatter.format(_selectedDate);
-                    print(formattedDate);
-                    print(_selectedDate);
-                    SharedPrefs().setDob(formattedDate);
-                    print('SharedPrefs().getDob()');
+              sizedBox20(),
+              Text("What is your birthday?",
+                style: styleSatoshiBold(size: 25, color: Colors.black),),
+              sizedBox13(),
+              Text("Your age information will be updated on your profile page and this will displayed publicly on your profile.",
+                style: styleSatoshiLight(size: 14, color: color828282),
+                textAlign: TextAlign.center,),
+              SizedBox(
+                height: 250,
+                child: ScrollDatePicker(
+                  maximumDate:  DateTime(2006, 12, 31),
 
-                  });
-                },
+                  selectedDate: _selectedDate,
+                  locale: Locale('en'),
+                  onDateTimeChanged: (DateTime value) {
+                    setState(() {
+                      _selectedDate = value;
+                      final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                      String formattedDate = formatter.format(_selectedDate);
+                      authControl.setDob(formattedDate);
+                      print(formattedDate);
+                      print(_selectedDate);
+
+                      // SharedPrefs().setDob(formattedDate);
+                      print('SharedPrefs().getDob()');
+
+                    });
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      } ),
+
+
     );
   }
 }

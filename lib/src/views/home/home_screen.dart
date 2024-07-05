@@ -677,7 +677,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar buildAppBar() {
     return AppBar(backgroundColor: primaryColor,
-
       shape: const  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(0),
@@ -709,7 +708,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
             child: 
              Padding(
-              padding: const EdgeInsets.only(right: 14.0),
+              padding:  const EdgeInsets.all(14.0),
               child: Image.asset(icBell,height: 24,color: Colors.white,)
             )),
 

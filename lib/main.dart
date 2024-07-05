@@ -7,7 +7,8 @@ import 'package:bureau_couple/src/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'src/helper/get_di.dart' as di;
+import 'getx/utils/theme.dart';
+import 'helper/get_di.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) {
         return  GetMaterialApp(
-            theme: ThemeData(primaryColor: primaryColor,), debugShowCheckedModeBanner: false,
+            theme: light,
+          debugShowCheckedModeBanner: false,
             home: const SplashScreen(),);
         //Dashboard());
       },

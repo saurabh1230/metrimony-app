@@ -1,3 +1,4 @@
+import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,7 @@ import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/string.dart';
-import '../../../controller/matches_controller.dart';
+
 import '../../../models/LoginResponse.dart';
 import '../../../models/matches_model.dart';
 import '../../../utils/urls.dart';

@@ -370,33 +370,30 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'User Name',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: userNameController,
-                                decoration: AppTFDecoration(hint: 'User Name')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return NameEditDialogWidget(
+                        //       title: 'User Name',
+                        //       addTextField: TextFormField(
+                        //         maxLength: 40,
+                        //         onChanged: (v) {
+                        //           setState(() {});
+                        //         },
+                        //         onEditingComplete: () {
+                        //           Navigator.pop(context); // Close the dialog
+                        //         },
+                        //         controller: userNameController,
+                        //         decoration: AppTFDecoration(hint: 'User Name')
+                        //             .decoration(),
+                        //         //keyboardType: TextInputType.phone,
+                        //       ),
+                        //     );
+                        //   },
+                        // );
                       },
                       child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
+                        widget: SizedBox(),
                         title: 'User Name',
                         data1: userNameController.text.isEmpty
                             ? (mainInfo == null ||

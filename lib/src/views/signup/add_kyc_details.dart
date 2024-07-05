@@ -118,29 +118,29 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                       )
 
                     ),
-                    Text("Designation",
-                      style: kManrope14Medium626262,),
-                    sizedBox6(),
-                    textBox(
-                      context: context,
-                      label: '',
-                      controller: designationController,
-                      hint: '',
-                      length: 20,
-                      onChanged: (value) {
+                    // Text("Designation",
+                    //   style: kManrope14Medium626262,),
+                    // sizedBox6(),
+                    // textBox(
+                    //   context: context,
+                    //   label: '',
+                    //   controller: designationController,
+                    //   hint: '',
+                    //   length: 20,
+                    //   onChanged: (value) {
+                    //
+                    //
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please enter your designation';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
 
-
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your designation';
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 20,),
-                    Text("Identity Proof",
+                    // const SizedBox(height: 20,),
+                    Text("Identity Proof Document Name",
                       style: kManrope14Medium626262,),
                     sizedBox6(),
                     textBox(
