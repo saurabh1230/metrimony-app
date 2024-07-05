@@ -1,6 +1,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
+import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_one.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_two.dart';
@@ -143,10 +144,11 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
               button(
                   context: context,
                   onTap: (){
+                    print(authControl.gender);
                     if (_currentPage == 0) {
                       if (const SignUpScreenOne().validate()) {
                         _pageController.nextPage(
-                          duration: Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
@@ -165,7 +167,6 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
-
                     }
                     else if (_currentPage == 3) {
                       if(pickedImagePath.isEmpty )  {
@@ -208,7 +209,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           fieldofStudy: authControl.fieldOfStudy!,
                           institute:authControl.institute!,
                           batchStart: authControl.batchFromString,
-                          batchEnd: authControl.batchToString, district: authControl.district.toString(),
+                          batchEnd: authControl.batchToString,
+                          district: authControl.district.toString(),
                           // phone: '',
                         ).then((value) async {
                           setState(() {
@@ -227,11 +229,11 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                             SharedPrefs().setLoginToken(value['data']['access_token']);
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (builder) => const AddKycDetailsScreen()),
+                              MaterialPageRoute(builder: (builder) => const SignInScreen()),
                             );
 
                             ToastUtil.showToast("Registered Successfully");
-                            print('done');
+
                           } else {
                             setState(() {
                               loading = false;
@@ -318,3 +320,29 @@ Future<String?> getAccessToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString('access_token');
 }
+
+
+// I/flutter (17714): {remark: registration_success,
+// status: success,
+// message: {success: [Registration successful]},
+// data: {access_token: 1475|dQWxwjJLhSmohKT3swsaXVQs0by1Zk8jJq6qoKd1,
+// user: {profile_id: 32329162,
+// looking_for: My Self,
+// email: hdndndndj@gmail.com,
+// username: hdjfjfjdj,
+// firstname: Dbndjfbf,
+// lastname: Ndndndn,
+// religion: 2, marital_status: unmarried,
+// mother_tongue: 1,
+// community: 1,
+// profession: 2,
+// middle_name: ,
+// gender: M,
+// image: 6687f2ae8fdd71720185518.jpg,
+// country_code: IN, mobile: 9165656556,
+// address: {address: null, state: Andhra Pradesh,
+// zip: null, country: India, district: null},
+// kv: 1, ev: 1, sv: 1,
+// updated_at: 2024-07-05T13:18:38.000000Z,
+// created_at: 2024-07-05T13:18:38.000000Z, id: 55},
+// token_type: Bearer}}

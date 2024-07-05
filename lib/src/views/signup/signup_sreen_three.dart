@@ -100,7 +100,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                 height: 250,
                 child: ScrollDatePicker(
                   maximumDate:  DateTime(2006, 12, 31),
-
                   selectedDate: _selectedDate,
                   locale: Locale('en'),
                   onDateTimeChanged: (DateTime value) {

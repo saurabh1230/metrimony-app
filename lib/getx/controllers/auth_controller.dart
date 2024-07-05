@@ -263,12 +263,12 @@ class AuthController extends GetxController implements GetxService {
   void setState(String state) {
     _selectedState = state;
     _selectedDistrict = null;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
   void setDistrict(String district) {
     _selectedDistrict = district;
-    update(); // Notify listeners that selectedDistrict has changed
+    update();
   }
 
   List<ReligionModel>? _religionList;
@@ -301,7 +301,6 @@ class AuthController extends GetxController implements GetxService {
             responseData.map((json) => ReligionModel.fromJson(json)).toList();
         _religionIds = [0, ..._religionList!.map((e) => e.id)];
 
-        // Select the first item by default
         if (_religionList!.isNotEmpty) {
           _religionMainIndex = _religionList![0].id;
         }
@@ -310,14 +309,13 @@ class AuthController extends GetxController implements GetxService {
       } else {
         _isLoading = false;
         update();
-        // Handle API error
-        // ApiChecker.checkApi(response);
+
       }
     } catch (error) {
 
-      // Handle errors, such as network failures
+
       print("Error while fetching list: $error");
-      // You might want to set _mlaList and _mlaIds to null or empty lists here.
+
     } finally {
       _isLoading = false;
       update();
@@ -607,7 +605,7 @@ class AuthController extends GetxController implements GetxService {
   String? get district => _district;
 
   void setDist(String district) {
-    _district = _district;
+    _district = district;
     update(); // Notify listeners that selectedState has changed
   }
 

@@ -177,19 +177,19 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   }).toList(),
                 ),
                 const SizedBox(height: 20,),
-                Text("Cadar", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
+                Text("Cadres", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
                 const SizedBox(height: 5),
                 SizedBox(
                   width: 1.sw,
                   child: CustomStyledDropdownButton(
                     items: const  [
-                      "Cadar",
+                      "Cadres",
 
                     ],
                     selectedValue: cadarValue,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Cadar';
+                        return 'Please enter Cadres';
                       }
                       return null;
                     },
@@ -203,7 +203,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                       // print(userTypeFilter);
                       // print('Check ======> Usetype${userTypeFilter}');
                     },
-                    title: 'Cadar',
+                    title: 'Cadres',
                   ),
                 ),
                 const SizedBox(height: 20,),
@@ -353,16 +353,14 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                     sizedBoxW10(),
                     Expanded(
                       child: CustomTextField(
-                        showTitle: true,
-                        validation: (value) {
+                        showTitle: true, validation: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please Enter your Ending Date';
-                          }
+                           }
                           return null;
                         },
                         onChanged: (value) {
                           authControl.setPostingEndDate(endDateController.text);
-
                         },
                         hintText:"Ending date",
                         controller: endDateController,
@@ -389,9 +387,9 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                 CustomTextField(hintText: "Field of Study",
                   controller: fieldOfStudyController,
                   validation: (value) {
-                    if (value == null || value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                       return 'Please Enter your Field of Study';
-                    }
+                  }
                     return null;
                   },
                   onChanged: (value) {
@@ -411,19 +409,12 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   },
                   controller: instituteController,
                   showTitle: true,),
-
-
-
-
-
                 const SizedBox(height: 20,),
               ],
             ),
           ),
         );
       }),
-
-
     );
   }
 }

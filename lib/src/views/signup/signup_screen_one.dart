@@ -300,9 +300,9 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                           },
                           onSuggestionSelected: (String? suggestion) {
                             if (suggestion != null) {
-                              authControl.setDistrict(suggestion);
+                              // authControl.setDistrict(suggestion);
                               districtController.text = suggestion;
-                              authControl.setDist(districtController.text);
+                              authControl.setDist(suggestion);
                             }
                           },
                           validator: (value) {
