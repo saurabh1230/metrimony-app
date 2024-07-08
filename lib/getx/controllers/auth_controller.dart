@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:bureau_couple/getx/data/response/community_model.dart';
 import 'package:bureau_couple/getx/data/response/mother_tongue_model.dart';
 import 'package:bureau_couple/getx/data/response/position_held.dart';
@@ -21,8 +17,10 @@ class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   final SharedPreferences sharedPreferences;
 
-  AuthController({required this.authRepo, required this.sharedPreferences,});
-
+  AuthController({
+    required this.authRepo,
+    required this.sharedPreferences,
+  });
 
   int? _userId;
 
@@ -38,7 +36,6 @@ class AuthController extends GetxController implements GetxService {
 
   XFile? get pickedCover => _pickedCover;
 
-
   void pickImage(bool isLogo, bool isRemove) async {
     if (isRemove) {
       _pickedImage = null;
@@ -46,10 +43,10 @@ class AuthController extends GetxController implements GetxService {
     } else {
       if (isLogo) {
         _pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+            await ImagePicker().pickImage(source: ImageSource.gallery);
       } else {
         _pickedCover =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+            await ImagePicker().pickImage(source: ImageSource.gallery);
       }
       update();
     }
@@ -79,7 +76,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
   bool isFirstTime = true;
   bool _showPassView = false;
   bool _lengthCheck = false;
@@ -88,12 +84,10 @@ class AuthController extends GetxController implements GetxService {
   bool _lowercaseCheck = false;
   bool _spatialCheck = false;
 
-
   List<dynamic>? _additionalList;
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
-
 
   bool get showPassView => _showPassView;
 
@@ -106,7 +100,6 @@ class AuthController extends GetxController implements GetxService {
   bool get lowercaseCheck => _lowercaseCheck;
 
   List<dynamic>? get additionalList => _additionalList;
-
 
   // Future<void> loginApi(username, password,) async {
   //   _isLoading = true;
@@ -132,7 +125,6 @@ class AuthController extends GetxController implements GetxService {
 
   String? get to => _to;
 
-
   late DateTimeRange _selectedDateRange;
 
   void initSetDate() {
@@ -141,7 +133,9 @@ class AuthController extends GetxController implements GetxService {
     _to = DateConverter.formatDate(DateTime.now());
   }
 
-  void showDatePicker(BuildContext context,) async {
+  void showDatePicker(
+    BuildContext context,
+  ) async {
     final DateTimeRange? result = await showDateRangePicker(
       context: context,
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
@@ -247,6 +241,7 @@ class AuthController extends GetxController implements GetxService {
   // var selectedDistrict = ''.obs;
 
   String? _selectedState;
+
   String? get selectedState => _selectedState;
 
   String? _selectedDistrict;
@@ -272,22 +267,25 @@ class AuthController extends GetxController implements GetxService {
   //   update();
   // }
 
-
   void setDistrict(String district) {
     _selectedDistrict = district;
     update();
   }
 
   List<ReligionModel>? _religionList;
+
   List<ReligionModel>? get religionList => _religionList;
 
   int? _religionIndex = 0;
+
   int? get religionIndex => _religionIndex;
 
   List<int?> _religionIds = [];
+
   List<int?> get religionIds => _religionIds;
 
   int? _religionMainIndex = 0;
+
   int? get religionMainIndex => _religionMainIndex;
 
   void setReligionMainIndex(int? index, bool notify) {
@@ -316,25 +314,18 @@ class AuthController extends GetxController implements GetxService {
       } else {
         _isLoading = false;
         update();
-
       }
     } catch (error) {
-
-
       print("Error while fetching list: $error");
-
     } finally {
       _isLoading = false;
       update();
     }
   }
 
-
   List<CommunityModel>? _communityList;
 
   List<CommunityModel>? get communityList => _communityList;
-
-
 
   List<int?> _communityIds = [];
 
@@ -349,7 +340,6 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
-
 
   Future<void> getCommunityList() async {
     _isLoading = true;
@@ -386,9 +376,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
-
-
   int? _motherTongueIndex = 0;
 
   int? get motherTongueIndex => _motherTongueIndex;
@@ -406,7 +393,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
   Future<void> getMotherTongueList() async {
     _isLoading = true;
     update();
@@ -414,8 +400,9 @@ class AuthController extends GetxController implements GetxService {
       Response response = await authRepo.getAttributesUrl();
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['motherTongue'];
-        _motherTongueList =
-            responseData.map((json) => MotherTongueModel.fromJson(json)).toList();
+        _motherTongueList = responseData
+            .map((json) => MotherTongueModel.fromJson(json))
+            .toList();
         _motherTongueIds = [0, ..._motherTongueList!.map((e) => e.id)];
 
         // Select the first item by default
@@ -435,15 +422,14 @@ class AuthController extends GetxController implements GetxService {
       print("Error while fetching list: $error");
       _isLoading = false;
       update();
-      // You might want to set _mlaList and _mlaIds to null or empty lists here.
     } finally {
       _isLoading = false;
       update();
     }
   }
 
-
   int? _professionIndex = 0;
+
   int? get professionIndex => _professionIndex;
   List<int?> _professionIds = [];
 
@@ -459,7 +445,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
   Future<void> getProfessionList() async {
     _isLoading = true;
     update();
@@ -471,15 +456,12 @@ class AuthController extends GetxController implements GetxService {
             responseData.map((json) => ProfessionModel.fromJson(json)).toList();
         _professionIds = [0, ..._professionList!.map((e) => e.id)];
 
-        // Select the first item by default
         if (_professionList!.isNotEmpty) {
           _professionIndex = _professionList![0].id;
         }
         _isLoading = false;
         update();
       } else {
-        // Handle API error
-        // ApiChecker.checkApi(response);
         _isLoading = false;
         update();
       }
@@ -498,7 +480,7 @@ class AuthController extends GetxController implements GetxService {
   int? _positionHeldIndex = 0;
 
   int? get positionHeldIndex => _positionHeldIndex;
-  List<int?> _positionHeldIds= [];
+  List<int?> _positionHeldIds = [];
 
   List<int?> get positionHeldIds => _positionHeldIds;
   List<PositionHeldModel>? _positionHeldList;
@@ -512,7 +494,6 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
-
   Future<void> getPositionHeldList() async {
     _isLoading = true;
     update();
@@ -520,8 +501,9 @@ class AuthController extends GetxController implements GetxService {
       Response response = await authRepo.getAttributesUrl();
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['positionHeld'];
-        _positionHeldList =
-            responseData.map((json) => PositionHeldModel.fromJson(json)).toList();
+        _positionHeldList = responseData
+            .map((json) => PositionHeldModel.fromJson(json))
+            .toList();
         _positionHeldIds = [0, ..._positionHeldList!.map((e) => e.id)];
 
         // Select the first item by default
@@ -539,7 +521,6 @@ class AuthController extends GetxController implements GetxService {
       print("Error while fetching list: $error");
       _isLoading = false;
       update();
-      // You might want to set _mlaList and _mlaIds to null or empty lists here.
     } finally {
       _isLoading = false;
       update();
@@ -547,34 +528,38 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _userName;
+
   String? get userName => _userName;
 
   String? _firstName;
+
   String? get firstName => _firstName;
 
   void setFirstName(String firstName) {
     _firstName = firstName;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
-
   String? _middleName;
+
   String? get middleName => _middleName;
 
   void setMiddleName(String middleName) {
     _middleName = middleName;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
   String? _lastName;
+
   String? get lastName => _lastName;
 
   void setLastName(String lastName) {
     _lastName = lastName;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
   String? _email;
+
   String? get email => _email;
 
   void setEmail(String email) {
@@ -583,6 +568,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _phone;
+
   String? get phone => _phone;
 
   void setPhone(String phone) {
@@ -590,8 +576,8 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-
   String? _country;
+
   String? get country => _country;
 
   void setCountry(String country) {
@@ -600,6 +586,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _state;
+
   String? get state => _state;
 
   void setstate(String state) {
@@ -608,6 +595,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _district;
+
   String? get district => _district;
 
   void setDist(String district) {
@@ -616,6 +604,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _password;
+
   String? get password => _password;
 
   void setPassword(String password) {
@@ -629,8 +618,8 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _gender;
-  String? get gender => _gender;
 
+  String? get gender => _gender;
 
   void setGender(String gender) {
     _gender = gender;
@@ -638,6 +627,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _profession;
+
   String? get profession => _profession;
 
   void setProfession(String profession) {
@@ -646,6 +636,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _positionHeld;
+
   String? get positionHeld => _positionHeld;
 
   void setPositionHeld(String positionHeld) {
@@ -653,8 +644,8 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-
   String? _cadar;
+
   String? get cadar => _cadar;
 
   void setCadar(String cadar) {
@@ -663,6 +654,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _batchStartYear;
+
   String? get batchStartYear => _batchStartYear;
 
   void setBatchStartYear(String batchStartYear) {
@@ -671,6 +663,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _batchEndYear;
+
   String? get batchEndYear => _batchEndYear;
 
   void setBatchEndYear(String batchEndYear) {
@@ -679,6 +672,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _postingState;
+
   String? get postingState => _postingState;
 
   void setPostingState(String postingState) {
@@ -687,6 +681,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _postingDistrict;
+
   String? get postingDistrict => _postingDistrict;
 
   void setPostingDistrict(String postingDistrict) {
@@ -695,6 +690,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _postingStartDate;
+
   String? get postingStartDate => _postingStartDate;
 
   void setPostingStartDate(String postingStartDate) {
@@ -703,6 +699,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _postingEndDate;
+
   String? get postingEndDate => _postingEndDate;
 
   void setPostingEndDate(String postingEndDate) {
@@ -711,6 +708,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _highestDegree;
+
   String? get highestDegree => _highestDegree;
 
   void setHighestDegree(String highestDegree) {
@@ -719,13 +717,16 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _fieldOfStudy;
+
   String? get fieldOfStudy => _fieldOfStudy;
 
   void setFieldOfStudy(String fieldOfStudy) {
     _fieldOfStudy = fieldOfStudy;
     update(); // Notify listeners that selectedState has changed
   }
+
   String? _institute;
+
   String? get institute => _institute;
 
   void setInstitute(String institute) {
@@ -734,13 +735,13 @@ class AuthController extends GetxController implements GetxService {
   }
 
   String? _dob;
+
   String? get dob => _dob;
 
   void setDob(String dob) {
     _dob = dob;
     update(); // Notify listeners that selectedState has changed
   }
-
 }
 
 class YearPickerDialog extends StatelessWidget {
@@ -789,7 +790,4 @@ class YearPickerDialog extends StatelessWidget {
       ],
     );
   }
-
-
-
 }
