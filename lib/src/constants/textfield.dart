@@ -7,9 +7,6 @@ import 'package:flutter/services.dart';
 import 'colors.dart';
 import 'fonts.dart';
 
-
-
-
 textBoxSuffixIcon({
   required BuildContext context,
   required String label,
@@ -22,11 +19,9 @@ textBoxSuffixIcon({
   required void Function(String)? onChanged,
   required String? Function(String?)? validator,
   Iterable<String>? string,
-
-
 }) {
   return TextFormField(
-    obscureText:bool ,
+    obscureText:bool,
     autofillHints: string,
     controller: controller,
     decoration: InputDecoration(
@@ -50,7 +45,6 @@ textBoxSuffixIcon({
             color: Colors.redAccent,
           ),
         ),
-
         focusedBorder:  OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
@@ -82,11 +76,8 @@ textBoxPickerField({
   required IconData icon,
   Widget? suffixIcon,
   Function()? onTap,
-
   required void Function(String)? onChanged,
-
   required String? Function(String?)? validator,
-
 }) {
   return TextFormField(
     onTap: onTap,
@@ -112,7 +103,6 @@ textBoxPickerField({
             color: Colors.redAccent,
           ),
         ),
-
         focusedBorder:  OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
@@ -157,7 +147,6 @@ textBox({
     controller: controller,
     textCapitalization:capital ?? TextCapitalization.none,
     decoration: InputDecoration(
-
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(vertical: 16,
             horizontal: 5),
@@ -170,7 +159,7 @@ textBox({
         ),
         errorBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius ??10)),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             width: 0.5,
             color: Colors.redAccent,
           ),

@@ -111,15 +111,12 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                             hintText: 'Middle Name (optional)',
                             onChanged: (value) {
                               authControl.setMiddleName(middleNameController.text);
-
-                            },
+                              },
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     CustomTextField(
                       showTitle: true,
                       controller: lastNameController,
@@ -133,12 +130,9 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                       },
                       onChanged: (value) {
                         authControl.setLastName(lastNameController.text);
-
                       },
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20,),
                     CustomTextField(
                       showTitle: true,
                       controller: emailController,
@@ -151,18 +145,14 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                       },
                       onChanged: (value) {
                         authControl.setEmail(emailController.text);
-
                       },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     CustomTextField(
-                      isNumber: true,
-                      isAmount: true,
-                      showTitle: true,
-                      controller: phNoController,
-                      hintText: 'Phone',
+                      isNumber: true, isAmount: true, showTitle: true,
+                      controller: phNoController, hintText: 'Phone',
                       validation: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please Enter your Phone No';
@@ -173,9 +163,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         authControl.setPhone(phNoController.text);
                       },
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                  /*   CustomTextField(
                       readOnly: true,
                       validation: (value) {
@@ -262,8 +250,6 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                               authControl.setState(suggestion);
                               stateController.text = suggestion;
                               authControl.setstate(stateController.text);
-
-
                             }
                           },
                           validator: (value) {

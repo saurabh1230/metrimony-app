@@ -97,7 +97,7 @@ class SharedPrefs {
 
 
   Future setDob(String sDob) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(dateOfBirth, sDob);
   }
 
@@ -106,7 +106,7 @@ class SharedPrefs {
   }
 
   Future setLoginGender(String sGender) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(loginGender, sGender);
   }
 
@@ -120,7 +120,7 @@ class SharedPrefs {
   }
 
   Future setReligion(String sReligion) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(religion, sReligion);
   }
 
@@ -164,12 +164,12 @@ class SharedPrefs {
 
 
   Future setProfession(String sProfession) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(profession, sProfession);
   }
 
   Future setUserType(String sUserType) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(userType, sUserType);
   }
 
@@ -191,7 +191,7 @@ class SharedPrefs {
   }
 
   Future setCountryCode(String sCountry) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(countryCode, sCountry);
   }
 
@@ -203,7 +203,7 @@ class SharedPrefs {
     return await _prefs?.remove(countryCode);
   }
   Future setMotherTongue(String sMotherTongue) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(motherTongue, sMotherTongue);
   }
 
@@ -216,7 +216,7 @@ class SharedPrefs {
   }
 
   Future setCommunity(String sCommunity) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(community, sCommunity);
   }
 
@@ -229,7 +229,7 @@ class SharedPrefs {
   }
 
   Future setCountry(String sCountry) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(country, sCountry);
   }
 
@@ -244,7 +244,7 @@ class SharedPrefs {
 
 
   Future setUserName(String sUserName) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(userName, sUserName);
   }
 
@@ -259,7 +259,7 @@ class SharedPrefs {
 
 
   Future setProfileFor(String sProfileFor) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(profileFor, sProfileFor);
   }
 
@@ -272,7 +272,7 @@ class SharedPrefs {
   }
 
   Future setGender(String sGender) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(gender, sGender);
   }
 
@@ -285,7 +285,7 @@ class SharedPrefs {
   }
 
   Future setMaritalStatus(String sMStatus) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(maritalStatus, sMStatus);
   }
 
@@ -300,11 +300,11 @@ class SharedPrefs {
 
 
   Future setName(String fName) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(firstname, fName);
   }
   Future setLastName(String LName) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(lastname, LName);
   }
   Future clearLastName() async {
@@ -312,7 +312,7 @@ class SharedPrefs {
     return await _prefs?.remove(lastname);
   }
   Future setEmail(String sEmail) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(email, sEmail);
   }
 
@@ -320,7 +320,7 @@ class SharedPrefs {
     return _prefs?.getString(email);
   }
   Future setPhone(String sPhone) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(phone, sPhone);
   }
 
@@ -329,7 +329,7 @@ class SharedPrefs {
   }
 
   Future setPassword(String sPassword) async {
-    await init(); // Make sure to initialize SharedPreferences before using it
+    await init();
     return await _prefs?.setString(password, sPassword);
   }
 
@@ -351,7 +351,7 @@ class SharedPrefs {
   }
 
   Future setLoginToken(String loginToken) async {
-    // await init(); // Make sure to initialize SharedPreferences before using it
+    // await init();
     return await _prefs?.setString(token, loginToken);
   }
 }
