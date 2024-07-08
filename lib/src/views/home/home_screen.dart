@@ -1,3 +1,5 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -25,9 +27,10 @@ import '../user_profile/user_profile.dart';
 import 'connect/connect_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'matches/married_category_screen.dart';
-import 'matches/religion_category_screen.dart';
+import 'package:get/get.dart';
 import 'profile/edit_basic_info.dart';
+
+
 class HomeScreen extends StatefulWidget {
   final LoginResponse response;
 
@@ -45,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
      getMatches();
      getPreferredMatch();
      profileDetail();
+     Get.find<ProfileController>().getUserDetailsApi();
 
    }
 
@@ -228,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: widget.response.data!.user!.religion!.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: 'Religion',))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
                             );
 
                           },
@@ -245,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: profile.data!.user!.partnerExpectation!.maxWeight!.toString(), based: 'State',))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.address!.state!, motherTongue:'', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
                             );
 
                           },
@@ -262,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  profile.data!.user!.partnerExpectation!.maxWeight.toString(), based: 'Weight',))
+                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  '', based: '',))
                             );},
                             child: Column(
                               children: [
@@ -284,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Image.asset(flanguage,height: 55,),
                                 sizedBox6(),
-                                Text("Language",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
+                                Text("Mother Tongue",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
                               ],
                             ),
                           ),
@@ -388,10 +392,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text(
-                                                  '$age yrs',
-                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
-                                                ),
+                                                Text('$age yrs',
+                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),),
                                                 const SizedBox(width: 6,),
                                                 Container(
                                                   height: 4,
@@ -411,18 +413,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  matches[i].basicInfo?.religion ?? '',
-                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                                ),
-                                                Text(overflow: TextOverflow.ellipsis,maxLines: 1,
-                                                  matches[i].basicInfo?.presentAddress?.state ?? '',
-
-                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(matches[i].basicInfo?.religion?.name ?? '',
+                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),),
+                                                  Text(overflow: TextOverflow.ellipsis,maxLines: 2,
+                                                    matches[i].basicInfo?.presentAddress?.state ?? '',
+                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             like[i] || matches[i].interestStatus == 2  ?
                                             TickButton(tap: () {  },):
@@ -597,7 +598,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Column(crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  preferredMatches[i].basicInfo?.religion ?? '',
+                                                  preferredMatches[i].basicInfo?.religion?.name ?? '',
                                                   style: styleSatoshiRegular(size: 13, color: Colors.white),
                                                 ),
                                                 Text(overflow: TextOverflow.ellipsis,maxLines: 1,

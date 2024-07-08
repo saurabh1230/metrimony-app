@@ -428,33 +428,34 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'Profession',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: professionController,
-                                decoration: AppTFDecoration(hint: 'Profession')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
+                        // showDialog(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return NameEditDialogWidget(
+                        //       title: 'Profession',
+                        //       addTextField: TextFormField(
+                        //         maxLength: 40,
+                        //         onChanged: (v) {
+                        //           setState(() {});
+                        //         },
+                        //         onEditingComplete: () {
+                        //           Navigator.pop(context); // Close the dialog
+                        //         },
+                        //         controller: professionController,
+                        //         decoration: AppTFDecoration(hint: 'Profession')
+                        //             .decoration(),
+                        //         //keyboardType: TextInputType.phone,
+                        //       ),
+                        //     );
+                        //   },
+                        // );
                       },
                       child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
+                        widget: const SizedBox(),
+                        // widget: const Icon(
+                        //   Icons.edit,
+                        //   size: 12,
+                        // ),
                         title: 'Profession',
                         data1: professionController.text.isEmpty
                             ? (basicInfo.id == null ||
@@ -617,25 +618,26 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CommuitySheet(
-                              privacyStatus: '',
-                              onPop: (val) {
-                                communityController.text = val;
-                                print(communityController.text);
-                              },
-                            );
-                          },
-                        );
+                        // showModalBottomSheet(
+                        //   context: context,
+                        //   builder: (BuildContext context) {
+                        //     return CommuitySheet(
+                        //       privacyStatus: '',
+                        //       onPop: (val) {
+                        //         communityController.text = val;
+                        //         print(communityController.text);
+                        //       },
+                        //     );
+                        //   },
+                        // );
                       },
                       child: buildDataAddRow(
                         title: 'Community',
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
+                        widget: const SizedBox(),
+                        // widget: const Icon(
+                        //   Icons.edit,
+                        //   size: 12,
+                        // ),
                         data1: communityController.text.isEmpty
                             ? (basicInfo.id == null ||
                             basicInfo.community == null
@@ -687,7 +689,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                       onTap: () {},
                       child: buildDataAddRow(
                         title: 'Mother Tongue',
-                        widget: SizedBox(),
+                        widget: const SizedBox(),
                         data1: motherTongueController.text.isEmpty
                             ? (basicInfo.id == null ||
                                     basicInfo.motherTongue == null ||

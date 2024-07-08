@@ -44,8 +44,8 @@ Future<dynamic> partnerExpectationUpdateApi({
    'drinking_status': drinkingStatus,
    "profession":profession,
    "min_degree":minDegree,
-   "financial_condition":financialCondition,
-    "language[]": language
+   // "financial_condition":financialCondition,
+    // "language[]": language
 
 
   });

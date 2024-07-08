@@ -74,39 +74,39 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  CustomAppBar(title: "Education Info",menuWidget: Row(children: [selectedItemId.isNotEmpty ?
+      appBar:  CustomAppBar(title: "Education Info",/*menuWidget: Row(children: [selectedItemId.isNotEmpty ?
       GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            educationInfoDeleteApi(id: selectedItemId
-            ).then((value) {
-              setState(() {
-              });
-              if (value['status'] == true) {
-                setState(() {
-                  loading = false;
-                  isLoading  ?  const Loading() :  educationInfo();
-                });
-
-                // isLoading ? Loading() :careerInfo();
-                // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                // const KycWaitScreen()));
-
-                // ToastUtil.showToast("Login Successful");
-
-                ToastUtil.showToast("Deleted Successfully");
-
-              } else {
-                setState(() {
-                  loading = false;
-                });
-
-
-                List<dynamic> errors = value['message']['error'];
-                String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                Fluttertoast.showToast(msg: errorMessage);
-              }
-            });
+            // educationInfoDeleteApi(id: selectedItemId
+            // ).then((value) {
+            //   setState(() {
+            //   });
+            //   if (value['status'] == true) {
+            //     setState(() {
+            //       loading = false;
+            //       isLoading  ?  const Loading() :  educationInfo();
+            //     });
+            //
+            //     // isLoading ? Loading() :careerInfo();
+            //     // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+            //     // const KycWaitScreen()));
+            //
+            //     // ToastUtil.showToast("Login Successful");
+            //
+            //     ToastUtil.showToast("Deleted Successfully");
+            //
+            //   } else {
+            //     setState(() {
+            //       loading = false;
+            //     });
+            //
+            //
+            //     List<dynamic> errors = value['message']['error'];
+            //     String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+            //     Fluttertoast.showToast(msg: errorMessage);
+            //   }
+            // });
           },
           child:const  Icon(Icons.delete,color: Colors.white,)) :
       const  SizedBox(),
@@ -128,7 +128,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: buildTextFormField(context, hint: 'Institute', controller: instituteController),
+                                    child: buildTextFormField(context, hint: 'University / institute', controller: instituteController),
                                   ),
                                   const SizedBox(width: 6,),
                                   Expanded(
@@ -140,7 +140,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: buildTextFormField(context, hint: 'Study', controller: fieldOfStudyController),
+                                    child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
                                   ),
                                   const SizedBox(width: 6,),
                                   Expanded(
@@ -257,7 +257,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
             child: Icon(Icons.add,color: Colors.white,),
           ),
         )],
-      ),),
+      ),*/),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -275,7 +275,6 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
         },
         child: SingleChildScrollView(
           physics: const  AlwaysScrollableScrollPhysics(),
-
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
             child: Column(
@@ -298,7 +297,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                                           Row(
                                             children: [
                                               Expanded(
-                                                child: buildTextFormField(context, hint: 'Institute', controller: instituteController),
+                                                child: buildTextFormField(context, hint: 'University / institute', controller: instituteController),
                                               ),
                                               const SizedBox(width: 6,),
                                               Expanded(
@@ -310,7 +309,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                                           Row(
                                             children: [
                                               Expanded(
-                                                child: buildTextFormField(context, hint: 'Study', controller: fieldOfStudyController),
+                                                child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
                                               ),
                                               const SizedBox(width: 6,),
                                               Expanded(
@@ -418,8 +417,8 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                         );
 
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 50.0),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 50.0),
                         child: DottedPlaceHolder(text: "Add Education Info"),
                       )
                     )):
@@ -431,32 +430,32 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                   return customCard(
                     child: GestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onLongPress: () {
-                        setState(() {
-                          selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
-                        });
-                      },
+                      // onLongPress: () {
+                      //   setState(() {
+                      //     selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
+                      //   });
+                      // },
                       child: Column(
                         children: [
-                          buildListRow(title: 'Institute', data1: StringUtils.capitalize(educationDetails[i].institute.toString()), ),
+                          buildListRow(title: 'University / institute', data1: StringUtils.capitalize(educationDetails[i].institute.toString()), ),
                           sizedBox6(),
                           buildListRow(title: 'Degree', data1:  StringUtils.capitalize(educationDetails[i].degree.toString()), ),
                           sizedBox6(),
-                          buildListRow(title: 'Study', data1: StringUtils.capitalize(educationDetails[i].fieldOfStudy.toString()), ),
+                          buildListRow(title: 'Field Of Study', data1: StringUtils.capitalize(educationDetails[i].fieldOfStudy.toString()), ),
                           sizedBox6(),
-                          buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
-                          sizedBox6(),
-                          buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
-                          sizedBox6(),
-                          buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
-                          sizedBox6(),
-                          buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
-                          sizedBox6(),
-                          buildListRow(title: 'Result',
-                            data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
-                          sizedBox6(),
-                          buildListRow(title: 'Out of',
-                            data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
+                          // buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
+                          // sizedBox6(),
+                          // buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
+                          // sizedBox6(),
+                          // buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
+                          // sizedBox6(),
+                          // buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
+                          // sizedBox6(),
+                          // buildListRow(title: 'Result',
+                          //   data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
+                          // sizedBox6(),
+                          // buildListRow(title: 'Out of',
+                          //   data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
 
 
                         ],
@@ -630,7 +629,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: buildTextFormField(context, hint: 'Institute', controller: instituteController),
+                                  child: buildTextFormField(context, hint: 'University / institute', controller: instituteController),
                                 ),
                                 const SizedBox(width: 6,),
                                 Expanded(
@@ -642,7 +641,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: buildTextFormField(context, hint: 'Study', controller: fieldOfStudyController),
+                                  child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
                                 ),
                                 const SizedBox(width: 6,),
                                 Expanded(

@@ -362,20 +362,23 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                 child: Column(
                                   children: [
                                     buildListRow(
-                                      title: 'company',
-                                      data1: StringUtils.capitalize(career[i].company.toString()),
+                                      title: 'Position',
+                                      data1: StringUtils.capitalize(career[i].position.toString()),
                                     ),
+                                    sizedBox10(),
                                     buildListRow(
-                                      title: 'designation',
-                                      data1:StringUtils.capitalize(career[i].designation.toString()),
+                                      title: 'Posting Date',
+                                      data1:StringUtils.capitalize('${career[i].from} To ${career[i].end}'),
                                     ),
+                                    sizedBox10(),
                                     buildListRow(
-                                      title: 'start',
-                                      data1: career[i].start.toString(),
+                                      title: 'State Of Posting',
+                                      data1: career[i].statePosting.toString(),
                                     ),
+                                    sizedBox10(),
                                     buildListRow(
-                                      title: 'end',
-                                      data1: career[i].end.toString(),
+                                      title: 'District Of Posting',
+                                      data1: career[i].districtPosting.toString(),
                                     ),
                                   ],
                                 ),

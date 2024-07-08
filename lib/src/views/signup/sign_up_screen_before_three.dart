@@ -94,6 +94,8 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().getProfessionList();
       Get.find<AuthController>().getPositionHeldList();
+      // Get.find<AuthController>().clearStateDistrict();
+
       // Get.find<AuthController>().getMotherTongueList();
 
     });
@@ -397,10 +399,10 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   },
                   showTitle: true,),
                 const SizedBox(height: 20,),
-                CustomTextField(hintText: "Institute",
+                CustomTextField(hintText: "University / Institute",
                   validation: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter your Institute';
+                      return 'Please Enter your University / Institute';
                     }
                     return null;
                   },

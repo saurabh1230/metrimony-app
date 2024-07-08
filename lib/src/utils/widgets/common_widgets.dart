@@ -174,21 +174,17 @@ Widget customCard({
 }) {
   return GestureDetector(
     onTap:tap ,
-    child: Card(
-        elevation: 2,
-        color: Colors.white,
-        child: Container(
-          padding: const EdgeInsets.all(16),
+    child: Container(
+      padding: const EdgeInsets.all(16),
 
-        decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 0.5,
-          color: borderColor,
-        ),
-        borderRadius: BorderRadius.circular(12)
-    ),  child: child,
-        ),
+    decoration: BoxDecoration(
+    color: Colors.white,
+    border: Border.all(
+      width: 0.5,
+      color: borderColor,
+    ),
+    borderRadius: BorderRadius.circular(12)
+        ),  child: child,
     ),
   );
 }

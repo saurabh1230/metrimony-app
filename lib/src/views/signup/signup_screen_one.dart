@@ -176,7 +176,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CustomTextField(
+                 /*   CustomTextField(
                       readOnly: true,
                       validation: (value) {
                         if (value == null || value.isEmpty) {
@@ -236,7 +236,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                     ),
                     const SizedBox(
                       height: 20,
-                    ),
+                    ),*/
 
                     Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

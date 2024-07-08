@@ -307,44 +307,44 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                       isControllerTextEmpty: heightController.text.isEmpty),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
-                sizedBox16(),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Weight in kgs',
-                          addTextField: TextFormField(
-                            keyboardType: TextInputType.number,
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: weightController,
-                            decoration: AppTFDecoration(
-                                hint: 'Weight').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(title: 'Weight',
-                    data1: weightController.text.isEmpty
-                        ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
-                        ? 'Not Added'
-                        : physicalData.weight.toString())
-                        : weightController.text,
-                    data2: weightController.text,
-                    isControllerTextEmpty: weightController.text.isEmpty,),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
+                // sizedBox16(),
+                // GestureDetector(
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'Weight in kgs',
+                //           addTextField: TextFormField(
+                //             keyboardType: TextInputType.number,
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {
+                //
+                //               });
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: weightController,
+                //             decoration: AppTFDecoration(
+                //                 hint: 'Weight').decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(title: 'Weight',
+                //     data1: weightController.text.isEmpty
+                //         ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
+                //         ? 'Not Added'
+                //         : physicalData.weight.toString())
+                //         : weightController.text,
+                //     data2: weightController.text,
+                //     isControllerTextEmpty: weightController.text.isEmpty,),
+                //   // child: CarRowWidget(favourites: favourites!,)
+                // ),
                 sizedBox16(),
                 GestureDetector(
                   onTap: () {

@@ -1,13 +1,17 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
+import 'package:bureau_couple/src/views/home/bookmark_screen.dart';
+import 'package:bureau_couple/src/views/home/matches/widgets/filter_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../getx/controllers/profile_controller.dart';
 import '../../../apis/members_api.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
@@ -51,7 +55,23 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   @override
   void initState() {
     super.initState();
-    getMatches();
+    // getMatches();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<MatchesController>().getMatchesList(
+          "1",
+          widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+          widget.filter,
+          stateController.text,
+          '',
+          '',
+          '',
+          widget.motherTongue);
+      Get.find<AuthController>().getReligionsList();
+      Get.find<AuthController>().getCommunityList();
+      Get.find<AuthController>().getMotherTongueList();
+      Get.find<ProfileController>().getBasicInfoApi();
+
+    });
   }
 
   List<MatchesModel> matches = [];
@@ -61,62 +81,6 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   bool loading = false;
   List<bool> like = [];
 
-  getMatches() {
-    isLoading = true;
-    // matches.clear();
-    getMatchesFilterApi(
-      page: page.toString(),
-      maritalStatus: '',
-      religion: widget.filter,
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      country: '', height: '', motherTongue: widget.motherTongue, minHeight: '', maxHeight: '', maxWeight: widget.maxWeight,
-    ).then((value) {
-      matches.clear();
-      setState(() {
-        if (value['status'] == true) {
-          for (var v in value['data']['members']['data']) {
-            matches.add(MatchesModel.fromJson(v));
-            isLoadingList.add(false);
-            like.add(false); // Add // Add false for each new match
-          }
-          isLoading = false;
-          page++;
-        } else {
-          isLoading = false;
-        }
-      });
-    });
-  }
-
-  loadMore() {
-    print('ndnd');
-    // if (!isLoading) {
-    isLoading = true;
-    getMatchesFilterApi(
-      page: page.toString(),
-      maritalStatus: marriedFilter,
-      religion: religionFilter,
-      country: countyController.text,
-      gender: widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-      height: '', motherTongue: '',
-      minHeight: '', maxHeight: '', maxWeight: '',
-    ).then((value) {
-      setState(() {
-        if (value['status'] == true) {
-          for (var v in value['data']['members']['data']) {
-            matches.add(MatchesModel.fromJson(v));
-            isLoadingList.add(false);
-            like.add(false); // Add // Add false for each new match
-          }
-          isLoading = false;
-          page++;
-        } else {
-          isLoading = false;
-        }
-      });
-    });
-    // }
-  }
 
   String? religionValue;
   String? motherTongueValue;
@@ -127,273 +91,409 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   String? selectedValue;
   final countyController = TextEditingController();
   final stateController = TextEditingController();
-
+  final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    Get.find<MatchesController>().setOffset(1);
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent &&
+          Get.find<MatchesController>().matchesList != null &&
+          !Get.find<MatchesController>().isLoading) {
+        // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
+        if (Get.find<MatchesController>().offset < 8) {
+          print(
+              "print ===========> offset before ${Get.find<MatchesController>().offset}");
+          // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
+          // customPrint('end of the page');
+          Get.find<MatchesController>()
+              .setOffset(Get.find<MatchesController>().offset + 1);
+          Get.find<MatchesController>().showBottomLoader();
+          Get.find<MatchesController>().getMatchesList(
+              Get.find<MatchesController>().offset.toString(),
+              widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+              religionFilter,
+              stateController.text,
+              '',
+              '',
+              '',
+              motherTongueFilter);
+          Get.find<MatchesController>().offset.toString();
+        }
+      }
+    });
+
+
+
+
+    // Get.find<MatchesController>().setOffset(1);
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent &&
+    //       Get.find<MatchesController>().matchesList != null &&
+    //       !Get.find<MatchesController>().isLoading) {
+    //     // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
+    //     if (Get.find<MatchesController>().offset < 8) {
+    //       Get.find<MatchesController>().setOffset(Get.find<MatchesController>().offset + 1);
+    //       Get.find<MatchesController>().showBottomLoader();
+    //       Get.find<MatchesController>().getMatchesList(
+    //           Get.find<MatchesController>().offset.toString(),
+    //           widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+    //           religionFilter,
+    //           stateController.text,
+    //           minHeight.text,
+    //           maxHeight.text,
+    //           maxWeightController.text,
+    //           motherTongueFilter);
+    //     }
+    //   }
+    // });
     return Scaffold(
-      appBar: CustomAppBar(title: " Filter Matches",isBackButtonExist: true,menuWidget: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                    return Container(
-                      width: 1.sw,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            sizedBox16(),
-                            Text(
-                              "Select Preferred Matches",
-                              style: styleSatoshiLight(
-                                  size: 12, color: Colors.black),
-                            ),
-                            sizedBox16(),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 0.0),
-                              child: SizedBox(
-                                width: 1.sw,
-                                child: CustomStyledDropdownButton(
-                                  items: const  [
-                                    "Hindu",
-                                    'Muslim',
-                                    "Jain",
-                                    'Buddhist',
-                                    'Sikh',
-                                    'Marathi'
-                                  ],
-                                  selectedValue: religionValue,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      religionValue = value;
-                                      religionFilter = religionValue ?? '';
-
-                                    });
-                                  },
-                                  title: 'Religion',
-                                ),
-                              ),
-                            ),
-                            // sizedBox16(),
-                            sizedBox16(),
-                            textBox(
-                              context: context,
-                              label: 'State',
-                              controller: stateController,
-                              hint: 'State',
-                              length: null,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your State';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-
-                              },),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 0.0),
-                              child: SizedBox(
-                                width: 1.sw,
-                                child: CustomStyledDropdownButton(
-                                  items: const  [
-                                    "Hindi",
-                                    "Bhojpuri",
-                                    'Marathi',
-                                    "Bengali",
-                                    'Odia',
-                                    'Gujarati',
-                                  ],
-                                  selectedValue: motherTongueValue,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      motherTongueValue = value;
-                                      motherTongueFilter = motherTongueValue ?? '';
-
-                                    });
-                                  },
-                                  title: 'Mother Tongue',
-                                ),
-                              ),
-                            ),
-                            sizedBox16(),
-                            elevatedButton(
-                                color: primaryColor,
-                                context: context,
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.pop(context);
-                                    isLoading = true;
-                                    page = 1;
-
-
-                                    getMatches();
-                                  });
-                                },
-                                title: "Apply")
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-            },
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.only(
-              right: 16.0, top: 6, bottom: 6, left: 10),
-          child:  SvgPicture.asset(filter,
-            height: 24,
-            width: 24,
-            color: Colors.white,),
-        ),
-      )),
-   /*   appBar: AppBar(
-        automaticallyImplyLeading: false,
+      appBar:  AppBar(backgroundColor: primaryColor,
         centerTitle: false,
+        automaticallyImplyLeading: false,
         title: Text(
-          "Filter Matches",
-          style: styleSatoshiBold(size: 22, color: Colors.black),
+          "Matches",
+          style: styleSatoshiBold(size: 20, color: Colors.white),
         ),
         actions: [
           GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (builder) => const SavedMatchesScreen()));},
+            child:  Padding(
+              padding: const EdgeInsets.only(right: 16.0,),
+              child: SvgPicture.asset(sortList,color: Colors.white,),
+            ),
+          ),
+          GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                    return Container(
-                      width: 1.sw,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            sizedBox16(),
-                            Text(
-                              "Select Preferred Matches",
-                              style: styleSatoshiLight(
-                                  size: 12, color: Colors.black),
-                            ),
-                            sizedBox16(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 0.0),
-                              child: SizedBox(
-                                width: 1.sw,
-                                child: CustomStyledDropdownButton(
-                                  items: const  [
-                                    "Hindu",
-                                    'Muslim',
-                                    "Jain",
-                                    'Buddhist',
-                                    'Sikh',
-                                    'Marathi'
-                                  ],
-                                  selectedValue: religionValue,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      religionValue = value;
-                                      religionFilter = religionValue ?? '';
-                                   
-                                    });
-                                  },
-                                  title: 'Religion',
-                                ),
-                              ),
-                            ),
-                            // sizedBox16(),
-                            sizedBox16(),
-                            textBox(
-                              context: context,
-                              label: 'State',
-                              controller: stateController,
-                              hint: 'State',
-                              length: null,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your State';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-
-                              },),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 0.0),
-                              child: SizedBox(
-                                width: 1.sw,
-                                child: CustomStyledDropdownButton(
-                                  items: const  [
-                                    "Hindi",
-                                    "Bhojpuri",
-                                    'Marathi',
-                                    "Bengali",
-                                    'Odia',
-                                    'Gujarati',
-                                  ],
-                                  selectedValue: motherTongueValue,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      motherTongueValue = value;
-                                      motherTongueFilter = motherTongueValue ?? '';
-
-                                    });
-                                  },
-                                  title: 'Mother Tongue',
-                                ),
-                              ),
-                            ),
-                            sizedBox16(),
-                            elevatedButton(
-                                color: primaryColor,
-                                context: context,
-                                onTap: () {
-                                  setState(() {
-                                    Navigator.pop(context);
-                                    isLoading = true;
-                                    page = 1;
-
-
-                                    getMatches();
-                                  });
-                                },
-                                title: "Apply")
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-                },
+              Get.bottomSheet(
+                FilterBottomSheet(),
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
               );
             },
             child: Container(
               padding: const EdgeInsets.only(
                   right: 16.0, top: 6, bottom: 6, left: 10),
-              child:  Image.asset(icFilter,
-              height: 24,
-              width: 24,
-              color: Colors.black,),
+              child:  SvgPicture.asset(filter,
+                color: Colors.white,),
             ),
           )
         ],
-      ),*/
+      ),
       body:  GetBuilder<MatchesController>(builder: (matchesControl) {
         return
-          isLoading
-            ? const ShimmerWidget()
-            : matches.isEmpty ?
+          // matchesControl.matchesList == null ?
+          //    const ShimmerWidget()
+          //   : matchesControl.matchesList!.isEmpty
+          //   ? Center(child: const Text("No Matches Yet"))
+          //   :
+          matchesControl.matchesList != null ? matchesControl.matchesList!.isNotEmpty ?
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 0),
+            child: Stack(
+              children: [
+                Text("${matchesControl.matchesList!.length} Matches Found",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
+                sizedBox10(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 35.0),
+                  child:  ListView.separated(controller: scrollController,
+                    itemCount: matchesControl.matchesList!.length ,
+                    itemBuilder: (context, i) {
+                      DateTime? birthDate = matchesControl.matchesList![i].basicInfo != null
+                          ? DateFormat('yyyy-MM-dd')
+                          .parse(matchesControl.matchesList![i].basicInfo!.birthDate!)
+                          : null;
+                      int age = birthDate != null
+                          ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                      return Column(
+                        children: [
+                          otherUserdataHolder(
+                            context: context,
+                            tap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (builder) =>
+                                      UserProfileScreen(
+                                        userId: matchesControl.matchesList![i].id.toString(),
+                                      ),
+                                ),
+                              );
+                            },
+                            height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
+                            "" :
+                            "${matchesControl.matchesList![i].physicalAttributes!.height ??
+                                ''}ft",
+                            imgUrl:
+                            '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
+                            state: matchesControl.matchesList![i]
+                                .basicInfo
+                                ?.presentAddress
+                                ?.state ??
+                                '',
+                            userName: matchesControl.matchesList![i].firstname == null &&
+                                matchesControl.matchesList![i].lastname == null
+                                ? "user"
+                                : '${StringUtils.capitalize(
+                                matchesControl.matchesList![i].firstname ?? 'User')} ${StringUtils.capitalize(
+                                matchesControl.matchesList![i].lastname ?? 'User')}',
+                            atributeReligion:
+                            ' ${matchesControl.matchesList![i].basicInfo?.religion ??
+                                ''}',
+                            profession: "Software Engineer",
+                            Location:
+                            '${matchesControl.matchesList![i].address!.state ?? ''} • ${matchesControl.matchesList![i]
+                                .address!.country ?? ''} • ${matchesControl.matchesList![i]
+                                .address!.district ?? ''}',
+                            likedColor: Colors.grey,
+                            unlikeColor: primaryColor,
+                            button:
+                            connectButton(
+                                fontSize: 14,
+                                height: 30,
+                                width: 134,
+                                context: context,
+                                onTap: () {
+                                  setState(() {
+                                    like[i] = !like[i];
+                                  });
+                                  sendRequestApi(
+                                      memberId: matchesControl.matchesList![i]
+                                          .id
+                                          .toString())
+                                      .then((value) {
+                                    if (value['status'] == true) {
+                                      setState(() {
+                                        isLoadingList[i] = false;
+                                      });
+                                      ToastUtil.showToast(
+                                          "Connection Request Sent");
+                                    } else {
+                                      setState(() {
+                                        isLoadingList[i] = false;
+                                      });
+
+                                      List<dynamic> errors =
+                                      value['message']['error'];
+                                      String errorMessage = errors
+                                          .isNotEmpty
+                                          ? errors[0]
+                                          : "An unknown error occurred.";
+                                      Fluttertoast.showToast(
+                                          msg: errorMessage);
+                                    }
+                                  });
+                                },
+                                showIcon: matchesControl.matchesList![i].interestStatus == 2 ? false : true,
+                                title:  matchesControl.matchesList![i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
+                            bookmark:
+
+                            GestureDetector(
+                                onTap: () {
+                                  print(matchesControl.matchesList![i].bookmark);
+                                  matchesControl.matchesList![i].bookmark == 1 ?
+                                  matchesControl.unSaveBookmarkApi(matchesControl.matchesList![i].profileId.toString()) :
+                                  matchesControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString());
+                                  // getMatches();
+                                },
+                                child: /*like[i] ?*/
+                                const Icon(
+                                  CupertinoIcons.heart_fill, color:/*like[i] ?  primaryColor :*/ Colors.grey ,
+                                  size: 22,)
+                              //    :
+                              //
+                              // Icon(
+                              //  CupertinoIcons.heart_fill, color:  matchesControl.matchesList![i].bookmark == 1 ? primaryColor : Colors.grey,
+                              //  size: 22,),
+                            ),
+                            dob: '$age yrs',
+                            text: matchesControl.matchesList![i].basicInfo?.aboutUs ??
+                                '',
+                          )
+                        ],
+                      );
+
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
+                      height: 16,
+                    ),
+                  ),
+                  // child: LazyLoadScrollView(
+                  //   isLoading: isLoading,
+                  //   onEndOfPage: () {
+                  //     // if (val >= 8) {
+                  //     //   loadMore();
+                  //     // }
+                  //   },
+                  //   child: ListView.separated(
+                  //     itemCount: matchesControl.matchesList!.length + 1,
+                  //     itemBuilder: (context, i) {
+                  //       if (i < matchesControl.matchesList!.length) {
+                  //         DateTime? birthDate = matchesControl.matchesList![i].basicInfo != null
+                  //             ? DateFormat('yyyy-MM-dd')
+                  //             .parse(matchesControl.matchesList![i].basicInfo!.birthDate!)
+                  //             : null;
+                  //         int age = birthDate != null
+                  //             ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                  //         return Column(
+                  //           children: [
+                  //             otherUserdataHolder(
+                  //               context: context,
+                  //               tap: () {
+                  //                 Navigator.push(
+                  //                   context,
+                  //                   MaterialPageRoute(
+                  //                     builder: (builder) =>
+                  //                         UserProfileScreen(
+                  //                           userId: matchesControl.matchesList![i].id.toString(),
+                  //                         ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //               height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
+                  //                   "" :
+                  //               "${matchesControl.matchesList![i].physicalAttributes!.height ??
+                  //                   ''}ft",
+                  //               imgUrl:
+                  //               '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
+                  //               state: matchesControl.matchesList![i]
+                  //                   .basicInfo
+                  //                   ?.presentAddress
+                  //                   ?.state ??
+                  //                   '',
+                  //               userName: matchesControl.matchesList![i].firstname == null &&
+                  //                   matchesControl.matchesList![i].lastname == null
+                  //                   ? "user"
+                  //                   : '${StringUtils.capitalize(
+                  //                   matchesControl.matchesList![i].firstname ??
+                  //                       'User')} ${StringUtils.capitalize(
+                  //                   matchesControl.matchesList![i].lastname ?? 'User')}',
+                  //               atributeReligion:
+                  //               ' ${matchesControl.matchesList![i].basicInfo?.religion ??
+                  //                   ''}',
+                  //               profession: "Software Engineer",
+                  //               Location:
+                  //               '${matchesControl.matchesList![i].address!.state ?? ''}${matchesControl.matchesList![i]
+                  //                   .address!.country ?? ''}',
+                  //               likedColor: Colors.grey,
+                  //               unlikeColor: primaryColor,
+                  //               button:
+                  //               connectButton(
+                  //                   fontSize: 14,
+                  //                   height: 30,
+                  //                   width: 134,
+                  //                   context: context,
+                  //                   onTap: () {
+                  //                     setState(() {
+                  //                       like[i] = !like[i];
+                  //                     });
+                  //                     sendRequestApi(
+                  //                         memberId: matchesControl.matchesList![i]
+                  //                             .id
+                  //                             .toString())
+                  //                         .then((value) {
+                  //                       if (value['status'] == true) {
+                  //                         setState(() {
+                  //                           isLoadingList[i] = false;
+                  //                         });
+                  //                         ToastUtil.showToast(
+                  //                             "Connection Request Sent");
+                  //                       } else {
+                  //                         setState(() {
+                  //                           isLoadingList[i] = false;
+                  //                         });
+                  //
+                  //                         List<dynamic> errors =
+                  //                         value['message']['error'];
+                  //                         String errorMessage = errors
+                  //                             .isNotEmpty
+                  //                             ? errors[0]
+                  //                             : "An unknown error occurred.";
+                  //                         Fluttertoast.showToast(
+                  //                             msg: errorMessage);
+                  //                       }
+                  //                     });
+                  //                   },
+                  //                   showIcon: matchesControl.matchesList![i].interestStatus == 2 ? false : true,
+                  //                   title:  matchesControl.matchesList![i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
+                  //               bookmark:
+                  //
+                  //                GestureDetector(
+                  //                 onTap: () {
+                  //                   // setState(() {
+                  //                   //   like[i] = !like[i];
+                  //                   // });
+                  //                   print(matchesControl.matchesList![i].bookmark);
+                  //                   matchesControl.matchesList![i].bookmark == 1 ?
+                  //                   matchesControl.unSaveBookmarkApi(matchesControl.matchesList![i].profileId.toString()) :
+                  //                   matchesControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString());
+                  //                   // getMatches();
+                  //                 },
+                  //                 child: /*like[i] ?*/
+                  //                 Icon(
+                  //                   CupertinoIcons.heart_fill, color:/*like[i] ?  primaryColor :*/ Colors.grey ,
+                  //                   size: 22,)
+                  //                  //    :
+                  //                  //
+                  //                  // Icon(
+                  //                  //  CupertinoIcons.heart_fill, color:  matchesControl.matchesList![i].bookmark == 1 ? primaryColor : Colors.grey,
+                  //                  //  size: 22,),
+                  //               ),
+                  //               dob: '$age yrs',
+                  //               text: '${matchesControl.matchesList![i].basicInfo?.aboutUs ??
+                  //             ''}',
+                  //             )
+                  //           ],
+                  //         );
+                  //       }
+                  //       if (isLoading) {
+                  //         return customLoader(size: 40);
+                  //       } else if (isLoading) {
+                  //         return customLoader(size: 40);
+                  //       } else {
+                  //         return Center(child: Text(""));
+                  //       }
+                  //       // else {
+                  //       //   if (/*val >= 8 && */isLoading) {
+                  //       //     return SizedBox();
+                  //       //   } else if (val < 8) {
+                  //       //     return SizedBox.shrink();
+                  //       //   } else {
+                  //       //     return SizedBox();
+                  //       //   }
+                  //       // }
+                  //     },
+                  //     separatorBuilder: (BuildContext context, int index) =>
+                  //     const SizedBox(
+                  //       height: 16,
+                  //     ),
+                  //   ),
+                ),
+                if (matchesControl.isLoading)
+                  Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20),
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<
+                                Color>(
+                                Theme.of(context).primaryColor)),
+                      ))
+                else
+                  const SizedBox(),
+
+
+
+
+              ],
+            ),
+          ) :
           Padding(
             padding: const EdgeInsets.only(left: 16.0,right: 16,top: 100),
             child: Column(crossAxisAlignment: CrossAxisAlignment.center,
@@ -407,200 +507,9 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                 }, title: " Go back",iconWidget: Icon(Icons.arrow_back,color: primaryColor,))
               ],
             ),
-          ) :
-          RefreshIndicator(
-          onRefresh: () {
-            setState(() {
-              isLoading = true;
-            });
-            return getMatches();
-          },
-          child:/* isLoading
-              ? Loading()
-              :*/
-               Padding(
-                 padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-                 child: Stack(
-                   children: [
-                     Text("${matches.length} Match Found Based on ${widget.based}",style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),),
-                     sizedBox10(),
-                     Padding(
-                       padding: const EdgeInsets.only(top: 35.0),
-                       child: LazyLoadScrollView(
-                         isLoading: isLoading,
-                         onEndOfPage: () {
-                           loadMore();
-                         },
-                         child: ListView.separated(
-                           itemCount: matches.length + 1,
-                           itemBuilder: (context, i) {
-                             if (i < matches.length) {
-                               DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
-                               int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                               return otherUserdataHolder(
-                                 context: context,
-                                 tap: () {
-                                   Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                       builder: (builder) =>
-                                           UserProfileScreen(
-                                             userId: matches[i].id.toString(),
-                                           ),
-                                     ),
-                                   );
-                                 },
-                                 height:matches[i].physicalAttributes!.height == null ?
-                                 "" :
-                                 "${matches[i].physicalAttributes!.height ??
-                                     ''}ft",
-                                 imgUrl:
-                                 '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                 state: matches[i].basicInfo?.presentAddress?.state ?? '',
-                                 userName: matches[i].firstname == null && matches[i].lastname == null ? "user"
-                                     : '${StringUtils.capitalize(matches[i].firstname ?? 'User')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                                 atributeReligion:
-                                 ' ${matches[i].basicInfo?.religion ??
-                                     ''}',
-                                 profession: "Software Engineer",
-                                 Location:
-                                 '${matches[i].address!.state ?? ''}${matches[i]
-                                     .address!.country ?? ''}',
-                                 likedColor: Colors.grey,
-                                 unlikeColor: primaryColor,
-                                 button:
-                                 // matches[i].bookmark == 1
-                                 //     ? button(
-                                 //         fontSize: 14,
-                                 //         height: 30,
-                                 //         width: 134,
-                                 //         context: context,
-                                 //         onTap: () {},
-                                 //         title: "Request Sent")
-                                 //     :
-                                 like[i] ? connectButtonLoading(context: context) :
-                                 connectButton(
-                                     fontSize: 14,
-                                     height: 30,
-                                     width: 134,
-                                     context: context,
-                                     onTap: () {
-                                       setState(() {
-                                         like[i] = !like[i];
-                                       });
-                                       sendRequestApi(
-                                           memberId: matches[i]
-                                               .id
-                                               .toString())
-                                           .then((value) {
-                                         if (value['status'] == true) {
-                                           setState(() {
-                                             isLoadingList[i] = false;
-                                           });
-                                           ToastUtil.showToast(
-                                               "Connection Request Sent");
-                                         } else {
-                                           setState(() {
-                                             isLoadingList[i] = false;
-                                           });
+          )  : const ShimmerWidget();
 
-                                           List<dynamic> errors =
-                                           value['message']['error'];
-                                           String errorMessage = errors
-                                               .isNotEmpty
-                                               ? errors[0]
-                                               : "An unknown error occurred.";
-                                           Fluttertoast.showToast(
-                                               msg: errorMessage);
-                                         }
-                                       });
-                                     },
-                                     showIcon: matches[i].interestStatus == 2 ? false : true,
-                                     title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
-                                 /*  connectButton(
 
-                                       fontSize: 14,
-                                       height: 30,
-                                       width: 134,
-                                       context: context,
-                                       onTap: () {
-                                         setState(() {
-                                           like[i] = !like[i];
-                                         });
-                                         sendRequestApi(
-                                             memberId: matches[i]
-                                                 .id
-                                                 .toString())
-                                             .then((value) {
-                                           if (value['status'] == true) {
-                                             setState(() {
-                                               isLoadingList[i] = false;
-                                             });
-                                             ToastUtil.showToast(
-                                                 "Connection Request Sent");
-                                           } else {
-                                             setState(() {
-                                               isLoadingList[i] = false;
-                                             });
-
-                                             List<dynamic> errors =
-                                             value['message']['error'];
-                                             String errorMessage = errors
-                                                 .isNotEmpty
-                                                 ? errors[0]
-                                                 : "An unknown error occurred.";
-                                             Fluttertoast.showToast(
-                                                 msg: errorMessage);
-                                           }
-                                         });
-                                       },
-                                       showIcon: matches[i].interestStatus == 2 ? false : true,
-                                       title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),*/
-                                 bookmark:
-
-                                 GestureDetector(
-                                   onTap: () {
-                                     setState(() {
-                                       like[i] = !like[i];
-                                     });
-                                     print(matches[i].bookmark);
-                                     matches[i].bookmark == 1 ?
-                                     matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-                                     matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                     // getMatches();
-                                   },
-                                   child: like[i] ?
-                                   Icon(
-                                     CupertinoIcons.heart_fill, color:like[i] ?  primaryColor : Colors.grey ,
-                                     size: 22,):
-
-                                   Icon(
-                                     CupertinoIcons.heart_fill, color:  matches[i].bookmark == 1 ? primaryColor : Colors.grey,
-                                     size: 22,),
-                                 ),
-                                 dob: '$age yrs',
-                                 text: matches[i].basicInfo?.aboutUs ?? '',
-                               );
-                             }
-                             if (isLoading) {
-                               return customLoader(size: 40);
-                             } else {
-                               return SizedBox();
-                             }
-
-                           },
-                           separatorBuilder: (BuildContext context, int index) =>
-                           const SizedBox(
-                             height: 16,
-                           ),
-                         ),
-                       ),
-                     ),
-                   ],
-                 ),
-               )
-        );
-      })
-    );
+      }),);
   }
 }

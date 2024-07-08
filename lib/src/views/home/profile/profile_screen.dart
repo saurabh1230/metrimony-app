@@ -277,22 +277,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         text: profile.data?.user?.firstname ?? '',
                         onTap: () {
                         }),
+                    profile.data!.user!.middleName!.isEmpty ?
+                        const SizedBox() :
+                    buildInfoRow(title: 'Middle Name',
+                        text: profile.data?.user?.middleName ?? '',
+                        onTap: () {}),
                     buildInfoRow(title: 'Last Name',
                         text: profile.data?.user?.lastname ?? '',
-                        onTap: () {
-                        }),
+                        onTap: () {}),
                     buildInfoRow(title: 'Username',
                         text: profile.data?.user?.username ?? '',
-                        onTap: () {
-                        }),
-                    buildInfoRow(title: 'Religion',
-                        text: profile.data?.user?.religion ?? '',
-                        onTap: () {
-                        }),
+                        onTap: () {}),
+                    // buildInfoRow(title: 'Religion',
+                    //     text: profile.data?.user?.religion ?? '',
+                    //     onTap: () {
+                    //     }),
                     buildInfoRow(title: 'Profession',
                         text: profile.data?.user?.basicInfo?.profession ?? '',
-                        onTap: () {
-                        }),
+                        onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
                         builder: (builder) => const EditBasicInfoScreen()));},
@@ -360,16 +362,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    buildInfoRow(title: 'Company',
+                    buildInfoRow(title: 'Position',
                         text:
                         /*profile.data?.user?.careerInfo![0].company.toString() ?? "",*/
                         ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        profile.data?.user?.careerInfo![0].company.toString()}',
+                        profile.data?.user?.careerInfo![0].position.toString()}',
                         onTap: () {}),
-                    buildInfoRow(title: 'Designation',
+                    buildInfoRow(title: 'State Of Posting',
                         text:  /*profile.data?.user?.careerInfo![0].designation.toString() ?? "",*/
                         ' ${profile.data!.user!.careerInfo!.isEmpty ? "" :
-                        profile.data?.user?.careerInfo![0].designation.toString()}',
+                        profile.data?.user?.careerInfo![0].statePosting.toString()}',
                         onTap: () {}),
                     sizedBox20(),
                     GestureDetector(onTap: () {

@@ -97,3 +97,4 @@ const String fCommunity = 'assets/images/fcommunity.png';
 const String tickButton = 'assets/icons/tickbutton.png';
 // const String noMatchesHolder = 'assets/images/nomatchesholder.svg';
 const String noMatchesHolder = 'assets/images/nomatchfound.png';
+const String iconHolder = 'assets/images/ic_gotra.png';

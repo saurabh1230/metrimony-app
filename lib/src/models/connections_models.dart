@@ -290,9 +290,9 @@ class PresentAddress {
 
 class PermanentAddress {
   String? country;
-  Null? state;
-  Null? zip;
-  Null? city;
+  String? state;
+  String? zip;
+  String? city;
 
   PermanentAddress({this.country, this.state, this.zip, this.city});
 

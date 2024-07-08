@@ -174,19 +174,19 @@ otherUserdataHolder({
                                           size: 16,
                                           color: Colors.white),
                                     ),
-                                    const SizedBox(width: 3,),
-                                    Container(
-                                      height: 4,
-                                      width: 5,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                    // const SizedBox(width: 3,),
+                                    // Container(
+                                    //   height: 4,
+                                    //   width: 5,
+                                    //   decoration: const BoxDecoration(
+                                    //     shape: BoxShape.circle,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    // ),
                                     const SizedBox(width: 3,),
 
                                     Text(
-                                      state,
+                                      '',
 
                                       // '${matches[i].address!.country}',
                                       // "New York, USA",

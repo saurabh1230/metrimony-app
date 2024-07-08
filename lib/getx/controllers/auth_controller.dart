@@ -266,6 +266,13 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  // void clearStateDistrict() {
+  //   // _selectedState = null;
+  //   _selectedDistrict = null; // Clear the selected district
+  //   update();
+  // }
+
+
   void setDistrict(String district) {
     _selectedDistrict = district;
     update();
@@ -567,7 +574,6 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-
   String? _email;
   String? get email => _email;
 
@@ -608,11 +614,6 @@ class AuthController extends GetxController implements GetxService {
     _district = district;
     update(); // Notify listeners that selectedState has changed
   }
-
-
-
-
-
 
   String? _password;
   String? get password => _password;

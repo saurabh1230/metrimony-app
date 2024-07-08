@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/views/home/home_screen.dart';
-import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart';
+import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/home/matches/matches_screen.dart';
 import 'package:bureau_couple/src/views/home/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +72,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   void initState() {
     print("cehck");
     print(widget.response.data!.user!.firstname);
+    Get.find<ProfileController>().getBasicInfoApi();
     super.initState();
   }
    int index = 0;

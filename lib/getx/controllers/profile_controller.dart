@@ -291,6 +291,25 @@ class ProfileController extends GetxController implements GetxService {
     return _otherUserDetails;
   }
 
+  double _minHeight = 5.0;
+  double _maxHeight = 7.0;
+
+  double get minHeight => _minHeight;
+  double get maxHeight => _maxHeight;
+
+  void setMinHeight(double value) {
+    _minHeight = value.floorToDouble(); // Floor to get the integer part
+    print(_minHeight.toInt()); // Print the integer part
+    update(); // Ensure state update in GetX controller
+  }
+
+  void setMaxHeight(double value) {
+    _maxHeight = value.floorToDouble(); // Floor to get the integer part
+    print(_maxHeight.toInt()); // Print the integer part
+    update(); // Ensure state update in GetX controller
+  }
+
+  String get heightRange => '${_minHeight.toInt()} - ${_maxHeight.toInt()}';
 
 
 
