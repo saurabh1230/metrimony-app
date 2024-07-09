@@ -1,5 +1,6 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/repository/api/api_client.dart';
@@ -31,6 +32,7 @@ Future<void>   init() async {
   Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => AuthController(authRepo:  Get.find(),sharedPreferences: Get.find()));
   Get.lazyPut(() => MatchesController(matchesRepo: Get.find(),));
+  Get.lazyPut(() => FavouriteController(matchesRepo: Get.find(),));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), ));
 
 }

@@ -617,13 +617,12 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-  String? _gender;
-
+  String? _gender = "M";
   String? get gender => _gender;
 
-  void setGender(String gender) {
+  void setGender(String? gender) {
     _gender = gender;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
   String? _profession;
@@ -632,7 +631,7 @@ class AuthController extends GetxController implements GetxService {
 
   void setProfession(String profession) {
     _profession = profession;
-    update(); // Notify listeners that selectedState has changed
+    update();
   }
 
   String? _positionHeld;

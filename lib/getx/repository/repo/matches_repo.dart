@@ -39,10 +39,12 @@ class MatchesRepo {
     return apiClient.getData('${AppConstants.matchesUrl}?page=$page&gender=$gender&religion=$religion&state=$state&min_height=$minHeight&max_height=$maxHeight&max_weight=$maxWeight&mother_tongue=$motherTongue');
   }
 
-  Future<Response> bookMarkSave(String? profileId,) async {
+  Future<Response> bookMarkSave(String? profileId,String? userId) async {
     Map<String, String> fields = {};
     fields.addAll(<String, String>{
-      'profile_id' : profileId.toString()
+      'profile_id' : profileId.toString(),
+      'user_id' : userId.toString(),
+      // 'status' : "2",
     });
     return apiClient.postData(
       AppConstants.bookmarkSave,fields,
@@ -52,10 +54,28 @@ class MatchesRepo {
   Future<Response> bookMarkUnSave(String? profileId,) async {
     Map<String, String> fields = {};
     fields.addAll(<String, String>{
-      'profile_id' : profileId.toString()
-    });
+      'profile_id' : profileId.toString(),
+    }
+    );
     return apiClient.postData(
       AppConstants.unSaveBookMark,fields,
+    );
+  }
+
+  Future<Response> getSavedMatchesList(page,) {
+    return apiClient.getData('${AppConstants.unsavedMatchesUrl}?page=$page');
+  }
+
+
+  Future<Response> sendRequest(String? userId,String? profileId) async {
+    Map<String, String> fields = {};
+    fields.addAll(<String, String>{
+      'user_id' : userId.toString(),
+      'interesting_id': profileId.toString(),
+      'status': '2'
+    });
+    return apiClient.postData(
+      AppConstants.sendRequest,fields,
     );
   }
 

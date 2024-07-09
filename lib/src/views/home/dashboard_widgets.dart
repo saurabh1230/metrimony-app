@@ -63,8 +63,6 @@ otherUserdataHolder({
                     end: Alignment.topCenter,
                   ), borderRadius: BorderRadius.circular(20)
               ),
-              // child: Image.asset(images[i],
-              // height: 170,),
             ),
             Positioned(
               bottom: 0,
@@ -89,9 +87,6 @@ otherUserdataHolder({
                                 ),
                               ),
                               const SizedBox(width: 10,),
-                             /* Expanded(
-                                child: bookmark,
-                              ),*/
                             ],
                           ),
                           Row(
@@ -139,25 +134,11 @@ otherUserdataHolder({
                               ),
                             ],
                           ),
-                          // const SizedBox(height: 10,),
-                          // Text(
-                          //   atributeReligion,
-                          //   maxLines: 2,
-                          //   style: styleSatoshiMedium(
-                          //       size: 16,
-                          //       color: Colors.white),
-                          // ),
                           const SizedBox(height: 4,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
-                              //   // child: Image.asset(icLocation,
-                              //   //   color: Colors.white,
-                              //   //   height: 17,
-                              //   //   width: 17,),
-                              // ),
                               const SizedBox(width: 2,),
                               Expanded(
                                 flex: 10,
@@ -218,6 +199,9 @@ otherUserdataHolder({
 
                   ],
                 ),
+            ),
+            Positioned(top: 10, right: 16,
+              child: bookmark
             ),
             // Positioned(
             //   bottom: 30,left: 20,right: 0,

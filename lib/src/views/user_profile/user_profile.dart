@@ -295,7 +295,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             ),
                                             Text(
                                               StringUtils.capitalize(model.data
-                                                      ?.matches?.religion ??
+                                                      ?.matches?.religion!.name ??
                                                   ''),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -585,7 +585,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   .data!
                                                   .matches
                                                   ?.basicInfo
-                                                  ?.religion ??
+                                                  ?.religion!.name ??
                                               "")),
                                       const Divider(),
                                       buildProfileRow(
@@ -595,7 +595,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   .data!
                                                   .matches
                                                   ?.basicInfo
-                                                  ?.motherTongue ??
+                                                  ?.motherTongue!.name ??
                                               "")),
                                       const Divider(),
                                       buildProfileRow(
@@ -715,7 +715,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     sizedBox6(),
                                     Text(
                                       StringUtils.capitalize(model.data!
-                                              .matches!.basicInfo!.profession ??
+                                              .matches!.basicInfo!.profession!.name ??
                                           ""),
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
@@ -869,22 +869,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   : crossholder,
                                             ),*/
                                       const Divider(),
-                                      buildPrefProfileRow(
-                                        image: icMotherToungeIcon,
-                                        title: 'Mother Tongue',
-                                        text: StringUtils.capitalize(
-                                            model.data?.matches?.motherTongue ??
-                                                ""),
-                                        icon: model.data?.matches?.basicInfo
-                                                    ?.motherTongue ==
-                                                model
-                                                    .data
-                                                    ?.user
-                                                    ?.partnerExpectation
-                                                    ?.motherTongue
-                                            ? tickHolder
-                                            : crossholder,
-                                      ),
+                                      // buildPrefProfileRow(
+                                      //   image: icMotherToungeIcon,
+                                      //   title: 'Mother Tongue',
+                                      //   text: StringUtils.capitalize(
+                                      //       model.data?.matches?.motherTongue!.name ??
+                                      //           ""),
+                                      //   icon: model.data?.matches?.basicInfo
+                                      //               ?.motherTongue ==
+                                      //           model
+                                      //               .data
+                                      //               ?.user
+                                      //               ?.partnerExpectation
+                                      //               ?.motherTongue
+                                      //       ? tickHolder
+                                      //       : crossholder,
+                                      // ),
                                       // const Divider(),
                                       // buildPrefProfileRow(
                                       //   image: weightHolder,

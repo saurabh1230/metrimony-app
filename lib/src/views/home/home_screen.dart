@@ -1,4 +1,3 @@
-import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
@@ -234,6 +233,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context, MaterialPageRoute(
                                 builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
                             );
+
+                            // Navigator.push(
+                            //     context, MaterialPageRoute(
+                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                            // );
 
                           },
                             child: Column(

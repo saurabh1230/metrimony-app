@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:get/get.dart';
@@ -634,63 +632,63 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 //         onTap: () {},
                                 //         title: "Request Sent")
                                 //     :
-                                isLoadingList[i]
-                                    ? connectLoadingButton(color: Colors.white,
-                                    height: 30,
-                                    width: 134,
-                                    context: context)
-                                    :
-                                connectButton(
+                                // isLoadingList[i]
+                                //     ? connectLoadingButton(color: Colors.white,
+                                //     height: 30,
+                                //     width: 134,
+                                //     context: context)
+                                //     :
+                                GetBuilder<MatchesController>(builder: (matchesControl) {
+                                  bool isWished = matchesControl.isBookmarkList.contains(matches[i].id.toString());
+                                  return connectButton(
+                                      fontSize: 14,
+                                      height: 30,
+                                      width: 134,
+                                      context: context,
+                                      onTap: () {
 
-                                    fontSize: 14,
-                                    height: 30,
-                                    width: 134,
-                                    context: context,
-                                    onTap: () {
-                                      setState(() {
-                                        like[i] = !like[i];
-                                      });
-                                      sendRequestApi(
-                                          memberId: matches[i]
-                                              .id
-                                              .toString())
-                                          .then((value) {
-                                        if (value['status'] == true) {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
-                                          ToastUtil.showToast(
-                                              "Connection Request Sent");
-                                        } else {
-                                          setState(() {
-                                            isLoadingList[i] = false;
-                                          });
 
-                                          List<dynamic> errors =
-                                          value['message']['error'];
-                                          String errorMessage = errors
-                                              .isNotEmpty
-                                              ? errors[0]
-                                              : "An unknown error occurred.";
-                                          Fluttertoast.showToast(
-                                              msg: errorMessage);
-                                        }
-                                      });
-                                    },
-                                    showIcon: matches[i].interestStatus == 2 ? false : true,
-                                    title:  matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"),
+                                        sendRequestApi(
+                                            memberId: matches[i]
+                                                .id
+                                                .toString())
+                                            .then((value) {
+                                          if (value['status'] == true) {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+                                            ToastUtil.showToast(
+                                                "Connection Request Sent");
+                                          } else {
+                                            setState(() {
+                                              isLoadingList[i] = false;
+                                            });
+
+                                            List<dynamic> errors =
+                                            value['message']['error'];
+                                            String errorMessage = errors
+                                                .isNotEmpty
+                                                ? errors[0]
+                                                : "An unknown error occurred.";
+                                            Fluttertoast.showToast(
+                                                msg: errorMessage);
+                                          }
+                                        });
+                                      },
+                                      showIcon: isWished ? false : true,
+                                      title: isWished ?  "Request Sent" :"Connect Now"
+                                    // matches[i].interestStatus == 2 ?  "Request Sent" : "Connect Now"
+                                  );
+                                }),
+
+
                                 bookmark:
 
                                 GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      like[i] = !like[i];
-                                    });
-                                    print(matches[i].bookmark);
                                     matches[i].bookmark == 1 ?
                                     matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
                                     matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                                    // getMatches();
                                   },
                                   child: like[i] ?
                                   Icon(

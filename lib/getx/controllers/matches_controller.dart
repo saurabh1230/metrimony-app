@@ -1,5 +1,6 @@
 
 import 'package:bureau_couple/getx/repository/repo/matches_repo.dart';
+import 'package:bureau_couple/src/models/saved_matches_model.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
 
@@ -98,90 +99,75 @@ class MatchesController extends GetxController implements GetxService {
     }
   }
 
-  // Future<void> getEventList(String page) async {
-  //   // _isLoading = true;
-  //   // update();
-  //
-  //   try {
-  //     if (page == '1') {
-  //       _pageList = [];
-  //       _offset = 1;
-  //       _eventList = []; // Reset product list for first page
-  //       update();
-  //     }
-  //
-  //     if (!_pageList.contains(page)) {
-  //       _pageList.add(page);
-  //       Response response = await newsRepo.getNewsList(page);
-  //       if (response.statusCode == 200) {
-  //         List<dynamic> responseData = response.body['data']['newslist']['data'];
-  //         List<EventListModel> newDataList = [];
-  //         for (var addon in responseData) {
-  //           if (addon['category'] == "2") {
-  //             newDataList.add(EventListModel.fromJson(addon));
-  //           }
-  //         }
-  //
-  //         if (page == '1') {
-  //           _eventList = newDataList;
-  //         } else {
-  //           // _isLoading = true;
-  //           _eventList!.addAll(newDataList);
-  //         }
-  //
-  //         _pageSize = response.body['data']['newslist']['per_page'];
-  //         _isLoading = false;
-  //         print("===========>  print page size${_pageSize}");
-  //         update();
-  //       } else {
-  //         ApiChecker.checkApi(response);
-  //       }
-  //     } else {
-  //       // Page already loaded or in process, handle loading state
-  //       if (_isLoading) {
-  //         _isLoading = false;
-  //         update();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching food list: $e');
-  //     _isLoading = false;
-  //     update();
-  //   }
-  // }
 
-  // Future<List<int?>> getEventList() async {
-  //   _isLoading = true;
-  //   update();
-  //   Response response = await newsRepo.getNewsList("1");
-  //   List<int?> eventId = [];
-  //   if (response.statusCode == 200) {
-  //     Map<String, dynamic> responseBody = response.body;
-  //     if (responseBody.containsKey('data')) {
-  //       List<dynamic>? newsListData = responseBody['data']['newslist']['data'];
-  //       if (newsListData != null) {
-  //         _eventList = [];
-  //         for (var addon in newsListData) {
-  //           if(addon['category'] == "2") {
-  //             _eventList!.add(EventListModel.fromJson(addon));
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } else {
-  //     // Handle other status codes
-  //   }
-  //   _isLoading = false;
-  //   update();
-  //   return eventId;
-  // }
+  List<SavedMatchesModel>? _savedMatchesList;
+  List<SavedMatchesModel>? get savedMatchesList => _savedMatchesList;
+
+  Future<void> getSavedMatchesList( String page,
+     ) async {
+    _isLoading = true;
+    try {
+      if (page == '1') {
+        _pageList = []; // Reset page list for new search
+        _offset = 1;
+        // _type = type;
+        _savedMatchesList = null;
+        // _matchesList = []; // Reset product list for first page
+        update();
+      }
+
+      if (!_pageList.contains(page)) {
+        _pageList.add(page);
+
+        Response response = await matchesRepo.getSavedMatchesList(page,);
+
+        if (response.statusCode == 200) {
+          List<dynamic> responseData = response.body['data']['shortlists']['data'];
+          List<SavedMatchesModel> newDataList = responseData.map((json) => SavedMatchesModel.fromJson(json)).toList();
+
+          if (page == '1') {
+            _savedMatchesList = newDataList;
+          } else {
+            _savedMatchesList!.addAll(newDataList);
+          }
+
+          _pageSize = response.body['data']['shortlists']['per_page'];
+          _isLoading = false;
+          update();
+        } else {
+          // ApiChecker.checkApi(response);
+        }
+      } else {
+        // Page already loaded or in process, handle loading state
+        if (_isLoading) {
+          _isLoading = false;
+          update();
+        }
+      }
+    } catch (e) {
+      print('Error fetching  list: $e');
+      _isLoading = false;
+      update();
+    }
+  }
+
+
+
+
+
+
+
+  List<int?> _isBookmarkList = [];
+  List<int?> get isBookmarkList => _isBookmarkList;
+
 
   Future<void> bookMarkSaveApi(String? profileId,) async {
     _isLoading = true;
     update();
 
-    Response response = await matchesRepo.bookMarkSave(profileId);
+    Response response = await matchesRepo.bookMarkSave(profileId,"");
     if(response.statusCode == 200) {
+      _isBookmarkList.add(int.parse(profileId!));
       // Get.offAllNamed(RouteHelper.getSignInRoute());
       // showCustomSnackBar('Password Changed Successful', isError: false);
     }else {
@@ -195,7 +181,7 @@ class MatchesController extends GetxController implements GetxService {
     _isLoading = true;
     update();
 
-    Response response = await matchesRepo.bookMarkUnSave(profileId);
+    Response response = await matchesRepo.bookMarkUnSave(profileId,);
     if(response.statusCode == 200) {
       // Get.offAllNamed(RouteHelper.getSignInRoute());
       // showCustomSnackBar('Password Changed Successful', isError: false);
