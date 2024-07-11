@@ -595,10 +595,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                     ),
                                   );
                                 },
-                                height:matches[i].physicalAttributes!.height == null ?
-                                "" :
-                                "${matches[i].physicalAttributes!.height ??
-                                    ''} ft",
+                                // height:matches[i].physicalAttributes!.height == null ?
+                                // "" :
+                                // "${matches[i].physicalAttributes!.height ??
+                                //     ''} ft",
                                 imgUrl:
                                 '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                                 state: matches[i]
@@ -646,14 +646,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                       width: 134,
                                       context: context,
                                       onTap: () {
-
-
                                         sendRequestApi(
-                                            memberId: matches[i]
-                                                .id
-                                                .toString())
+                                            memberId: matches[i].id.toString())
                                             .then((value) {
-                                          if (value['status'] == true) {
+                                              if (value['status'] == true) {
                                             setState(() {
                                               isLoadingList[i] = false;
                                             });

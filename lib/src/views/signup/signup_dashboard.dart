@@ -3,6 +3,7 @@ import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dar
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_screen_partner_expectation.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_one.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_two.dart';
 import 'package:bureau_couple/src/views/signup/signup_sreen_three.dart';
@@ -121,6 +122,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         const SignUpScreenOne(),
                         const SignUpScreenTwo(),
                         const SignUpScreenProfessional(),
+                        const SignUpScreenPartnerExp(),
                         SingUpScreenThree(onImagePicked: (imagePath ) {
                           setState(() {
                             pickedImagePath = imagePath;
@@ -160,15 +162,22 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage ==2 ) {
+                    } else if (_currentPage == 2 ) {
                       if (const SignUpScreenProfessional().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
+                    } else if (_currentPage == 3 ) {
+                      if (const SignUpScreenPartnerExp().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
                     }
-                    else if (_currentPage == 3) {
+                    else if (_currentPage == 4) {
                       if(pickedImagePath.isEmpty )  {
                         Fluttertoast.showToast(msg: "Please add Image and birth date");
                       } else {
@@ -213,6 +222,19 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           batchEnd: authControl.batchToString,
                           district: authControl.district.toString(),
                           middleName: authControl.middleName.toString(),
+                          maritalStatusP: 'unmarried',
+                          religionP: authControl.partnerReligion.toString(),
+                          communityP: authControl.partnerCommunity.toString(),
+                          motherTongueP:authControl.partnerMotherTongue.toString(),
+                          professionP: authControl.partnerProfession.toString(),
+                          positionP: authControl.partnerPosition.toString(),
+                          countryP: 'India',
+                          minAgeP: authControl.partnerMinAge.toString(),
+                          maxAgeP: authControl.partnerMaxAge.toString(),
+                          minHeightP: authControl.partnerMinHeight.toString(),
+                          maxHeightP: authControl.partnerMaxHeight.toString(),
+                          smokingP: authControl.partnerSmokingStatus.toString(),
+                          drinkingP: authControl.partnerDrinkingStatus.toString(),
                           // phone: '',
                         ).then((value) async {
                           setState(() {
@@ -248,7 +270,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                   },
-                  title:_currentPage == 3 ? 'Submit' :'Next'),
+                  title:_currentPage == 4 ? 'Submit' :'Next'),
             ),
           ),
 
@@ -297,6 +319,16 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
           width: _currentPage == 3? 17 :7,
           decoration: BoxDecoration(
               color: _currentPage == 3 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+        Container(
+          height: 7,
+          width: _currentPage == 4? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 4 ?  primaryColor :
               colorD9D9D9,
               borderRadius: BorderRadius.circular(22)
           ),

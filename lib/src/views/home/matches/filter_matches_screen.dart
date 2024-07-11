@@ -65,7 +65,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
           '',
           '',
           '',
-          widget.motherTongue);
+          widget.motherTongue,
+      '');
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
@@ -117,7 +118,8 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
               '',
               '',
               '',
-              motherTongueFilter);
+              motherTongueFilter,
+               '');
           Get.find<MatchesController>().offset.toString();
         }
       }
@@ -225,10 +227,10 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                                 ),
                               );
                             },
-                            height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
-                            "" :
-                            "${matchesControl.matchesList![i].physicalAttributes!.height ??
-                                ''}ft",
+                            // height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
+                            // "" :
+                            // "${matchesControl.matchesList![i].physicalAttributes!.height ??
+                            //     ''}ft",
                             imgUrl:
                             '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
                             state: matchesControl.matchesList![i]

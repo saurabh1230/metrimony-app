@@ -74,11 +74,11 @@ class ProfileController extends GetxController implements GetxService {
   }
 
 
-  BasicInfoModel? _basicInfo;
-  BasicInfoModel? get basicInfo => _basicInfo;
+  BasicInfoMdl? _basicInfo;
+  BasicInfoMdl? get basicInfo => _basicInfo;
 
 
-  Future<BasicInfoModel?> getBasicInfoApi() async {
+  Future<BasicInfoMdl?> getBasicInfoApi() async {
     _isLoading = true;
     _basicInfo = null;
     update();
@@ -88,7 +88,7 @@ class ProfileController extends GetxController implements GetxService {
         var responseData = response.body['data']['user']['basic_info'];
 
         if (responseData != null) {
-          _basicInfo = BasicInfoModel.fromJson(responseData);
+          _basicInfo = BasicInfoMdl.fromJson(responseData);
         } else {
           print("Error: Basic info data is null");
           _isLoading = false;
@@ -109,8 +109,8 @@ class ProfileController extends GetxController implements GetxService {
     return _basicInfo;
   }
 
-  List<CareerInfoModel>? _careerInfo;
-  List<CareerInfoModel>? get careerInfo => _careerInfo;
+  List<CareerInfoMdl>? _careerInfo;
+  List<CareerInfoMdl>? get careerInfo => _careerInfo;
 
 
   Future<void> getCareerInfo() async {
@@ -123,7 +123,7 @@ class ProfileController extends GetxController implements GetxService {
 
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['user']['career_info'];
-        List<CareerInfoModel> newDataList = responseData.map((json) => CareerInfoModel.fromJson(json)).toList();
+        List<CareerInfoMdl> newDataList = responseData.map((json) => CareerInfoMdl.fromJson(json)).toList();
 
         _careerInfo = newDataList;
         _isLoading = false;
@@ -142,8 +142,8 @@ class ProfileController extends GetxController implements GetxService {
   }
 
 
-  List<EducationInfoModel>? _educationInfo;
-  List<EducationInfoModel>? get educationInfo => _educationInfo;
+  List<BasicInfoMdl>? _educationInfo;
+  List<BasicInfoMdl>? get educationInfo => _educationInfo;
 
 
   Future<void> getEducationInfo() async {
@@ -156,7 +156,7 @@ class ProfileController extends GetxController implements GetxService {
 
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['user']['education_info'];
-        List<EducationInfoModel> newDataList = responseData.map((json) => EducationInfoModel.fromJson(json)).toList();
+        List<BasicInfoMdl> newDataList = responseData.map((json) => BasicInfoMdl.fromJson(json)).toList();
 
         _educationInfo = newDataList;
         _isLoading = false;
@@ -179,7 +179,7 @@ class ProfileController extends GetxController implements GetxService {
   PreferenceModel? get preferenceModel => _preferenceModel;
 
 
-  Future<BasicInfoModel?> getPreferenceInfoApi() async {
+  Future<BasicInfoMdl?> getPreferenceInfoApi() async {
     _isLoading = true;
     _preferenceModel = null;
     update();

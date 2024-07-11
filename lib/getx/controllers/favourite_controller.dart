@@ -17,6 +17,16 @@ class FavouriteController extends GetxController implements GetxService {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _isConnected = false;
+
+  bool get connected => _isConnected;
+
+  void setConnected(bool value) {
+    _isConnected = value;
+    update();
+  }
+
+
   int _offset = 1;
   int get offset => _offset;
   List<String> _pageList = [];

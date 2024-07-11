@@ -227,6 +227,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
                                             ],
                                           ),
+                                          const SizedBox(height: 4,),
                                           Row(
                                             children: [
                                               Text(
@@ -240,9 +241,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                                         0.70)),
                                               ),
                                               const SizedBox(width: 6,),
-
                                             ],
                                           ),
+                                          const SizedBox(height: 4,),
                                           Text(
                                             matches[i].profile!.mobile.toString().substring(2),
                                             maxLines: 2,
@@ -250,7 +251,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                                 size: 13,
                                                 color: Colors.black.withOpacity(0.80)),
                                           ),
-                                          const SizedBox(height: 3,),
+                                          const SizedBox(height: 4,),
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,

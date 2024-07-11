@@ -1,5 +1,6 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
@@ -63,7 +64,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   File pickedImage = File("");
   final ImagePicker _imgPicker = ImagePicker();
 
-  BasicInfoModel basicInfo = BasicInfoModel();
+  BasicInfoMdl basicInfo = BasicInfoMdl();
   InfoModel mainInfo = InfoModel();
 
   careerInfo() {
@@ -76,7 +77,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
           var physicalAttributesData = value['data']['user']['basic_info'];
           if (physicalAttributesData != null) {
             setState(() {
-              basicInfo = BasicInfoModel.fromJson(physicalAttributesData);
+              basicInfo = BasicInfoMdl.fromJson(physicalAttributesData);
               fields();
             });
           }
@@ -102,14 +103,14 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     lastNameController.text = mainInfo?.lastname.toString() ?? '';
     userNameController.text = mainInfo?.username.toString() ?? '';
     emailController.text = mainInfo?.email.toString() ?? '';
-    professionController.text = basicInfo?.profession?.toString() ?? '';
+    professionController.text = basicInfo?.profession?.name.toString() ?? '';
     genderController.text = basicInfo?.gender?.toString() ?? '';
-    religionController.text = basicInfo?.religion?.toString() ?? '';
+    religionController.text = basicInfo?.religion?.name.toString() ?? '';
     smokingController.text = basicInfo?.smokingStatus?.toString() ?? '';
     drinkingController.text = basicInfo?.drinkingStatus?.toString() ?? '';
     birthDateController.text = basicInfo?.birthDate?.toString() ?? '';
-    communityController.text = basicInfo?.community?.toString() ?? '';
-    motherTongueController.text = basicInfo?.motherTongue?.toString() ?? '';
+    communityController.text = basicInfo?.community?.name.toString() ?? '';
+    motherTongueController.text = basicInfo?.motherTongue?.name.toString() ?? '';
     marriedStatusController.text = basicInfo?.maritalStatus?.toString() ?? '';
     stateController.text = basicInfo?.presentAddress?.state?.toString() ?? '';
     zipController.text = basicInfo?.presentAddress?.zip?.toString() ?? '';
@@ -123,6 +124,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(basicInfo?.religion?.name.toString());
     return Scaffold(
       appBar: const CustomAppBar(title: "Basic Info",),
       bottomNavigationBar: buildBottombarPadding(context),
@@ -457,13 +459,15 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         //   size: 12,
                         // ),
                         title: 'Profession',
-                        data1: professionController.text.isEmpty
+                        data1:
+                        professionController.text.isEmpty
                             ? (basicInfo.id == null ||
                                     basicInfo.profession == null ||
-                                    basicInfo.profession!.isEmpty
+                                    basicInfo.profession!.name!.isEmpty
                                 ? 'Not Added'
-                                : basicInfo.profession!)
+                                : basicInfo.profession!.name.toString() )
                             : professionController.text,
+
                         data2:
                             StringUtils.capitalize(professionController.text),
                         isControllerTextEmpty:
@@ -500,7 +504,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         data1: religionController.text.isEmpty
                             ? (basicInfo.id == null ||
                                     basicInfo.religion == null ||
-                                    basicInfo.religion!.isEmpty
+                                    basicInfo.religion!.name!.isEmpty
                                 ? 'Not Added'
                                 : basicInfo.religion.toString())
                             : religionController.text,
@@ -640,13 +644,15 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         // ),
                         data1: communityController.text.isEmpty
                             ? (basicInfo.id == null ||
-                            basicInfo.community == null
+                            basicInfo.community == null ||
+                            basicInfo.community!.name == null
                             ? 'Not Added'
-                            : basicInfo.community.toString())
+                            : basicInfo.community!.name.toString())
                             : communityController.text,
                         data2: communityController.text,
                         isControllerTextEmpty: communityController.text.isEmpty,
                       ),
+
                     ),
 
                     sizedBox16(),
@@ -692,16 +698,16 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         widget: const SizedBox(),
                         data1: motherTongueController.text.isEmpty
                             ? (basicInfo.id == null ||
-                                    basicInfo.motherTongue == null ||
-                                    basicInfo.motherTongue!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.motherTongue.toString())
+                            basicInfo.motherTongue == null ||
+                            basicInfo.motherTongue!.name == null ||
+                            basicInfo.motherTongue!.name!.isEmpty
+                            ? 'Not Added'
+                            : basicInfo.motherTongue!.name.toString())
                             : motherTongueController.text,
-                        data2:
-                            StringUtils.capitalize(motherTongueController.text),
-                        isControllerTextEmpty:
-                            motherTongueController.text.isEmpty,
+                        data2: StringUtils.capitalize(motherTongueController.text),
+                        isControllerTextEmpty: motherTongueController.text.isEmpty,
                       ),
+
                     ),
                     sizedBox16(),
                     GestureDetector(
@@ -921,29 +927,29 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         loading = false;
                       });
                       Navigator.pop(context);
-                      dynamic message = value['message']['original']['message'];
+                      // dynamic message = value['message']['original']['message'];
                       List<String> errors = [];
 
-                      if (message != null && message is Map) {
-                        message.forEach((key, value) {
-                          errors.addAll(value);
-                        });
-                      }
-
-                      String errorMessage = errors.isNotEmpty
-                          ? errors.join(", ")
-                          : "Update succesfully.";
-                      Fluttertoast.showToast(msg: errorMessage);
+                      // if (message != null && message is Map) {
+                      //   message.forEach((key, value) {
+                      //     errors.addAll(value);
+                      //   });
+                      // }
+                      //
+                      // String errorMessage = errors.isNotEmpty
+                      //     ? errors.join(", ")
+                      //     : "Update succesfully.";
+                      // Fluttertoast.showToast(msg: errorMessage);
                     } else {
                       setState(() {
                         loading = false;
                       });
-                      List<dynamic> errors =
-                          value['message']['original']['message'];
-                      String errorMessage = errors.isNotEmpty
-                          ? errors[0]
-                          : "An unknown error occurred.";
-                      Fluttertoast.showToast(msg: errorMessage);
+                      // List<dynamic> errors =
+                      //     value['message']['original']['message'];
+                      // String errorMessage = errors.isNotEmpty
+                      //     ? errors[0]
+                      //     : "An unknown error occurred.";
+                      // Fluttertoast.showToast(msg: errorMessage);
                     }
                   });
                 },

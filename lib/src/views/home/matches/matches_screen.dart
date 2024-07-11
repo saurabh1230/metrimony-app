@@ -2,6 +2,7 @@ import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
 import 'package:bureau_couple/src/views/home/matches/widgets/filter_screen.dart';
 
@@ -35,8 +36,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 class MatchesScreen extends StatefulWidget {
   final bool appbar;
   final LoginResponse response;
+  final String? religion;
+  final String? motherTongue;
+  final String? state;
+  final String? minHeight;
+  final String? maxHeight;
+  final String? maxWeight;
+  final String? based;
+  final String? community;
 
-  const MatchesScreen({Key? key, required this.response, required this.appbar})
+  const MatchesScreen({Key? key, required this.response, required this.appbar,  this.religion = '',  this.motherTongue = '',  this.minHeight,  this.maxHeight,  this.maxWeight,  this.based,
+    this.state = '', this.community = '',})
       : super(key: key);
 
   @override
@@ -63,12 +73,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
       Get.find<MatchesController>().getMatchesList(
           "1",
           widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-          religionFilter,
+          widget.religion!,
           stateController.text,
           minHeight.text,
           maxHeight.text,
           maxWeightController.text,
-          motherTongueFilter);
+          widget.motherTongue!,
+          widget.community!);
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
@@ -110,12 +121,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
           Get.find<MatchesController>().getMatchesList(
               Get.find<MatchesController>().offset.toString(),
               widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-              religionFilter,
+              widget.religion!,
               stateController.text,
               minHeight.text,
               maxHeight.text,
               maxWeightController.text,
-              motherTongueFilter);
+              widget.motherTongue!,
+              widget.community!,
+          );
           Get.find<MatchesController>().offset.toString();
         }
       }
@@ -223,11 +236,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           ),
                                         );
                                       },
-                                      height: matchesControl.matchesList![i]
-                                                  .physicalAttributes!.height ==
-                                              null
-                                          ? ""
-                                          : "${matchesControl.matchesList![i].physicalAttributes!.height ?? ''}ft",
+                                      // height: matchesControl.matchesList![i]
+                                      //             .physicalAttributes!.height ==
+                                      //         null
+                                      //     ? ""
+                                      //     : "${matchesControl.matchesList![i].physicalAttributes!.height ?? ''}ft",
                                       imgUrl: '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
                                       state: matchesControl.matchesList![i].basicInfo?.presentAddress?.state ?? '',
                                       userName: matchesControl.matchesList![i].firstname == null &&
@@ -237,8 +250,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                       atributeReligion:
                                           ' ${matchesControl.matchesList![i].basicInfo?.religion?.name ?? ''}',
                                       profession: "Software Engineer",
-                                      Location:
-                                          '${matchesControl.matchesList![i].address!.state ?? ''} • ${matchesControl.matchesList![i].address!.country ?? ''} • ${matchesControl.matchesList![i].address!.district ?? ''}',
+                                      Location: '${matchesControl.matchesList?[i].address?.state ?? ''} • ${matchesControl.matchesList?[i].address?.country ?? ''} ',
+
+                                      // Location:
+                                      //     '${matchesControl.matchesList![i].address!.state ?? ''} • ${matchesControl.matchesList![i].address!.country ?? ''} • ${matchesControl.matchesList![i].address!.district ?? ''}',
                                       likedColor: Colors.grey,
                                       unlikeColor: primaryColor,
                                       button:
@@ -470,9 +485,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       ],
                     ),
                   )
-                : Text(
-                    'No Matches Yet',
-                  )
+                : const CustomEmptyMatchScreen()
             : const ShimmerWidget();
       }),
     );

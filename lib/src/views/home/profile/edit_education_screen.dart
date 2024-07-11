@@ -1,5 +1,6 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
     super.initState();
   }
 
-  List<EducationInfoModel> educationDetails = [];
+  List<EducationInfoMdl> educationDetails = [];
   educationInfo() {
     isLoading = true;
     var resp = getProfileApi();
@@ -43,7 +44,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
         setState(() {
           // profile = ProfileModel.fromJson(value);
           for (var v in value['data']['user']['education_info']) {
-            educationDetails.add(EducationInfoModel.fromJson(v));
+            educationDetails.add(EducationInfoMdl.fromJson(v));
           }
           // print(career.length);
           isLoading = false;

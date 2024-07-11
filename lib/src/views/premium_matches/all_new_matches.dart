@@ -34,11 +34,9 @@ import '../user_profile/user_profile.dart';
 
 class AllMatchesScreen extends StatefulWidget {
   final String religionFilter;
-
   final LoginResponse response;
 
   const AllMatchesScreen({Key? key, required this.response, required this.religionFilter,}) : super(key: key);
-
   @override
   State<AllMatchesScreen> createState() => _AllMatchesScreenState();
 }
@@ -77,7 +75,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
           minHeight.text,
           maxHeight.text,
           maxWeightController.text,
-          motherTongueFilter);
+          motherTongueFilter,'');
     });
   }
 
@@ -192,7 +190,7 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
               minHeight.text,
               maxHeight.text,
               maxWeightController.text,
-              motherTongueFilter);
+              motherTongueFilter,'');
           Get.find<MatchesController>().offset.toString();
         }
       }
@@ -588,7 +586,8 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                               minHeight.text,
                                               maxHeight.text,
                                               maxWeightController.text,
-                                              motherTongueFilter);
+                                              motherTongueFilter,
+                                          '');
                                           // getMatches();
                                           Navigator.pop(context);
                                         });
@@ -648,10 +647,10 @@ class _AllMatchesScreenState extends State<AllMatchesScreen> {
                                   ),
                                 );
                               },
-                              height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
-                              "" :
-                              "${matchesControl.matchesList![i].physicalAttributes!.height ??
-                                  ''}ft",
+                              // height:matchesControl.matchesList![i].physicalAttributes!.height == null ?
+                              // "" :
+                              // "${matchesControl.matchesList![i].physicalAttributes!.height ??
+                              //     ''}ft",
                               imgUrl:
                               '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
                               state: matchesControl.matchesList![i]

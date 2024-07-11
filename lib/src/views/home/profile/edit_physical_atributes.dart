@@ -195,7 +195,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                     showModalBottomSheet(
                       context: context,
                       builder: (BuildContext builder) {
-
                         // Create the modal bottom sheet widget containing the time picker and close button
                         return SizedBox(
                           height: MediaQuery.of(context).copyWith().size.height / 3,
@@ -285,7 +284,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                                       child:  Text('Save',
                                       style: styleSatoshiMedium(
                                           size: 13,
-                                          color: Colors.black),),
+                                          color: Colors.white),),
                                     ),
                                   ),
                                 ],

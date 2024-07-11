@@ -2,6 +2,7 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/other_person_details_models.dart';
+import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
     super.initState();
   }
 
-  List<CareerInfoModel> career = [];
+  List<CareerInfoMdl> career = [];
 
   careerInfo() {
     isLoading = true;
@@ -52,7 +53,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
         setState(() {
           // profile = ProfileModel.fromJson(value);
           for (var v in value['data']['user']['career_info']) {
-            career.add(CareerInfoModel.fromJson(v));
+            career.add(CareerInfoMdl.fromJson(v));
           }
           // print(career.length);
           isLoading = false;
@@ -80,7 +81,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
               if (value['status'] == true) {
                 setState(() {
                   loading = false;
-                  isLoading ? Loading() : careerInfo();
+                  isLoading ? const Loading() : careerInfo();
                 });
 
 
@@ -99,8 +100,8 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
               }
             });
           },
-          child: Icon(Icons.delete,color: Colors.white,))
-          : SizedBox(),
+          child: const Icon(Icons.delete,color: Colors.white,))
+          : const SizedBox(),
         GestureDetector(
           onTap: () {
             showDialog(
@@ -140,7 +141,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                         hint: 'start',
                                         controller: startingYearController),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 6,
                                   ),
                                   Expanded(
@@ -216,7 +217,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
         ),
       ),
       body: isLoading
-          ? Loading()
+          ? const Loading()
           : CustomRefreshIndicator(
         onRefresh: () {
           setState(() {
@@ -345,7 +346,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                         ),
                       )):
                       ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: career.length,
                           itemBuilder: (_, i) {

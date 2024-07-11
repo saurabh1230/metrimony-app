@@ -76,9 +76,11 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).cardColor,
+      elevation: 0,
       automaticallyImplyLeading: false,
       leading: Padding(
-        padding: const EdgeInsets.only(left: 16),
+        padding: const EdgeInsets.only(left: 20),
         child: backButton(
             context: context,
             image: icArrowLeft,
@@ -92,8 +94,6 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
             }),
       ),
       actions:  [
-
-
         const SizedBox(width: 5,),
         selectedItemId.isNotEmpty ?
         Padding(

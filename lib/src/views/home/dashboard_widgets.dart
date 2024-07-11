@@ -20,10 +20,11 @@ otherUserdataHolder({
   required String profession,
   required String Location,
   required String dob,
+  // final String? religion,
   required Color likedColor,
   required Color unlikeColor,
   required Widget button,
-  required String height,
+  // required String height,
   required String state,
   required Widget bookmark,
   required String text,
@@ -83,12 +84,13 @@ otherUserdataHolder({
                                 child: Text(
                                   userName, overflow: TextOverflow.ellipsis, maxLines: 1,
                                   style: styleSatoshiBold(
-                                      size: 16, color: Colors.white),
+                                      size: 22, color: Colors.white),
                                 ),
                               ),
                               const SizedBox(width: 10,),
                             ],
                           ),
+                          const SizedBox(height: 6,),
                           Row(
                             children: [
                               Container( padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8),
@@ -96,7 +98,7 @@ otherUserdataHolder({
                                 color: Colors.greenAccent,borderRadius: BorderRadius.circular(12)
                               ),
                                 child: Text(
-                                  '${dob}',
+                                  '${dob} ',
                                   overflow: TextOverflow.ellipsis, maxLines: 1,
                                   style: styleSatoshiLarge(size: 16, color: Colors.black),),
                               ),
@@ -110,28 +112,39 @@ otherUserdataHolder({
                                 ),
                               ),
                               const SizedBox(width: 6,),
-
-                              Text(
-                                height,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
-                              const SizedBox(width: 6,),
-                              Container(
-                                height: 4,
-                                width: 4,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
+                              Container( padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8),
+                                decoration : BoxDecoration(
+                                    color: Colors.yellowAccent.withOpacity(0.70),borderRadius: BorderRadius.circular(12)
                                 ),
+                                child: Text(
+                                  '${atributeReligion} ',
+                                  overflow: TextOverflow.ellipsis, maxLines: 1,
+                                  style: styleSatoshiLarge(size: 16, color: Colors.black),),
                               ),
-                              Text(
-                                atributeReligion,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: styleSatoshiMedium(
-                                    size: 16,
-                                    color: Colors.white),
-                              ),
+
+                              // const SizedBox(width: 6,),
+
+                              // Text(
+                              //   height,
+                              //   overflow: TextOverflow.ellipsis,
+                              //   maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
+                              // const SizedBox(width: 6,),
+                              // Container(
+                              //   height: 4,
+                              //   width: 4,
+                              //   decoration: const BoxDecoration(
+                              //     shape: BoxShape.circle,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
+                              // Text(
+                              //   atributeReligion,
+                              //   maxLines: 1,
+                              //   overflow: TextOverflow.ellipsis,
+                              //   style: styleSatoshiMedium(
+                              //       size: 16,
+                              //       color: Colors.white),
+                              // ),
                             ],
                           ),
                           const SizedBox(height: 4,),
@@ -146,8 +159,6 @@ otherUserdataHolder({
                                   children: [
                                     Text(
                                       Location,
-                                      // '${matches[i].address!.country}',
-                                      // "New York, USA",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
 
@@ -168,12 +179,8 @@ otherUserdataHolder({
 
                                     Text(
                                       '',
-
-                                      // '${matches[i].address!.country}',
-                                      // "New York, USA",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
-
                                       style: styleSatoshiMedium(
                                           size: 16,
                                           color: Colors.white),

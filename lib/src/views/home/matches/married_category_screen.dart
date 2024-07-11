@@ -189,8 +189,8 @@ class _MarriedCategoryState extends State<MarriedCategory> {
                                               ),
                                             );
                                           },
-                                          height:
-                                              "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                          // height:
+                                          //     "${matches[i].physicalAttributes!.height ?? ''} ft",
                                           imgUrl:
                                               '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                                           state: matches[i]

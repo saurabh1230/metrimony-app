@@ -1,8 +1,8 @@
+import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
-import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
-import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
@@ -82,8 +82,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   DateTime? birthDate;
   int age = 0;
   bool loading = false;
-  bool like = false;
+  bool connected = false;
   int _currentIndex = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -294,8 +296,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                               width: 6,
                                             ),
                                             Text(
-                                              StringUtils.capitalize(model.data
-                                                      ?.matches?.religion!.name ??
+                                              StringUtils.capitalize(model
+                                                      .data
+                                                      ?.matches
+                                                      ?.religion!
+                                                      .name ??
                                                   ''),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -567,9 +572,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       buildProfileRow(
                                           image: birthHolder,
                                           title: 'Age',
-                                          text: model.data!.matches?.basicInfo
-                                                  ?.birthDate ??
-                                              ""),
+                                          text: age.toString()),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icHeightIcon,
@@ -581,22 +584,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       buildProfileRow(
                                           image: icReligionIcon,
                                           title: 'Religion',
-                                          text: StringUtils.capitalize(model
-                                                  .data!
-                                                  .matches
-                                                  ?.basicInfo
-                                                  ?.religion!.name ??
-                                              "")),
+                                          text: model
+                                              .data!.matches!.religion!.name
+                                              .toString()),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icMotherToungeIcon,
                                           title: 'Mother Tongue',
-                                          text: StringUtils.capitalize(model
-                                                  .data!
-                                                  .matches
-                                                  ?.basicInfo
-                                                  ?.motherTongue!.name ??
-                                              "")),
+                                          text: model
+                                              .data!.matches!.motherTongue!.name
+                                              .toString()),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icMarriedStatusPro,
@@ -714,9 +711,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     ),
                                     sizedBox6(),
                                     Text(
-                                      StringUtils.capitalize(model.data!
-                                              .matches!.basicInfo!.profession!.name ??
-                                          ""),
+                                      model.data!.matches!.profession!.name
+                                          .toString(),
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -824,51 +820,100 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   child: Column(
                                     children: [
                                       buildPrefProfileRow(
-                                        image: birthHolder,
-                                        title: 'Age',
-                                        text: model.data?.matches
-                                                ?.partnerExpectation?.maxAge
-                                                ?.toString() ??
-                                            "",
-                                        icon: crossholder,
+                                        image: icReligionIcon,
+                                        title: 'Religion',
+                                        text: StringUtils.capitalize(model.data
+                                                ?.matches?.religion!.name ??
+                                            ""),
+                                        icon: model.data?.matches?.religion
+                                                    ?.name ==
+                                                model
+                                                    .data
+                                                    ?.user
+                                                    ?.partnerExpectation
+                                                    ?.religion!
+                                                    .name
+                                            ? tickHolder
+                                            : crossholder,
                                       ),
                                       const Divider(),
                                       buildPrefProfileRow(
-                                        image: icHeightIcon,
-                                        title: 'Height',
-                                        text:
-                                            "Min: ${model.data?.matches?.partnerExpectation?.minHeight?.toString() ?? ''} "
-                                            "Max: ${model.data?.matches?.partnerExpectation?.maxHeight?.toString() ?? ''} ft",
-                                        icon: crossholder,
+                                        image: icGotraIcon,
+                                        title: 'Community',
+                                        text: StringUtils.capitalize(model.data
+                                                ?.matches?.community!.name ??
+                                            ""),
+                                        icon: model.data?.matches?.community?.name == model
+                                                    .data
+                                                    ?.user
+                                                    ?.partnerExpectation
+                                                    ?.community!
+                                                    .name
+                                            ? tickHolder
+                                            : crossholder,
                                       ),
                                       const Divider(),
-                                    /*  model.data?.matches?.partnerExpectation
-                                                  ?.religion?.isEmpty ??
-                                              true
-                                          ? SizedBox()
-                                          : buildPrefProfileRow(
-                                              image: icReligionIcon,
-                                              title: 'Religion',
-                                              text: StringUtils.capitalize(model
-                                                      .data
-                                                      ?.matches
-                                                      ?.partnerExpectation
-                                                      ?.religion ??
-                                                  ""),
-                                              icon: model
-                                                          .data
-                                                          ?.matches
-                                                          ?.basicInfo
-                                                          ?.religion ==
-                                                      model
-                                                          .data
-                                                          ?.user
-                                                          ?.partnerExpectation
-                                                          ?.religion
-                                                  ? tickHolder
-                                                  : crossholder,
-                                            ),*/
                                       const Divider(),
+                                      buildPrefProfileRow(
+                                        image: icMotherToungeIcon,
+                                        title: 'Mother Tongue',
+                                        text: StringUtils.capitalize(model.data
+                                                ?.matches?.motherTongue!.name ??
+                                            ""),
+                                        icon: model.data?.matches?.motherTongue
+                                                    ?.name ==
+                                                model.data?.user?.motherTongue
+                                                    ?.name
+                                            // ?.motherTongue!.name
+                                            ? tickHolder
+                                            : crossholder,
+                                      ),
+                                      //   buildPrefProfileRow(
+                                      //     image: birthHolder,
+                                      //     title: 'Age',
+                                      //     text: model.data?.matches
+                                      //             ?.partnerExpectation?.maxAge
+                                      //             ?.toString() ??
+                                      //         "",
+                                      //     icon: crossholder,
+                                      //   ),
+                                      //   const Divider(),
+                                      //   buildPrefProfileRow(
+                                      //     image: icHeightIcon,
+                                      //     title: 'Height',
+                                      //     text:
+                                      //         "Min: ${model.data?.matches?.partnerExpectation?.minHeight?.toString() ?? ''} "
+                                      //         "Max: ${model.data?.matches?.partnerExpectation?.maxHeight?.toString() ?? ''} ft",
+                                      //     icon: crossholder,
+                                      //   ),
+                                      //   const Divider(),
+                                      // /*  model.data?.matches?.partnerExpectation
+                                      //               ?.religion?.isEmpty ??
+                                      //           true
+                                      //       ? SizedBox()
+                                      //       : buildPrefProfileRow(
+                                      //           image: icReligionIcon,
+                                      //           title: 'Religion',
+                                      //           text: StringUtils.capitalize(model
+                                      //                   .data
+                                      //                   ?.matches
+                                      //                   ?.partnerExpectation
+                                      //                   ?.religion ??
+                                      //               ""),
+                                      //           icon: model
+                                      //                       .data
+                                      //                       ?.matches
+                                      //                       ?.basicInfo
+                                      //                       ?.religion ==
+                                      //                   model
+                                      //                       .data
+                                      //                       ?.user
+                                      //                       ?.partnerExpectation
+                                      //                       ?.religion
+                                      //               ? tickHolder
+                                      //               : crossholder,
+                                      //         ),*/
+                                      //   const Divider(),
                                       // buildPrefProfileRow(
                                       //   image: icMotherToungeIcon,
                                       //   title: 'Mother Tongue',
@@ -925,35 +970,40 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           sizedBox16(),
 
                           sizedBox14(),
-                          button(
-                              fontSize: 14,
-                              height: 45,
-                              width: double.infinity,
-                              context: context,
-                              onTap: () {
-                                setState(() {
-                                  // like[i] = !like[i];
-                                });
-                                sendRequestApi(
-                                  memberId: model.data!.matches!.id!.toString(),
-                                ).then((value) {
-                                  if (value['status'] == true) {
-                                    setState(() {});
-                                    ToastUtil.showToast(
-                                        "Connection Request Sent");
-                                  } else {
-                                    setState(() {});
+                         /* GetBuilder<FavouriteController>(
+                              builder: (favControl) {
+                                favControl.setConnected(true);*/
+                            /*return*/ button(
+                                fontSize: 14,
+                                height: 45,
+                                width: double.infinity,
+                                context: context,
+                                onTap: () {
+                                  setState(() {
+                                    connected = !connected;
+                                  });
+                                  sendRequestApi(
+                                    memberId:
+                                        model.data!.matches!.id!.toString(),
+                                  ).then((value) {
+                                    if (value['status'] == true) {
+                                      setState(() {});
+                                      ToastUtil.showToast(
+                                          "Connection Request Sent");
+                                    } else {
+                                      setState(() {});
 
-                                    List<dynamic> errors =
-                                        value['message']['error'];
-                                    String errorMessage = errors.isNotEmpty
-                                        ? errors[0]
-                                        : "An unknown error occurred.";
-                                    Fluttertoast.showToast(msg: errorMessage);
-                                  }
-                                });
-                              },
-                              title: "Connect Now"),
+                                      List<dynamic> errors =
+                                          value['message']['error'];
+                                      String errorMessage = errors.isNotEmpty
+                                          ? errors[0]
+                                          : "An unknown error occurred.";
+                                      Fluttertoast.showToast(msg: errorMessage);
+                                    }
+                                  });
+                                },
+                                title:  connected ? 'Request Sent' : "Connect Now"),
+                          // }),
                         ],
                       ),
                     ),
@@ -1072,7 +1122,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ],
             ),
           ),
-          // Expanded(child: Image.asset(icon,height: 18,))
+          Expanded(
+              child: Image.asset(
+            icon,
+            height: 18,
+          ))
         ],
       ),
     );

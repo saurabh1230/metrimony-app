@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 
 Future<dynamic> updateBasicInfo({
   required String profession,
@@ -35,11 +38,11 @@ Future<dynamic> updateBasicInfo({
   request.fields.addAll({
     'method': 'basicInfo',
     'gender': gender,
-    'profession': profession,
+    'profession': Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString(),
     'financial_condition': financialCondition,
-    'religion': religion,
-    'mother_tongue': motherTongue,
-    'community': community,
+    'religion': Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
+    'mother_tongue': Get.find<ProfileController>().userDetails!.data!.user!.motherTongue!.id.toString(),
+    'community': Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
     'smoking_status': smokingStatus,
     'drinking_status': drinkingStatus,
     'birth_date': birthDate,

@@ -6,6 +6,7 @@ import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/widgets/custom_image_widget.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:bureau_couple/src/views/home/matches/filter_matches_screen.dart';
+import 'package:bureau_couple/src/views/home/matches/matches_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -231,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                                builder: (builder) =>  MatchesScreen(response: widget.response, religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '', appbar: true,))
                             );
 
                             // Navigator.push(
@@ -253,8 +254,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap :() {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.address!.state!, motherTongue:'', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                                builder: (builder) =>  MatchesScreen(response: widget.response,
+                                  religion: '',
+                                  motherTongue: '',
+                                  minHeight: '',
+                                  maxHeight: '',
+                                  maxWeight: '',
+                                  based: '',
+                                  state: Get.find<ProfileController>().userDetails!.data!.user!.address!.state.toString(),
+                                  appbar: true,))
                             );
+                            // Navigator.push(
+                            //     context, MaterialPageRoute(
+                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.address!.state!, motherTongue:'', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                            // );
 
                           },
                             child: Column(
@@ -268,15 +281,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Expanded(
                           child: GestureDetector(onTap :() {
+                            print('${Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString()}');
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:'', minHeight: '', maxHeight: '', maxWeight:  '', based: '',))
-                            );},
+                                builder: (builder) =>  MatchesScreen(response: widget.response,
+                                  religion: '',
+                                  motherTongue: '',
+                                  minHeight: '',
+                                  maxHeight: '',
+                                  maxWeight: '',
+                                  based: '',
+                                  state: '',
+                                  community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
+                                  appbar: true,))
+                            );
+                            },
                             child: Column(
                               children: [
-                                Image.asset(fAge,height: 55,),
+                                Image.asset(icCommunity,height: 55,),
                                 sizedBox6(),
-                                Text("Weight",style: styleSatoshiLight(size: 12, color: color7859BC),)
+                                Text("Community",style: styleSatoshiLight(size: 12, color: color7859BC),)
                               ],
                             ),
                           ),
@@ -285,8 +309,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: GestureDetector(onTap: () {
                             Navigator.push(
                                 context, MaterialPageRoute(
-                                builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '', based: 'Language',))
+                                builder: (builder) =>  MatchesScreen(response: widget.response,
+                                  religion: '',
+                                  motherTongue: Get.find<ProfileController>().userDetails!.data!.user!.motherTongue!.id.toString(),
+                                  minHeight: '',
+                                  maxHeight: '',
+                                  maxWeight: '',
+                                  based: '',
+                                  state: '',
+                                  appbar: true,))
                             );
+                            // Navigator.push(
+                            //     context, MaterialPageRoute(
+                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '', based: 'Language',))
+                            // );
                           },
                             child: Column(
                               children: [
@@ -329,9 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 sizedBox14(),
                 if (isLoading) Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: primaryColor,
-                      size: 60,
+                    child: LoadingAnimationWidget.staggeredDotsWave(color: primaryColor, size: 60,
                     )) else SizedBox(height: 200,
                   child: ListView.separated(
                     padding: const EdgeInsets.only(left: 16),
@@ -429,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ],
                                               ),
                                             ),
-                                            like[i] || matches[i].interestStatus == 2  ?
+                                            /*like[i] || matches[i].interestStatus == 2  ?
                                             TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
@@ -461,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       msg: errorMessage);
                                                 }
                                               });
-                                            },)
+                                            },)*/
                                           ],
                                         ),
 
@@ -484,8 +518,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllMatchesScreen(response: widget.response, religionFilter: widget.response.data!.user!.religion!.toString(),)));
+                    Navigator.push(
+                        context, MaterialPageRoute(
+                        builder: (builder) =>  MatchesScreen(response: widget.response, religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(), appbar: true,))
+                    );
+                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                    //     AllMatchesScreen(response: widget.response, religionFilter: widget.response.data!.user!.religion!.toString(),)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -572,6 +610,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                           style: styleSatoshiBold(size: 14, color: Colors.white),),
+                                        const SizedBox(height: 4,),
                                         Row(
                                           children: [
                                             Row(
@@ -613,7 +652,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
 
-                                            like[i] || preferredMatches[i].interestStatus == 2  ?
+                                           /* like[i] || preferredMatches[i].interestStatus == 2  ?
                                             TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
@@ -645,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       msg: errorMessage);
                                                 }
                                               });
-                                            },)
+                                            },)*/
                                           ],
                                         ),
 

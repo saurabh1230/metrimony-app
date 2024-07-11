@@ -50,7 +50,9 @@ class MatchesController extends GetxController implements GetxService {
       String minHeight,
       String maxHeight,
       String maxWeight,
-      String motherTongue) async {
+      String motherTongue,
+      String community
+      ) async {
     _isLoading = true;
     try {
       if (page == '1') {
@@ -65,7 +67,7 @@ class MatchesController extends GetxController implements GetxService {
       if (!_pageList.contains(page)) {
         _pageList.add(page);
 
-        Response response = await matchesRepo.getMatchesList(page, gender, religion, state, minHeight, maxHeight, maxWeight, motherTongue);
+        Response response = await matchesRepo.getMatchesList(page, gender, religion, state, minHeight, maxHeight, maxWeight, motherTongue,community);
 
         if (response.statusCode == 200) {
           List<dynamic> responseData = response.body['data']['members']['data'];
@@ -93,7 +95,7 @@ class MatchesController extends GetxController implements GetxService {
         }
       }
     } catch (e) {
-      print('Error fetching food list: $e');
+      print('Error members food list: $e');
       _isLoading = false;
       update();
     }
@@ -145,14 +147,11 @@ class MatchesController extends GetxController implements GetxService {
         }
       }
     } catch (e) {
-      print('Error fetching  list: $e');
+      print('Error fetching shortlists list: $e');
       _isLoading = false;
       update();
     }
   }
-
-
-
 
 
 

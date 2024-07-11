@@ -253,7 +253,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                             )
                                           : const SizedBox(),
                                       dob: '$age yrs',
-                                      height: "",
+                                      // height: "",
                                       state: matchesControl.savedMatchesList![i].profile?.basicInfo?.presentAddress?.state ??
                                           '',
                                       text: matchesControl.savedMatchesList![i]

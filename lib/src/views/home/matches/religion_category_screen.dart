@@ -162,7 +162,7 @@ class _ReligionCategoryState extends State<ReligionCategory> {
                         );
                       },
                       state:matches[i].basicInfo?.presentAddress?.state ?? '',
-                      height:"${matches[i].physicalAttributes!.height ?? ''} ft",
+                      // height:"${matches[i].physicalAttributes!.height ?? ''} ft",
                       imgUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
                       userName: matches[i].firstname == null && matches[i].lastname == null
                           ? "user"

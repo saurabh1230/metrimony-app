@@ -1,7 +1,9 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
+import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
   final countryController = TextEditingController();
   final heightController = TextEditingController();
   final maxHeightController = TextEditingController();
-  final weightController = TextEditingController();
+  // final weightController = TextEditingController();
   final preferredReligionController = TextEditingController();
   final minAgeController = TextEditingController();
   final maxAgeController = TextEditingController();
@@ -66,7 +68,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
   }
 
 
-  PreferenceModel preferenceModel = PreferenceModel();
+  PartnerExpectationInfoMdl preferenceModel = PartnerExpectationInfoMdl();
 
   careerInfo() {
     isLoading = true;
@@ -78,7 +80,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
           var physicalAttributesData = value['data']['user']['partner_expectation'];
           if (physicalAttributesData != null) {
             setState(() {
-              preferenceModel = PreferenceModel.fromJson(physicalAttributesData);
+              preferenceModel = PartnerExpectationInfoMdl.fromJson(physicalAttributesData);
               fields();
             });
           }
@@ -99,19 +101,16 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
     minAgeController.text= preferenceModel.minAge.toString() ?? '';
      maxAgeController.text= preferenceModel.maxAge.toString() ?? '';
      heightController.text= preferenceModel.minHeight.toString() ?? '';
-   maxHeightController.text= preferenceModel.max_height.toString() ?? '';
-   weightController.text= preferenceModel.maxWeight.toString() ?? '';
-    preferredReligionController.text= preferenceModel.religion.toString() ?? '';
-    communityController.text= preferenceModel.community.toString() ?? '';
+   maxHeightController.text= preferenceModel.maxHeight.toString() ?? '';
+   // weightController.text= preferenceModel.maxWeight.toString() ?? '';
+    preferredReligionController.text= preferenceModel.religion!.name.toString() ?? '';
+    communityController.text= preferenceModel.community!.name.toString() ?? '';
     smokingController.text= preferenceModel.smokingStatus.toString() ?? '';
    drinkingController.text= preferenceModel.drinkingStatus.toString() ?? '';
-     preferredProfession.text= preferenceModel.profession.toString() ?? '';
+     preferredProfession.text= preferenceModel.profession!.name.toString() ?? '';
     minimumDegreeController.text= preferenceModel.minDegree.toString() ?? '';
     financialCondition.text= preferenceModel.financialCondition.toString() ?? '';
-    languageController.text= preferenceModel.language.toString() ?? '';
-
-
-
+    // languageController.text= preferenceModel.language.toString() ?? '';
   }
 
   DateTime _selectedTime = DateTime.now();
@@ -145,7 +144,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   minAge: minAgeController.text,
                   maxAge: maxAgeController.text,
                   minHeight: heightController.text,
-                  maxWeight: weightController.text,
+                  maxWeight: '',
                   religion: authControl.religionMainIndex.toString(),
                   community: authControl.communityMainIndex.toString(),
                   smokingStatus: smokingController.text,
@@ -233,15 +232,15 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             Text(
                               "General Information",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
                             ),
-                            SizedBox(width: 3,),
-                            Icon(
+                            const SizedBox(width: 3,),
+                            const Icon(
                               Icons.edit,
                               size: 12,
                             ),
                           ],
                         ),
                         generalInfo.text.isEmpty?
-                        SizedBox() :
+                        const SizedBox() :
                         Column(
                           children: [
                             sizedBox16(),
@@ -369,7 +368,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           : preferenceModel.maxAge.toString())
                           : maxAgeController.text,
                       data2: StringUtils.capitalize(maxAgeController.text),
-                      isControllerTextEmpty: maxAgeController.text.isEmpty, widget: SizedBox(),),
+                      isControllerTextEmpty: maxAgeController.text.isEmpty, widget: const SizedBox(),),
                   ),
 
                   sizedBox16(),
@@ -456,13 +455,12 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                                               color: Colors.white),),
                                       ),
                                     ),
-                                    SizedBox(width: 8,),
+                                    const SizedBox(width: 8,),
                                     Flexible(
                                       child: ElevatedButton(
                                         onPressed: () {
                                           setState(() {
                                             heightController.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
-
                                             print('$_feet.${_inches.toString().padLeft(1, '0')}');
                                           });
                                           Navigator.pop(context);
@@ -574,7 +572,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                                               color: Colors.white),),
                                       ),
                                     ),
-                                    SizedBox(width: 8,),
+                                    const SizedBox(width: 8,),
                                     Flexible(
                                       child: ElevatedButton(
                                         onPressed: () {
@@ -608,7 +606,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             : preferenceModel.minHeight.toString())
                             : maxHeightController.text,
                         data2: maxHeightController.text,
-                        isControllerTextEmpty: maxHeightController.text.isEmpty, widget: SizedBox()),
+                        isControllerTextEmpty: maxHeightController.text.isEmpty, widget: const SizedBox()),
                     // child: CarRowWidget(favourites: favourites!,)
                   ),
 
@@ -676,7 +674,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? (preferenceModel.id == null ||
                           preferenceModel.religion == null
                           ? 'Not Added'
-                          : preferenceModel.religion.toString())
+                          : preferenceModel.religion!.name.toString())
                           : preferredReligionController.text,
                       data2: preferredReligionController.text,
                       isControllerTextEmpty: preferredReligionController.text.isEmpty,
@@ -693,15 +691,17 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                         isScrollControlled: true,
                       );
                     },
-                    child: buildDataAddRow(title: 'Preferred Profession',
+                    child: buildDataAddRow(
+                      title: 'Preferred Profession',
                       data1: preferredProfession.text.isEmpty
-                          ? (preferenceModel.id == null || preferenceModel.profession == null || preferenceModel.profession!.isEmpty
+                          ? (preferenceModel.id == null || preferenceModel.profession == null || preferenceModel.profession!.name!.isEmpty
                           ? 'Not Added'
-                          : preferenceModel.profession!)
+                          : preferenceModel.profession!.name.toString())
                           : preferredProfession.text,
                       data2: StringUtils.capitalize(preferredProfession.text),
-                      isControllerTextEmpty: preferredProfession.text.isEmpty, widget: SizedBox(),),
-                  ),
+                      isControllerTextEmpty: preferredProfession.text.isEmpty,
+                      widget: const SizedBox(),
+                    ),),
                   sizedBox16(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -713,7 +713,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             privacyStatus: '',
                             onPop: (val) {
                               financialCondition.text = val;
-                              print(financialCondition.text);
+                              print( '===>${financialCondition.text}');
                             },
                           );
                         },
@@ -757,13 +757,13 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? (preferenceModel.id == null ||
                           preferenceModel.motherTongue == null
                           ? 'Not Added'
-                          : preferenceModel.motherTongue.toString())
+                          : preferenceModel.motherTongue!.name.toString())
                           : motherTongueController.text,
                       data2: motherTongueController.text,
                       isControllerTextEmpty: motherTongueController.text.isEmpty,
                     ),
                   ),
-                  sizedBox16(),
+                /*  sizedBox16(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
@@ -790,12 +790,12 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? (preferenceModel.id == null ||
                           preferenceModel.community == null
                           ? 'Not Added'
-                          : preferenceModel.community.toString())
+                          : preferenceModel.community)
                           : communityController.text,
                       data2: communityController.text,
                       isControllerTextEmpty: communityController.text.isEmpty,
                     ),
-                  ),
+                  ),*/
                   sizedBox16(),
                   // GestureDetector(
                   //   onTap: () {
@@ -1142,107 +1142,52 @@ class _FinancialBottomSheet extends State<FinancialBottomSheet> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Material(
-        child: Container(
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Select Financial Condition",
-                  style: styleSatoshiMedium(size: 16, color: Colors.black),
-                ),
-                sizedBox16(),
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _gIndex = 0;
-                    Navigator.of(context).pop();
-                    widget.onPop("Below 3 lacs");
-                  }),
-                  child: Container(
-                    height: 44,
-                    // width: 78,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: _gIndex == 0 ? primaryColor : Colors.transparent,
-                    ),
-                    child: Center(
-                        child: Text(
-                          'Below 3 lacs',
-                          style: styleSatoshiLight(
-                              size: 14,
-                              color: _gIndex == 0 ? Colors.white : Colors.black),
-                          // style: _gIndex == 0
-                          //     ? textColorF7E64114w400
-                          //     : ColorSelect.colorF7E641
-                        )),
+        child: GetBuilder<AuthController>(builder: (authControl) {
+          return  Container(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Financial Condition",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
                   ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _gIndex = 1;
-                    Navigator.of(context).pop();
-                    widget.onPop("4-8 lacs");
-                  }),
-                  child: Container(
-                    height: 44,
-                    // width: 78,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: _gIndex == 1 ? primaryColor : Colors.transparent,
-                    ),
-                    child: Center(
-                        child: Text(
-                          '4-8 lacs',
-                          style: styleSatoshiLight(
-                              size: 14,
-                              color: _gIndex == 1 ? Colors.white : Colors.black),
-                          // style
-                          // : _gIndex == 1
-                          //     ? kManRope_500_16_white
-                          //     : kManRope_500_16_626A6A,
-                        )),
+                  const SizedBox(height: 12,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ChipList(
+                        elements: authControl.financialConditionList,
+                        onChipSelected: (selectedFinancialCondition) {
+                          print(selectedFinancialCondition);
+                          widget.onPop(selectedFinancialCondition);
+                          // authControl.setFinancialCondition(
+                          //     selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
+                          // );
+                          // setState(() {
+                          //
+                          //   // SharedPrefs().setGender(selectedGender);
+                          //   // SharedPrefs().getGender();
+                          // });
+                        },
+                        defaultSelected: "Male",
+                      ),),
                   ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                GestureDetector(
-                  onTap: () => setState(() {
-                    _gIndex = 2;
-                    Navigator.of(context).pop();
-                    widget.onPop("Above 8 lacs");
-                  }),
-                  child: Container(
-                    height: 44,
-                    // width: 78,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      color: _gIndex == 2 ? primaryColor : Colors.transparent,
-                    ),
-                    child: Center(
-                        child: Text(
-                          'Above 8 lacs',
-                          style: styleSatoshiLight(
-                              size: 14,
-                              color: _gIndex == 2 ? Colors.white : Colors.black),
-                          // style
-                          // : _gIndex == 1
-                          //     ? kManRope_500_16_white
-                          //     : kManRope_500_16_626A6A,
-                        )),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+    }
+
+
+
       ),
-    );
+    ),);
   }
 
   @override

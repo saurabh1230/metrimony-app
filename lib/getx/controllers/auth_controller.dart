@@ -308,6 +308,7 @@ class AuthController extends GetxController implements GetxService {
 
         if (_religionList!.isNotEmpty) {
           _religionMainIndex = _religionList![0].id;
+          _partnerReligion = _religionList![0].id;
         }
         _isLoading = false;
         update();
@@ -355,6 +356,7 @@ class AuthController extends GetxController implements GetxService {
         // Select the first item by default
         if (_communityList!.isNotEmpty) {
           _communityMainIndex = _communityList![0].id;
+          _partnerCommunity = _communityList![0].id;
         }
         _isLoading = false;
         update();
@@ -404,6 +406,7 @@ class AuthController extends GetxController implements GetxService {
             .map((json) => MotherTongueModel.fromJson(json))
             .toList();
         _motherTongueIds = [0, ..._motherTongueList!.map((e) => e.id)];
+        _partnerMotherTongue = _motherTongueList![0].id;
 
         // Select the first item by default
         if (_motherTongueList!.isNotEmpty) {
@@ -458,6 +461,7 @@ class AuthController extends GetxController implements GetxService {
 
         if (_professionList!.isNotEmpty) {
           _professionIndex = _professionList![0].id;
+          _partnerProfession = _professionList![0].id;
         }
         _isLoading = false;
         update();
@@ -509,6 +513,7 @@ class AuthController extends GetxController implements GetxService {
         // Select the first item by default
         if (_positionHeldList!.isNotEmpty) {
           _positionHeldIndex = _positionHeldList![0].id;
+          _partnerPosition = _positionHeldList![0].id;
         }
         _isLoading = false;
         update();
@@ -622,6 +627,15 @@ class AuthController extends GetxController implements GetxService {
 
   void setGender(String? gender) {
     _gender = gender;
+    update();
+  }
+
+  final List<String> financialConditionList = ["Below 3 Lacs","3 - 8 lacs","Above 8 lacs"];
+  String? _financialCondition = "Below 3 Lacs";
+  String? get financialCondition => _financialCondition;
+
+  void setFinancialCondition(String? gender) {
+    _financialCondition = gender;
     update();
   }
 
@@ -741,7 +755,129 @@ class AuthController extends GetxController implements GetxService {
     _dob = dob;
     update(); // Notify listeners that selectedState has changed
   }
+
+
+
+
+/// PARTNER EXPECTATION VARIABLES //
+
+  final List<String> smokingStatus = ["Yes","No",];
+  final List<String> drinkingStatus = ["Yes","No",];
+
+  int? _partnerProfessionIndex = 0;
+  int? get partnerProfessionIndex => _partnerProfessionIndex;
+  void setPartnerProfessionIndex(int? index, bool notify) {
+    _partnerProfessionIndex = index;
+    if (notify) {
+      update();
+    }}
+
+  int? _partnerProfession;
+  int? get partnerProfession => _partnerProfession;
+
+
+
+  void setPartnerProfession(int val) {
+    _partnerProfession = val;
+    update();
+  }
+
+  int? _partnerReligion;
+  int? get partnerReligion => _partnerReligion;
+
+  void setPartnerReligion(int val) {
+    _partnerReligion = val;
+    update();
+  }
+
+  int? _partnerMotherTongue;
+  int? get partnerMotherTongue => _partnerMotherTongue;
+
+  void setPartnerMotherTongue(int val) {
+    _partnerMotherTongue = val;
+    update();
+  }
+
+  int? _partnerCommunity;
+  int? get partnerCommunity => _partnerCommunity;
+
+  void setPartnerCommunity(int val) {
+    _partnerCommunity = val;
+    update();
+  }
+
+  int? _partnerPosition;
+  int? get partnerPosition => _partnerPosition;
+
+  void setPartnerPosition(int val) {
+    _partnerPosition = val;
+    update();
+  }
+
+  String? _partnerMinAge;
+  String? get partnerMinAge => _partnerMinAge;
+
+  void setPartnerMinAge(String val) {
+    _partnerMinAge = val;
+    update();
+  }
+
+  String? _partnerMaxAge;
+  String? get partnerMaxAge => _partnerMaxAge;
+
+  void setPartnerMaxAge(String val) {
+    _partnerMaxAge = val;
+    update();
+  }
+
+  String? _partnerMinHeight;
+  String? get partnerMinHeight => _partnerMinHeight;
+
+  void setPartnerMinHeight(String val) {
+    _partnerMinHeight = val;
+    update();
+  }
+
+  String? _partnerMaxHeight;
+  String? get partnerMaxHeight => _partnerMaxHeight;
+
+  void setPartnerMaxHeight(String val) {
+    _partnerMaxHeight = val;
+    update();
+  }
+
+  String? _partnerSmokingStatus  = 'Yes';
+  String? get partnerSmokingStatus => _partnerSmokingStatus;
+
+  void setPartnerSmokingStatus(String val) {
+    _partnerSmokingStatus = val;
+    update();
+  }
+
+  String? _partnerDrinkingStatus = 'Yes';
+  String? get partnerDrinkingStatus => _partnerDrinkingStatus;
+
+  void setPartnerDrinkingStatus(String val) {
+    _partnerDrinkingStatus = val;
+    update();
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class YearPickerDialog extends StatelessWidget {
   final DateTime firstDate;
@@ -789,4 +925,10 @@ class YearPickerDialog extends StatelessWidget {
       ],
     );
   }
+
+
+
+
+
+
 }

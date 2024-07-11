@@ -37,11 +37,11 @@ class ProfileRepo {
   // }
 
   Future<Response> getGalleryImages() {
-    return apiClient.getData('${AppConstants.galleryUrl}');
+    return apiClient.getData(AppConstants.galleryUrl);
   }
 
   Future<Response> getProfileDetails() async {
-    return await apiClient.getData('${AppConstants.profileDataUrl}');
+    return await apiClient.getData(AppConstants.profileDataUrl);
   }
 
   Future<Response> getOtherUserProfile(otherUserId) async {
