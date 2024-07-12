@@ -150,7 +150,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                 const SizedBox(height: 20,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Positioned Held",
+                  child: Text("Position",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),
@@ -254,17 +254,17 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                 const SizedBox(height: 20,),
                 Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Select State of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
+                    Text("Select State", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
                     const SizedBox(height: 5),
                     TypeAheadFormField<String>(
                       textFieldConfiguration:  TextFieldConfiguration(
                         controller: stateController,
                         decoration: authDecoration(
-                            context, "Select State of Posting"
+                            context, "Select State"
                         ),
                       ),
                       suggestionsCallback: (pattern) async {
-                        return authControl.states.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                        return authControl.posStates.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
                       },
                       itemBuilder: (context, suggestion) {
                         return ListTile(
@@ -273,19 +273,19 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                       },
                       onSuggestionSelected: (String? suggestion) {
                         if (suggestion != null) {
-
+                          authControl.setPosState(suggestion);
                           stateController.text = suggestion;
-                          authControl.setPostingState(suggestion);
-
+                          authControl.setPosstate(stateController.text);
+                          print(authControl.posState);
                         }
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please Select State of Posting';
+                          return 'Please Select State';
                         }
                         return null;
                       },
-                      onSaved: (value) => authControl.setState(value!),
+                      onSaved: (value) => authControl.setPosState(value!),
                     ),
                   ],
                 ),
@@ -293,18 +293,18 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                 const SizedBox(height: 20,),
                 Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Select District of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
+                    Text("Select District", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
                     const SizedBox(height: 5),
                     TypeAheadFormField<String>(
                       textFieldConfiguration:  TextFieldConfiguration(
                         controller: districtController,
                         decoration: const InputDecoration(
-                          labelText: 'Select District of Posting',
+                          labelText: 'Select District',
                           border: OutlineInputBorder(),
                         ),
                       ),
                       suggestionsCallback: (pattern) async {
-                        return authControl.districts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                        return authControl.posDistricts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
                       },
                       itemBuilder: (context, suggestion) {
                         return ListTile(
@@ -313,17 +313,19 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                       },
                       onSuggestionSelected: (String? suggestion) {
                         if (suggestion != null) {
+                          // authControl.setDistrict(suggestion);
                           districtController.text = suggestion;
-                          authControl.setPostingDistrict(suggestion);
+                          authControl.setPosDist(suggestion);
+                          print(authControl.posDistrict);
                         }
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please District of Posting';
+                          return 'Please District';
                         }
                         return null;
                       },
-                      onSaved: (value) => authControl.setDistrict(value!),
+                      onSaved: (value) => authControl.setPosDistrict(value!),
                     ),
                   ],
                 ),

@@ -1601,7 +1601,7 @@ class _CommuitySheet extends State<CommuitySheet> {
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text("Community",
+                    child: Text("Caste",
                       textAlign: TextAlign.left,
                       style: styleSatoshiBold(size: 16, color: Colors.black),),
                   ),
@@ -1964,14 +1964,15 @@ class _CommuitySheet extends State<CommuitySheet> {
 
 class ProfessionBottomSheet extends StatelessWidget {
   final Function(String) onPop;
-  const ProfessionBottomSheet({super.key, required this.onPop});
+  final Function(String)? onPopId;
+  const ProfessionBottomSheet({super.key, required this.onPop, this.onPopId});
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (authControl) {
       return SingleChildScrollView(
         child: Container(color: Theme.of(context).cardColor,
-            padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
+            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
             child: Column(children: [
               sizedBox20(),
               Align(
@@ -1999,7 +2000,9 @@ class ProfessionBottomSheet extends StatelessWidget {
                     onSelected: (selected) {
                       if (selected) {
                         authControl.setProfessionIndex(religion.id, true);
-                        onPop(religion.name!); // Call the callback with the selected religion name
+                        onPop(religion.name!);
+                        onPopId!(religion.id.toString());
+
                         Navigator.pop(context);
                       }
                     },
@@ -2025,7 +2028,7 @@ class MotherTongueBottomSheet extends StatelessWidget {
     return GetBuilder<AuthController>(builder: (authControl) {
       return SingleChildScrollView(
         child: Container(color: Theme.of(context).cardColor,
-          padding: EdgeInsets.all(Dimensions.paddingSizeDefault),
+          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
           child: Column(children: [
             sizedBox20(),
             Align(

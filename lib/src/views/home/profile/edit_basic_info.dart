@@ -636,7 +636,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         // );
                       },
                       child: buildDataAddRow(
-                        title: 'Community',
+                        title: 'Caste',
                         widget: const SizedBox(),
                         // widget: const Icon(
                         //   Icons.edit,

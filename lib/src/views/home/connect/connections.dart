@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../../getx/features/widgets/custom_empty_match_widget.dart';
 import '../../../apis/members_api.dart';
 import '../../../apis/members_api/bookmart_api.dart';
 import '../../../apis/members_api/request_apis.dart';
@@ -129,8 +130,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
       body:  GetBuilder<MatchesController>(builder: (matchesControl) {
         return isLoading
             ? const ShimmerWidget()
-            : matches.isEmpty && matches == null
-            ? const Text("No Matches Yet")
+            : matches.isEmpty || matches == null
+            ? const CustomEmptyMatchScreen()
             : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),

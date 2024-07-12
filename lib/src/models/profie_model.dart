@@ -518,7 +518,7 @@ class PermanentAddress {
 class CareerInfoMdl {
   int? id;
   int? userId;
-  String? position;
+  // String? position;
   String? from;
   String? end;
   String? createdAt;
@@ -530,7 +530,7 @@ class CareerInfoMdl {
   CareerInfoMdl(
       {this.id,
         this.userId,
-        this.position,
+        // this.position,
         this.from,
         this.end,
         this.createdAt,
@@ -542,7 +542,7 @@ class CareerInfoMdl {
   CareerInfoMdl.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    position = json['position'];
+    // position = json['position'];
     from = json['from'];
     end = json['end'];
     createdAt = json['created_at'];
@@ -558,7 +558,7 @@ class CareerInfoMdl {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['user_id'] = this.userId;
-    data['position'] = this.position;
+    // data['position'] = this.position;
     data['from'] = this.from;
     data['end'] = this.end;
     data['created_at'] = this.createdAt;

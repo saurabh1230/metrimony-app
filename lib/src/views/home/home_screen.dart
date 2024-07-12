@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Image.asset(icCommunity,height: 55,),
                                 sizedBox6(),
-                                Text("Community",style: styleSatoshiLight(size: 12, color: color7859BC),)
+                                Text("Caste",style: styleSatoshiLight(size: 12, color: casteIconColor),)
                               ],
                             ),
                           ),
@@ -340,8 +340,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                        AllMatchesScreen(response: widget.response, religionFilter: '', )));
+                    Navigator.push(
+                        context, MaterialPageRoute(
+                        builder: (builder) =>  MatchesScreen(response: widget.response, religion: '', motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',community: '', appbar: true,))
+                    );
+                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                    //     AllMatchesScreen(response: widget.response, religionFilter: '', )));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -371,7 +375,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: matches.length,
+                    // itemCount: matches.length,
+                    itemCount : matches.length > 6 ? 6 : matches.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (_, i) {
                       DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
@@ -555,7 +560,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.only(left: 16),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: preferredMatches.length,
+                      // itemCount: preferredMatches.length,
+                        itemCount : preferredMatches.length > 6 ? 6 : preferredMatches.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (_, i) {
                         DateTime? birthDate = preferredMatches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(preferredMatches[i].basicInfo!.birthDate!) : null;

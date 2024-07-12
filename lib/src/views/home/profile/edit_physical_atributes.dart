@@ -181,11 +181,11 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                     );
                   },
                   child: buildDataAddRow(title: 'Complexion',
-                 data1: complexionController.text.isEmpty
-                      ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
-                      ? 'Not Added'
-                          : physicalData.complexion!)
-                : complexionController.text,
+                    data1: complexionController.text.isEmpty
+                        ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
+                        ? 'Not Added'
+                        : physicalData.complexion!)
+                        : complexionController.text,
                     data2: StringUtils.capitalize(complexionController.text),
                     isControllerTextEmpty: complexionController.text.isEmpty,),
                 ),

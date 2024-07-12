@@ -15,6 +15,7 @@ class AppConstants{
   static const String sendRequest = "express-interest";
   static const String savedMatchesUrl = "bookmarkSaveMatches";
   static const String unsavedMatchesUrl = "removeBookmark";
+  static const String editProfileDataUrl = "profileSetting";
 
 
 

@@ -153,7 +153,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
 
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Community",
+                  child: Text("Caste",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),

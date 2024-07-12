@@ -118,8 +118,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     model.data?.matches?.galleries?.length ?? 0,
                                 itemBuilder: (ctx, index, realIndex) {
                                   return CachedNetworkImage(
-                                    imageUrl:
-                                        '$baseGalleryImage${model.data?.matches?.galleries?[index].image}',
+                                    imageUrl: '$baseGalleryImage${model.data?.matches?.galleries?[index].image}',
                                     fit: BoxFit.fill,
                                     errorWidget: (context, url, error) =>
                                         Padding(
@@ -147,25 +146,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                             Positioned(
                               bottom: 0,
-                              child: Container(
-                                height: 170,
-                                width: 1.sw,
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 0),
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Colors.black.withOpacity(0.8),
-                                        Colors.transparent
-                                      ],
-                                      stops: const [0, 10],
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                    ),
-                                    borderRadius: BorderRadius.circular(32)),
-                                // child: Image.asset(images[i],
-                                // height: 170,),
+                              child: ClipRect(
+                                child: Container(
+                                  height: 170,
+                                  width: 1.sw,
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 0),
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.black.withOpacity(0.8),
+                                          Colors.transparent
+                                        ],
+                                        stops: const [0, 10],
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                      ),
+                                      borderRadius: BorderRadius.circular(32)),
+                                  // child: Image.asset(images[i],
+                                  // height: 170,),
+                                ),
                               ),
                             ),
                             Positioned(
@@ -839,7 +840,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       const Divider(),
                                       buildPrefProfileRow(
                                         image: icGotraIcon,
-                                        title: 'Community',
+                                        title: 'Caste',
                                         text: StringUtils.capitalize(model.data
                                                 ?.matches?.community!.name ??
                                             ""),

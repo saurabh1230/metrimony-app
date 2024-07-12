@@ -188,7 +188,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                 const SizedBox(height: 20,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Community",
+                  child: Text("Caste",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),
@@ -216,7 +216,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                 const SizedBox(height: 20,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Positioned Held",
+                  child: Text("Position",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),
@@ -283,7 +283,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                           }
                           return null;
                         },
-                        hintText: 'Min Age',showTitle: true,
+                        hintText: 'Max Age',showTitle: true,
                         onChanged: (val) {
                          authControl.setPartnerMaxAge(val);
                          print(authControl.partnerMaxAge);
@@ -309,7 +309,8 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                           Get.bottomSheet( HeightPickerWidget(heightController: minHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
                         },
                         onChanged: (val) {
-                          authControl.setPartnerMinHeight(val);
+                          authControl.setPartnerMinHeight(minHeightController.text);
+                          print(val);
                           print(authControl.partnerMinHeight);
                         },
                         hintText: 'Min Height',showTitle: true,
@@ -330,7 +331,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                           Get.bottomSheet( HeightPickerWidget(heightController: maxHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
                         },
                         onChanged: (val) {
-                          authControl.setPartnerMaxHeight(val);
+                          authControl.setPartnerMaxHeight(maxHeightController.text);
                           print(authControl.partnerMaxHeight);
                         },
                         hintText: 'Max Height',showTitle: true,
@@ -341,7 +342,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                 const SizedBox(height: 20,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Smoking Status",
+                  child: Text("Smoking",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),
@@ -371,7 +372,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                 const SizedBox(height: 20,),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Drinking Status",
+                  child: Text("Drinking",
                     textAlign: TextAlign.left,
                     style: styleSatoshiBold(size: 16, color: Colors.black),),
                 ),

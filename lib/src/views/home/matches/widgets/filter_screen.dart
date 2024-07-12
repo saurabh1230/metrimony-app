@@ -6,7 +6,6 @@ import 'package:bureau_couple/getx/utils/colors.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/sizeboxes.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
-import 'package:bureau_couple/src/constants/textfield.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
@@ -154,7 +153,7 @@ class FilterBottomSheet extends StatelessWidget {
                               if (suggestion != null) {
 
                                 stateController.text = suggestion;
-                                authControl.setPostingState(suggestion);
+                                // authControl.setPostingState(suggestion);
 
                               }
                             },
@@ -194,7 +193,7 @@ class FilterBottomSheet extends StatelessWidget {
                             onSuggestionSelected: (String? suggestion) {
                               if (suggestion != null) {
                                 districtController.text = suggestion;
-                                authControl.setPostingDistrict(suggestion);
+                                authControl.setPPostingDistrict(suggestion);
                               }
                             },
                             validator: (value) {

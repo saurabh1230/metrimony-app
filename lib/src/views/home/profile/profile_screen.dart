@@ -366,7 +366,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: 'Position',
                       text: profile.data?.user?.careerInfo?.isEmpty ?? true
                           ? ""
-                          : profile.data?.user?.careerInfo?[0].position?.toString() ?? "",
+                          : profile.data?.user?.careerInfo?[0].positionHeld?.name?.toString() ?? "",
                       onTap: () {},
                     ),
                     buildInfoRow(
@@ -407,7 +407,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () {},
                     ),
 
-                    buildInfoRow(title: 'Community',
+                    buildInfoRow(title: 'Caste',
                         text:/* profile.data?.user?.partnerExpectation!.community.toString() ?? "",*/
                         profile.data!.user!.partnerExpectation == null ? "" :
                         profile.data!.user!.partnerExpectation!.community!.name.toString(),

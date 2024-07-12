@@ -237,6 +237,38 @@ class AuthController extends GetxController implements GetxService {
     // Add remaining states and their districts
   };
 
+  final Map<String, List<String>> posStateDistricts = {
+    'Andhra Pradesh': ['Anantapur', 'Chittoor', 'East Godavari', 'Guntur'],
+    'Arunachal Pradesh': ['Tawang', 'West Kameng', 'East Kameng'],
+    'Assam': ['Baksa', 'Barpeta', 'Biswanath'],
+    'Bihar': ['Araria', 'Arwal', 'Aurangabad'],
+    'Chhattisgarh': ['Balod', 'Baloda Bazar', 'Balrampur'],
+    'Goa': ['North Goa', 'South Goa'],
+    'Gujarat': ['Ahmedabad', 'Amreli', 'Anand'],
+    'Haryana': ['Ambala', 'Bhiwani', 'Charkhi Dadri'],
+    'Himachal Pradesh': ['Bilaspur', 'Chamba', 'Hamirpur'],
+    'Jharkhand': ['Bokaro', 'Chatra', 'Deoghar'],
+    'Karnataka': ['Bagalkot', 'Bangalore Rural', 'Bangalore Urban'],
+    'Kerala': ['Alappuzha', 'Ernakulam', 'Idukki'],
+    'Madhya Pradesh': ['Agar Malwa', 'Alirajpur', 'Anuppur'],
+    'Maharashtra': ['Ahmednagar', 'Akola', 'Amravati'],
+    'Manipur': ['Bishnupur', 'Chandel', 'Churachandpur'],
+    'Meghalaya': ['East Garo Hills', 'East Jaintia Hills', 'East Khasi Hills'],
+    'Mizoram': ['Aizawl', 'Champhai', 'Kolasib'],
+    'Nagaland': ['Dimapur', 'Kiphire', 'Kohima'],
+    'Odisha': ['Angul', 'Balangir', 'Balasore'],
+    'Punjab': ['Amritsar', 'Barnala', 'Bathinda'],
+    'Rajasthan': ['Ajmer', 'Alwar', 'Banswara'],
+    'Sikkim': ['East Sikkim', 'North Sikkim', 'South Sikkim'],
+    'Tamil Nadu': ['Ariyalur', 'Chengalpattu', 'Chennai'],
+    'Telangana': ['Adilabad', 'Bhadradri Kothagudem', 'Hyderabad'],
+    'Tripura': ['Dhalai', 'Gomati', 'Khowai'],
+    'Uttar Pradesh': ['Agra', 'Aligarh', 'Prayagraj'],
+    'Uttarakhand': ['Almora', 'Bageshwar', 'Chamoli'],
+    'West Bengal': ['Alipurduar', 'Bankura', 'Birbhum'],
+    // Add remaining states and their districts
+  };
+
   // var selectedState = ''.obs;
   // var selectedDistrict = ''.obs;
 
@@ -261,6 +293,32 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  String? _selectedPosState;
+
+  String? get selectedPosState => _selectedPosState;
+
+  String? _selectedPosDistrict;
+
+  String? get selectedPosDistrict => _selectedPosDistrict;
+
+  List<String> get posStates => posStateDistricts.keys.toList();
+
+  List<String> get posDistricts =>
+      _selectedPosState == null || _selectedPosState!.isEmpty
+          ? []
+          : posStateDistricts[_selectedState!] ?? [];
+
+  void setPosState(String state) {
+    _selectedPosState = state;
+    _selectedPosDistrict = null;
+    update();
+  }
+
+
+
+
+
+
   // void clearStateDistrict() {
   //   // _selectedState = null;
   //   _selectedDistrict = null; // Clear the selected district
@@ -269,6 +327,11 @@ class AuthController extends GetxController implements GetxService {
 
   void setDistrict(String district) {
     _selectedDistrict = district;
+    update();
+  }
+
+  void setPosDistrict(String district) {
+    _selectedPosDistrict = district;
     update();
   }
 
@@ -599,6 +662,16 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
+  String? _posState;
+
+  String? get posState => _posState;
+
+  void setPosstate(String state) {
+    _posState = state;
+    update(); // Notify listeners that selectedState has changed
+  }
+
+
   String? _district;
 
   String? get district => _district;
@@ -607,6 +680,17 @@ class AuthController extends GetxController implements GetxService {
     _district = district;
     update(); // Notify listeners that selectedState has changed
   }
+
+  String? _posDistrict;
+
+  String? get posDistrict => _posDistrict;
+
+  void setPosDist(String district) {
+    _posDistrict = district;
+    update(); // Notify listeners that selectedState has changed
+  }
+
+
 
   String? _password;
 
@@ -688,7 +772,7 @@ class AuthController extends GetxController implements GetxService {
 
   String? get postingState => _postingState;
 
-  void setPostingState(String postingState) {
+  void setPPostingState(String postingState) {
     _postingState = postingState;
     update();
   }
@@ -697,7 +781,7 @@ class AuthController extends GetxController implements GetxService {
 
   String? get postingDistrict => _postingDistrict;
 
-  void setPostingDistrict(String postingDistrict) {
+  void setPPostingDistrict(String postingDistrict) {
     _postingDistrict = postingDistrict;
     update(); // Notify listeners that selectedState has changed
   }

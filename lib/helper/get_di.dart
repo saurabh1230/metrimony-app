@@ -34,5 +34,6 @@ Future<void>   init() async {
   Get.lazyPut(() => MatchesController(matchesRepo: Get.find(),));
   Get.lazyPut(() => FavouriteController(matchesRepo: Get.find(),));
   Get.lazyPut(() => ProfileController(profileRepo: Get.find(), ));
+  Get.lazyPut(() => FavouriteController(matchesRepo: Get.find(),));
 
 }

@@ -1,11 +1,6 @@
 
 
-// import 'package:bureau_couple/src/models/other_person_details_models.dart';
-
 import 'package:bureau_couple/getx/repository/repo/profile_repo.dart';
-import 'package:bureau_couple/src/models/basic_info_model.dart';
-import 'package:bureau_couple/src/models/career_info_model.dart';
-import 'package:bureau_couple/src/models/education_info_model.dart';
 import 'package:bureau_couple/src/models/images_model.dart';
 import 'package:bureau_couple/src/models/other_person_details_models.dart';
 import 'package:bureau_couple/src/models/preference_model.dart';
@@ -310,6 +305,48 @@ class ProfileController extends GetxController implements GetxService {
   }
 
   String get heightRange => '${_minHeight.toInt()} - ${_maxHeight.toInt()}';
+
+
+  Future<void> editEducationInfoApi(type,id,degree,fieldOfStudy,institute) async {
+    _isLoading = true;
+    update();
+    Response response = await profileRepo.editEducationInfo(type, id, degree, fieldOfStudy, institute);
+    var responseData = response.body;
+    if(responseData['status'] == true) {
+      print("Api ===================== >> $responseData");
+      print(response);
+      _isLoading = false;
+      update();
+    } else {
+      print(response);
+      print("Api Error ===================== error >>");
+      _isLoading = false;
+      update();
+    }
+    _isLoading = false;
+    update();
+  }
+
+  Future<void> editCareerInfoApi(type,id,degree,fieldOfStudy,institute) async {
+    _isLoading = true;
+    update();
+    Response response = await profileRepo.editEducationInfo(type, id, degree, fieldOfStudy, institute);
+    var responseData = response.body;
+    if(responseData['status'] == true) {
+      print("Api ===================== >> $responseData");
+      print(response);
+      _isLoading = false;
+      update();
+    } else {
+      print(response);
+      print("Api Error ===================== error >>");
+      _isLoading = false;
+      update();
+    }
+    _isLoading = false;
+    update();
+  }
+
 
 
 

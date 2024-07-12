@@ -74,7 +74,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           "1",
           widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
           widget.religion!,
-          stateController.text,
+           widget.state!,
           minHeight.text,
           maxHeight.text,
           maxWeightController.text,
