@@ -854,7 +854,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             : crossholder,
                                       ),
                                       const Divider(),
-                                      const Divider(),
                                       buildPrefProfileRow(
                                         image: icMotherToungeIcon,
                                         title: 'Mother Tongue',
