@@ -463,38 +463,42 @@ class PermanentAddress {
 class CareerInfo {
   int? id;
   int? userId;
-  String? position;
+  // String? position;
   String? from;
   String? end;
   String? createdAt;
   String? updatedAt;
   String? statePosting;
   String? districtPosting;
+  Religion? positionHeld;
   // String? positionHeld;
 
   CareerInfo(
       {this.id,
         this.userId,
-        this.position,
+        // this.position,
         this.from,
         this.end,
         this.createdAt,
         this.updatedAt,
         this.statePosting,
         this.districtPosting,
-        // this.positionHeld
+        this.positionHeld
       });
 
   CareerInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    position = json['position'];
+    // position = json['position'];
     from = json['from'];
     end = json['end'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     statePosting = json['state_posting'];
     districtPosting = json['district_posting'];
+    positionHeld = json['position_held'] != null
+        ? new Religion.fromJson(json['position_held'])
+        : null;
     // positionHeld = json['position_held'];
   }
 
@@ -502,13 +506,16 @@ class CareerInfo {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['user_id'] = this.userId;
-    data['position'] = this.position;
+    // data['position'] = this.position;
     data['from'] = this.from;
     data['end'] = this.end;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['state_posting'] = this.statePosting;
     data['district_posting'] = this.districtPosting;
+    if (this.positionHeld != null) {
+      data['position_held'] = this.positionHeld!.toJson();
+    }
     // data['position_held'] = this.positionHeld;
     return data;
   }

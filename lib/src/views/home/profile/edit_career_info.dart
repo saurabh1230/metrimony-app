@@ -1,5 +1,6 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
@@ -9,6 +10,7 @@ import 'package:bureau_couple/src/models/other_person_details_models.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/views/home/profile/edit_preferred_matches.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,6 +48,10 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
   @override
   void initState() {
     careerInfo();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().getProfessionList();
+
+    });
     super.initState();
   }
 
@@ -96,172 +102,173 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:  CustomAppBar(title: "Career Info",
-        // menuWidget: Row(children: [  selectedItemId.isNotEmpty
-        //   ? GestureDetector(
-        //   behavior: HitTestBehavior.translucent,
-        //   onTap: () {
-        //     careerInfoDeleteApi(id: selectedItemId).then((value) {
-        //       setState(() {});
-        //       if (value['status'] == true) {
-        //         setState(() {
-        //           loading = false;
-        //           isLoading ? const Loading() : careerInfo();
-        //         });
-        //         ToastUtil.showToast("Deleted Successfully");
-        //         print('done');
-        //       } else {
-        //         setState(() {
-        //           loading = false;
-        //         });
-        //
-        //         List<dynamic> errors = value['message']['error'];
-        //         String errorMessage = errors.isNotEmpty
-        //             ? errors[0]
-        //             : "An unknown error occurred.";
-        //         Fluttertoast.showToast(msg: errorMessage);
-        //       }
-        //     });
-        //   },
-        //   child: const Icon(Icons.delete,color: Colors.white,))
-        //   : const SizedBox(),
-        // GestureDetector(
-        //   onTap: () {
-        //     // showDialog(
-        //     //   context: context,
-        //     //   builder: (BuildContext context) {
-        //     //     return StatefulBuilder(
-        //     //         builder: (BuildContext context, StateSetter setState) {
-        //     //           return EditDialogWidget(
-        //     //               addTextField: Column(
-        //     //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //     //                 children: [
-        //     //                   Text("Career info",
-        //     //                     style: styleSatoshiBold(size: 18, color: Colors.black),),
-        //     //                   sizedBox16(),
-        //     //
-        //     //                   Row(
-        //     //                     children: [
-        //     //                       Expanded(
-        //     //                         child: buildTextFormField(context,
-        //     //                             hint: 'company', controller: companyController),
-        //     //                       ),
-        //     //                       const SizedBox(
-        //     //                         width: 6,
-        //     //                       ),
-        //     //                       Expanded(
-        //     //                         child: buildTextFormField(context,
-        //     //                             hint: 'designation',
-        //     //                             controller: designationController),
-        //     //                       ),
-        //     //                     ],
-        //     //                   ),
-        //     //                   sizedBox16(),
-        //     //                   Row(
-        //     //                     children: [
-        //     //                       Expanded(
-        //     //                         child: buildTextFormField(context,
-        //     //                             hint: 'start',
-        //     //                             controller: startingYearController),
-        //     //                       ),
-        //     //                       const SizedBox(
-        //     //                         width: 6,
-        //     //                       ),
-        //     //                       Expanded(
-        //     //                         child: buildTextFormField(context,
-        //     //                             hint: 'end No',
-        //     //                             controller: endingYearController,
-        //     //                             keyboard: TextInputType.number),
-        //     //                       ),
-        //     //                     ],
-        //     //                   ),
-        //     //                   sizedBox10(),
-        //     //                   sizedBox16(),
-        //     //                   loading
-        //     //                       ? loadingElevatedButton(
-        //     //                       context: context, color: primaryColor)
-        //     //                       : elevatedButton(
-        //     //                       color: primaryColor,
-        //     //                       context: context,
-        //     //                       onTap: () {
-        //     //                         setState(() {
-        //     //                           loading = true;
-        //     //                         });
-        //     //                         careerInfoAddApi(
-        //     //                           // id: career[0].id.toString(),
-        //     //                             company: companyController.text,
-        //     //                             designation: designationController.text,
-        //     //                             startYear: startingYearController.text,
-        //     //                             endYear: endingYearController.text)
-        //     //                             .then((value) {
-        //     //                           if (value['status'] == true) {
-        //     //                             setState(() {
-        //     //                               loading = false;
-        //     //                             });
-        //     //
-        //     //
-        //     //                             ToastUtil.showToast("Updated Successfully");
-        //     //                             print('done');
-        //     //                           } else {
-        //     //                             setState(() {
-        //     //                               loading = false;
-        //     //                             });
-        //     //
-        //     //                             List<dynamic> errors =
-        //     //                             value['message']['error'];
-        //     //                             String errorMessage = errors.isNotEmpty
-        //     //                                 ? errors[0]
-        //     //                                 : "An unknown error occurred.";
-        //     //                             Fluttertoast.showToast(msg: errorMessage);
-        //     //                           }
-        //     //                         });
-        //     //                       },
-        //     //                       title: "Save")
-        //     //                 ],
-        //     //               ));
-        //     //         });
-        //     //   },
-        //     // );
-        //   },
-        //   child: const Padding(
-        //     padding: EdgeInsets.only(right: 16.0),
-        //     child: Icon(Icons.edit,color: Colors.white,),
-        //   ),
-        // )],
-        // ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: button(
-              context: context,
-              onTap: () {
-                Navigator.pop(context);
-              },
-              title: "Save"),
+    return GetBuilder<AuthController>(builder: (authControl) {
+      return    Scaffold(
+        appBar:  CustomAppBar(title: "Career Info",
+          // menuWidget: Row(children: [  selectedItemId.isNotEmpty
+          //   ? GestureDetector(
+          //   behavior: HitTestBehavior.translucent,
+          //   onTap: () {
+          //     careerInfoDeleteApi(id: selectedItemId).then((value) {
+          //       setState(() {});
+          //       if (value['status'] == true) {
+          //         setState(() {
+          //           loading = false;
+          //           isLoading ? const Loading() : careerInfo();
+          //         });
+          //         ToastUtil.showToast("Deleted Successfully");
+          //         print('done');
+          //       } else {
+          //         setState(() {
+          //           loading = false;
+          //         });
+          //
+          //         List<dynamic> errors = value['message']['error'];
+          //         String errorMessage = errors.isNotEmpty
+          //             ? errors[0]
+          //             : "An unknown error occurred.";
+          //         Fluttertoast.showToast(msg: errorMessage);
+          //       }
+          //     });
+          //   },
+          //   child: const Icon(Icons.delete,color: Colors.white,))
+          //   : const SizedBox(),
+          // GestureDetector(
+          //   onTap: () {
+          //     // showDialog(
+          //     //   context: context,
+          //     //   builder: (BuildContext context) {
+          //     //     return StatefulBuilder(
+          //     //         builder: (BuildContext context, StateSetter setState) {
+          //     //           return EditDialogWidget(
+          //     //               addTextField: Column(
+          //     //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //     //                 children: [
+          //     //                   Text("Career info",
+          //     //                     style: styleSatoshiBold(size: 18, color: Colors.black),),
+          //     //                   sizedBox16(),
+          //     //
+          //     //                   Row(
+          //     //                     children: [
+          //     //                       Expanded(
+          //     //                         child: buildTextFormField(context,
+          //     //                             hint: 'company', controller: companyController),
+          //     //                       ),
+          //     //                       const SizedBox(
+          //     //                         width: 6,
+          //     //                       ),
+          //     //                       Expanded(
+          //     //                         child: buildTextFormField(context,
+          //     //                             hint: 'designation',
+          //     //                             controller: designationController),
+          //     //                       ),
+          //     //                     ],
+          //     //                   ),
+          //     //                   sizedBox16(),
+          //     //                   Row(
+          //     //                     children: [
+          //     //                       Expanded(
+          //     //                         child: buildTextFormField(context,
+          //     //                             hint: 'start',
+          //     //                             controller: startingYearController),
+          //     //                       ),
+          //     //                       const SizedBox(
+          //     //                         width: 6,
+          //     //                       ),
+          //     //                       Expanded(
+          //     //                         child: buildTextFormField(context,
+          //     //                             hint: 'end No',
+          //     //                             controller: endingYearController,
+          //     //                             keyboard: TextInputType.number),
+          //     //                       ),
+          //     //                     ],
+          //     //                   ),
+          //     //                   sizedBox10(),
+          //     //                   sizedBox16(),
+          //     //                   loading
+          //     //                       ? loadingElevatedButton(
+          //     //                       context: context, color: primaryColor)
+          //     //                       : elevatedButton(
+          //     //                       color: primaryColor,
+          //     //                       context: context,
+          //     //                       onTap: () {
+          //     //                         setState(() {
+          //     //                           loading = true;
+          //     //                         });
+          //     //                         careerInfoAddApi(
+          //     //                           // id: career[0].id.toString(),
+          //     //                             company: companyController.text,
+          //     //                             designation: designationController.text,
+          //     //                             startYear: startingYearController.text,
+          //     //                             endYear: endingYearController.text)
+          //     //                             .then((value) {
+          //     //                           if (value['status'] == true) {
+          //     //                             setState(() {
+          //     //                               loading = false;
+          //     //                             });
+          //     //
+          //     //
+          //     //                             ToastUtil.showToast("Updated Successfully");
+          //     //                             print('done');
+          //     //                           } else {
+          //     //                             setState(() {
+          //     //                               loading = false;
+          //     //                             });
+          //     //
+          //     //                             List<dynamic> errors =
+          //     //                             value['message']['error'];
+          //     //                             String errorMessage = errors.isNotEmpty
+          //     //                                 ? errors[0]
+          //     //                                 : "An unknown error occurred.";
+          //     //                             Fluttertoast.showToast(msg: errorMessage);
+          //     //                           }
+          //     //                         });
+          //     //                       },
+          //     //                       title: "Save")
+          //     //                 ],
+          //     //               ));
+          //     //         });
+          //     //   },
+          //     // );
+          //   },
+          //   child: const Padding(
+          //     padding: EdgeInsets.only(right: 16.0),
+          //     child: Icon(Icons.edit,color: Colors.white,),
+          //   ),
+          // )],
+          // ),
         ),
-      ),
-      body: isLoading
-          ? const Loading()
-          : CustomRefreshIndicator(
-        onRefresh: () {
-          setState(() {
-            isLoading = true;
-          });
-          return careerInfo();
-        },
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: button(
+                context: context,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                title: "Save"),
+          ),
+        ),
+        body: isLoading
+            ? const Loading()
+            : CustomRefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              isLoading = true;
+            });
+            return careerInfo();
+          },
 
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                  child: Column(
-                    children: [
-                      career.isEmpty || career == null ?
-                      Center(
-                          child: GestureDetector(
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+              child: Column(
+                children: [
+                  career.isEmpty || career == null ?
+                  Center(
+                      child: GestureDetector(
                         onTap: () {
                           showDialog(
                             context: context,
@@ -333,7 +340,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                                       Navigator.pop(context);
                                                       setState(() {
                                                         loading = false;
-                                                         careerInfo();
+                                                        careerInfo();
                                                       });
                                                       companyController.clear();
                                                       designationController.clear();
@@ -369,95 +376,151 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                           child: DottedPlaceHolder(text: "Add Career Info"),
                         ),
                       )):
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: career.length,
-                          itemBuilder: (_, i) {
-                            return GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onLongPress: () {
-                                setState(() {
-                                  selectedItemId = career[i]
-                                      .id
-                                      .toString(); // Set the ID of the selected item
-                                });
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: career.length,
+                      itemBuilder: (_, i) {
+                        return GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onLongPress: () {
+                            setState(() {
+                              selectedItemId = career[i]
+                                  .id
+                                  .toString(); // Set the ID of the selected item
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              buildListRow(
+                                title: 'Position',
+                                data1: StringUtils.capitalize(positionController.text), tap: () {
+                                // Get.bottomSheet(
+                                //   ProfessionBottomSheet(onPop: (val ) {
+                                //     positionController.text = val;
+                                //
+                                //     print(val);
+                                //   },
+                                //     onPopId: (value) {
+                                //       positionIdController.text = value;
+                                //       print(positionIdController.text);
+                                //
+                                //     },
+                                //   ),
+                                //
+                                //   backgroundColor: Colors.transparent,
+                                //   isScrollControlled: true,
+                                // );
                               },
-                              child: Column(
-                                children: [
-                                  buildListRow(
-                                    title: 'Position',
-                                    data1: StringUtils.capitalize(positionController.text), tap: () {
-                                    Get.bottomSheet(
-                                      ProfessionBottomSheet(onPop: (val ) {
-                                        positionController.text = val;
-
-                                        print(val);
-                                      },
-                                        onPopId: (value) {
-                                          positionIdController.text = value;
-                                          print(positionIdController.text);
-
-                                      },
-                                      ),
-
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                    );
-                                  },
-                                  ),
-                                  const Divider(),
-                                  sizedBox10(),
-                                  buildListRow(
-                                    title: 'Posting Date',
-                                    data1:StringUtils.capitalize('${career[i].from} - ${career[i].end}'), tap: () {
-
-                                    print(stateController.text);
-                                    print(districtController.text);
-                                  },
-                                  ),
-                                  const Divider(),
-                                  sizedBox10(),
-                                  buildListRow(
-                                    title: 'State Of Posting',
-                                    data1: stateController.text, tap: () {
-                                    Get.bottomSheet(
-                                      SelectStateAndDistrict( onStatePop: (String ) {
-                                        stateController.text = String;
-                                        print('=========?${stateController.text}');
-                                      }, onDistrictPop: (String ) {
-                                        districtController.text = String;
-                                      },),
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,);
-
-                                    },
-                                  ),
-                                  const Divider(),
-                                  sizedBox10(),
-                                  buildListRow(
-                                    title: 'District Of Posting',
-                                    data1: career[i].districtPosting.toString(), tap: () {
-                                    Get.bottomSheet(
-                                      SelectStateAndDistrict( onStatePop: (String ) {
-                                        stateController.text = String;
-                                      }, onDistrictPop: (String ) {
-                                        districtController.text = String;
-                                      },),
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,);
-                                  },
-                                  ),
-                                ],
                               ),
-                            );
-                          }),
-                    ],
-                  ),
-                ),
+                              const Divider(),
+                              sizedBox10(),
+                              buildListRow(
+                                title: 'Posting Date',
+                                data1:StringUtils.capitalize('${career[i].from} - ${career[i].end}'), tap: () {
+                                // Get.bottomSheet(
+                                //   SingleChildScrollView(
+                                //     child: Container(color: Colors.white,
+                                //       child: Column(
+                                //         children: [
+                                //           Text("Date Of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
+                                //           const SizedBox(height: 5), //
+                                //           Row(
+                                //             children: [
+                                //               Expanded(
+                                //                 child: CustomTextField(
+                                //                   showTitle: true,
+                                //                   validation: (value) {
+                                //                     if (value == null || value.isEmpty) {
+                                //                       return 'Please Enter your Starting Date';
+                                //                     }
+                                //                     return null;
+                                //                   },
+                                //                   onTap: () { Get.find<AuthController>().showDatePicker(context); },
+                                //                   onChanged: (value) {
+                                //                     authControl.setPostingStartDate(authControl.from.toString());
+                                //
+                                //                   },
+                                //                   readOnly:  true,
+                                //                   hintText:"Starting date",
+                                //                   controller: fromController,
+                                //                 ),
+                                //               ),
+                                //               const SizedBox(width: 10,),
+                                //               Expanded(
+                                //                 child: CustomTextField(
+                                //                   showTitle: true, validation: (value) {
+                                //                   if (value == null || value.isEmpty) {
+                                //                     return 'Please Enter your Ending Date';
+                                //                   }
+                                //                   return null;
+                                //                 },
+                                //                   onChanged: (value) {
+                                //                     authControl.setPostingEndDate(endController.text);
+                                //                   },
+                                //                   hintText:"Ending date",
+                                //                   controller: endController,
+                                //                 ),
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   backgroundColor: Colors.transparent,
+                                //   isScrollControlled: true,);
+
+                                print(stateController.text);
+                                print(districtController.text);
+                              },
+                              ),
+                              const Divider(),
+                              sizedBox10(),
+                              buildListRow(
+                                title: 'State Of Posting',
+                                data1: stateController.text, tap: () {
+                                // Get.bottomSheet(
+                                //   SelectStateAndDistrict( onStatePop: (String ) {
+                                //     stateController.text = String;
+                                //     print('=========?${stateController.text}');
+                                //     Get.find<AuthController>().update();
+                                //   }, onDistrictPop: (String ) {
+                                //     districtController.text = String;
+                                //   },),
+                                //   backgroundColor: Colors.transparent,
+                                //   isScrollControlled: true,);
+
+                              },
+                              ),
+                              const Divider(),
+                              sizedBox10(),
+                              buildListRow(
+                                title: 'District Of Posting',
+                                data1: career[i].districtPosting.toString(), tap: () {
+                                // Get.bottomSheet(
+                                //   SelectStateAndDistrict( onStatePop: (String ) {
+                                //     stateController.text = String;
+                                //   }, onDistrictPop: (String ) {
+                                //     districtController.text = String;
+                                //   },),
+                                //   backgroundColor: Colors.transparent,
+                                //   isScrollControlled: true,);
+                              },
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                ],
               ),
+            ),
           ),
-    );
+        ),
+      );
+    });
+
+
   }
 
   GestureDetector buildListRow({
@@ -775,12 +838,17 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
 // }
 
 
-class SelectStateAndDistrict extends StatelessWidget {
+class SelectStateAndDistrict extends StatefulWidget {
   final Function(String) onStatePop;
   final Function(String) onDistrictPop;
 
   SelectStateAndDistrict({super.key, required this.onStatePop, required this.onDistrictPop});
 
+  @override
+  State<SelectStateAndDistrict> createState() => _SelectStateAndDistrictState();
+}
+
+class _SelectStateAndDistrictState extends State<SelectStateAndDistrict> {
   @override
   Widget build(BuildContext context) {
     final stateController = TextEditingController();
@@ -833,7 +901,7 @@ class SelectStateAndDistrict extends StatelessWidget {
                           onSuggestionSelected: (String? suggestion) {
                             if (suggestion != null) {
                               stateController.text = suggestion;
-                              onStatePop(suggestion);
+                              widget.onStatePop(suggestion);
                             }
                           },
                           validator: (value) {
@@ -878,7 +946,7 @@ class SelectStateAndDistrict extends StatelessWidget {
                           onSuggestionSelected: (String? suggestion) {
                             if (suggestion != null) {
                               districtController.text = suggestion;
-                              onDistrictPop(suggestion);
+                              widget.onDistrictPop(suggestion);
                             }
                           },
                           validator: (value) {
