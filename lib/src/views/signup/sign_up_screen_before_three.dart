@@ -42,17 +42,14 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
   final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
   final List<String> married = ["Unmarried","Widowed","Divorced"];
 
-  final countryController = TextEditingController();
-  final profileController = TextEditingController();
-  final countyController = TextEditingController();
+
+
+
   final stateController = TextEditingController();
   final districtController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  final genderController = TextEditingController();
-  final motherTongue = TextEditingController();
-  final professionController = TextEditingController();
-  final ageController = TextEditingController();
+
+
+
   final startBatchYearController = TextEditingController();
   final endBatchController = TextEditingController();
   final startDateController = TextEditingController();
@@ -61,33 +58,32 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final instituteController = TextEditingController();
-  bool picked = false;
-  String selectedCountryName = '';
-  String? selectedValue;
 
-  String? motherTongueValue;
-  String motherTongueFilter = '';
+  @override
+  void initState() {
+    fields();
+    super.initState();
+  }
+
+
+  void fields() {
+    highestDegreeController.text = Get.find<AuthController>().highestDegree ?? '' ;
+    fieldOfStudyController.text = Get.find<AuthController>().fieldOfStudy ?? '' ;
+    instituteController.text = Get.find<AuthController>().institute ?? '' ;
+
+  }
+
+
+
 
   String? cadarValue;
   String cadarFilter = '';
 
-  String? communityValue ;
-  String communityFilter = '';
-
-  String? postingValue ;
-  String postingFilter = '';
-
-  String? districtValue ;
-  String districtFilter = '';
 
 
-  String? positionValue ;
-  String positionFilter = '';
 
-  String? userTypeValue;
-  String userTypeFilter = '';
 
-  DateTime? _selectDate;
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,325 +96,336 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
     });
 
-    return Scaffold(
-      body: GetBuilder<AuthController>(builder: (authControl) {
-        startDateController.text =  authControl.from == null ? "Select StartDate" : authControl.from.toString();
-        endDateController.text =  authControl.to == null ? "Select EndDate" : authControl.to.toString();
-        startBatchYearController.text =  authControl.batchFromString;
-        endBatchController.text = authControl.batchToString;
-        return authControl.professionList == null || authControl.professionList!.isEmpty ||
-        authControl.positionHeldList == null || authControl.positionHeldList!.isEmpty ?
-        const Center(child: CircularProgressIndicator()) :
-        SingleChildScrollView(
-          child: Form(key: SignUpScreenProfessional._formKey4,
-            child:
-            Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Professional Info',
-                  style: kManrope25Black,),
-                const  SizedBox(height: 30,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Profession",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 5,),
-                Wrap(
-                  spacing: 8.0,
-                  children: authControl.professionList!.map((religion) {
-                    return ChoiceChip(
-                      selectedColor: color4B164C.withOpacity(0.80),
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        religion.name!,
-                        style: TextStyle(
-                          color: authControl.professionIndex == religion.id
-                              ? Colors.white
-                              : Colors.black.withOpacity(0.80),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: GetBuilder<AuthController>(builder: (authControl) {
+          startDateController.text =  authControl.from == null ? "" : authControl.from.toString();
+          endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
+          startBatchYearController.text =  authControl.batchFromString;
+          endBatchController.text = authControl.batchToString;
+          return authControl.professionList == null || authControl.professionList!.isEmpty ||
+          authControl.positionHeldList == null || authControl.positionHeldList!.isEmpty ?
+          const Center(child: CircularProgressIndicator()) :
+          SingleChildScrollView(
+            child: Form(key: SignUpScreenProfessional._formKey4,
+              child:
+              Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Professional Info',
+                    style: kManrope25Black,),
+                  const  SizedBox(height: 30,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Profession",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 5,),
+                  Wrap(
+                    spacing: 8.0,
+                    children: authControl.professionList!.map((religion) {
+                      return ChoiceChip(
+                        selectedColor: color4B164C.withOpacity(0.80),
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          religion.name!,
+                          style: TextStyle(
+                            color: authControl.professionIndex == religion.id
+                                ? Colors.white
+                                : Colors.black.withOpacity(0.80),
+                          ),
                         ),
-                      ),
-                      selected: authControl.professionIndex == religion.id,
-                      onSelected: (selected) {
-                        if (selected) {
-                          authControl.setProfessionIndex(religion.id, true);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Position",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 5,),
-                Wrap(
-                  spacing: 8.0,
-                  children: authControl.positionHeldList!.map((religion) {
-                    return ChoiceChip(
-                      selectedColor: color4B164C.withOpacity(0.80),
-                      backgroundColor: Colors.white,
-                      label: Text(
-                        religion.name!,
-                        style: TextStyle(
-                          color: authControl.positionHeldIndex == religion.id
-                              ? Colors.white
-                              : Colors.black.withOpacity(0.80),
+                        selected: authControl.professionIndex == religion.id,
+                        onSelected: (selected) {
+                          if (selected) {
+                            authControl.setProfessionIndex(religion.id, true);
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Position",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 5,),
+                  Wrap(
+                    spacing: 8.0,
+                    children: authControl.positionHeldList!.map((religion) {
+                      return ChoiceChip(
+                        selectedColor: color4B164C.withOpacity(0.80),
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          religion.name!,
+                          style: TextStyle(
+                            color: authControl.positionHeldIndex == religion.id
+                                ? Colors.white
+                                : Colors.black.withOpacity(0.80),
+                          ),
                         ),
-                      ),
-                      selected: authControl.positionHeldIndex == religion.id,
-                      onSelected: (selected) {
-                        if (selected) {
-                          authControl.setPositionIndex(religion.id, true);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20,),
-                Text("Cadres", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                const SizedBox(height: 5),
-                SizedBox(
-                  width: 1.sw,
-                  child: CustomStyledDropdownButton(
-                    items: const  [
-                      "Cadres",
+                        selected: authControl.positionHeldIndex == religion.id,
+                        onSelected: (selected) {
+                          if (selected) {
+                            authControl.setPositionIndex(religion.id, true);
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20,),
+                  Text("Cadres", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    width: 1.sw,
+                    child: CustomStyledDropdownButton(
+                      items: const  [
+                        "Cadres",
 
+                      ],
+                      selectedValue: cadarValue,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Cadres';
+                        }
+                        return null;
+                      },
+                      onChanged: (String? value) {
+                        // setState(() {
+                        //   cadarValue = value;
+                        //   cadarFilter = cadarValue ?? '';
+                        //   SharedPrefs().setMotherTongue(cadarFilter);
+                        //
+                        // });
+                        // print(userTypeFilter);
+                        // print('Check ======> Usetype${userTypeFilter}');
+                      },
+                      title: 'Cadres',
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                Text("Batch Year", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                const SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter your Starting Year';
+                            }
+                            return null;
+                          },
+                          onTap: () {authControl.showStartingYearPickerDialog();},
+                          onChanged: (value) {
+                            authControl.setBatchStartYear(startBatchYearController.text);
+                          },
+                          readOnly:  true,
+                          hintText:"Starting year",
+                          controller: startBatchYearController,
+                        ),
+                      ),
+                      // sizedBoxW10(),
+                      // Expanded(
+                      //   child: CustomTextField(hintText:"Ending year",
+                      //     validation: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return 'Please Enter your Ending Year';
+                      //       }
+                      //       return null;
+                      //     },
+                      //     onChanged: (value) {
+                      //     authControl.setBatchStartYear(endBatchController.text);
+                      //     },
+                      //     onTap: () {
+                      //     authControl.showEndingYearPickerDialog();
+                      //     },
+                      //     readOnly: true,
+                      //     controller: endBatchController,
+                      //   ),
+                      // ),
                     ],
-                    selectedValue: cadarValue,
-                    validator: (value) {
+                  ),
+                  const SizedBox(height: 20,),
+                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Select Posting State", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                      const SizedBox(height: 5),
+                      TypeAheadFormField<String>(
+                        textFieldConfiguration:  TextFieldConfiguration(
+                          controller: stateController,
+                          decoration: authDecoration(
+                              context, "Select Posting State"
+                          ),
+                        ),
+                        suggestionsCallback: (pattern) async {
+                          return authControl.posStates.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(suggestion),
+                          );
+                        },
+                        onSuggestionSelected: (String? suggestion) {
+                          if (suggestion != null) {
+                            authControl.setPosState(suggestion);
+                            stateController.text = suggestion;
+                            authControl.setPosstate(stateController.text);
+                            print(authControl.posState);
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Select Posting State';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) => authControl.setPosState(value!),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20,),
+                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Select Posting District", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                      const SizedBox(height: 5),
+                      TypeAheadFormField<String>(
+                        textFieldConfiguration:  TextFieldConfiguration(
+                          controller: districtController,
+                          decoration: const InputDecoration(
+                            // labelText: 'Select Posting District',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        suggestionsCallback: (pattern) async {
+                          return authControl.posDistricts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(suggestion),
+                          );
+                        },
+                        onSuggestionSelected: (String? suggestion) {
+                          if (suggestion != null) {
+                            // authControl.setDistrict(suggestion);
+                            districtController.text = suggestion;
+                            authControl.setPosDist(suggestion);
+                            print(authControl.posDistrict);
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Select Posting District';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) => authControl.setPosDistrict(value!),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20,),
+                  Text("Date of Posting", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                  const SizedBox(height: 5), //
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          showTitle: false,
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter your Starting Date';
+                            }
+                            return null;
+                          },
+                          onTap: () { Get.find<AuthController>().showDatePicker(context); },
+                          onChanged: (value) {
+                            authControl.setPostingStartDate(authControl.from.toString());
+
+                          },
+                          readOnly:  true,
+                          hintText:"Posting Start date",
+                          controller: startDateController,
+                        ),
+                      ),
+                      // sizedBoxW10(),
+                      // Expanded(
+                      //   child: CustomTextField(
+                      //     showTitle: true, validation: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return 'Please Enter your Ending Date';
+                      //        }
+                      //       return null;
+                      //     },
+                      //     onChanged: (value) {
+                      //       authControl.setPostingEndDate(endDateController.text);
+                      //     },
+                      //     hintText:"Ending date",
+                      //     controller: endDateController,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  Text('Education Info', style: kManrope25Black,),
+                  const SizedBox(height: 20,),
+                  Text("Highest Degree", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                  const SizedBox(height: 5), //
+                  CustomTextField(hintText: "Highest Degree",
+                  controller: highestDegreeController,
+                    validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter Cadres';
+                        return 'Please Enter your Highest Degree';
                       }
                       return null;
                     },
-                    onChanged: (String? value) {
-                      // setState(() {
-                      //   cadarValue = value;
-                      //   cadarFilter = cadarValue ?? '';
-                      //   SharedPrefs().setMotherTongue(cadarFilter);
-                      //
-                      // });
-                      // print(userTypeFilter);
-                      // print('Check ======> Usetype${userTypeFilter}');
+                    onChanged: (value) {
+                    authControl.setHighestDegree(highestDegreeController.text);
                     },
-                    title: 'Cadres',
-                  ),
-                ),
-                const SizedBox(height: 20,),
-              Text("Batch Year", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-              const SizedBox(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextField(
-                        validation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter your Starting Year';
-                          }
-                          return null;
-                        },
-                        onTap: () {authControl.showStartingYearPickerDialog();},
-                        onChanged: (value) {
-                          authControl.setBatchStartYear(startBatchYearController.text);
-                        },
-                        readOnly:  true,
-                        hintText:"Starting year",
-                        controller: startBatchYearController,
-                      ),
-                    ),
-                    sizedBoxW10(),
-                    Expanded(
-                      child: CustomTextField(hintText:"Ending year",
-                        validation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter your Ending Year';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                        authControl.setBatchStartYear(endBatchController.text);
-                        },
-                        onTap: () {
-                        authControl.showEndingYearPickerDialog();
-                        },
-                        readOnly: true,
-                        controller: endBatchController,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20,),
-                Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Select State", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                    const SizedBox(height: 5),
-                    TypeAheadFormField<String>(
-                      textFieldConfiguration:  TextFieldConfiguration(
-                        controller: stateController,
-                        decoration: authDecoration(
-                            context, "Select State"
-                        ),
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        return authControl.posStates.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion),
-                        );
-                      },
-                      onSuggestionSelected: (String? suggestion) {
-                        if (suggestion != null) {
-                          authControl.setPosState(suggestion);
-                          stateController.text = suggestion;
-                          authControl.setPosstate(stateController.text);
-                          print(authControl.posState);
-                        }
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please Select State';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => authControl.setPosState(value!),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20,),
-                Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Select District", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                    const SizedBox(height: 5),
-                    TypeAheadFormField<String>(
-                      textFieldConfiguration:  TextFieldConfiguration(
-                        controller: districtController,
-                        decoration: const InputDecoration(
-                          labelText: 'Select District',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        return authControl.posDistricts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion),
-                        );
-                      },
-                      onSuggestionSelected: (String? suggestion) {
-                        if (suggestion != null) {
-                          // authControl.setDistrict(suggestion);
-                          districtController.text = suggestion;
-                          authControl.setPosDist(suggestion);
-                          print(authControl.posDistrict);
-                        }
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please District';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => authControl.setPosDistrict(value!),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20,),
-                Text("Date Of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                const SizedBox(height: 5), //
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextField(
-                        showTitle: true,
-                        validation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter your Starting Date';
-                          }
-                          return null;
-                        },
-                        onTap: () { Get.find<AuthController>().showDatePicker(context); },
-                        onChanged: (value) {
-                          authControl.setPostingStartDate(authControl.from.toString());
-
-                        },
-                        readOnly:  true,
-                        hintText:"Starting date",
-                        controller: startDateController,
-                      ),
-                    ),
-                    sizedBoxW10(),
-                    Expanded(
-                      child: CustomTextField(
-                        showTitle: true, validation: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter your Ending Date';
-                           }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          authControl.setPostingEndDate(endDateController.text);
-                        },
-                        hintText:"Ending date",
-                        controller: endDateController,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20,),
-                Text('Education Info', style: kManrope25Black,),
-                const SizedBox(height: 20,),
-                CustomTextField(hintText: "Highest Degree",
-                controller: highestDegreeController,
-                  validation: (value) {
+                  showTitle: false,),
+                  const SizedBox(height: 20,),
+                  Text("Field of Study", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                  const SizedBox(height: 5), //
+                  CustomTextField(hintText: "Field of Study",
+                    controller: fieldOfStudyController,
+                    validation: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please Enter your Highest Degree';
+                        return 'Please Enter your Field of Study';
                     }
-                    return null;
-                  },
-                  onChanged: (value) {
-                  authControl.setHighestDegree(highestDegreeController.text);
-                  },
-                showTitle: true,),
-                const SizedBox(height: 20,),
-                CustomTextField(hintText: "Field of Study",
-                  controller: fieldOfStudyController,
-                  validation: (value) {
-                  if (value == null || value.isEmpty) {
-                      return 'Please Enter your Field of Study';
-                  }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    authControl.setFieldOfStudy(fieldOfStudyController.text);
-                  },
-                  showTitle: true,),
-                const SizedBox(height: 20,),
-                CustomTextField(hintText: "University / Institute",
-                  validation: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter your University / Institute';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    authControl.setInstitute(instituteController.text);
-                  },
-                  controller: instituteController,
-                  showTitle: true,),
-                const SizedBox(height: 20,),
-              ],
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setFieldOfStudy(fieldOfStudyController.text);
+                    },
+                    showTitle: false,),
+                  const SizedBox(height: 20,),
+                  Text("University / Institute", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                  const SizedBox(height: 5), //
+                  CustomTextField(hintText: "University / Institute",
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter your University / Institute';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setInstitute(instituteController.text);
+                    },
+                    controller: instituteController,
+                    showTitle: false,),
+                  const SizedBox(height: 20,),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

@@ -909,7 +909,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   updateBasicInfo(
                           profession: Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString(),
                           religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
-                          motherTongue:  Get.find<ProfileController>().userDetails!.data!.user!.motherTongue!.id.toString(),
+                          motherTongue:  '8',
                           community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
                           smokingStatus: smokingController.text,
                           drinkingStatus: drinkingController.text,

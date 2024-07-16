@@ -51,79 +51,84 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GetBuilder<AuthController>(builder: (authControl) {
-        return  SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 50,),
-              GestureDetector(
-                // onTap: _pickImage
-                onTap: () async {
-                  XFile? v = await _imgPicker.pickImage(
-                      source: ImageSource.gallery);
-                  if (v != null) {
-                    setState(
-                          () {
-                        pickedImage = File(v.path);
-                      },
-                    );
-                    widget.onImagePicked(v.path);
-                  }
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: GetBuilder<AuthController>(builder: (authControl) {
+          return  SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 50,),
+                GestureDetector(
+                  // onTap: _pickImage
+                  onTap: () async {
+                    XFile? v = await _imgPicker.pickImage(
+                        source: ImageSource.gallery);
+                    if (v != null) {
+                      setState(
+                            () {
+                          pickedImage = File(v.path);
+                        },
+                      );
+                      widget.onImagePicked(v.path);
+                    }
 
-                },
-                child: Container(
-                  height: 104,
-                  width:  104,
-                  clipBehavior: Clip.hardEdge,
-                  decoration:  const BoxDecoration(
-                    shape: BoxShape.circle,
+                  },
+                  child: Container(
+                    height: 104,
+                    width:  104,
+                    clipBehavior: Clip.hardEdge,
+                    decoration:  const BoxDecoration(
+                      shape: BoxShape.circle,
 
-                  ) ,
-                  child: pickedImage.path.isEmpty
-                      ? Image.asset(icProfilePlaceHolder,
-                  )
-                      : Image.file(
-                    pickedImage,
-                    fit: BoxFit.cover,
+                    ) ,
+                    child: pickedImage.path.isEmpty
+                        ? Image.asset(icProfilePlaceHolder,
+                    )
+                        : Image.file(
+                      pickedImage,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              sizedBox20(),
-              Text("What is your birthday?",
-                style: styleSatoshiBold(size: 25, color: Colors.black),),
-              sizedBox13(),
-              Text("Your age information will be updated on your profile page and this will displayed publicly on your profile.",
-                style: styleSatoshiLight(size: 14, color: color828282),
-                textAlign: TextAlign.center,),
-              SizedBox(
-                height: 250,
-                child: ScrollDatePicker(
-                  maximumDate:  DateTime(2006, 12, 31),
-                  selectedDate: _selectedDate,
-                  locale: const Locale('en'),
-                  onDateTimeChanged: (DateTime value) {
-                    setState(() {
-                      _selectedDate = value;
-                      final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                      String formattedDate = formatter.format(_selectedDate);
-                      authControl.setDob(formattedDate);
-                      print(formattedDate);
-                      print(_selectedDate);
+                sizedBox20(),
+                Text("What is your birthday?",
+                  style: styleSatoshiBold(size: 25, color: Colors.black),),
+                sizedBox13(),
+                Text("Your age information will be updated on your profile page and this will displayed publicly on your profile.",
+                  style: styleSatoshiLight(size: 14, color: color828282),
+                  textAlign: TextAlign.center,),
+                SizedBox(
+                  height: 250,
+                  child: ScrollDatePicker(
+                    maximumDate:  DateTime(2006, 12, 31),
+                    selectedDate: _selectedDate,
+                    locale: const Locale('en'),
+                    onDateTimeChanged: (DateTime value) {
+                      setState(() {
+                        _selectedDate = value;
+                        final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                        String formattedDate = formatter.format(_selectedDate);
+                        authControl.setDob(formattedDate);
+                        print(formattedDate);
+                        print(_selectedDate);
 
-                      // SharedPrefs().setDob(formattedDate);
-                      print('SharedPrefs().getDob()');
+                        // SharedPrefs().setDob(formattedDate);
+                        print('SharedPrefs().getDob()');
 
-                    });
-                  },
+                      });
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      } ),
+              ],
+            ),
+          );
+        } ),
 
 
+      ),
     );
   }
 }

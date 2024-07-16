@@ -67,269 +67,273 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
-
     });
     String? selectedSuggestion;
 
 
-    return Scaffold(
-      body: GetBuilder<AuthController>(builder: (authControl) {
-        print(authControl.religionList);
-        return (authControl.communityList == null || authControl.communityList!.isEmpty ||
-            authControl.religionList == null || authControl.religionList!.isEmpty ||
-            authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty) ?
-        const Center(child: CircularProgressIndicator()) :
-         SingleChildScrollView(
-          child: Form(
-            key: SignUpScreenTwo._formKey2,
-            child:
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SizedBox(height: 50,),
-                Text('Personal Info',
-                  style: kManrope25Black,),
-                const SizedBox(height: 20,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Gender",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Align(
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: GetBuilder<AuthController>(builder: (authControl) {
+          print(authControl.religionList);
+          return (authControl.communityList == null || authControl.communityList!.isEmpty ||
+              authControl.religionList == null || authControl.religionList!.isEmpty ||
+              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty) ?
+          const Center(child: CircularProgressIndicator()) :
+           SingleChildScrollView(
+            child: Form(
+              key: SignUpScreenTwo._formKey2,
+              child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // SizedBox(height: 50,),
+                  Text('Personal Info',
+                    style: kManrope25Black,),
+                  const SizedBox(height: 20,),
+                  Align(
                     alignment: Alignment.centerLeft,
-                    child: ChipList(
-                      elements: gender,
-                      onChipSelected: (selectedGender) {
-                        authControl.setGender(
-                            selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
-                        );
-                        // setState(() {
-                        //
-                        //   // SharedPrefs().setGender(selectedGender);
-                        //   // SharedPrefs().getGender();
-                        // });
+                    child: Text("Gender",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 12,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ChipList(
+                        elements: gender,
+                        onChipSelected: (selectedGender) {
+                          authControl.setGender(
+                              selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
+                          );
+                          // setState(() {
+                          //
+                          //   // SharedPrefs().setGender(selectedGender);
+                          //   // SharedPrefs().getGender();
+                          // });
+                        },
+                        defaultSelected: "Male",
+                      ),),
+                  ),
+                  const SizedBox(height: 20,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Religion",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 12,),
+              Wrap(
+                spacing: 8.0,
+                children: authControl.religionList!.map((religion) {
+                  return ChoiceChip(
+                    selectedColor: color4B164C.withOpacity(0.80),
+                    backgroundColor: Colors.white,
+                    label: Text(
+                      religion.name!,
+                      style: TextStyle(
+                        color: authControl.religionMainIndex == religion.id
+                            ? Colors.white
+                            : Colors.black.withOpacity(0.80),
+                      ),
+                    ),
+                    selected: authControl.religionMainIndex == religion.id,
+                    onSelected: (selected) {
+                      if (selected) {
+                        authControl.setReligionMainIndex(religion.id, true);
+                      }
+                    },
+                  );
+                }).toList(),
+              ),
+
+
+                  const SizedBox(height: 20,),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Caste",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 12,),
+
+                  Wrap(
+                    spacing: 8.0, // Adjust spacing as needed
+                    children: authControl.communityList!.map((religion) {
+                      return ChoiceChip(
+                        selectedColor: color4B164C.withOpacity(0.80),
+                        backgroundColor: Colors.white,
+
+                        label: Text(religion.name! ,style: TextStyle(color: authControl.communityMainIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                        selected: authControl.communityMainIndex == religion.id,
+                        onSelected: (selected) {
+                          if (selected) {
+                            authControl.setCommunityMainListIndex(religion.id, true);
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 20,),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Mother Tongue",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 12,),
+                  Wrap(
+                    spacing: 8.0, // Adjust spacing as needed
+                    children: authControl.motherTongueList!.map((religion) {
+                      return ChoiceChip(
+                        selectedColor: color4B164C.withOpacity(0.80),
+                        backgroundColor: Colors.white,
+
+                        label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                        selected: authControl.motherTongueIndex == religion.id,
+                        onSelected: (selected) {
+                          if (selected) {
+                            authControl.setMotherTongueIndex(religion.id, true);
+                          }
+                        },
+                      );
+                    }).toList(),
+                  ),
+
+
+                  const SizedBox(height: 20,),
+
+
+                /*  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Community",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  ),
+                  const SizedBox(height: 12,), // P
+                  // TypeAheadField<String>(
+                  //   textFieldConfiguration: TextFieldConfiguration(
+                  //     onTap: () {_communityController.clear();},
+                  //     controller: _communityController,
+                  //     enabled: authControl.isLoading ? false : true,
+                  //     decoration:  InputDecoration(
+                  //       labelText: authControl.isLoading ? 'Please Wait' : selectedSuggestion == null ? "Select MLA" : "$selectedSuggestion",
+                  //       border: OutlineInputBorder(),
+                  //     ),
+                  //   ),
+                  //   suggestionsCallback: (pattern) async {
+                  //     // Map MlaModel objects to their names and filter based on the pattern
+                  //     final suggestions = authControl.communityList!
+                  //         .where((element) => element.name!.toLowerCase().contains(pattern.toLowerCase()))
+                  //         .map((mlaModel) => mlaModel.name!)
+                  //         .toList();
+                  //     return suggestions;
+                  //   },
+                  //   itemBuilder: (context, String suggestion) {
+                  //     return ListTile(
+                  //       title: Text(suggestion),
+                  //     );
+                  //   },
+                  //   onSuggestionSelected: (String suggestion) {
+                  //     final selectedItem = authControl.communityList!.firstWhere(
+                  //             (element) => element.name == suggestion);
+                  //     final selectedIndex = authControl.communityList!.indexOf(selectedItem) + 1;
+                  //     authControl.setCommunityMainListIndex(selectedIndex, true);
+                  //     selectedSuggestion = suggestion;
+                  //     _communityController.text = suggestion;
+                  //   },
+                  //
+                  // ),
+
+                  SizedBox(
+                    width: 1.sw,
+                    child: CustomStyledDropdownButton(
+                      items: const  [
+                        "Brahmin",
+                        "Rajput",
+                        'Kamma',
+                        "Yadav",
+                        'Gupta',
+                        'Sikh',
+                        'Punjabi',
+                        'Aggarwal',
+                        'Muslim',
+                        "Marathi"
+                      ],
+                      selectedValue: communityValue,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Community';
+                        }
+                        return null;
                       },
-                      defaultSelected: "Male",
-                    ),),
-                ),
-                const SizedBox(height: 20,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Religion",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,),
-            Wrap(
-              spacing: 8.0,
-              children: authControl.religionList!.map((religion) {
-                return ChoiceChip(
-                  selectedColor: color4B164C.withOpacity(0.80),
-                  backgroundColor: Colors.white,
-                  label: Text(
-                    religion.name!,
-                    style: TextStyle(
-                      color: authControl.religionMainIndex == religion.id
-                          ? Colors.white
-                          : Colors.black.withOpacity(0.80),
+                      onChanged: (String? value) {
+                        setState(() {
+                          communityValue = value;
+                          communityFilter = communityValue ?? '';
+                          SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
+
+                        });
+
+                      },
+                      title: 'Community',
                     ),
                   ),
-                  selected: authControl.religionMainIndex == religion.id,
-                  onSelected: (selected) {
-                    if (selected) {
-                      authControl.setReligionMainIndex(religion.id, true);
-                    }
-                  },
-                );
-              }).toList(),
-            ),
-
-
-                const SizedBox(height: 20,),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Caste",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,),
-
-                Wrap(
-                  spacing: 8.0, // Adjust spacing as needed
-                  children: authControl.communityList!.map((religion) {
-                    return ChoiceChip(
-                      selectedColor: color4B164C.withOpacity(0.80),
-                      backgroundColor: Colors.white,
-
-                      label: Text(religion.name! ,style: TextStyle(color: authControl.communityMainIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                      selected: authControl.communityMainIndex == religion.id,
-                      onSelected: (selected) {
-                        if (selected) {
-                          authControl.setCommunityMainListIndex(religion.id, true);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 20,),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Mother Tongue",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,),
-                Wrap(
-                  spacing: 8.0, // Adjust spacing as needed
-                  children: authControl.motherTongueList!.map((religion) {
-                    return ChoiceChip(
-                      selectedColor: color4B164C.withOpacity(0.80),
-                      backgroundColor: Colors.white,
-
-                      label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                      selected: authControl.motherTongueIndex == religion.id,
-                      onSelected: (selected) {
-                        if (selected) {
-                          authControl.setMotherTongueIndex(religion.id, true);
-                        }
-                      },
-                    );
-                  }).toList(),
-                ),
-
-
-                const SizedBox(height: 20,),
-
-
-              /*  Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Community",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,), // P
-                // TypeAheadField<String>(
-                //   textFieldConfiguration: TextFieldConfiguration(
-                //     onTap: () {_communityController.clear();},
-                //     controller: _communityController,
-                //     enabled: authControl.isLoading ? false : true,
-                //     decoration:  InputDecoration(
-                //       labelText: authControl.isLoading ? 'Please Wait' : selectedSuggestion == null ? "Select MLA" : "$selectedSuggestion",
-                //       border: OutlineInputBorder(),
-                //     ),
-                //   ),
-                //   suggestionsCallback: (pattern) async {
-                //     // Map MlaModel objects to their names and filter based on the pattern
-                //     final suggestions = authControl.communityList!
-                //         .where((element) => element.name!.toLowerCase().contains(pattern.toLowerCase()))
-                //         .map((mlaModel) => mlaModel.name!)
-                //         .toList();
-                //     return suggestions;
-                //   },
-                //   itemBuilder: (context, String suggestion) {
-                //     return ListTile(
-                //       title: Text(suggestion),
-                //     );
-                //   },
-                //   onSuggestionSelected: (String suggestion) {
-                //     final selectedItem = authControl.communityList!.firstWhere(
-                //             (element) => element.name == suggestion);
-                //     final selectedIndex = authControl.communityList!.indexOf(selectedItem) + 1;
-                //     authControl.setCommunityMainListIndex(selectedIndex, true);
-                //     selectedSuggestion = suggestion;
-                //     _communityController.text = suggestion;
-                //   },
-                //
-                // ),
-
-                SizedBox(
-                  width: 1.sw,
-                  child: CustomStyledDropdownButton(
-                    items: const  [
-                      "Brahmin",
-                      "Rajput",
-                      'Kamma',
-                      "Yadav",
-                      'Gupta',
-                      'Sikh',
-                      'Punjabi',
-                      'Aggarwal',
-                      'Muslim',
-                      "Marathi"
-                    ],
-                    selectedValue: communityValue,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Community';
-                      }
-                      return null;
-                    },
-                    onChanged: (String? value) {
-                      setState(() {
-                        communityValue = value;
-                        communityFilter = communityValue ?? '';
-                        SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
-
-                      });
-
-                    },
-                    title: 'Community',
+                  sizedBox12(),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Mother Tongue",
+                      textAlign: TextAlign.left,
+                      style: styleSatoshiBold(size: 16, color: Colors.black),),
                   ),
-                ),
-                sizedBox12(),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Mother Tongue",
-                    textAlign: TextAlign.left,
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                ),
-                const SizedBox(height: 12,), // P
-                SizedBox(
-                  width: 1.sw,
-                  child: CustomStyledDropdownButton(
-                    items: const  [
-                      "Hindi",
-                      "Bhojpuri",
-                      'Marathi',
-                      "Bengali",
-                      'Odia',
-                      'Gujarati',
-                      'Urdu',
-                      "Punjabi",
-                    ],
-                    selectedValue: motherTongueValue,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Mother Tongue';
-                      }
-                      return null;
-                    },
-                    onChanged: (String? value) {
-                      setState(() {
-                        motherTongueValue = value;
-                        motherTongueFilter = motherTongueValue ?? '';
-                        SharedPrefs().setMotherTongue(motherTongueFilter);
+                  const SizedBox(height: 12,), // P
+                  SizedBox(
+                    width: 1.sw,
+                    child: CustomStyledDropdownButton(
+                      items: const  [
+                        "Hindi",
+                        "Bhojpuri",
+                        'Marathi',
+                        "Bengali",
+                        'Odia',
+                        'Gujarati',
+                        'Urdu',
+                        "Punjabi",
+                      ],
+                      selectedValue: motherTongueValue,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter Mother Tongue';
+                        }
+                        return null;
+                      },
+                      onChanged: (String? value) {
+                        setState(() {
+                          motherTongueValue = value;
+                          motherTongueFilter = motherTongueValue ?? '';
+                          SharedPrefs().setMotherTongue(motherTongueFilter);
 
-                      });
-                    },
-                    title: 'Mother Tongue',
-                  ),
-                ),*/
-                // adding
+                        });
+                      },
+                      title: 'Mother Tongue',
+                    ),
+                  ),*/
+                  // adding
 
-                sizedBox12(),
-              ],
+                  sizedBox12(),
+                ],
+              ),
             ),
-          ),
-        );
-    } )
+          );
+      } )
 
+      ),
     );
   }
 }

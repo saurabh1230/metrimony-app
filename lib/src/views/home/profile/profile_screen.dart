@@ -406,13 +406,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: profile.data?.user?.partnerExpectation?.motherTongue?.name?.toString() ?? "",
                       onTap: () {},
                     ),
+                    buildInfoRow(
+                      title: 'Caste',
+                      text:  profile.data?.user?.partnerExpectation?.community?.name?.toString() ?? "",
+                      onTap: () {},
+                    ),
 
-                    buildInfoRow(title: 'Caste',
-                        text:/* profile.data?.user?.partnerExpectation!.community.toString() ?? "",*/
-                        profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.community!.name.toString(),
-                        onTap: () {
-                        }),
+                    // buildInfoRow(title: 'Caste',
+                    //     text:/* profile.data?.user?.partnerExpectation!.community.toString() ?? "",*/
+                    //     profile.data!.user!.partnerExpectation == null ? "" :
+                    //     profile.data!.user!.partnerExpectation!.community!.name.toString(),
+                    //     onTap: () {
+                    //     }),
                     sizedBox20(),
                     GestureDetector(onTap: () {
                       Navigator.push(context, MaterialPageRoute(
