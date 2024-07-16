@@ -95,5 +95,5 @@ const String sortList = 'assets/images/sortlist.svg';
 const String filter = 'assets/images/filter.svg';
 const String fCommunity = 'assets/images/fcommunity.png';
 const String tickButton = 'assets/icons/tickbutton.png';
-// const String noMatchesHolder = 'assets/images/nomatchesholder.svg';
 const String noMatchesHolder = 'assets/images/nomatchfound.png';
+const String icProfessionIcon = 'assets/images/ic_profession.svg';

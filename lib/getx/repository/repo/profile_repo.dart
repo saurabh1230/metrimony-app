@@ -57,6 +57,19 @@ class ProfileRepo {
       "institute" :institute,
     });
   }
+  Future<Response> editCareerInfo(String? id,String? position,String? stateOfPosting,String? districtOfPosting,String? from,String? end) async {
+    return await apiClient.postData(AppConstants.editProfileDataUrl, { "type" :'careerInfo',
+      "id" : id,
+      "position" :position,
+      "state_posting": stateOfPosting,
+      "district_posting" :districtOfPosting,
+      "from" : from,
+      "end" : end,
+    });
+  }
+
+
+
 
 
 

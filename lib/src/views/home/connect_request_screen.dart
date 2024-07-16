@@ -265,7 +265,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
                                               });
 
 
-                                              isLoading? Loading() : educationInfo();
+                                              isLoading? const Loading() : educationInfo();
 
                                               // isLoading ? Loading() :careerInfo();
                                               // Navigator.push(context, MaterialPageRoute(builder: (builder) =>

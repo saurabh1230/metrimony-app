@@ -1732,7 +1732,8 @@ class PartnerExpectation {
   String? familyPosition;
   String? createdAt;
   String? updatedAt;
-  String? motherTongue;
+  // String? motherTongue;
+  Religion? motherTongue;
   Religion? community;
   String? maritialStatus;
 
@@ -1795,7 +1796,9 @@ class PartnerExpectation {
     familyPosition = json['family_position'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    motherTongue = json['mother_tongue'];
+    motherTongue = json['mother_tongue'] != null
+        ? new Religion.fromJson(json['mother_tongue'])
+        : null;
     community = json['community'] != null
         ? new Religion.fromJson(json['community'])
         : null;
@@ -1832,7 +1835,9 @@ class PartnerExpectation {
     data['family_position'] = this.familyPosition;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['mother_tongue'] = this.motherTongue;
+    if (this.motherTongue != null) {
+      data['mother_tongue'] = this.motherTongue!.toJson();
+    }
     if (this.community != null) {
       data['community'] = this.community!.toJson();
     }

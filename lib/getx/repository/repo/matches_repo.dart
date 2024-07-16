@@ -63,7 +63,7 @@ class MatchesRepo {
   }
 
   Future<Response> getSavedMatchesList(page,) {
-    return apiClient.getData('${AppConstants.unsavedMatchesUrl}?page=$page');
+    return apiClient.getData('${AppConstants.savedMatchesUrl}?page=$page');
   }
 
 

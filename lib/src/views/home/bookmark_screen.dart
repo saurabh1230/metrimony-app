@@ -164,12 +164,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (builder) =>
-                                                    UserProfileScreen(
-                                                      userId: matchesControl
-                                                          .savedMatchesList![i]
-                                                          .id
-                                                          .toString(),
-                                                    )));
+                                                    UserProfileScreen(userId: matchesControl.savedMatchesList![i].id.toString(),)));
                                       },
                                       imgUrl:
                                           '$baseProfilePhotoUrl${matchesControl.savedMatchesList![i].profile?.image ?? ''}',
@@ -216,8 +211,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                                 setState(() {
                                                   // isLoadingList[i] = false;
                                                 });
-                                                ToastUtil.showToast(
-                                                    "Connection Request Sent");
+                                                ToastUtil.showToast("Connection Request Sent");
                                               } else {
                                                 setState(() {
                                                   // isLoadingList[i] = false;

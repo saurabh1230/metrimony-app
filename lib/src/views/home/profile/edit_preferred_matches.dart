@@ -153,7 +153,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   minDegree: minimumDegreeController.text,
                   financialCondition: financialCondition.text,
                   language: languageController.text,
-                  maxHeight: maxHeightController.text).then((value) {
+                  maxHeight: maxHeightController.text,
+                  motherTongue:authControl.motherTongueIndex.toString()).then((value) {
                 setState(() {
                 });
                 if (value['status'] == true) {
@@ -161,18 +162,18 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     loading = false;
                   });
                   Navigator.pop(context);
-                  dynamic message = value['message']['original']['message'];
-                  List<String> errors = [];
+                  // dynamic message = value['message']['original']['message'];
+                  // List<String> errors = [];
+                  //
+                  // if (message != null && message is Map) {
+                  //   // If the message is not null and is a Map, extract the error messages
+                  //   message.forEach((key, value) {
+                  //     errors.addAll(value);
+                  //   });
+                  // }
 
-                  if (message != null && message is Map) {
-                    // If the message is not null and is a Map, extract the error messages
-                    message.forEach((key, value) {
-                      errors.addAll(value);
-                    });
-                  }
-
-                  String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
-                  Fluttertoast.showToast(msg: errorMessage);
+                  // String errorMessage = errors.isNotEmpty ? errors.join(", ") : "Update succesfully.";
+                  // Fluttertoast.showToast(msg: errorMessage);
 
                 } else {
                   setState(() {
@@ -1974,7 +1975,6 @@ class ProfessionBottomSheet extends StatelessWidget {
         child: Container(color: Theme.of(context).cardColor,
             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
             child: Column(children: [
-              sizedBox20(),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text("Profession",
@@ -1984,22 +1984,22 @@ class ProfessionBottomSheet extends StatelessWidget {
               const SizedBox(height: 5,),
               Wrap(
                 spacing: 8.0,
-                children: authControl.professionList!.map((religion) {
+                children: authControl.positionHeldList!.map((religion) {
                   return ChoiceChip(
                     selectedColor: color4B164C.withOpacity(0.80),
                     backgroundColor: Colors.white,
                     label: Text(
                       religion.name!,
                       style: TextStyle(
-                        color: authControl.professionIndex == religion.id
+                        color: authControl.positionHeldIndex == religion.id
                             ? Colors.white
                             : Colors.black.withOpacity(0.80),
                       ),
                     ),
-                    selected: authControl.professionIndex == religion.id,
+                    selected: authControl.positionHeldIndex == religion.id,
                     onSelected: (selected) {
                       if (selected) {
-                        authControl.setProfessionIndex(religion.id, true);
+                        authControl.setPositionIndex(religion.id, true);
                         onPop(religion.name!);
                         onPopId!(religion.id.toString());
 

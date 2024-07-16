@@ -1,9 +1,10 @@
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
-import 'package:bureau_couple/src/utils/widgets/loader.dart';
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -58,7 +59,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   @override
   void initState() {
     careerInfo();
+    Get.find<ProfileController>().getUserDetailsApi();
     super.initState();
+
   }
 
   File pickedImage = File("");
@@ -736,7 +739,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         );
                       },
                       child: buildDataAddRow(
-                        widget: Icon(
+                        widget: const Icon(
                           Icons.edit,
                           size: 12,
                         ),
@@ -778,7 +781,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         );
                       },
                       child: buildDataAddRow(
-                        widget: Icon(
+                        widget: const Icon(
                           Icons.edit,
                           size: 12,
                         ),
@@ -822,7 +825,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         );
                       },
                       child: buildDataAddRow(
-                        widget: Icon(
+                        widget: const Icon(
                           Icons.edit,
                           size: 12,
                         ),
@@ -867,7 +870,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                         );
                       },
                       child: buildDataAddRow(
-                        widget: Icon(
+                        widget: const Icon(
                           Icons.edit,
                           size: 12,
                         ),
@@ -902,11 +905,12 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   setState(() {
                     loading = true;
                   });
+                  print(Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString());
                   updateBasicInfo(
-                          profession: professionController.text,
-                          religion: religionController.text,
-                          motherTongue: motherTongueController.text,
-                          community: communityController.text,
+                          profession: Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString(),
+                          religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
+                          motherTongue:  Get.find<ProfileController>().userDetails!.data!.user!.motherTongue!.id.toString(),
+                          community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
                           smokingStatus: smokingController.text,
                           drinkingStatus: drinkingController.text,
                           maritalStatus: marriedStatusController.text,

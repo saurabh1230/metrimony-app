@@ -154,11 +154,14 @@ class AuthController extends GetxController implements GetxService {
 
       _from = _selectedDateRange.start.toString().split(' ')[0];
       _to = _selectedDateRange.end.toString().split(' ')[0];
-      print(_from);
-      print(_to);
+      print('======> Date From ${_from}');
+      print('======> Date To ${_to}');
       update();
     }
   }
+
+
+
 
   DateTime? _batchFrom;
   DateTime? _batchTo;
@@ -348,11 +351,18 @@ class AuthController extends GetxController implements GetxService {
   List<int?> get religionIds => _religionIds;
 
   int? _religionMainIndex = 0;
-
   int? get religionMainIndex => _religionMainIndex;
-
   void setReligionMainIndex(int? index, bool notify) {
     _religionMainIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
+  int? _religionFilterIndex = 0;
+  int? get religionFilterIndex => _religionFilterIndex;
+  void setReligionFilterIndex(int? index, bool notify) {
+    _religionFilterIndex = index;
     if (notify) {
       update();
     }
@@ -404,6 +414,19 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
+
+
+  int? _communityFilterIndex = 0;
+
+  int? get communityFilterIndex => _communityFilterIndex;
+
+  void setCommunityFilterIndex(int? index, bool notify) {
+    _communityFilterIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
 
   Future<void> getCommunityList() async {
     _isLoading = true;
@@ -457,6 +480,16 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
+
+  int? _motherTongueFilterIndex = 0;
+  int? get motherTongueFilterIndex => _motherTongueFilterIndex;
+  void setMotherTongueFilterIndex(int? index, bool notify) {
+    _motherTongueFilterIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
 
   Future<void> getMotherTongueList() async {
     _isLoading = true;

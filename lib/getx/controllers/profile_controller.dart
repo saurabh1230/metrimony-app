@@ -327,25 +327,37 @@ class ProfileController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> editCareerInfoApi(type,id,degree,fieldOfStudy,institute) async {
+  Future<void> editCareerInfoApi(id, position, stateOfPosting, districtOfPosting, from, end) async {
     _isLoading = true;
     update();
-    Response response = await profileRepo.editEducationInfo(type, id, degree, fieldOfStudy, institute);
-    var responseData = response.body;
-    if(responseData['status'] == true) {
-      print("Api ===================== >> $responseData");
+    try {
+      Response response = await profileRepo.editCareerInfo(id, position, stateOfPosting, districtOfPosting, from, end);
+
       print(response);
-      _isLoading = false;
-      update();
-    } else {
-      print(response);
-      print("Api Error ===================== error >>");
+      if (response != null && response.body != null) {
+        var responseData = response.body;
+        if (responseData['status'] == true) {
+          // Success handling
+          _isLoading = false;
+          update();
+        } else {
+          // Error handling from API
+          _isLoading = false;
+          update();
+        }
+      } else {
+        // Null response or response body handling
+        _isLoading = false;
+        update();
+      }
+    } catch (e) {
+      // Exception handling
+      print("Exception: $e");
       _isLoading = false;
       update();
     }
-    _isLoading = false;
-    update();
   }
+
 
 
 

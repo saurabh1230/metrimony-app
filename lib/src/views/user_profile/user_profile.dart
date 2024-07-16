@@ -868,6 +868,43 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             ? tickHolder
                                             : crossholder,
                                       ),
+                                      const Divider(),
+                                      buildPrefProfileRow(
+                                        image: icState,
+                                        title: 'State',
+                                        text: StringUtils.capitalize(model.data
+                                            ?.matches?.address?.state ??
+                                            ""),
+                                        icon: model.data?.matches?.address?.state ==
+                                            model.data?.user?.address?.state
+                                        // ?.motherTongue!.name
+                                            ? tickHolder
+                                            : crossholder,
+                                      ),
+                                      const Divider(),
+                                      buildPrefProfileRow(
+                                        image: icProfession,
+                                        title: 'Profession',
+                                        text: StringUtils.capitalize(model.data?.matches?.profession?.name ??
+                                            ""),
+                                        icon: model.data?.matches?.profession?.name ==
+                                            model.data?.user?.profession?.name
+                                        // ?.motherTongue!.name
+                                            ? tickHolder
+                                            : crossholder,),
+                                      // const Divider(),
+                                      // buildPrefProfileRow(
+                                      //   image: icState,
+                                      //   title: 'Age',
+                                      //   text: StringUtils.capitalize(model.data
+                                      //       ?.matches?.address?.state ??
+                                      //       ""),
+                                      //   icon: model.data?.matches?.address?.state ==
+                                      //       model.data?.user?.address?.state
+                                      //   // ?.motherTongue!.name
+                                      //       ? tickHolder
+                                      //       : crossholder,
+                                      // ),
                                       //   buildPrefProfileRow(
                                       //     image: birthHolder,
                                       //     title: 'Age',

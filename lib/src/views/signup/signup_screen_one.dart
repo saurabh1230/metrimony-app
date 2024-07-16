@@ -70,7 +70,9 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                       hintText: 'Username',
                       validation: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please Enter Username';
+                          return 'Please enter username';
+                        } else if (!RegExp(r'^[a-z0-9]+$').hasMatch(value)) {
+                          return 'Username must not contain special characters, spaces, or capital letters';
                         }
                         return null;
                       },
@@ -78,6 +80,24 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         authControl.setUserName(usernameController.text);
                       },
                     ),
+
+
+
+                    // CustomTextField(
+                    //   capitalization: TextCapitalization.none,
+                    //   showTitle: true,
+                    //   controller: usernameController,
+                    //   hintText: 'Username',
+                    //   validation: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please Enter Username';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   onChanged: (value) {
+                    //     authControl.setUserName(usernameController.text);
+                    //   },
+                    // ),
 
                     const SizedBox(
                       height: 20,
@@ -147,6 +167,8 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         authControl.setEmail(emailController.text);
                       },
                     ),
+
+
                     const SizedBox(
                       height: 20,
                     ),

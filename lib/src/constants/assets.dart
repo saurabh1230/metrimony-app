@@ -98,3 +98,5 @@ const String tickButton = 'assets/icons/tickbutton.png';
 // const String noMatchesHolder = 'assets/images/nomatchesholder.svg';
 const String noMatchesHolder = 'assets/images/nomatchfound.png';
 const String icCommunity= 'assets/icons/ic_gotra.png';
+const String icState= 'assets/images/ic_state.svg';
+const String icProfession = 'assets/images/ic_profession.svg';

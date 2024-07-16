@@ -27,11 +27,9 @@ class SignUpScreen extends StatelessWidget {
                   child: Image.asset(icArrowLeft,),
                 ),
               ),
-
             ],
           ),
         ),
-      
       ),
     );
   }

@@ -286,6 +286,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
                   degreeController.text,
                   fieldOfStudyController.text,
                   universityController.text);
+              Get.back();
             },  title: "Save"),
           ),
         ),

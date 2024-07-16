@@ -274,22 +274,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                               onTap: () {
                                                 print(matchesControl.matchesList![i].id.toString());
                                                 print(Get.find<ProfileController>().userDetails!.data!.user!.id!);
-                                                favControl.sendRequestApi(Get.find<ProfileController>().userDetails!.data!.user!.id.toString(),
+                                                favControl.sendRequestApi(
+                                                    Get.find<ProfileController>().userDetails!.data!.user!.id.toString(),
                                                     matchesControl.matchesList![i].id.toString());
-
                                               },
                                               showIcon: isConnected ? false : true,
-                                              title: isConnected
-                                                  ? "Request Sent"
-                                                  : "Connect Now"
-                                              ),
-
-                                             bookmark: matchesControl.matchesList![i].bookmark == 1
+                                              title: isConnected ? "Request Sent" : "Connect Now"),
+                                              bookmark: matchesControl.matchesList![i].bookmark == 1
                                           ? GestureDetector(
-                                               onTap: () {
-                                                 // favControl.isBookmarkList.remove(int.parse(matchesControl.matchesList![i].id.toString()));
-                                                 favControl.unSaveBookmarkApi(matchesControl.matchesList![i].id.toString());
-                                               },
+                                               onTap: () {favControl.unSaveBookmarkApi(matchesControl.matchesList![i].profileId.toString());},
                                             child: Icon(CupertinoIcons.heart_fill,
                                                 color: Theme.of(context)
                                                     .primaryColor,
@@ -297,15 +290,11 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           )
                                           : GestureDetector(
                                               onTap: () {
-                                                // print(matchesControl.matchesList![i].profileId.toString());
-                                                // print(Get.find<ProfileController>().userDetails!.data!.user!.id!);
                                                 favControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString(),
                                                     Get.find<ProfileController>().userDetails!.data!.user!.id.toString()
                                                 );
                                               },
-                                              child: Icon(
-                                                isWished ? CupertinoIcons.heart_fill : Icons.favorite_border,
-                                                color: isWished ? Theme.of(context).primaryColor : Colors.grey,
+                                              child: Icon(isWished ? CupertinoIcons.heart_fill : Icons.favorite_border, color: isWished ? Theme.of(context).primaryColor : Colors.grey,
                                                 size: 32,
                                               )),
                                               dob: '$age yrs',
@@ -485,7 +474,8 @@ class _MatchesScreenState extends State<MatchesScreen> {
                       ],
                     ),
                   )
-                : const CustomEmptyMatchScreen()
+                : const CustomEmptyMatchScreen(title: 'No Match Found !!',
+                  isBackButton: true,)
             : const ShimmerWidget();
       }),
     );

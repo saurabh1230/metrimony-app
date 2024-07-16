@@ -4,7 +4,9 @@ import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
 class CustomEmptyMatchScreen extends StatelessWidget {
-  const CustomEmptyMatchScreen({super.key});
+  final String? title;
+  final bool? isBackButton;
+  const CustomEmptyMatchScreen({super.key, this.title,  this.isBackButton = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,9 @@ class CustomEmptyMatchScreen extends StatelessWidget {
         children: [
           Center(child: Image.asset(noMatchesHolder,height: 100,)),
           sizedBox16(),
-          const Center(child: Text("No Match Found Yet!")),
+           Center(child: Text(title ??"No Match Found Yet!")),
           sizedBox16(),
-          connectWithoutIconButton(context: context, onTap: () {
+          if (isBackButton!) const SizedBox() else connectWithoutIconButton(context: context, onTap: () {
             Navigator.pop(context);
           }, title: " Go back",iconWidget: Icon(Icons.arrow_back,color: Theme.of(context).primaryColor,))
         ],

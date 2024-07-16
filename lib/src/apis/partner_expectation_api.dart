@@ -19,6 +19,7 @@ Future<dynamic> partnerExpectationUpdateApi({
   required String minDegree,
   required String financialCondition,
   required String language,
+  required String motherTongue,
 
 
 }) async {
@@ -32,6 +33,7 @@ Future<dynamic> partnerExpectationUpdateApi({
   request.fields.addAll({
     'method': 'partnerExpectation',
     "general_requirement" : generalRequirement,
+    'mother_tongue' : motherTongue,
     'country': country,
     'min_age': minAge,
     'max_age': maxAge,
