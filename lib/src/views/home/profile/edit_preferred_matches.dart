@@ -63,6 +63,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
       Get.find<AuthController>().getProfessionList();
+      Get.find<AuthController>().getSmokingList();
+      Get.find<AuthController>().getDrinkingList();
 
     });
   }
@@ -97,19 +99,19 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
 
   void fields() {
    generalInfo.text = preferenceModel.generalRequirement.toString() ?? '';
-   countryController.text= preferenceModel.country.toString() ?? '';
-    minAgeController.text= preferenceModel.minAge.toString() ?? '';
-     maxAgeController.text= preferenceModel.maxAge.toString() ?? '';
-     heightController.text= preferenceModel.minHeight.toString() ?? '';
-   maxHeightController.text= preferenceModel.maxHeight.toString() ?? '';
+   countryController.text= preferenceModel.country?.toString() ?? '';
+    minAgeController.text= preferenceModel.minAge?.toString() ?? '';
+     maxAgeController.text= preferenceModel.maxAge?.toString() ?? '';
+     heightController.text= preferenceModel.minHeight?.toString() ?? '';
+   maxHeightController.text= preferenceModel.maxHeight?.toString() ?? '';
    // weightController.text= preferenceModel.maxWeight.toString() ?? '';
-    preferredReligionController.text= preferenceModel.religion!.name.toString() ?? '';
-    communityController.text= preferenceModel.community!.name.toString() ?? '';
-    smokingController.text= preferenceModel.smokingStatus.toString() ?? '';
-   drinkingController.text= preferenceModel.drinkingStatus.toString() ?? '';
-     preferredProfession.text= preferenceModel.profession!.name.toString() ?? '';
-    minimumDegreeController.text= preferenceModel.minDegree.toString() ?? '';
-    financialCondition.text= preferenceModel.financialCondition.toString() ?? '';
+    preferredReligionController.text= preferenceModel.religion?.name?.toString() ?? '';
+    communityController.text= preferenceModel.community?.name?.toString() ?? '';
+    smokingController.text= preferenceModel.smoking?.name?.toString() ?? '';
+   drinkingController.text= preferenceModel.drinking?.name?.toString() ?? '';
+     preferredProfession.text= preferenceModel.profession!.name?.toString() ?? '';
+    minimumDegreeController.text= preferenceModel.minDegree?.toString() ?? '';
+    financialCondition.text= preferenceModel.financialCondition?.toString() ?? '';
     // languageController.text= preferenceModel.language.toString() ?? '';
   }
 
@@ -147,8 +149,8 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   maxWeight: '',
                   religion: authControl.religionMainIndex.toString(),
                   community: authControl.communityMainIndex.toString(),
-                  smokingStatus: smokingController.text,
-                  drinkingStatus: drinkingController.text,
+                  smokingStatus: authControl.smokingIndex.toString(),
+                  drinkingStatus: authControl.drikingIndex.toString(),
                   profession: authControl.professionIndex.toString(),
                   minDegree: minimumDegreeController.text,
                   financialCondition: financialCondition.text,
@@ -685,7 +687,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   GestureDetector(
                     onTap: () {
                       Get.bottomSheet(
-                         ProfessionBottomSheet(onPop: (val ) {
+                        PositionBottomSheet(onPop: (val ) {
                           preferredProfession.text = val;
                         },),
                         backgroundColor: Colors.transparent,
@@ -837,17 +839,12 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return PrivacyStatusBottomSheet(
-                            privacyStatus: '',
-                            onPop: (val) {
-                              smokingController.text = val;
-                              print(smokingController.text);
-                            },
-                          );
-                        },
+                      Get.bottomSheet(
+                        SmokingBottomSheet(onPop: (val) {
+                          smokingController.text = val;
+                        }),
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
                       );
                     },
                     child: buildDataAddRow(
@@ -858,29 +855,53 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                       ),
                       data1: smokingController.text.isEmpty
                           ? (preferenceModel.id == null ||
-                          preferenceModel.smokingStatus == null
+                          preferenceModel.smoking == null ||
+                          preferenceModel.smoking!.name == null
                           ? 'Not Added'
-                          : preferenceModel.smokingStatus.toString())
+                          : preferenceModel.smoking!.name.toString())
                           : smokingController.text,
                       data2: smokingController.text,
                       isControllerTextEmpty: smokingController.text.isEmpty,
                     ),
                   ),
+
+                  // GestureDetector(
+                  //   behavior: HitTestBehavior.translucent,
+                  //   onTap: () {
+                  //     Get.bottomSheet(
+                  //       SmokingBottomSheet(onPop: (val ) {
+                  //         smokingController.text = val;
+                  //       },),
+                  //       backgroundColor: Colors.transparent,
+                  //       isScrollControlled: true,
+                  //     );
+                  //   },
+                  //   child: buildDataAddRow(
+                  //     title: 'Smoking status',
+                  //     widget: const Icon(
+                  //       Icons.edit,
+                  //       size: 12,
+                  //     ),
+                  //     data1: smokingController.text.isEmpty
+                  //         ? (preferenceModel.id == null ||
+                  //         preferenceModel.smoking!.name == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.smoking!.name.toString())
+                  //         : smokingController.text,
+                  //     data2: smokingController.text,
+                  //     isControllerTextEmpty: smokingController.text.isEmpty,
+                  //   ),
+                  // ),
                   sizedBox16(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DrinkingStatusBottomSheet(
-                            privacyStatus: '',
-                            onPop: (val) {
-                              drinkingController.text = val;
-                              // print(smokingController.text);
-                            },
-                          );
-                        },
+                      Get.bottomSheet(
+                        DrinkingBottomSheet(onPop: (val) {
+                          drinkingController.text = val;
+                        }),
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
                       );
                     },
                     child: buildDataAddRow(
@@ -891,16 +912,57 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                       ),
                       data1: drinkingController.text.isEmpty
                           ? (preferenceModel.id == null ||
-                          preferenceModel.drinkingStatus == null
+                          preferenceModel.drinking == null ||
+                          preferenceModel.drinking!.name == null
                           ? 'Not Added'
-                          : preferenceModel.drinkingStatus.toString())
+                          : preferenceModel.drinking!.name.toString())
                           : drinkingController.text,
                       data2: drinkingController.text,
                       isControllerTextEmpty: drinkingController.text.isEmpty,
                     ),
-                    // child: CarRowWidget(drinkingController)
                   ),
-                  // sizedBox16(),
+
+                  // GestureDetector(
+                  //   behavior: HitTestBehavior.translucent,
+                  //   onTap: () {
+                  //     Get.bottomSheet(
+                  //       DrinkingBottomSheet(onPop: (val ) {
+                  //         drinkingController.text = val;
+                  //       },),
+                  //       backgroundColor: Colors.transparent,
+                  //       isScrollControlled: true,
+                  //     );
+                  //     // showModalBottomSheet(
+                  //     //   context: context,
+                  //     //   builder: (BuildContext context) {
+                  //     //     return DrinkingStatusBottomSheet(
+                  //     //       privacyStatus: '',
+                  //     //       onPop: (val) {
+                  //     //         drinkingController.text = val;
+                  //     //         // print(smokingController.text);
+                  //     //       },
+                  //     //     );
+                  //     //   },
+                  //     // );
+                  //   },
+                  //   child: buildDataAddRow(
+                  //     title: 'Drinking status',
+                  //     widget: const Icon(
+                  //       Icons.edit,
+                  //       size: 12,
+                  //     ),
+                  //     data1: drinkingController.text.isEmpty
+                  //         ? (preferenceModel.id == null ||
+                  //         preferenceModel.drinking!.name == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.drinking.toString())
+                  //         : drinkingController.text,
+                  //     data2: drinkingController.text,
+                  //     isControllerTextEmpty: drinkingController.text.isEmpty,
+                  //   ),
+                  //   // child: CarRowWidget(drinkingController)
+                  // ),
+                  sizedBox16(),
                   // GestureDetector(
                   //   onTap: () {
                   //     showDialog(
@@ -1963,10 +2025,10 @@ class _CommuitySheet extends State<CommuitySheet> {
 
 }
 
-class ProfessionBottomSheet extends StatelessWidget {
+class PositionBottomSheet extends StatelessWidget {
   final Function(String) onPop;
   final Function(String)? onPopId;
-  const ProfessionBottomSheet({super.key, required this.onPop, this.onPopId});
+  const PositionBottomSheet({super.key, required this.onPop, this.onPopId});
 
   @override
   Widget build(BuildContext context) {

@@ -1103,8 +1103,10 @@ class BasicInfoMdl {
   Religion? profession;
   String? financialCondition;
   Religion? religion;
-  int? smokingStatus;
-  int? drinkingStatus;
+  Religion? smoking;
+  Religion? drinking;
+  // int? smokingStatus;
+  // int? drinkingStatus;
   String? birthDate;
   String? maritalStatus;
   PresentAddress? presentAddress;
@@ -1128,8 +1130,8 @@ class BasicInfoMdl {
         this.profession,
         this.financialCondition,
         this.religion,
-        this.smokingStatus,
-        this.drinkingStatus,
+        this.smoking,
+        this.drinking,
         this.birthDate,
         this.maritalStatus,
         this.presentAddress,
@@ -1157,8 +1159,13 @@ class BasicInfoMdl {
     religion = json['religion'] != null
         ? new Religion.fromJson(json['religion'])
         : null;
-    smokingStatus = json['smoking_status'];
-    drinkingStatus = json['drinking_status'];
+    // smokingStatus = json['smoking_status'];
+    // drinkingStatus = json['drinking_status'];
+    smoking =
+    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+    drinking = json['drinking'] != null
+        ? new Religion.fromJson(json['drinking'])
+        : null;
     birthDate = json['birth_date'];
     maritalStatus = json['marital_status'];
     presentAddress = json['present_address'] != null
@@ -1196,8 +1203,14 @@ class BasicInfoMdl {
     if (this.religion != null) {
       data['religion'] = this.religion!.toJson();
     }
-    data['smoking_status'] = this.smokingStatus;
-    data['drinking_status'] = this.drinkingStatus;
+    // data['smoking_status'] = this.smokingStatus;
+    // data['drinking_status'] = this.drinkingStatus;
+    if (this.smoking != null) {
+      data['smoking'] = this.smoking!.toJson();
+    }
+    if (this.drinking != null) {
+      data['drinking'] = this.drinking!.toJson();
+    }
     data['birth_date'] = this.birthDate;
     data['marital_status'] = this.maritalStatus;
     if (this.presentAddress != null) {
@@ -1287,8 +1300,8 @@ class PartnerExpectationInfoMdl {
   String? maritalStatus;
   Religion? religion;
   String? complexion;
-  int? smokingStatus;
-  int? drinkingStatus;
+  // int? smokingStatus;
+  // int? drinkingStatus;
   String? minDegree;
   Religion? profession;
   String? financialCondition;
@@ -1299,6 +1312,8 @@ class PartnerExpectationInfoMdl {
   int? position;
   String? maritialStatus;
   Religion? positionHeld;
+  Religion? smoking;
+  Religion? drinking;
 
   PartnerExpectationInfoMdl(
       {this.id,
@@ -1313,8 +1328,10 @@ class PartnerExpectationInfoMdl {
         this.maritalStatus,
         this.religion,
         this.complexion,
-        this.smokingStatus,
-        this.drinkingStatus,
+        // this.smokingStatus,
+        // this.drinkingStatus,
+        this.smoking,
+        this.drinking,
         this.minDegree,
         this.profession,
         this.financialCondition,
@@ -1341,8 +1358,13 @@ class PartnerExpectationInfoMdl {
         ? new Religion.fromJson(json['religion'])
         : null;
     complexion = json['complexion'];
-    smokingStatus = json['smoking_status'];
-    drinkingStatus = json['drinking_status'];
+    // smokingStatus = json['smoking_status'];
+    // drinkingStatus = json['drinking_status'];
+    smoking =
+    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+    drinking = json['drinking'] != null
+        ? new Religion.fromJson(json['drinking'])
+        : null;
     minDegree = json['min_degree'];
     profession = json['profession'] != null
         ? new Religion.fromJson(json['profession'])
@@ -1379,8 +1401,14 @@ class PartnerExpectationInfoMdl {
       data['religion'] = this.religion!.toJson();
     }
     data['complexion'] = this.complexion;
-    data['smoking_status'] = this.smokingStatus;
-    data['drinking_status'] = this.drinkingStatus;
+    // data['smoking_status'] = this.smokingStatus;
+    // data['drinking_status'] = this.drinkingStatus;
+    if (this.smoking != null) {
+      data['smoking'] = this.smoking!.toJson();
+    }
+    if (this.drinking != null) {
+      data['drinking'] = this.drinking!.toJson();
+    }
 
     data['min_degree'] = this.minDegree;
     if (this.profession != null) {

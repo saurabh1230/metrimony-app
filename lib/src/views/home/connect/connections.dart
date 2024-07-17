@@ -60,8 +60,6 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
   LoginResponse? response;
 
-
-
   getMatches() {
     isLoading = true;
     getConnectedMatchesApi(
@@ -149,6 +147,30 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                     child: ListView.separated(
                       itemCount: matches.length + 1,
                       itemBuilder: (context, i) {
+                        DateTime? birthDate;
+                        int age = 0;
+
+                        if (matchesControl.matchesList != null &&
+                            matchesControl.matchesList![i].basicInfo != null &&
+                            matchesControl.matchesList![i].basicInfo!.birthDate != null) {
+                          birthDate = DateFormat('yyyy-MM-dd').parse(matchesControl.matchesList![i].basicInfo!.birthDate!);
+
+                          // Calculate age
+                          age = DateTime.now().difference(birthDate).inDays ~/ 365;
+                        }
+                        // DateTime? birthDate =
+                        // matchesControl.matchesList![i].basicInfo !=
+                        //     null
+                        //     ? DateFormat('yyyy-MM-dd').parse(
+                        //     matchesControl.matchesList![i]
+                        //         .basicInfo!.birthDate!)
+                        //     : null;
+                        // int age = birthDate != null
+                        //     ? DateTime.now()
+                        //     .difference(birthDate)
+                        //     .inDays ~/
+                        //     365
+                        //     : 0;
                         if (i < matches.length) {
                           // DateTime? birthDate = matches[i].basicInfo != null
                           //     ? DateFormat('yyyy-MM-dd')
@@ -156,175 +178,229 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           //     : null;
                           // int age = birthDate != null
                           //     ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                          return Column(
-                            children: [
-                              GestureDetector(onTap : () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (builder) =>
-                                        UserProfileScreen(
-                                          userId: matches[i].profile!.id.toString(),
-                                        ),
-                                  ),
-                                );
-                              },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        height: 160,
-                                        clipBehavior: Clip.hardEdge,
-                                        decoration: BoxDecoration(
-                                            color: colorDarkCyan.withOpacity(0.03),
-                                            // color:Colors.red,
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                          '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
-                                          fit: BoxFit.fill,
-                                          errorWidget: (context, url, error) =>
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Image.asset(icLogo,
-                                                  height: 40,
-                                                  width: 40,),
-                                              ),
-                                          progressIndicatorBuilder: (a, b, c) =>
-                                              customShimmer(height: 170, /*width: 0,*/),
-                                        ),
-
-                                        // child: Image.asset(images[i],
-                                        // height: 170,),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20,),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 4,
-                                                child: Text(
-                                                  '${StringUtils.capitalize(
-                                                matches[i].profile!.firstname.toString())} ${StringUtils.capitalize(
-                                                      matches[i].profile!.lastname.toString())}',
-                                                  // child: Text(filteredNames[i],
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: styleSatoshiBold(
-                                                      size: 19, color: Colors.black),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10,),
-
-
-                                            ],
-                                          ),
-                                          const SizedBox(height: 4,),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                matches[i].profile!.email.toString(),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-
-                                                style: styleSatoshiMedium(
-                                                    size: 13,
-                                                    color: Colors.black.withOpacity(
-                                                        0.70)),
-                                              ),
-                                              const SizedBox(width: 6,),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 4,),
-                                          Text(
-                                            matches[i].profile!.mobile.toString().substring(2),
-                                            maxLines: 2,
-                                            style: styleSatoshiMedium(
-                                                size: 13,
-                                                color: Colors.black.withOpacity(0.80)),
-                                          ),
-                                          const SizedBox(height: 4,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Image.asset(icLocation,
-                                                  height: 17,
-                                                  width: 17,),
-                                              ),
-                                              const SizedBox(width: 2,),
-                                              Expanded(
-                                                flex: 10,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      // 'Location',
-                                                      '${matches[i].profile!.basicInfo!.presentAddress!.city}',
-                                                      // "New York, USA",
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: 2,
-
-                                                      style: styleSatoshiMedium(
-                                                          size: 13,
-                                                          color: Colors.black.withOpacity(
-                                                              0.70)),
-                                                    ),
-                                                    SizedBox(width: 3,),
-                                                    Container(
-                                                      height: 4,
-                                                      width: 5,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 3,),
-
-                                                    Text(
-                                                      '${matches[i].profile!.basicInfo!.presentAddress!.state}',
-
-                                                      // '${matches[i].address!.country}',
-                                                      // "New York, USA",
-                                                      overflow: TextOverflow.ellipsis,
-                                                      maxLines: 2,
-
-                                                      style: styleSatoshiMedium(
-                                                          size: 13,
-                                                          color: Colors.black.withOpacity(
-                                                              0.70)),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-
-
-                                          sizedBox16(),
-                                          connectButton(
-                                              fontSize: 14,
-                                              height: 30,
-                                              width: 134,
-                                              context: context,
-                                              onTap: () {},
-                                              title: "Connected"),],
-                                      ),
-                                    )
-                                  ],
+                          return Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).cardColor,
+                                borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(width: 0.5,color: Theme.of(context).primaryColor)
                                 ),
-                              )
-                            ],
+                            child: Row(
+                              children: [
+                              CachedNetworkImage(
+                                imageUrl:
+                                '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
+                                fit: BoxFit.fill,
+                                errorWidget: (context, url, error) =>
+                                    Padding(padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset(icLogo,
+                                        height: 40, width: 40,),),
+                                progressIndicatorBuilder: (a, b, c) => customShimmer(height: 170, /*width: 0,*/),),
+                                
+
+
+
+                              ],
+                            ),
+
                           );
+                          // return Container(
+                          //   decoration: BoxDecoration(
+                          //     color: Theme.of(context).cardColor,
+                          //   borderRadius: BorderRadius.circular(12),
+                          //     border: Border.all(width: 0.5,color: Theme.of(context).primaryColor)
+                          //   ),
+                          //   child: Column(
+                          //     children: [
+                          //       GestureDetector(onTap : () {
+                          //         Navigator.push(
+                          //           context,
+                          //           MaterialPageRoute(
+                          //             builder: (builder) =>
+                          //                 UserProfileScreen(
+                          //                   userId: matches[i].profile!.id.toString(),
+                          //                 ),
+                          //           ),
+                          //         );
+                          //       },
+                          //         child: Row(
+                          //           mainAxisAlignment: MainAxisAlignment.start,
+                          //           crossAxisAlignment: CrossAxisAlignment.center,
+                          //           children: [
+                          //             Expanded(
+                          //               child: Container(
+                          //                 height: 160,
+                          //                 clipBehavior: Clip.hardEdge,
+                          //                 decoration: BoxDecoration(
+                          //                     color: colorDarkCyan.withOpacity(0.03),
+                          //                     // color:Colors.red,
+                          //                     borderRadius: BorderRadius.circular(10)
+                          //                 ),
+                          //                 child: CachedNetworkImage(
+                          //                   imageUrl:
+                          //                   '$baseProfilePhotoUrl${matches[i].profile!.image.toString()}',
+                          //                   fit: BoxFit.fill,
+                          //                   errorWidget: (context, url, error) =>
+                          //                       Padding(
+                          //                         padding: const EdgeInsets.all(8.0),
+                          //                         child: Image.asset(icLogo,
+                          //                           height: 40,
+                          //                           width: 40,),
+                          //                       ),
+                          //                   progressIndicatorBuilder: (a, b, c) =>
+                          //                       customShimmer(height: 170, /*width: 0,*/),
+                          //                 ),
+                          //
+                          //                 // child: Image.asset(images[i],
+                          //                 // height: 170,),
+                          //               ),
+                          //             ),
+                          //             const SizedBox(width: 20,),
+                          //             Expanded(
+                          //               flex: 2,
+                          //               child: Column(
+                          //                 mainAxisAlignment: MainAxisAlignment.start,
+                          //                 crossAxisAlignment: CrossAxisAlignment.start,
+                          //                 children: [
+                          //                   Row(
+                          //                     children: [
+                          //                       Expanded(
+                          //                         flex: 4,
+                          //                         child: Text(
+                          //                           '${StringUtils.capitalize(
+                          //                         matches[i].profile!.firstname.toString())} ${StringUtils.capitalize(
+                          //                               matches[i].profile!.lastname.toString())}',
+                          //                           // child: Text(filteredNames[i],
+                          //                           overflow: TextOverflow.ellipsis,
+                          //                           maxLines: 1,
+                          //                           style: styleSatoshiBold(
+                          //                               size: 19, color: Colors.black),
+                          //                         ),
+                          //                       ),
+                          //
+                          //
+                          //
+                          //                     ],
+                          //                   ),
+                          //                   // const SizedBox(height: 4,),
+                          //                   // Row(
+                          //                   //   children: [
+                          //                   //     Text(
+                          //                   //       matches[i].profile!.email.toString(),
+                          //                   //       overflow: TextOverflow.ellipsis,
+                          //                   //       maxLines: 2,
+                          //                   //
+                          //                   //       style: styleSatoshiMedium(
+                          //                   //           size: 13,
+                          //                   //           color: Colors.black.withOpacity(
+                          //                   //               0.70)),
+                          //                   //     ),
+                          //                   //     const SizedBox(width: 6,),
+                          //                   //   ],
+                          //                   // ),
+                          //                   // const SizedBox(height: 4,),
+                          //                   // Text(
+                          //                   //   matches[i].profile!.mobile.toString().substring(2),
+                          //                   //   maxLines: 2,
+                          //                   //   style: styleSatoshiMedium(
+                          //                   //       size: 13,
+                          //                   //       color: Colors.black.withOpacity(0.80)),
+                          //                   // ),
+                          //                   const SizedBox(height: 9,),
+                          //                   Row(
+                          //                     children: [
+                          //                       Container( padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8),
+                          //                         decoration : BoxDecoration(
+                          //                             color: primaryColor.withOpacity(0.10),borderRadius: BorderRadius.circular(12)
+                          //                         ),
+                          //                         child: Text(
+                          //                           'Age ${age} yrs ',
+                          //                           overflow: TextOverflow.ellipsis, maxLines: 1,
+                          //                           style: styleSatoshiLarge(size: 16, color: Colors.black),),
+                          //                       ),
+                          //                       Container(
+                          //                         height: 4,
+                          //                         width: 4,
+                          //                         decoration: const BoxDecoration(
+                          //                           shape: BoxShape.circle,
+                          //                           color: Colors.white,
+                          //                         ),
+                          //                       ),
+                          //                       const SizedBox(width: 6,),
+                          //                       Container(
+                          //                         height: 4,
+                          //                         width: 4,
+                          //                         decoration: const BoxDecoration(
+                          //                           shape: BoxShape.circle,
+                          //                           color: Colors.black,
+                          //                         ),
+                          //                       ),
+                          //                       const SizedBox(width: 6,),
+                          //                       Container( padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 8),
+                          //                         decoration : BoxDecoration(
+                          //                             color: Colors.greenAccent.withOpacity(0.30),borderRadius: BorderRadius.circular(12)
+                          //                         ),
+                          //                         child: Text(
+                          //                           matchesControl.matchesList?[i].basicInfo?.religion?.name ?? '',
+                          //                           overflow: TextOverflow.ellipsis,
+                          //                           maxLines: 1,
+                          //                           style: styleSatoshiLarge(size: 16, color: Colors.black),
+                          //                         ),
+                          //
+                          //                       ),
+                          //
+                          //                       // const SizedBox(width: 6,),
+                          //
+                          //                       // Text(
+                          //                       //   height,
+                          //                       //   overflow: TextOverflow.ellipsis,
+                          //                       //   maxLines: 1, style: styleSatoshiMedium(size: 16, color: Colors.white),),
+                          //                       // const SizedBox(width: 6,),
+                          //                       // Container(
+                          //                       //   height: 4,
+                          //                       //   width: 4,
+                          //                       //   decoration: const BoxDecoration(
+                          //                       //     shape: BoxShape.circle,
+                          //                       //     color: Colors.white,
+                          //                       //   ),
+                          //                       // ),
+                          //                       // Text(
+                          //                       //   atributeReligion,
+                          //                       //   maxLines: 1,
+                          //                       //   overflow: TextOverflow.ellipsis,
+                          //                       //   style: styleSatoshiMedium(
+                          //                       //       size: 16,
+                          //                       //       color: Colors.white),
+                          //                       // ),
+                          //                     ],
+                          //                   ),
+                          //                   const SizedBox(height: 8,),
+                          //                   Text(
+                          //                     '${matchesControl.matchesList?[i].address?.state ?? ''} • ${matchesControl.matchesList?[i].address?.country ?? ''} ',
+                          //                     overflow: TextOverflow.ellipsis,
+                          //                     maxLines: 2,
+                          //                     style: styleSatoshiLarge(
+                          //                         size: 16,
+                          //                         color: Colors.black),
+                          //                   ),
+                          //
+                          //
+                          //                   const SizedBox(height: 14,),
+                          //                   connectButton(
+                          //                       fontSize: 14,
+                          //                       height: 30,
+                          //                       width: 100,
+                          //                       context: context,
+                          //                       onTap: () {},
+                          //                   title: "Chat "),
+                          //                 ],
+                          //               ),
+                          //             )
+                          //           ],
+                          //         ),
+                          //       )
+                          //     ],
+                          //   ),
+                          // );
                         } else {
                           if (isLoading) {
                             return customLoader(size: 40);

@@ -278,7 +278,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                  title: 'Position',
                                  data1: StringUtils.capitalize(positionController.text), tap: () {
                                  Get.bottomSheet(
-                                   ProfessionBottomSheet(onPop: (val ) {
+                                   PositionBottomSheet(onPop: (val ) {
                                      positionController.text = val;
 
                                      print(val);

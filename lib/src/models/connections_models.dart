@@ -84,6 +84,7 @@ class Profile {
         this.gender,
         this.basicInfo});
 
+
   Profile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     profileId = json['profile_id'];

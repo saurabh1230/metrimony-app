@@ -358,6 +358,23 @@ class ProfileController extends GetxController implements GetxService {
     }
   }
 
+  final List<String> indianStatesAndUTs = [
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+    'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
+  ];
+
+  String? _selectedState;
+
+  String? get selectedState => _selectedState;
+
+  List<String> get states => indianStatesAndUTs;
+
+  void setState(String state) {
+    _selectedState = state;
+    update();
+  }
+
+
 
 
 

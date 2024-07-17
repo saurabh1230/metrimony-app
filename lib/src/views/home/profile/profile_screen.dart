@@ -295,16 +295,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     buildInfoRow(title: 'Profession',
                         text: profile.data?.user?.basicInfo?.profession?.name ?? '',
                         onTap: () {}),
-                    sizedBox20(),
-                    GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
-                        builder: (builder) => const EditBasicInfoScreen()));},
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Account Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
-                    ),
+                    // sizedBox20(),
+                    // GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
+                    //     builder: (builder) => const EditBasicInfoScreen()));},
+                    //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text("Account Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                    //       Image.asset(icEdit,height: 20,width: 20,),
+                    //     ],
+                    //   ),
+                    // ),
                     buildInfoRow(title: 'Email',
                         text: profile.data?.user?.email ?? '',
                         onTap: () {

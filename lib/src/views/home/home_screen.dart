@@ -1,3 +1,4 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
@@ -137,338 +138,342 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: CustomRefreshIndicator(
-        onRefresh: () {
-          setState(() {isLoading = true;});
-          return getMatches();
+    return  GetBuilder<ProfileController>(builder: (profileControl) {
+      return    Scaffold(
+        appBar: buildAppBar(),
+        body: CustomRefreshIndicator(
+          onRefresh: () {
+            setState(() {isLoading = true;});
+            return getMatches();
           },
-        child: !isLoading ?  SingleChildScrollView(
-          child:  Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // buildStack(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("${matches.length} Members for you",
-                      style: styleSatoshiBold(size: 18, color: color1C1C1c),),
-                      // sizedBox10(),
-                      isLoading ?
-                          customLoader(size: 30):
-                      SizedBox(
-                        height: 140,
-                        child: ListView.separated(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
+          child: !isLoading ?  SingleChildScrollView(
+            child:  Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0.0,vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // buildStack(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${matches.length} Members for you",
+                          style: styleSatoshiBold(size: 18, color: color1C1C1c),),
+                        // sizedBox10(),
+                        isLoading ?
+                        customLoader(size: 30):
+                        SizedBox(
+                          height: 140,
+                          child: ListView.separated(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
                             itemCount: matches.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (_,i) {
-                          return GestureDetector(
-                            onTap: () {
+                              return GestureDetector(
+                                onTap: () {
 
-                              Navigator.push(
-                                  context, MaterialPageRoute(
-                                  builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),)));
+                                  Navigator.push(
+                                      context, MaterialPageRoute(
+                                      builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),)));
 
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  flex:2,
-                                  child: Container(
-                                    height: 65,
-                                    width: 65,
-                                    clipBehavior: Clip.hardEdge,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle
-                                    ),
-                                    child: CachedNetworkImage(
-                                      imageUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
-                                      fit: BoxFit.fill,
-                                      errorWidget: (context, url, error) =>
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Image.asset(icLogo,
-                                              height: 40,
-                                              width: 40,),
-                                          ),
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      flex:2,
+                                      child: Container(
+                                        height: 65,
+                                        width: 65,
+                                        clipBehavior: Clip.hardEdge,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl: '$baseProfilePhotoUrl${matches[i].image ?? ''}',
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, url, error) =>
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Image.asset(icLogo,
+                                                  height: 40,
+                                                  width: 40,),
+                                              ),
                                           progressIndicatorBuilder: (a, b, c) =>
-                                          customShimmer(height: 170,),
+                                              customShimmer(height: 170,),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                      child: Text(
+                                        '${StringUtils.capitalize(matches[i].firstname ?? '')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                        maxLines: 2,
+                                        textAlign:TextAlign.center,
+                                        style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
+                                    ),
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Text(
-                                   '${StringUtils.capitalize(matches[i].firstname ?? '')}\n${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                                  maxLines: 2,
-                                  textAlign:TextAlign.center,
-                                  style: styleSatoshiBlack(size: 14, color: Colors.black.withOpacity(0.60)),),
-                                ),
-                              ],
-                            ),
-                          );
-                        }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
-                      ),
-                      const SizedBox(height: 20,),
-                    ],
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text('Category By Filter',
-                    style: styleSatoshiBold(size: 16, color: Colors.black),),
-                    sizedBox16(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(onTap :() {
-                            Navigator.push(
-                                context, MaterialPageRoute(
-                                builder: (builder) =>  MatchesScreen(response: widget.response, religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '', appbar: true,))
-                            );
-
-                            // Navigator.push(
-                            //     context, MaterialPageRoute(
-                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
-                            // );
-
-                          },
-                            child: Column(
-                              children: [
-                                Image.asset(fReligion,height: 55,),
-                                sizedBox6(),
-                                Text("Religion",style: styleSatoshiLight(size: 12, color: colorDA4F7A),)
-                              ],
-                            ),
-                          ),
+                              );
+                            }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),),
                         ),
-                        Expanded(
-                          child: GestureDetector(onTap :() {
-                            Navigator.push(
-                                context, MaterialPageRoute(
-                                builder: (builder) =>  MatchesScreen(response: widget.response,
-                                  religion: '',
-                                  motherTongue: '',
-                                  minHeight: '',
-                                  maxHeight: '',
-                                  maxWeight: '',
-                                  based: '',
-                                  state: Get.find<ProfileController>().userDetails!.data!.user!.address!.state.toString(),
-                                  appbar: true,))
-                            );
-                            // Navigator.push(
-                            //     context, MaterialPageRoute(
-                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.address!.state!, motherTongue:'', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
-                            // );
-
-                          },
-                            child: Column(
-                              children: [
-                                Image.asset(fCommunity,height: 55,),
-                                sizedBox6(),
-                                Text("State",style: styleSatoshiLight(size: 12, color: colorF27047),)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(onTap :() {
-                            print('${Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString()}');
-                            Navigator.push(
-                                context, MaterialPageRoute(
-                                builder: (builder) =>  MatchesScreen(response: widget.response,
-                                  religion: '',
-                                  motherTongue: '',
-                                  minHeight: '',
-                                  maxHeight: '',
-                                  maxWeight: '',
-                                  based: '',
-                                  state: '',
-                                  community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
-                                  appbar: true,))
-                            );
-                            },
-                            child: Column(
-                              children: [
-                                Image.asset(icCommunity,height: 55,),
-                                sizedBox6(),
-                                Text("Caste",style: styleSatoshiLight(size: 12, color: casteIconColor),)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(onTap: () {
-                            Navigator.push(
-                                context, MaterialPageRoute(
-                                builder: (builder) =>  MatchesScreen(response: widget.response,
-                                  religion: '',
-                                  motherTongue: Get.find<ProfileController>().userDetails!.data!.user!.motherTongue!.id.toString(),
-                                  minHeight: '',
-                                  maxHeight: '',
-                                  maxWeight: '',
-                                  based: '',
-                                  state: '',
-                                  appbar: true,))
-                            );
-                            // Navigator.push(
-                            //     context, MaterialPageRoute(
-                            //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '', based: 'Language',))
-                            // );
-                          },
-                            child: Column(
-                              children: [
-                                Image.asset(flanguage,height: 55,),
-                                sizedBox6(),
-                                Text("Mother Tongue",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      ],),],),
-                ),
-                sizedBox16(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (builder) =>  MatchesScreen(response: widget.response, religion: '', motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',community: '', appbar: true,))
-                    );
-                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                    //     AllMatchesScreen(response: widget.response, religionFilter: '', )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('New Matches',
-                          style: styleSatoshiBold(size: 18, color: Colors.black),),
-                        Text('See All',
-                          style: styleSatoshiBold(size: 12, color: Colors.black),),
+                        const SizedBox(height: 20,),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text("All New Members ",
-                    style: styleSatoshiMedium(size: 14,
-                      color: color1C1C1c.withOpacity(0.60),
-                    ),
-                  ),
-                ),
-                sizedBox14(),
-                if (isLoading) Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(color: primaryColor, size: 60,
-                    )) else SizedBox(height: 200,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.only(left: 16),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    // itemCount: matches.length,
-                    itemCount : matches.length > 6 ? 6 : matches.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (_, i) {
-                      DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
-                      int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(
-                              builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
-                          );
-                        },
-                        child: Stack(
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [Text('Category By Filter',
+                        style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        sizedBox16(),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              height: 200,width: 160,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: const  BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0),),
-                              ),
-                              child: ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.3),
-                                  BlendMode.srcOver,
-                                ),
-                                child: CachedNetworkImage(
-                                  imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
-                                  fit: BoxFit.fill,
-                                  errorWidget: (context, url, error) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset(icLogo,
-                                          height: 40,
-                                          width: 40,),
-                                      ),
-                                  progressIndicatorBuilder: (a, b, c) =>
-                                      customShimmer(height: 0, /*width: 0,*/),
+                            Expanded(
+                              child: GestureDetector(onTap :() {
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (builder) =>  MatchesScreen(response: widget.response,
+                                      religion: profileControl.userDetails?.data?.user?.partnerExpectation?.religion?.id.toString() ?? '',
+                                      // Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
+                                      motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '', appbar: true,))
+                                );
+
+                                // Navigator.push(
+                                //     context, MaterialPageRoute(
+                                //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.religion!.name.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                                // );
+
+                              },
+                                child: Column(
+                                  children: [
+                                    Image.asset(fReligion,height: 55,),
+                                    sizedBox6(),
+                                    Text("Religion",style: styleSatoshiLight(size: 12, color: colorDA4F7A),)
+                                  ],
                                 ),
                               ),
                             ),
-                            Positioned(
-                              bottom:0,
-                              left:20,
-                              right:20,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: styleSatoshiBold(size: 14, color: Colors.white),),
-                                        Row(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text('$age yrs',
-                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),),
-                                                const SizedBox(width: 6,),
-                                                Container(
-                                                  height: 4,
-                                                  width: 4,
-                                                  decoration: const BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Colors.white,
-                                                  ),),
-                                                const SizedBox(width: 6,),
-                                                Text(
-                                                  "${matches[i].physicalAttributes!.height ?? ''} ft",
-                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                            Expanded(
+                              child: GestureDetector(onTap :() {
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (builder) =>  MatchesScreen(response: widget.response,
+                                      religion: '',
+                                      motherTongue: '',
+                                      minHeight: '',
+                                      maxHeight: '',
+                                      maxWeight: '',
+                                      based: '',
+                                      state: profileControl.userDetails!.data!.user!.address!.state.toString() ?? '',
+                                      // Get.find<ProfileController>().userDetails!.data!.user!.address!.state.toString(),
+                                      appbar: true,))
+                                );
+                                // Navigator.push(
+                                //     context, MaterialPageRoute(
+                                //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: Get.find<ProfileController>().userDetails!.data!.user!.address!.state!, motherTongue:'', minHeight: '', maxHeight: '', maxWeight: '', based: '',))
+                                // );
+
+                              },
+                                child: Column(
+                                  children: [
+                                    Image.asset(fCommunity,height: 55,),
+                                    sizedBox6(),
+                                    Text("State",style: styleSatoshiLight(size: 12, color: colorF27047),)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(onTap :() {
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (builder) =>  MatchesScreen(response: widget.response,
+                                      religion: '',
+                                      motherTongue: '',
+                                      minHeight: '',
+                                      maxHeight: '',
+                                      maxWeight: '',
+                                      based: '',
+                                      state: '',
+                                      community: profileControl.userDetails?.data?.user?.community?.id?.toString() ?? '',
+                                      appbar: true,))
+                                );
+                              },
+                                child: Column(
+                                  children: [
+                                    Image.asset(icCommunity,height: 55,),
+                                    sizedBox6(),
+                                    Text("Caste",style: styleSatoshiLight(size: 12, color: casteIconColor),)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(onTap: () {
+                                Navigator.push(
+                                    context, MaterialPageRoute(
+                                    builder: (builder) =>  MatchesScreen(response: widget.response,
+                                      religion: '',
+                                      motherTongue: profileControl.userDetails!.data!.user!.motherTongue!.id.toString(),
+                                      minHeight: '',
+                                      maxHeight: '',
+                                      maxWeight: '',
+                                      based: '',
+                                      state: '',
+                                      appbar: true,))
+                                );
+                                // Navigator.push(
+                                //     context, MaterialPageRoute(
+                                //     builder: (builder) =>  FilterMatchesScreen(response: widget.response, filter: '', motherTongue:widget.response.data!.user!.motherTongue!.toString(), minHeight: '', maxHeight: '', maxWeight: '', based: 'Language',))
+                                // );
+                              },
+                                child: Column(
+                                  children: [
+                                    Image.asset(flanguage,height: 55,),
+                                    sizedBox6(),
+                                    Text("Mother Tongue",style: styleSatoshiLight(size: 12, color: colorF2AB47),)
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                          ],),],),
+                  ),
+                  sizedBox16(),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (builder) =>  MatchesScreen(response: widget.response, religion: '', motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',community: '', appbar: true,))
+                      );
+                      // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                      //     AllMatchesScreen(response: widget.response, religionFilter: '', )));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('New Matches',
+                            style: styleSatoshiBold(size: 18, color: Colors.black),),
+                          Text('See All',
+                            style: styleSatoshiBold(size: 12, color: Colors.black),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text("All New Members ",
+                      style: styleSatoshiMedium(size: 14,
+                        color: color1C1C1c.withOpacity(0.60),
+                      ),
+                    ),
+                  ),
+                  sizedBox14(),
+                  if (isLoading) Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(color: primaryColor, size: 60,
+                      )) else SizedBox(height: 200,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.only(left: 16),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      // itemCount: matches.length,
+                      itemCount : matches.length > 6 ? 6 : matches.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, i) {
+                        DateTime? birthDate = matches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(matches[i].basicInfo!.birthDate!) : null;
+                        int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  UserProfileScreen(userId:matches[i].id.toString(),))
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 200,width: 160,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: const  BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0),),
+                                ),
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.3),
+                                    BlendMode.srcOver,
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: matches[i].image != null ? '$baseProfilePhotoUrl${matches[i].image}' : '',
+                                    fit: BoxFit.fill,
+                                    errorWidget: (context, url, error) =>
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.asset(icLogo,
+                                            height: 40,
+                                            width: 40,),
                                         ),
-                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                    progressIndicatorBuilder: (a, b, c) =>
+                                        customShimmer(height: 0, /*width: 0,*/),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom:0,
+                                left:20,
+                                right:20,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${StringUtils.capitalize(matches[i].firstname ?? '')} ${StringUtils.capitalize(matches[i].lastname ?? 'User')}',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: styleSatoshiBold(size: 14, color: Colors.white),),
+                                          Row(
+                                            children: [
+                                              Row(
                                                 children: [
-                                                  Text(matches[i].basicInfo?.religion?.name ?? '',
-                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),),
-                                                  Text(overflow: TextOverflow.ellipsis,maxLines: 2,
-                                                    matches[i].basicInfo?.presentAddress?.state ?? '',
-                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                  Text('$age yrs',
+                                                    style: styleSatoshiRegular(size: 10, color: Colors.white),),
+                                                  const SizedBox(width: 6,),
+                                                  Container(
+                                                    height: 4,
+                                                    width: 4,
+                                                    decoration: const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.white,
+                                                    ),),
+                                                  const SizedBox(width: 6,),
+                                                  Text(
+                                                    "${matches[i].physicalAttributes!.height ?? ''} ft",
+                                                    style: styleSatoshiRegular(size: 10, color: Colors.white),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-                                            /*like[i] || matches[i].interestStatus == 2  ?
+                                            ],
+                                          ),
+                                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(matches[i].basicInfo?.religion?.name ?? '',
+                                                      style: styleSatoshiRegular(size: 13, color: Colors.white),),
+                                                    Text(overflow: TextOverflow.ellipsis,maxLines: 2,
+                                                      matches[i].basicInfo?.presentAddress?.state ?? '',
+                                                      style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              /*like[i] || matches[i].interestStatus == 2  ?
                                             TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
@@ -501,164 +506,173 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 }
                                               });
                                             },)*/
-                                          ],
-                                        ),
+                                            ],
+                                          ),
 
-                                        sizedBox18(),
-                                      ],
+                                          sizedBox18(),
+                                        ],
+                                      ),
                                     ),
-                                  ),
 
 
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        );
+                      }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),
+                    ),
+                  ),
+                  sizedBox16(),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (builder) =>  MatchesScreen(response: widget.response,
+                            religion: profileControl.userDetails?.data!.user!.religion!.id! == null ?
+                            '' : profileControl.userDetails?.data!.user!.religion!.id.toString(),
+                            motherTongue: '',
+                            minHeight: '',
+                            maxHeight: '',
+                            maxWeight: '',
+                            based: '',
+                            community: '',
+                            appbar: true,))
                       );
-                    }, separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16,),
+                      // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                      //     AllMatchesScreen(response: widget.response, religionFilter: widget.response.data!.user!.religion!.toString(),)));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Preferred Matches',
+                            style: styleSatoshiBold(size: 18, color: Colors.black),),
+                          Text('See All',
+                            style: styleSatoshiBold(size: 12, color: Colors.black),),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                sizedBox16(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(
-                        builder: (builder) =>  MatchesScreen(response: widget.response, religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(), motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '',community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(), appbar: true,))
-                    );
-                    // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                    //     AllMatchesScreen(response: widget.response, religionFilter: widget.response.data!.user!.religion!.toString(),)));
-                  },
-                  child: Padding(
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Preferred Matches',
-                          style: styleSatoshiBold(size: 18, color: Colors.black),),
-                        Text('See All',
-                          style: styleSatoshiBold(size: 12, color: Colors.black),),
-                      ],
+                    child: Text("Members Based On your Preference",
+                      style: styleSatoshiMedium(size: 14,
+                        color: color1C1C1c.withOpacity(0.60),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text("Members Based On your Preference",
-                    style: styleSatoshiMedium(size: 14,
-                      color: color1C1C1c.withOpacity(0.60),
-                    ),
-                  ),
-                ),
-                sizedBox14(),
-                if (isLoading) Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: primaryColor,
-                      size: 60,
-                    )) else SizedBox(height: 200,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.only(left: 16),
+                  sizedBox14(),
+                  if (isLoading) Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: primaryColor,
+                        size: 60,
+                      )) else SizedBox(height: 200,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.only(left: 16),
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       // itemCount: preferredMatches.length,
-                        itemCount : preferredMatches.length > 6 ? 6 : preferredMatches.length,
+                      itemCount : preferredMatches.length > 6 ? 6 : preferredMatches.length,
                       physics: const BouncingScrollPhysics(),
                       itemBuilder: (_, i) {
                         DateTime? birthDate = preferredMatches[i].basicInfo != null ? DateFormat('yyyy-MM-dd').parse(preferredMatches[i].basicInfo!.birthDate!) : null;
                         int age = birthDate != null ? DateTime.now().difference(birthDate).inDays ~/ 365 : 0;
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(
-                              builder: (builder) =>  UserProfileScreen(userId:preferredMatches[i].id.toString(),))
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: 200,width: 160,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: const  BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(10.0),),
-                              ),
-                              child: ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.3),
-                                  BlendMode.srcOver,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (builder) =>  UserProfileScreen(userId:preferredMatches[i].id.toString(),))
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 200,width: 160,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: const  BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0),),
                                 ),
-                                child: CachedNetworkImage(
-                                  imageUrl: preferredMatches[i].image != null ? '$baseProfilePhotoUrl${preferredMatches[i].image}' : '',
-                                  fit: BoxFit.fill,
-                                  errorWidget: (context, url, error) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset(icLogo,
-                                          height: 40,
-                                          width: 40,),
-                                      ),
-                                  progressIndicatorBuilder: (a, b, c) =>
-                                      customShimmer(height: 0, /*width: 0,*/),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom:0,
-                              left:20,
-                              right:20,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${StringUtils.capitalize(preferredMatches[i].firstname ?? '')} ${StringUtils.capitalize(preferredMatches[i].lastname ?? 'User')}',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                          style: styleSatoshiBold(size: 14, color: Colors.white),),
-                                        const SizedBox(height: 4,),
-                                        Row(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  '$age yrs',
-                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
-                                                ),
-                                                const SizedBox(width: 6,),
-                                                Container(
-                                                  height: 4,
-                                                  width: 4,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white,
-                                                ),),
-                                                const SizedBox(width: 6,),
-                                                Text(
-                                                  "${preferredMatches[i].physicalAttributes!.height ?? ''} ft",
-                                                  style: styleSatoshiRegular(size: 10, color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.3),
+                                    BlendMode.srcOver,
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: preferredMatches[i].image != null ? '$baseProfilePhotoUrl${preferredMatches[i].image}' : '',
+                                    fit: BoxFit.fill,
+                                    errorWidget: (context, url, error) =>
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.asset(icLogo,
+                                            height: 40,
+                                            width: 40,),
                                         ),
-                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  preferredMatches[i].basicInfo?.religion?.name ?? '',
-                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                                ),
-                                                Text(overflow: TextOverflow.ellipsis,maxLines: 1,
-                                                  preferredMatches[i].basicInfo?.presentAddress?.state ?? '',
+                                    progressIndicatorBuilder: (a, b, c) =>
+                                        customShimmer(height: 0, /*width: 0,*/),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom:0,
+                                left:20,
+                                right:20,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${StringUtils.capitalize(preferredMatches[i].firstname ?? '')} ${StringUtils.capitalize(preferredMatches[i].lastname ?? 'User')}',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: styleSatoshiBold(size: 14, color: Colors.white),),
+                                          const SizedBox(height: 4,),
+                                          Row(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    '$age yrs',
+                                                    style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                  ),
+                                                  const SizedBox(width: 6,),
+                                                  Container(
+                                                    height: 4,
+                                                    width: 4,
+                                                    decoration: const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: Colors.white,
+                                                    ),),
+                                                  const SizedBox(width: 6,),
+                                                  Text(
+                                                    "${preferredMatches[i].physicalAttributes!.height ?? ''} ft",
+                                                    style: styleSatoshiRegular(size: 10, color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    preferredMatches[i].basicInfo?.religion?.name ?? '',
+                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                  ),
+                                                  Text(overflow: TextOverflow.ellipsis,maxLines: 1,
+                                                    preferredMatches[i].basicInfo?.presentAddress?.state ?? '',
 
-                                                  style: styleSatoshiRegular(size: 13, color: Colors.white),
-                                                ),
-                                              ],
-                                            ),
+                                                    style: styleSatoshiRegular(size: 13, color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
 
-                                           /* like[i] || preferredMatches[i].interestStatus == 2  ?
+                                              /* like[i] || preferredMatches[i].interestStatus == 2  ?
                                             TickButton(tap: () {  },):
                                             AddButton(tap: () {
                                               setState(() {
@@ -691,36 +705,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 }
                                               });
                                             },)*/
-                                          ],
-                                        ),
+                                            ],
+                                          ),
 
-                                        sizedBox18(),
-                                      ],
-                                    ),
-                                  ),
-
-
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                                        }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),
+                                          sizedBox18(),
+                                        ],
                                       ),
+                                    ),
+
+
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }, separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 16,),
                     ),
-                sizedBox16(),
-                const SizedBox(height: 50,),
+                  ),
+                  sizedBox16(),
+                  const SizedBox(height: 50,),
 
 
-              ],
+                ],
+              ),
             ),
-          ),
-        )
-            : const HomeShimmer(),
-      ),
+          )
+              : const HomeShimmer(),
+        ),
 
-    );
+      );
+    });
+
   }
 
 

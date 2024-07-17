@@ -33,7 +33,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   final ImagePicker _imgPicker = ImagePicker();
 
   final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["Male","Female","Other"];
+  final List<String> gender = ["Male","Female","Others"];
   final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
   final List<String> married = ["Unmarried","Widowed","Divorced"];
   final countryController = TextEditingController();
@@ -107,9 +107,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                       child: ChipList(
                         elements: gender,
                         onChipSelected: (selectedGender) {
-                          authControl.setGender(
-                              selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O"
-                          );
+                          authControl.setGender(selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O");
                           // setState(() {
                           //
                           //   // SharedPrefs().setGender(selectedGender);
@@ -130,11 +128,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
               Wrap(
                 spacing: 8.0,
                 children: authControl.religionList!.map((religion) {
-                  return ChoiceChip(
-                    selectedColor: color4B164C.withOpacity(0.80),
-                    backgroundColor: Colors.white,
-                    label: Text(
-                      religion.name!,
+                  return ChoiceChip(selectedColor: color4B164C.withOpacity(0.80),
+                    backgroundColor: Colors.white, label: Text(religion.name!,
                       style: TextStyle(
                         color: authControl.religionMainIndex == religion.id
                             ? Colors.white

@@ -1,4 +1,8 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
@@ -16,7 +20,7 @@ import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/string.dart';
 import '../../../constants/textstyles.dart';
-import '../../../models/basic_info_model.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import '../../../models/info_model.dart';
 import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/name_edit_dialog.dart';
@@ -58,8 +62,16 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
   @override
   void initState() {
-    careerInfo();
-    Get.find<ProfileController>().getUserDetailsApi();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      careerInfo();
+      Get.find<ProfileController>().getUserDetailsApi();
+      Get.find<AuthController>().getSmokingList();
+      Get.find<AuthController>().getDrinkingList();
+      Get.find<AuthController>().getProfessionList();
+
+
+    });
     super.initState();
 
   }
@@ -109,8 +121,8 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     professionController.text = basicInfo?.profession?.name.toString() ?? '';
     genderController.text = basicInfo?.gender?.toString() ?? '';
     religionController.text = basicInfo?.religion?.name.toString() ?? '';
-    smokingController.text = basicInfo?.smokingStatus?.toString() ?? '';
-    drinkingController.text = basicInfo?.drinkingStatus?.toString() ?? '';
+    smokingController.text = basicInfo?.smoking?.name.toString() ?? '';
+    drinkingController.text = basicInfo?.drinking?.name.toString() ?? '';
     birthDateController.text = basicInfo?.birthDate?.toString() ?? '';
     communityController.text = basicInfo?.community?.name.toString() ?? '';
     motherTongueController.text = basicInfo?.motherTongue?.name.toString() ?? '';
@@ -127,770 +139,797 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(basicInfo?.religion?.name.toString());
-    return Scaffold(
-      appBar: const CustomAppBar(title: "Basic Info",),
-      bottomNavigationBar: buildBottombarPadding(context),
-      body: isLoading
-          ? const BasicInfoShimmerWidget()
-          : SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                child: Column(
-                  children: [
-                    Align(alignment: Alignment.centerLeft,
-                        child: Text("Basic Info",style:styleSatoshiMedium(size: 16, color: primaryColor))),
-                    sizedBox16(),
-                    GestureDetector(
-                      // onTap: _pickImage
-                      onTap: () async {
-                        XFile? v = await _imgPicker.pickImage(
-                            source: ImageSource.gallery);
-                        if (v != null) {
-                          setState(
+    return GetBuilder<AuthController>(builder: (profileControl) {
+      return  Scaffold(
+        appBar: const CustomAppBar(title: "Basic Info",),
+        bottomNavigationBar: buildBottombarPadding(context),
+        body: isLoading
+            ? const BasicInfoShimmerWidget()
+            : SingleChildScrollView(
+          child: Padding(
+            padding:
+            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+            child: Column(
+              children: [
+                Align(alignment: Alignment.centerLeft,
+                    child: Text("Basic Info",style:styleSatoshiMedium(size: 16, color: primaryColor))),
+                sizedBox16(),
+                GestureDetector(
+                  // onTap: _pickImage
+                  onTap: () async {
+                    XFile? v = await _imgPicker.pickImage(
+                        source: ImageSource.gallery);
+                    if (v != null) {
+                      setState(
                             () {
-                              pickedImage = File(v.path);
-                            },
-                          );
-                        }
-                      },
-                      child: Container(
-                        height: 104,
-                        width: 104,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: pickedImage.path.isEmpty
-                            ? Image.asset(
-                                icProfilePlaceHolder,
-                              )
-                            : Image.file(
-                                pickedImage,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+                          pickedImage = File(v.path);
+                        },
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 104,
+                    width: 104,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
                     ),
-                    sizedBox16(),
-                    load
-                        ? loadingElevatedButton(
-                            color: Colors.green,
-                            height: 30,
-                            width: 80,
-                            context: context)
-                        : elevatedButton(
-                            color: Colors.green,
-                            height: 30,
-                            style: styleSatoshiLight(
-                                size: 10, color: Colors.white),
-                            width: 80,
-                            context: context,
-                            onTap: () {
-                              if (pickedImage.path.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Please Pick Image First");
-                              } else {
-                                setState(() {
-                                  load = true;
-                                });
-                                addProfileImageAPi(photo: pickedImage.path
-                                        // id: career[0].id.toString(),
-                                        )
-                                    .then((value) {
-                                  if (value['status'] == true) {
-                                    setState(() {
-                                      load = false;
-                                    });
-                                    ToastUtil.showToast(
-                                        "Image Updated Successfully");
-                                  } else {
-                                    setState(() {
-                                      loading = false;
-                                    });
+                    child: pickedImage.path.isEmpty
+                        ? Image.asset(
+                      icProfilePlaceHolder,
+                    )
+                        : Image.file(
+                      pickedImage,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                sizedBox16(),
+                load
+                    ? loadingElevatedButton(
+                    color: Colors.green,
+                    height: 30,
+                    width: 80,
+                    context: context)
+                    : elevatedButton(
+                    color: Colors.green,
+                    height: 30,
+                    style: styleSatoshiLight(
+                        size: 10, color: Colors.white),
+                    width: 80,
+                    context: context,
+                    onTap: () {
+                      if (pickedImage.path.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please Pick Image First");
+                      } else {
+                        setState(() {
+                          load = true;
+                        });
+                        addProfileImageAPi(photo: pickedImage.path
+                          // id: career[0].id.toString(),
+                        )
+                            .then((value) {
+                          if (value['status'] == true) {
+                            setState(() {
+                              load = false;
+                            });
+                            ToastUtil.showToast(
+                                "Image Updated Successfully");
+                          } else {
+                            setState(() {
+                              loading = false;
+                            });
 
-                                    List<dynamic> errors =
-                                        value['message']['error'];
-                                    String errorMessage = errors.isNotEmpty
-                                        ? errors[0]
-                                        : "An unknown error occurred.";
-                                    Fluttertoast.showToast(msg: errorMessage);
-                                  }
-                                });
-                              }
+                            List<dynamic> errors =
+                            value['message']['error'];
+                            String errorMessage = errors.isNotEmpty
+                                ? errors[0]
+                                : "An unknown error occurred.";
+                            Fluttertoast.showToast(msg: errorMessage);
+                          }
+                        });
+                      }
+                    },
+                    title: "Add"),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Introduction',
+                          addTextField: TextFormField(
+                            maxLength: 500,
+                            onChanged: (v) {
+                              setState(() {});
                             },
-                            title: "Add"),
-                     GestureDetector(
-                       onTap: () {
-                         showDialog(
-                           context: context,
-                           builder: (BuildContext context) {
-                             return NameEditDialogWidget(
-                               title: 'Introduction',
-                               addTextField: TextFormField(
-                                 maxLength: 500,
-                                 onChanged: (v) {
-                                   setState(() {});
-                                 },
-                                 onEditingComplete: () {
-                                   Navigator.pop(context); // Close the dialog
-                                 },
-                                 controller: aboutUs,
-                                 decoration: AppTFDecoration(hint: 'Introduction')
-                                     .decoration(),
-                                 //keyboardType: TextInputType.phone,
-                               ),
-                             );
-                           },
-                         );
-
-                       },
-                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           Row(
-                            children: [
-                              Text(
-                                "Introduction",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
-                              ),
-                              SizedBox(width: 3,),
-                              Icon(
-                                Icons.edit,
-                                size: 12,
-                              ),
-                            ],
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: aboutUs,
+                            decoration: AppTFDecoration(hint: 'Introduction')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
                           ),
-                          aboutUs.text.isEmpty?
-                          SizedBox() :
-                          Column(
-                            children: [
-                              sizedBox16(),
+                        );
+                      },
+                    );
 
-                              Text(
-                                aboutUs.text.isEmpty
-                                    ? (basicInfo.id == null ||
-                                    basicInfo.aboutUs == null ||
-                                    basicInfo.aboutUs!.isEmpty
-                                    ? ''
-                                    : basicInfo.aboutUs!)
-                                    : aboutUs.text,
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Introduction",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+                          ),
+                          const SizedBox(width: 3,),
+                          const Icon(
+                            Icons.edit,
+                            size: 12,
+                          ),
+                        ],
+                      ),
+                      aboutUs.text.isEmpty?
+                      const SizedBox() :
+                      Column(
+                        children: [
+                          sizedBox16(),
 
-                            ],
-                          )
-
+                          Text(
+                            aboutUs.text.isEmpty
+                                ? (basicInfo.id == null ||
+                                basicInfo.aboutUs == null ||
+                                basicInfo.aboutUs!.isEmpty
+                                ? ''
+                                : basicInfo.aboutUs!)
+                                : aboutUs.text,
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
 
                         ],
-                                           ),
-                     ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'First Name',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: firstNameController,
-                                decoration: AppTFDecoration(hint: 'First Name')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'First Name',
-                        data1: firstNameController.text.isEmpty
-                            ? (mainInfo == null ||
-                                    mainInfo.firstname == null ||
-                                    mainInfo.firstname!.isEmpty
-                                ? 'Not Added'
-                                : StringUtils.capitalize(mainInfo.firstname!))
-                            : firstNameController.text,
-                        data2: StringUtils.capitalize(firstNameController.text),
-                        isControllerTextEmpty: firstNameController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'Last Name',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context);
-                                },
-                                controller: lastNameController,
-                                decoration: AppTFDecoration(hint: 'Last Name')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'Last Name',
-                        data1: lastNameController.text.isEmpty
-                            ? (mainInfo == null ||
-                                    mainInfo.lastname == null ||
-                                    mainInfo.lastname!.isEmpty
-                                ? 'Not Added'
-                                : StringUtils.capitalize(mainInfo.lastname!))
-                            : StringUtils.capitalize(lastNameController.text),
-                        data2: StringUtils.capitalize(lastNameController.text),
-                        isControllerTextEmpty: lastNameController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (BuildContext context) {
-                        //     return NameEditDialogWidget(
-                        //       title: 'User Name',
-                        //       addTextField: TextFormField(
-                        //         maxLength: 40,
-                        //         onChanged: (v) {
-                        //           setState(() {});
-                        //         },
-                        //         onEditingComplete: () {
-                        //           Navigator.pop(context); // Close the dialog
-                        //         },
-                        //         controller: userNameController,
-                        //         decoration: AppTFDecoration(hint: 'User Name')
-                        //             .decoration(),
-                        //         //keyboardType: TextInputType.phone,
-                        //       ),
-                        //     );
-                        //   },
-                        // );
-                      },
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'User Name',
-                        data1: userNameController.text.isEmpty
-                            ? (mainInfo == null ||
-                                    mainInfo.username == null ||
-                                    mainInfo.username!.isEmpty
-                                ? 'User Name'
-                                : mainInfo.username!)
-                            : userNameController.text,
-                        data2: userNameController.text,
-                        isControllerTextEmpty: userNameController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'Email',
-                        data1: emailController.text.isEmpty
-                            ? (mainInfo == null ||
-                                    mainInfo.username == null ||
-                                    mainInfo.username!.isEmpty
-                                ? 'Email'
-                                : mainInfo.username!)
-                            : emailController.text,
-                        data2: emailController.text,
-                        isControllerTextEmpty: emailController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (BuildContext context) {
-                        //     return NameEditDialogWidget(
-                        //       title: 'Profession',
-                        //       addTextField: TextFormField(
-                        //         maxLength: 40,
-                        //         onChanged: (v) {
-                        //           setState(() {});
-                        //         },
-                        //         onEditingComplete: () {
-                        //           Navigator.pop(context); // Close the dialog
-                        //         },
-                        //         controller: professionController,
-                        //         decoration: AppTFDecoration(hint: 'Profession')
-                        //             .decoration(),
-                        //         //keyboardType: TextInputType.phone,
-                        //       ),
-                        //     );
-                        //   },
-                        // );
-                      },
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        // widget: const Icon(
-                        //   Icons.edit,
-                        //   size: 12,
-                        // ),
-                        title: 'Profession',
-                        data1:
-                        professionController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.profession == null ||
-                                    basicInfo.profession!.name!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.profession!.name.toString() )
-                            : professionController.text,
+                      )
 
-                        data2:
-                            StringUtils.capitalize(professionController.text),
-                        isControllerTextEmpty:
-                            professionController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'Gender',
-                        data1: genderController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.gender == null ||
-                                    basicInfo.gender!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.gender.toString())
-                            : genderController.text,
-                        data2: StringUtils.capitalize(genderController.text.contains("F") ? "Female" :"Male"),
-                        isControllerTextEmpty: genderController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'Religion',
-                        data1: religionController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.religion == null ||
-                                    basicInfo.religion!.name!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.religion.toString())
-                            : religionController.text,
-                        data2: religionController.text,
-                        isControllerTextEmpty: religionController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'Married Status',
-                        data1: marriedStatusController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.maritalStatus == null ||
-                                    basicInfo.maritalStatus!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.maritalStatus.toString())
-                            : marriedStatusController.text,
-                        data2: StringUtils.capitalize(
-                            marriedStatusController.text),
-                        isControllerTextEmpty:
-                            marriedStatusController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return PrivacyStatusBottomSheet(
-                              privacyStatus: '',
-                              onPop: (val) {
-                                smokingController.text = val;
-                                print(smokingController.text);
-                              },
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        title: 'Smoking status',
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        data1: smokingController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.smokingStatus == null
-                                ? 'Not Added'
-                                : basicInfo.smokingStatus.toString())
-                            : smokingController.text,
-                        data2: smokingController.text.contains('1') ? "Yes" :"No",
-                        isControllerTextEmpty: smokingController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DrinkingStatusBottomSheet(
-                              privacyStatus: '',
-                              onPop: (val) {
-                                drinkingController.text = val;
-                                // print(smokingController.text);
-                              },
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        title: 'Drinking status',
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        data1: drinkingController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.drinkingStatus == null
-                                ? 'Not Added'
-                                : basicInfo.drinkingStatus.toString())
-                            : drinkingController.text,
-                        data2: drinkingController.text.contains("1") ? "Yes" :"No",
-                        isControllerTextEmpty: drinkingController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(drinkingController)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        widget: const SizedBox(),
-                        title: 'Birth date',
-                        data1: birthDateController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                                    basicInfo.birthDate == null ||
-                                    basicInfo.birthDate!.isEmpty
-                                ? 'Not Added'
-                                : basicInfo.birthDate!.toString())
-                            : birthDateController.text,
-                        data2: birthDateController.text,
-                        isControllerTextEmpty: birthDateController.text.isEmpty,
-                      ),
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   builder: (BuildContext context) {
-                        //     return CommuitySheet(
-                        //       privacyStatus: '',
-                        //       onPop: (val) {
-                        //         communityController.text = val;
-                        //         print(communityController.text);
-                        //       },
-                        //     );
-                        //   },
-                        // );
-                      },
-                      child: buildDataAddRow(
-                        title: 'Caste',
-                        widget: const SizedBox(),
-                        // widget: const Icon(
-                        //   Icons.edit,
-                        //   size: 12,
-                        // ),
-                        data1: communityController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                            basicInfo.community == null ||
-                            basicInfo.community!.name == null
-                            ? 'Not Added'
-                            : basicInfo.community!.name.toString())
-                            : communityController.text,
-                        data2: communityController.text,
-                        isControllerTextEmpty: communityController.text.isEmpty,
-                      ),
 
-                    ),
-
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return FinancialBottomSheet(
-                              privacyStatus: '',
-                              onPop: (val) {
-                                financialCondition.text = val;
-                                print(financialCondition.text);
-                              },
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        title: 'Financial Condition',
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        data1: financialCondition.text.isEmpty
-                            ? (basicInfo.id == null ||
-                            basicInfo.financialCondition == null
-                            ? 'Not Added'
-                            : basicInfo.financialCondition.toString())
-                            : financialCondition.text,
-                        data2: financialCondition.text,
-                        isControllerTextEmpty: financialCondition.text.isEmpty,
-                      ),
-                    ),
-
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: buildDataAddRow(
-                        title: 'Mother Tongue',
-                        widget: const SizedBox(),
-                        data1: motherTongueController.text.isEmpty
-                            ? (basicInfo.id == null ||
-                            basicInfo.motherTongue == null ||
-                            basicInfo.motherTongue!.name == null ||
-                            basicInfo.motherTongue!.name!.isEmpty
-                            ? 'Not Added'
-                            : basicInfo.motherTongue!.name.toString())
-                            : motherTongueController.text,
-                        data2: StringUtils.capitalize(motherTongueController.text),
-                        isControllerTextEmpty: motherTongueController.text.isEmpty,
-                      ),
-
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'City',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: cityController,
-                                decoration:
-                                    AppTFDecoration(hint: 'City').decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'City',
-                        data1: cityController.text.isEmpty
-                            ? (basicInfo.presentAddress?.city == null
-                                ? 'City'
-                                : basicInfo.presentAddress!.city!)
-                            : cityController.text,
-                        data2: StringUtils.capitalize(cityController.text),
-                        isControllerTextEmpty: cityController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'State',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: stateController,
-                                decoration:
-                                    AppTFDecoration(hint: 'State').decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'State',
-                        data1: stateController.text.isEmpty
-                            ? (basicInfo.presentAddress == null ||
-                                    basicInfo.presentAddress!.state == null
-                                ? 'State'
-                                : basicInfo.presentAddress!.state!)
-                            : stateController.text,
-                        data2: StringUtils.capitalize(stateController.text),
-                        isControllerTextEmpty: stateController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'Zip Code',
-                              addTextField: TextFormField(
-                                keyboardType: TextInputType.number,
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: zipController,
-                                decoration: AppTFDecoration(hint: 'Zip Code')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'Zip Code',
-                        data1: zipController.text.isEmpty
-                            ? (basicInfo.presentAddress == null ||
-                                    basicInfo.presentAddress!.zip == null
-                                ? 'Zip Code'
-                                : basicInfo.presentAddress!.zip!)
-                            : zipController.text,
-                        data2: zipController.text,
-                        isControllerTextEmpty: zipController.text.isEmpty,
-                      ),
-
-                      // chil
-                      // d: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameEditDialogWidget(
-                              title: 'Country',
-                              addTextField: TextFormField(
-                                maxLength: 40,
-                                onChanged: (v) {
-                                  setState(() {});
-                                },
-                                onEditingComplete: () {
-                                  Navigator.pop(context); // Close the dialog
-                                },
-                                controller: countryController,
-                                decoration: AppTFDecoration(hint: 'Country')
-                                    .decoration(),
-                                //keyboardType: TextInputType.phone,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: buildDataAddRow(
-                        widget: const Icon(
-                          Icons.edit,
-                          size: 12,
-                        ),
-                        title: 'Country',
-                        data1: countryController.text.isEmpty
-                            ? (basicInfo.presentAddress == null ||
-                                    basicInfo.presentAddress!.country == null
-                                ? 'Country'
-                                : basicInfo.presentAddress!.country!)
-                            : countryController.text,
-                        data2: countryController.text,
-                        isControllerTextEmpty: countryController.text.isEmpty,
-                      ),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+
+                const Divider(),
+                // sizedBox16(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'First Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: firstNameController,
+                            decoration: AppTFDecoration(hint: 'First Name')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'First Name',
+                    data1: firstNameController.text.isEmpty
+                        ? (mainInfo == null ||
+                        mainInfo.firstname == null ||
+                        mainInfo.firstname!.isEmpty
+                        ? 'Not Added'
+                        : StringUtils.capitalize(mainInfo.firstname!))
+                        : firstNameController.text,
+                    data2: StringUtils.capitalize(firstNameController.text),
+                    isControllerTextEmpty: firstNameController.text.isEmpty,
+                  ),
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Last Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context);
+                            },
+                            controller: lastNameController,
+                            decoration: AppTFDecoration(hint: 'Last Name')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'Last Name',
+                    data1: lastNameController.text.isEmpty
+                        ? (mainInfo == null ||
+                        mainInfo.lastname == null ||
+                        mainInfo.lastname!.isEmpty
+                        ? 'Not Added'
+                        : StringUtils.capitalize(mainInfo.lastname!))
+                        : StringUtils.capitalize(lastNameController.text),
+                    data2: StringUtils.capitalize(lastNameController.text),
+                    isControllerTextEmpty: lastNameController.text.isEmpty,
+                  ),
+                ),
+                const Divider(),
+                // sizedBox16(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'User Name',
+                    //       addTextField: TextFormField(
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {});
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: userNameController,
+                    //         decoration: AppTFDecoration(hint: 'User Name')
+                    //             .decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  },
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'User Name',
+                    data1: userNameController.text.isEmpty
+                        ? (mainInfo == null ||
+                        mainInfo.username == null ||
+                        mainInfo.username!.isEmpty
+                        ? 'User Name'
+                        : mainInfo.username!)
+                        : userNameController.text,
+                    data2: userNameController.text,
+                    isControllerTextEmpty: userNameController.text.isEmpty,
+                  ),
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'Email',
+                    data1: emailController.text.isEmpty
+                        ? (mainInfo == null ||
+                        mainInfo.username == null ||
+                        mainInfo.username!.isEmpty
+                        ? 'Email'
+                        : mainInfo.username!)
+                        : emailController.text,
+                    data2: emailController.text,
+                    isControllerTextEmpty: emailController.text.isEmpty,
+                  ),
+                ),
+                const Divider(),
+                // sizedBox16(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.bottomSheet(
+                      ProfessionBottomSheet(onPop: (val ) {
+                        professionController.text = val;
+
+                        print(val);
+                      },
+                      ),
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'Profession',
+                    //       addTextField: TextFormField(
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {});
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: professionController,
+                    //         decoration: AppTFDecoration(hint: 'Profession')
+                    //             .decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  },
+                  child: buildDataAddRow(
+                    // widget: const SizedBox(),
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'Profession',
+                    data1:
+                    professionController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.profession == null ||
+                        basicInfo.profession!.name!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.profession!.name.toString() )
+                        : professionController.text,
+
+                    data2:
+                    StringUtils.capitalize(professionController.text),
+                    isControllerTextEmpty:
+                    professionController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'Gender',
+                    data1: genderController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.gender == null ||
+                        basicInfo.gender!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.gender.toString())
+                        : genderController.text,
+                    data2: StringUtils.capitalize(genderController.text.contains("F") ? "Female" :"Male"),
+                    isControllerTextEmpty: genderController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'Religion',
+                    data1: religionController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.religion == null ||
+                        basicInfo.religion!.name!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.religion.toString())
+                        : religionController.text,
+                    data2: religionController.text,
+                    isControllerTextEmpty: religionController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'Married Status',
+                    data1: marriedStatusController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.maritalStatus == null ||
+                        basicInfo.maritalStatus!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.maritalStatus.toString())
+                        : marriedStatusController.text,
+                    data2: StringUtils.capitalize(
+                        marriedStatusController.text),
+                    isControllerTextEmpty:
+                    marriedStatusController.text.isEmpty,
+                  ),
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SmokingBottomSheet(onPop: (val ) {
+                        smokingController.text = val;
+                      },),
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                    );
+                  },
+                  child: buildDataAddRow(
+                    title: 'Smoking status',
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    data1: smokingController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.smoking!.name == null
+                        ? 'Not Added'
+                        : basicInfo.smoking!.name.toString())
+                        : smokingController.text,
+                    data2: smokingController.text,
+                    isControllerTextEmpty: smokingController.text.isEmpty,
+                  ),
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.bottomSheet(
+                      DrinkingBottomSheet(onPop: (val ) {
+                        drinkingController.text = val;
+                      },),
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                    );
+                  },
+                  child: buildDataAddRow(
+                    title: 'Drinking status',
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    data1: drinkingController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.drinking!.name == null
+                        ? 'Not Added'
+                        : basicInfo.drinking!.name.toString())
+                        : drinkingController.text,
+                    data2: drinkingController.text,
+                    isControllerTextEmpty: drinkingController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(drinkingController)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    widget: const SizedBox(),
+                    title: 'Birth date',
+                    data1: birthDateController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.birthDate == null ||
+                        basicInfo.birthDate!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.birthDate!.toString())
+                        : birthDateController.text,
+                    data2: birthDateController.text,
+                    isControllerTextEmpty: birthDateController.text.isEmpty,
+                  ),
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return CommuitySheet(
+                    //       privacyStatus: '',
+                    //       onPop: (val) {
+                    //         communityController.text = val;
+                    //         print(communityController.text);
+                    //       },
+                    //     );
+                    //   },
+                    // );
+                  },
+                  child: buildDataAddRow(
+                    title: 'Caste',
+                    widget: const SizedBox(),
+                    // widget: const Icon(
+                    //   Icons.edit,
+                    //   size: 12,
+                    // ),
+                    data1: communityController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.community == null ||
+                        basicInfo.community!.name == null
+                        ? 'Not Added'
+                        : basicInfo.community!.name.toString())
+                        : communityController.text,
+                    data2: communityController.text,
+                    isControllerTextEmpty: communityController.text.isEmpty,
+                  ),
+
+                ),
+
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return FinancialBottomSheet(
+                          privacyStatus: '',
+                          onPop: (val) {
+                            financialCondition.text = val;
+                            print(financialCondition.text);
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    title: 'Financial Condition',
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    data1: financialCondition.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.financialCondition == null
+                        ? 'Not Added'
+                        : basicInfo.financialCondition.toString())
+                        : financialCondition.text,
+                    data2: financialCondition.text,
+                    isControllerTextEmpty: financialCondition.text.isEmpty,
+                  ),
+                ),
+
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {},
+                  child: buildDataAddRow(
+                    title: 'Mother Tongue',
+                    widget: const SizedBox(),
+                    data1: motherTongueController.text.isEmpty
+                        ? (basicInfo.id == null ||
+                        basicInfo.motherTongue == null ||
+                        basicInfo.motherTongue!.name == null ||
+                        basicInfo.motherTongue!.name!.isEmpty
+                        ? 'Not Added'
+                        : basicInfo.motherTongue!.name.toString())
+                        : motherTongueController.text,
+                    data2: StringUtils.capitalize(motherTongueController.text),
+                    isControllerTextEmpty: motherTongueController.text.isEmpty,
+                  ),
+
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'City',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: cityController,
+                            decoration:
+                            AppTFDecoration(hint: 'City').decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'City',
+                    data1: cityController.text.isEmpty
+                        ? (basicInfo.presentAddress?.city == null
+                        ? 'City'
+                        : basicInfo.presentAddress!.city!)
+                        : cityController.text,
+                    data2: StringUtils.capitalize(cityController.text),
+                    isControllerTextEmpty: cityController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SelectStateBottomSheet( onStatePop: (val) {
+                        stateController.text = val;
+                        print('=========?${stateController.text}');
+                      },),
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,);
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'State',
+                    //       addTextField: TextFormField(
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {});
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: stateController,
+                    //         decoration:
+                    //         AppTFDecoration(hint: 'State').decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'State',
+                    data1: stateController.text.isEmpty
+                        ? (basicInfo.presentAddress == null ||
+                        basicInfo.presentAddress!.state == null
+                        ? 'State'
+                        : basicInfo.presentAddress!.state!)
+                        : stateController.text,
+                    data2: StringUtils.capitalize(stateController.text),
+                    isControllerTextEmpty: stateController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Zip Code',
+                          addTextField: TextFormField(
+                            keyboardType: TextInputType.number,
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: zipController,
+                            decoration: AppTFDecoration(hint: 'Zip Code')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'Zip Code',
+                    data1: zipController.text.isEmpty
+                        ? (basicInfo.presentAddress == null ||
+                        basicInfo.presentAddress!.zip == null
+                        ? 'Zip Code'
+                        : basicInfo.presentAddress!.zip!)
+                        : zipController.text,
+                    data2: zipController.text,
+                    isControllerTextEmpty: zipController.text.isEmpty,
+                  ),
+
+                  // chil
+                  // d: CarRowWidget(favourites: favourites!,)
+                ),
+                // sizedBox16(),
+                const Divider(),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Country',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: countryController,
+                            decoration: AppTFDecoration(hint: 'Country')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: buildDataAddRow(
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
+                    title: 'Country',
+                    data1: countryController.text.isEmpty
+                        ? (basicInfo.presentAddress == null ||
+                        basicInfo.presentAddress!.country == null
+                        ? 'Country'
+                        : basicInfo.presentAddress!.country!)
+                        : countryController.text,
+                    data2: countryController.text,
+                    isControllerTextEmpty: countryController.text.isEmpty,
+                  ),
+                  // child: CarRowWidget(favourites: favourites!,)
+                ),
+              ],
             ),
-    );
+          ),
+        ),
+      );
+    });
   }
 
   Padding buildBottombarPadding(BuildContext context) {
@@ -905,14 +944,15 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   setState(() {
                     loading = true;
                   });
-                  print(Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString());
                   updateBasicInfo(
-                          profession: Get.find<ProfileController>().userDetails!.data!.user!.profession!.id.toString(),
-                          religion: Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
-                          motherTongue:  '8',
-                          community: Get.find<ProfileController>().userDetails!.data!.user!.community!.id.toString(),
-                          smokingStatus: smokingController.text,
-                          drinkingStatus: drinkingController.text,
+                          profession:Get.find<AuthController>().professionIndex == null
+                              ? Get.find<ProfileController>().userDetails?.data?.user?.profession?.id?.toString() ?? '10'
+                              : Get.find<AuthController>().professionIndex.toString(),
+                          religion: Get.find<ProfileController>().userDetails?.data?.user?.religion?.id?.toString() ?? '11',
+                          motherTongue:  Get.find<ProfileController>().userDetails?.data?.user?.motherTongue?.id?.toString() ?? '10',
+                          community: Get.find<ProfileController>().userDetails?.data?.user?.community?.id?.toString() ?? '11',
+                          smokingStatus: Get.find<AuthController>().smokingIndex.toString(),
+                          drinkingStatus:  Get.find<AuthController>().drikingIndex.toString(),
                           maritalStatus: marriedStatusController.text,
                           birthDate: birthDateController.text,
                           state: stateController.text,
@@ -1086,7 +1126,7 @@ class _PrivacyStatusBottomSheet extends State<PrivacyStatusBottomSheet> {
                     )),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 GestureDetector(
@@ -1305,7 +1345,7 @@ class BasicInfoShimmerWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 120,),
+                const SizedBox(width: 120,),
 
                 Expanded(
                   child: Container(
@@ -1402,5 +1442,240 @@ class BasicInfoShimmerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+
+
+class SmokingBottomSheet extends StatelessWidget {
+  final Function(String) onPop;
+  const SmokingBottomSheet({super.key, required this.onPop});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<AuthController>(builder: (authControl) {
+      return SingleChildScrollView(
+        child: Container(color: Theme.of(context).cardColor,
+          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+          child: Column(children: [
+            sizedBox20(),
+            Align(
+              alignment: Alignment.centerLeft, child: Text("Smoking Habit", textAlign: TextAlign.left,
+              style: styleSatoshiBold(size: 16, color: Colors.black),),),
+            const SizedBox(height: 5,),
+            Wrap(
+              spacing: 8.0, children: authControl.smokingList!.map((religion) {
+              return ChoiceChip(
+                selectedColor: color4B164C.withOpacity(0.80),
+                backgroundColor: Colors.white,
+                label: Text(
+                  religion.name!,
+                  style: TextStyle(
+                    color: authControl.smokingIndex == religion.id
+                        ? Colors.white
+                        : Colors.black.withOpacity(0.80),
+                  ),
+                ),
+                selected: authControl.smokingIndex == religion.id,
+                onSelected: (selected) {
+                  if (selected) {
+                    authControl.setSmokingIndex(religion.id!,true);
+                    onPop(religion.name!);
+                  }
+                },
+              );
+            }).toList(),
+            ),
+          ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+
+class DrinkingBottomSheet extends StatelessWidget {
+  final Function(String) onPop;
+  const DrinkingBottomSheet({super.key, required this.onPop});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<AuthController>(builder: (authControl) {
+      return SingleChildScrollView(
+        child: Container(color: Theme.of(context).cardColor,
+          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+          child: Column(children: [
+            sizedBox20(),
+            Align(
+              alignment: Alignment.centerLeft, child: Text("Drinking Habit", textAlign: TextAlign.left,
+              style: styleSatoshiBold(size: 16, color: Colors.black),),),
+            const SizedBox(height: 5,),
+            Wrap(
+              spacing: 8.0, children: authControl.drikingList!.map((religion) {
+              return ChoiceChip(
+                selectedColor: color4B164C.withOpacity(0.80),
+                backgroundColor: Colors.white,
+                label: Text(
+                  religion.name!,
+                  style: TextStyle(
+                    color: authControl.drikingIndex == religion.id
+                        ? Colors.white
+                        : Colors.black.withOpacity(0.80),
+                  ),
+                ),
+                selected: authControl.drikingIndex == religion.id,
+                onSelected: (selected) {
+                  if (selected) {
+                    authControl.setDrikingIndex(religion.id!,true);
+                    onPop(religion.name!);
+                    print(authControl.drikingIndex);
+                  }
+                },
+              );
+            }).toList(),
+            ),
+          ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+
+class SelectStateBottomSheet extends StatefulWidget {
+  final Function(String) onStatePop;
+
+  SelectStateBottomSheet({super.key, required this.onStatePop, });
+
+  @override
+  State<SelectStateBottomSheet> createState() => _SelectStateBottomSheetState();
+}
+
+class _SelectStateBottomSheetState extends State<SelectStateBottomSheet> {
+  @override
+  Widget build(BuildContext context) {
+    final stateController = TextEditingController();
+    final districtController = TextEditingController();
+    return GetBuilder<ProfileController>(builder: (profileControl) {
+      return SingleChildScrollView(
+        child: Container(
+          height: Get.size.height * 0.7,
+          color: Colors.white,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              sizedBox20(),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Select State And District Of Posting",
+                  textAlign: TextAlign.left,
+                  style: styleSatoshiBold(size: 16, color: Colors.black),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Select State", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
+                  const SizedBox(height: 5),
+                  TypeAheadFormField<String>(
+                    textFieldConfiguration:  TextFieldConfiguration(
+                      controller: stateController,
+                      decoration: authDecoration(
+                          context, "Select State"
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) async {
+                      return profileControl.states.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion),
+                      );
+                    },
+                    onSuggestionSelected: (String? suggestion) {
+                      if (suggestion != null) {
+                        profileControl.setState(suggestion);
+                        stateController.text = suggestion;
+                        widget.onStatePop(stateController.text);
+                        // authControl.setstate(stateController.text);
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Select State';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => profileControl.setState(value!),
+                  ),
+
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+
+class ProfessionBottomSheet extends StatelessWidget {
+  final Function(String) onPop;
+  // final Function(String)? onPopId;
+  const ProfessionBottomSheet({super.key, required this.onPop, });
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<AuthController>(builder: (authControl) {
+      return SingleChildScrollView(
+        child: Container(color: Theme.of(context).cardColor,
+          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+          child: Column(children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Profession",
+                textAlign: TextAlign.left,
+                style: styleSatoshiBold(size: 16, color: Colors.black),),
+            ),
+            const SizedBox(height: 5,),
+            Wrap(
+              spacing: 8.0,
+              children: authControl.professionList!.map((religion) {
+                return ChoiceChip(
+                  selectedColor: color4B164C.withOpacity(0.80),
+                  backgroundColor: Colors.white,
+                  label: Text(
+                    religion.name!,
+                    style: TextStyle(
+                      color: authControl.professionIndex == religion.id
+                          ? Colors.white
+                          : Colors.black.withOpacity(0.80),
+                    ),
+                  ),
+                  selected: authControl.professionIndex == religion.id,
+                  onSelected: (selected) {
+                    if (selected) {
+                      authControl.setProfessionIndex(religion.id, true);
+                      onPop(religion.name!);
+                      // onPopId!(religion.id.toString());
+
+                      Navigator.pop(context);
+                    }
+                  },
+                );
+              }).toList(),
+            ),
+
+
+          ],
+          ),
+        ),
+      );
+    });
   }
 }
