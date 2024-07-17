@@ -1,5 +1,3 @@
-import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
-import 'package:bureau_couple/getx/features/screens/auth/register/register_one.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/views/signup/signup_dashboard.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../constants/fonts.dart';
 import '../../constants/sizedboxe.dart';
-import '../../constants/textfield.dart';
 import '../../utils/widgets/common_widgets.dart';
 
 class SignInOptionScreen extends StatefulWidget {
@@ -54,13 +51,13 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                     targetString: 'Terms & Condition',
                     stringBeforeTarget: 'our',
                     stringAfterTarget: "and",
-                    style: TextStyle(color: primaryColor),
+                    style: const TextStyle(color: primaryColor),
                   ),
                   EasyRichTextPattern(
                     targetString: 'Privacy Policy',
                     stringBeforeTarget: 'and',
                     stringAfterTarget: "",
-                    style: TextStyle(color: primaryColor),
+                    style: const TextStyle(color: primaryColor),
                   ),
                 ],
               ),),
@@ -106,7 +103,7 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                         onTap: () {  },
                         title: 'Continue with Google',
                         image: icGoogle24),
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     socialMediaButton(
                         context: context,
                         onTap: () {  },
