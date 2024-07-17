@@ -67,8 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-      SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
@@ -81,9 +80,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         Image.asset(icSignInLinearBG),
                         Padding(
-                          padding: const EdgeInsets.only(top: 30.0,
-                              left: 20,
-                              right: 20),
+                          padding: const EdgeInsets.only(top: 30.0, left: 20, right: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               backButton(context: context, image: icArrowLeft, onTap: () {
                                 Navigator.pop(context);
                               }),
-                              SizedBox(height:80 ,),
+                              const SizedBox(height:80 ,),
                               Image.asset(icLogo,
                                 width: 72,
                                 height: 59,),
@@ -143,12 +140,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                         hint: '',
                                         length: null,
                                         suffixIcon: _passwordVisible
-                                            ?Icon(Icons.visibility)
-                                            : Icon(Icons.visibility_off),
+                                            ? const Icon(Icons.visibility)
+                                            : const Icon(Icons.visibility_off),
                                         validator: (value) {
                                           return ;
                                         }, bool: _passwordVisible, onChanged: (String ) {  }),
-                                    SizedBox(height: 21,),
+                                    const SizedBox(height: 21,),
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: GestureDetector(

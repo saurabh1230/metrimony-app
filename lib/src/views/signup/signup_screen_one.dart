@@ -233,7 +233,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                       const SizedBox(
                         height: 20,
                       ),
-                      CustomTextField(
+                      CustomTextField( showTitle: true,
                         isNumber: true,
                         controller: phNoController,
                         hintText: 'Phone',

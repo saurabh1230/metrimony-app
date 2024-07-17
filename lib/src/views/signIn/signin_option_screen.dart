@@ -85,7 +85,7 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                       "Connecting Heart.One Swipe.at a Time. Your Pathway to Lasting Love ",
                       style: kManrope24SemiBoldBlack,
                       textAlign: TextAlign.center,),
-                    SizedBox(height: 54,),
+                    const SizedBox(height: 54,),
                     button(
                         context: context,
                         onTap: (){

@@ -129,7 +129,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                 spacing: 8.0,
                 children: authControl.religionList!.map((religion) {
                   return ChoiceChip(selectedColor: color4B164C.withOpacity(0.80),
-                    backgroundColor: Colors.white, label: Text(religion.name!,
+                    backgroundColor: Colors.white, label: Text(
+                      religion.name!,
                       style: TextStyle(
                         color: authControl.religionMainIndex == religion.id
                             ? Colors.white

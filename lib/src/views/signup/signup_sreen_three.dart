@@ -62,7 +62,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
               children: [
                 const SizedBox(height: 50,),
                 GestureDetector(
-                  // onTap: _pickImage
                   onTap: () async {
                     XFile? v = await _imgPicker.pickImage(
                         source: ImageSource.gallery);
@@ -82,7 +81,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                     clipBehavior: Clip.hardEdge,
                     decoration:  const BoxDecoration(
                       shape: BoxShape.circle,
-
                     ) ,
                     child: pickedImage.path.isEmpty
                         ? Image.asset(icProfilePlaceHolder,
@@ -114,8 +112,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                         authControl.setDob(formattedDate);
                         print(formattedDate);
                         print(_selectedDate);
-
-                        // SharedPrefs().setDob(formattedDate);
                         print('SharedPrefs().getDob()');
 
                       });

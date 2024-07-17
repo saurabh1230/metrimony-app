@@ -581,7 +581,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     );
                   },
                   child: buildDataAddRow(
-                    title: 'Smoking status',
+                    title: 'Smoking Habit',
                     widget: const Icon(
                       Icons.edit,
                       size: 12,
@@ -610,7 +610,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     );
                   },
                   child: buildDataAddRow(
-                    title: 'Drinking status',
+                    title: 'Drinking Habit',
                     widget: const Icon(
                       Icons.edit,
                       size: 12,

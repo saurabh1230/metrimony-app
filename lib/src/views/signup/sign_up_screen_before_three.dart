@@ -44,7 +44,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
 
 
-
+  final cadreController = TextEditingController();
   final stateController = TextEditingController();
   final districtController = TextEditingController();
 
@@ -181,33 +181,61 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   const SizedBox(height: 20,),
                   Text("Cadres", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                   const SizedBox(height: 5),
-                  SizedBox(
-                    width: 1.sw,
-                    child: CustomStyledDropdownButton(
-                      items: const  [
-                        "Cadres",
-
-                      ],
-                      selectedValue: cadarValue,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Cadres';
-                        }
-                        return null;
-                      },
-                      onChanged: (String? value) {
-                        // setState(() {
-                        //   cadarValue = value;
-                        //   cadarFilter = cadarValue ?? '';
-                        //   SharedPrefs().setMotherTongue(cadarFilter);
-                        //
-                        // });
-                        // print(userTypeFilter);
-                        // print('Check ======> Usetype${userTypeFilter}');
-                      },
-                      title: 'Cadres',
+                  const SizedBox(height: 5),
+                  TypeAheadFormField<String>(
+                    textFieldConfiguration:  TextFieldConfiguration(
+                      controller: cadreController,
+                      decoration: authDecoration(
+                          context, "Select Cadre"
+                      ),
                     ),
+                    suggestionsCallback: (pattern) async {
+                      return authControl.indianStatesAndUTs.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion), ); },
+                    onSuggestionSelected: (String? suggestion) {
+                      if (suggestion != null) {
+                        authControl.setIndianStates(suggestion);
+                        cadreController.text = suggestion;
+                      }
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Select State';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => authControl.setIndianStates(value!),
                   ),
+                  // SizedBox(
+                  //   width: 1.sw,
+                  //   child: CustomStyledDropdownButton(
+                  //     items: const  [
+                  //       "Cadres",
+                  //
+                  //     ],
+                  //     selectedValue: cadarValue,
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return 'Please enter Cadres';
+                  //       }
+                  //       return null;
+                  //     },
+                  //     onChanged: (String? value) {
+                  //       // setState(() {
+                  //       //   cadarValue = value;
+                  //       //   cadarFilter = cadarValue ?? '';
+                  //       //   SharedPrefs().setMotherTongue(cadarFilter);
+                  //       //
+                  //       // });
+                  //       // print(userTypeFilter);
+                  //       // print('Check ======> Usetype${userTypeFilter}');
+                  //     },
+                  //     title: 'Cadres',
+                  //   ),
+                  // ),
                   const SizedBox(height: 20,),
                 Text("Batch Year", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                 const SizedBox(height: 5),

@@ -1,3 +1,4 @@
+//
 // class ProfileModel {
 //   bool? status;
 //   Data? data;
@@ -24,7 +25,9 @@
 //
 // class Data {
 //   User? user;
+//
 //   Data({this.user});
+//
 //   Data.fromJson(Map<String, dynamic> json) {
 //     user = json['user'] != null ? new User.fromJson(json['user']) : null;
 //   }
@@ -49,23 +52,9 @@
 //   String? email;
 //   String? countryCode;
 //   String? mobile;
-//   // String? balance;
-//   // int? status;
-//   // Null? kycData;
-//   // int? kv;
-//   // int? ev;
-//   // int? sv;
-//   // int? profileComplete;
-//   // List<Null>? skippedStep;
-//   // List<int>? completedStep;
-//   // int? totalStep;
-//   // Null? verCodeSendAt;
-//   // Null? tsc;
-//   // Null? loginBy;
-//   // Null? banReason;
 //   String? image;
-//   // String? createdAt;
-//   // String? updatedAt;
+//   String? createdAt;
+//   String? updatedAt;
 //   String? bloodGroup;
 //   Religion? religion;
 //   String? maritalStatus;
@@ -77,11 +66,9 @@
 //   BasicInfoMdl? basicInfo;
 //   String? bloodGroups;
 //   String? maritialStatus;
-//   List<CareerInfoMdl>? careerInfo;
 //   PartnerExpectationInfoMdl? partnerExpectation;
-//
 //   PhysicalAttributes? physicalAttributes;
-//   String? family;
+//   List<CareerInfoMdl>? careerInfo;
 //   List<EducationInfoMdl>? educationInfo;
 //
 //   User(
@@ -95,23 +82,9 @@
 //         this.email,
 //         this.countryCode,
 //         this.mobile,
-//         // this.balance,
-//         // this.status,
-//         // this.kycData,
-//         // this.kv,
-//         // this.ev,
-//         // this.sv,
-//         // this.profileComplete,
-//         // this.skippedStep,
-//         // this.completedStep,
-//         // this.totalStep,
-//         // this.verCodeSendAt,
-//         // this.tsc,
-//         // this.loginBy,
-//         // this.banReason,
-//         // this.image,
-//         // this.createdAt,
-//         // this.updatedAt,
+//         this.image,
+//         this.createdAt,
+//         this.updatedAt,
 //         this.bloodGroup,
 //         this.religion,
 //         this.maritalStatus,
@@ -123,10 +96,9 @@
 //         this.basicInfo,
 //         this.bloodGroups,
 //         this.maritialStatus,
-//         this.careerInfo,
 //         this.partnerExpectation,
 //         this.physicalAttributes,
-//         this.family,
+//         this.careerInfo,
 //         this.educationInfo});
 //
 //   User.fromJson(Map<String, dynamic> json) {
@@ -141,28 +113,9 @@
 //     email = json['email'];
 //     countryCode = json['country_code'];
 //     mobile = json['mobile'];
-//     // balance = json['balance'];
-//     // status = json['status'];
-//     // kycData = json['kyc_data'];
-//     // kv = json['kv'];
-//     // ev = json['ev'];
-//     // sv = json['sv'];
-//     // profileComplete = json['profile_complete'];
-//     // if (json['skipped_step'] != null) {
-//     //   skippedStep = <Null>[];
-//     //   json['skipped_step'].forEach((v) {
-//     //     skippedStep!.add(new Null.fromJson(v));
-//     //   });
-//     // }
-//     // completedStep = json['completed_step'].cast<int>();
-//     // totalStep = json['total_step'];
-//     // verCodeSendAt = json['ver_code_send_at'];
-//     // tsc = json['tsc'];
-//     // loginBy = json['login_by'];
-//     // banReason = json['ban_reason'];
 //     image = json['image'];
-//     // createdAt = json['created_at'];
-//     // updatedAt = json['updated_at'];
+//     createdAt = json['created_at'];
+//     updatedAt = json['updated_at'];
 //     bloodGroup = json['blood_group'];
 //     religion = json['religion'] != null
 //         ? new Religion.fromJson(json['religion'])
@@ -184,20 +137,18 @@
 //         : null;
 //     bloodGroups = json['blood_groups'];
 //     maritialStatus = json['maritial_status'];
-//     if (json['career_info'] != null) {
-//       careerInfo = <CareerInfoMdl>[];
-//       json['career_info'].forEach((v) {
-//         careerInfo!.add(new CareerInfoMdl.fromJson(v));
-//       });
-//     }
-//
 //     partnerExpectation = json['partner_expectation'] != null
 //         ? new PartnerExpectationInfoMdl.fromJson(json['partner_expectation'])
 //         : null;
 //     physicalAttributes = json['physical_attributes'] != null
 //         ? new PhysicalAttributes.fromJson(json['physical_attributes'])
 //         : null;
-//     family = json['family'];
+//     if (json['career_info'] != null) {
+//       careerInfo = <CareerInfoMdl>[];
+//       json['career_info'].forEach((v) {
+//         careerInfo!.add(new CareerInfoMdl.fromJson(v));
+//       });
+//     }
 //     if (json['education_info'] != null) {
 //       educationInfo = <EducationInfoMdl>[];
 //       json['education_info'].forEach((v) {
@@ -220,25 +171,9 @@
 //     data['email'] = this.email;
 //     data['country_code'] = this.countryCode;
 //     data['mobile'] = this.mobile;
-//     // data['balance'] = this.balance;
-//     // data['status'] = this.status;
-//     // data['kyc_data'] = this.kycData;
-//     // data['kv'] = this.kv;
-//     // data['ev'] = this.ev;
-//     // data['sv'] = this.sv;
-//     // data['profile_complete'] = this.profileComplete;
-//     // if (this.skippedStep != null) {
-//     //   data['skipped_step'] = this.skippedStep!.map((v) => v.toJson()).toList();
-//     // }
-//     // data['completed_step'] = this.completedStep;
-//     // data['total_step'] = this.totalStep;
-//     // data['ver_code_send_at'] = this.verCodeSendAt;
-//     // data['tsc'] = this.tsc;
-//     // data['login_by'] = this.loginBy;
-//     // data['ban_reason'] = this.banReason;
 //     data['image'] = this.image;
-//     // data['created_at'] = this.createdAt;
-//     // data['updated_at'] = this.updatedAt;
+//     data['created_at'] = this.createdAt;
+//     data['updated_at'] = this.updatedAt;
 //     data['blood_group'] = this.bloodGroup;
 //     if (this.religion != null) {
 //       data['religion'] = this.religion!.toJson();
@@ -260,17 +195,15 @@
 //     }
 //     data['blood_groups'] = this.bloodGroups;
 //     data['maritial_status'] = this.maritialStatus;
-//     if (this.careerInfo != null) {
-//       data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
-//     }
-//
 //     if (this.partnerExpectation != null) {
 //       data['partner_expectation'] = this.partnerExpectation!.toJson();
 //     }
 //     if (this.physicalAttributes != null) {
 //       data['physical_attributes'] = this.physicalAttributes!.toJson();
 //     }
-//     data['family'] = this.family;
+//     if (this.careerInfo != null) {
+//       data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
+//     }
 //     if (this.educationInfo != null) {
 //       data['education_info'] =
 //           this.educationInfo!.map((v) => v.toJson()).toList();
@@ -340,10 +273,11 @@
 //   Religion? profession;
 //   String? financialCondition;
 //   Religion? religion;
-//   int? smokingStatus;
-//   int? drinkingStatus;
+//   Religion? smoking;
+//   Religion? drinking;
+//   // int? smokingStatus;
+//   // int? drinkingStatus;
 //   String? birthDate;
-//   // Null? language;
 //   String? maritalStatus;
 //   PresentAddress? presentAddress;
 //   PermanentAddress? permanentAddress;
@@ -366,10 +300,9 @@
 //         this.profession,
 //         this.financialCondition,
 //         this.religion,
-//         this.smokingStatus,
-//         this.drinkingStatus,
+//         this.smoking,
+//         this.drinking,
 //         this.birthDate,
-//         // this.language,
 //         this.maritalStatus,
 //         this.presentAddress,
 //         this.permanentAddress,
@@ -396,10 +329,14 @@
 //     religion = json['religion'] != null
 //         ? new Religion.fromJson(json['religion'])
 //         : null;
-//     smokingStatus = json['smoking_status'];
-//     drinkingStatus = json['drinking_status'];
+//     // smokingStatus = json['smoking_status'];
+//     // drinkingStatus = json['drinking_status'];
+//     smoking =
+//     json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+//     drinking = json['drinking'] != null
+//         ? new Religion.fromJson(json['drinking'])
+//         : null;
 //     birthDate = json['birth_date'];
-//     // language = json['language'];
 //     maritalStatus = json['marital_status'];
 //     presentAddress = json['present_address'] != null
 //         ? new PresentAddress.fromJson(json['present_address'])
@@ -436,10 +373,15 @@
 //     if (this.religion != null) {
 //       data['religion'] = this.religion!.toJson();
 //     }
-//     data['smoking_status'] = this.smokingStatus;
-//     data['drinking_status'] = this.drinkingStatus;
+//     // data['smoking_status'] = this.smokingStatus;
+//     // data['drinking_status'] = this.drinkingStatus;
+//     if (this.smoking != null) {
+//       data['smoking'] = this.smoking!.toJson();
+//     }
+//     if (this.drinking != null) {
+//       data['drinking'] = this.drinking!.toJson();
+//     }
 //     data['birth_date'] = this.birthDate;
-//     // data['language'] = this.language;
 //     data['marital_status'] = this.maritalStatus;
 //     if (this.presentAddress != null) {
 //       data['present_address'] = this.presentAddress!.toJson();
@@ -515,63 +457,6 @@
 //   }
 // }
 //
-// class CareerInfoMdl {
-//   int? id;
-//   int? userId;
-//   // String? position;
-//   String? from;
-//   String? end;
-//   String? createdAt;
-//   String? updatedAt;
-//   String? statePosting;
-//   String? districtPosting;
-//   Religion? positionHeld;
-//
-//   CareerInfoMdl(
-//       {this.id,
-//         this.userId,
-//         // this.position,
-//         this.from,
-//         this.end,
-//         this.createdAt,
-//         this.updatedAt,
-//         this.statePosting,
-//         this.districtPosting,
-//         this.positionHeld});
-//
-//   CareerInfoMdl.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     userId = json['user_id'];
-//     // position = json['position'];
-//     from = json['from'];
-//     end = json['end'];
-//     createdAt = json['created_at'];
-//     updatedAt = json['updated_at'];
-//     statePosting = json['state_posting'];
-//     districtPosting = json['district_posting'];
-//     positionHeld = json['position_held'] != null
-//         ? new Religion.fromJson(json['position_held'])
-//         : null;
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['user_id'] = this.userId;
-//     // data['position'] = this.position;
-//     data['from'] = this.from;
-//     data['end'] = this.end;
-//     data['created_at'] = this.createdAt;
-//     data['updated_at'] = this.updatedAt;
-//     data['state_posting'] = this.statePosting;
-//     data['district_posting'] = this.districtPosting;
-//     if (this.positionHeld != null) {
-//       data['position_held'] = this.positionHeld!.toJson();
-//     }
-//     return data;
-//   }
-// }
-//
 // class PartnerExpectationInfoMdl {
 //   int? id;
 //   int? userId;
@@ -585,11 +470,10 @@
 //   String? maritalStatus;
 //   Religion? religion;
 //   String? complexion;
-//   int? smokingStatus;
-//   int? drinkingStatus;
+//   // int? smokingStatus;
+//   // int? drinkingStatus;
 //   String? minDegree;
 //   Religion? profession;
-//   String? personality;
 //   String? financialCondition;
 //   String? createdAt;
 //   String? updatedAt;
@@ -598,6 +482,8 @@
 //   int? position;
 //   String? maritialStatus;
 //   Religion? positionHeld;
+//   Religion? smoking;
+//   Religion? drinking;
 //
 //   PartnerExpectationInfoMdl(
 //       {this.id,
@@ -612,11 +498,12 @@
 //         this.maritalStatus,
 //         this.religion,
 //         this.complexion,
-//         this.smokingStatus,
-//         this.drinkingStatus,
+//         // this.smokingStatus,
+//         // this.drinkingStatus,
+//         this.smoking,
+//         this.drinking,
 //         this.minDegree,
 //         this.profession,
-//         this.personality,
 //         this.financialCondition,
 //         this.createdAt,
 //         this.updatedAt,
@@ -633,7 +520,7 @@
 //     country = json['country'];
 //     minAge = json['min_age'];
 //     maxAge = json['max_age'];
-//     minHeight = json['min_height'].toString();
+//     minHeight = json['min_height'];
 //     maxHeight = json['max_height'];
 //     maxWeight = json['max_weight'];
 //     maritalStatus = json['marital_status'];
@@ -641,13 +528,17 @@
 //         ? new Religion.fromJson(json['religion'])
 //         : null;
 //     complexion = json['complexion'];
-//     smokingStatus = json['smoking_status'];
-//     drinkingStatus = json['drinking_status'];
+//     // smokingStatus = json['smoking_status'];
+//     // drinkingStatus = json['drinking_status'];
+//     smoking =
+//     json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+//     drinking = json['drinking'] != null
+//         ? new Religion.fromJson(json['drinking'])
+//         : null;
 //     minDegree = json['min_degree'];
 //     profession = json['profession'] != null
 //         ? new Religion.fromJson(json['profession'])
 //         : null;
-//     personality = json['personality'];
 //     financialCondition = json['financial_condition'];
 //     createdAt = json['created_at'];
 //     updatedAt = json['updated_at'];
@@ -680,13 +571,19 @@
 //       data['religion'] = this.religion!.toJson();
 //     }
 //     data['complexion'] = this.complexion;
-//     data['smoking_status'] = this.smokingStatus;
-//     data['drinking_status'] = this.drinkingStatus;
+//     // data['smoking_status'] = this.smokingStatus;
+//     // data['drinking_status'] = this.drinkingStatus;
+//     if (this.smoking != null) {
+//       data['smoking'] = this.smoking!.toJson();
+//     }
+//     if (this.drinking != null) {
+//       data['drinking'] = this.drinking!.toJson();
+//     }
+//
 //     data['min_degree'] = this.minDegree;
 //     if (this.profession != null) {
 //       data['profession'] = this.profession!.toJson();
 //     }
-//     data['personality'] = this.personality;
 //     data['financial_condition'] = this.financialCondition;
 //     data['created_at'] = this.createdAt;
 //     data['updated_at'] = this.updatedAt;
@@ -762,20 +659,70 @@
 //   }
 // }
 //
+// class CareerInfoMdl {
+//   int? id;
+//   int? userId;
+//   int? position;
+//   String? from;
+//   String? end;
+//   String? createdAt;
+//   String? updatedAt;
+//   String? statePosting;
+//   String? districtPosting;
+//   Religion? positionHeld;
+//
+//   CareerInfoMdl(
+//       {this.id,
+//         this.userId,
+//         this.position,
+//         this.from,
+//         this.end,
+//         this.createdAt,
+//         this.updatedAt,
+//         this.statePosting,
+//         this.districtPosting,
+//         this.positionHeld});
+//
+//   CareerInfoMdl.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     userId = json['user_id'];
+//     position = json['position'];
+//     from = json['from'];
+//     end = json['end'];
+//     createdAt = json['created_at'];
+//     updatedAt = json['updated_at'];
+//     statePosting = json['state_posting'];
+//     districtPosting = json['district_posting'];
+//     positionHeld = json['position_held'] != null
+//         ? new Religion.fromJson(json['position_held'])
+//         : null;
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['user_id'] = this.userId;
+//     data['position'] = this.position;
+//     data['from'] = this.from;
+//     data['end'] = this.end;
+//     data['created_at'] = this.createdAt;
+//     data['updated_at'] = this.updatedAt;
+//     data['state_posting'] = this.statePosting;
+//     data['district_posting'] = this.districtPosting;
+//     if (this.positionHeld != null) {
+//       data['position_held'] = this.positionHeld!.toJson();
+//     }
+//     return data;
+//   }
+// }
+//
 // class EducationInfoMdl {
 //   int? id;
 //   int? userId;
 //   String? degree;
 //   String? fieldOfStudy;
 //   String? institute;
-//   // int? regNo;
-//   // int? rollNo;
-//   // String? outOf;
-//   // String? result;
-//   String? start;
-//   String? end;
-//   // String? createdAt;
-//   // String? updatedAt;
+//
 //
 //   EducationInfoMdl(
 //       {this.id,
@@ -783,14 +730,6 @@
 //         this.degree,
 //         this.fieldOfStudy,
 //         this.institute,
-//         // this.regNo,
-//         // this.rollNo,
-//         // this.outOf,
-//         // this.result,
-//         this.start,
-//         this.end,
-//         // this.createdAt,
-//         // this.updatedAt
 //       });
 //
 //   EducationInfoMdl.fromJson(Map<String, dynamic> json) {
@@ -799,14 +738,7 @@
 //     degree = json['degree'];
 //     fieldOfStudy = json['field_of_study'];
 //     institute = json['institute'];
-//     // regNo = json['reg_no'];
-//     // rollNo = json['roll_no'];
-//     // outOf = json['out_of'];
-//     // result = json['result'];
-//     start = json['start'];
-//     end = json['end'];
-//     // createdAt = json['created_at'];
-//     // updatedAt = json['updated_at'];
+//
 //   }
 //
 //   Map<String, dynamic> toJson() {
@@ -816,14 +748,7 @@
 //     data['degree'] = this.degree;
 //     data['field_of_study'] = this.fieldOfStudy;
 //     data['institute'] = this.institute;
-//     // data['reg_no'] = this.regNo;
-//     // data['roll_no'] = this.rollNo;
-//     // data['out_of'] = this.outOf;
-//     // data['result'] = this.result;
-//     data['start'] = this.start;
-//     data['end'] = this.end;
-//     // data['created_at'] = this.createdAt;
-//     // data['updated_at'] = this.updatedAt;
+//
 //     return data;
 //   }
 // }
@@ -882,6 +807,8 @@ class User {
   String? email;
   String? countryCode;
   String? mobile;
+  String? balance;
+  int? status;
   String? image;
   String? createdAt;
   String? updatedAt;
@@ -896,9 +823,9 @@ class User {
   BasicInfoMdl? basicInfo;
   String? bloodGroups;
   String? maritialStatus;
+  List<CareerInfoMdl>? careerInfo;
   PartnerExpectationInfoMdl? partnerExpectation;
   PhysicalAttributes? physicalAttributes;
-  List<CareerInfoMdl>? careerInfo;
   List<EducationInfoMdl>? educationInfo;
 
   User(
@@ -912,6 +839,8 @@ class User {
         this.email,
         this.countryCode,
         this.mobile,
+        this.balance,
+        this.status,
         this.image,
         this.createdAt,
         this.updatedAt,
@@ -926,9 +855,9 @@ class User {
         this.basicInfo,
         this.bloodGroups,
         this.maritialStatus,
+        this.careerInfo,
         this.partnerExpectation,
         this.physicalAttributes,
-        this.careerInfo,
         this.educationInfo});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -943,6 +872,8 @@ class User {
     email = json['email'];
     countryCode = json['country_code'];
     mobile = json['mobile'];
+    balance = json['balance'];
+    status = json['status'];
     image = json['image'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -967,18 +898,18 @@ class User {
         : null;
     bloodGroups = json['blood_groups'];
     maritialStatus = json['maritial_status'];
-    partnerExpectation = json['partner_expectation'] != null
-        ? new PartnerExpectationInfoMdl.fromJson(json['partner_expectation'])
-        : null;
-    physicalAttributes = json['physical_attributes'] != null
-        ? new PhysicalAttributes.fromJson(json['physical_attributes'])
-        : null;
     if (json['career_info'] != null) {
       careerInfo = <CareerInfoMdl>[];
       json['career_info'].forEach((v) {
         careerInfo!.add(new CareerInfoMdl.fromJson(v));
       });
     }
+    partnerExpectation = json['partner_expectation'] != null
+        ? new PartnerExpectationInfoMdl.fromJson(json['partner_expectation'])
+        : null;
+    physicalAttributes = json['physical_attributes'] != null
+        ? new PhysicalAttributes.fromJson(json['physical_attributes'])
+        : null;
     if (json['education_info'] != null) {
       educationInfo = <EducationInfoMdl>[];
       json['education_info'].forEach((v) {
@@ -1001,6 +932,8 @@ class User {
     data['email'] = this.email;
     data['country_code'] = this.countryCode;
     data['mobile'] = this.mobile;
+    data['balance'] = this.balance;
+    data['status'] = this.status;
     data['image'] = this.image;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
@@ -1025,14 +958,14 @@ class User {
     }
     data['blood_groups'] = this.bloodGroups;
     data['maritial_status'] = this.maritialStatus;
+    if (this.careerInfo != null) {
+      data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
+    }
     if (this.partnerExpectation != null) {
       data['partner_expectation'] = this.partnerExpectation!.toJson();
     }
     if (this.physicalAttributes != null) {
       data['physical_attributes'] = this.physicalAttributes!.toJson();
-    }
-    if (this.careerInfo != null) {
-      data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
     }
     if (this.educationInfo != null) {
       data['education_info'] =
@@ -1103,10 +1036,8 @@ class BasicInfoMdl {
   Religion? profession;
   String? financialCondition;
   Religion? religion;
-  Religion? smoking;
-  Religion? drinking;
-  // int? smokingStatus;
-  // int? drinkingStatus;
+  int? smokingStatus;
+  int? drinkingStatus;
   String? birthDate;
   String? maritalStatus;
   PresentAddress? presentAddress;
@@ -1121,6 +1052,8 @@ class BasicInfoMdl {
   String? cadar;
   String? batchEnd;
   String? maritialStatus;
+  Religion? smoking;
+  Religion? drinking;
 
   BasicInfoMdl(
       {this.id,
@@ -1130,8 +1063,8 @@ class BasicInfoMdl {
         this.profession,
         this.financialCondition,
         this.religion,
-        this.smoking,
-        this.drinking,
+        this.smokingStatus,
+        this.drinkingStatus,
         this.birthDate,
         this.maritalStatus,
         this.presentAddress,
@@ -1145,7 +1078,9 @@ class BasicInfoMdl {
         this.batchStart,
         this.cadar,
         this.batchEnd,
-        this.maritialStatus});
+        this.maritialStatus,
+        this.smoking,
+        this.drinking});
 
   BasicInfoMdl.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -1159,13 +1094,8 @@ class BasicInfoMdl {
     religion = json['religion'] != null
         ? new Religion.fromJson(json['religion'])
         : null;
-    // smokingStatus = json['smoking_status'];
-    // drinkingStatus = json['drinking_status'];
-    smoking =
-    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
-    drinking = json['drinking'] != null
-        ? new Religion.fromJson(json['drinking'])
-        : null;
+    smokingStatus = json['smoking_status'];
+    drinkingStatus = json['drinking_status'];
     birthDate = json['birth_date'];
     maritalStatus = json['marital_status'];
     presentAddress = json['present_address'] != null
@@ -1188,6 +1118,11 @@ class BasicInfoMdl {
     cadar = json['cadar'];
     batchEnd = json['batch_end'];
     maritialStatus = json['maritial_status'];
+    smoking =
+    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+    drinking = json['drinking'] != null
+        ? new Religion.fromJson(json['drinking'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -1203,14 +1138,8 @@ class BasicInfoMdl {
     if (this.religion != null) {
       data['religion'] = this.religion!.toJson();
     }
-    // data['smoking_status'] = this.smokingStatus;
-    // data['drinking_status'] = this.drinkingStatus;
-    if (this.smoking != null) {
-      data['smoking'] = this.smoking!.toJson();
-    }
-    if (this.drinking != null) {
-      data['drinking'] = this.drinking!.toJson();
-    }
+    data['smoking_status'] = this.smokingStatus;
+    data['drinking_status'] = this.drinkingStatus;
     data['birth_date'] = this.birthDate;
     data['marital_status'] = this.maritalStatus;
     if (this.presentAddress != null) {
@@ -1233,6 +1162,12 @@ class BasicInfoMdl {
     data['cadar'] = this.cadar;
     data['batch_end'] = this.batchEnd;
     data['maritial_status'] = this.maritialStatus;
+    if (this.smoking != null) {
+      data['smoking'] = this.smoking!.toJson();
+    }
+    if (this.drinking != null) {
+      data['drinking'] = this.drinking!.toJson();
+    }
     return data;
   }
 }
@@ -1287,6 +1222,63 @@ class PermanentAddress {
   }
 }
 
+class CareerInfoMdl {
+  int? id;
+  int? userId;
+  int? position;
+  String? from;
+  String? end;
+  String? createdAt;
+  String? updatedAt;
+  String? statePosting;
+  String? districtPosting;
+  Religion? positionHeld;
+
+  CareerInfoMdl(
+      {this.id,
+        this.userId,
+        this.position,
+        this.from,
+        this.end,
+        this.createdAt,
+        this.updatedAt,
+        this.statePosting,
+        this.districtPosting,
+        this.positionHeld});
+
+  CareerInfoMdl.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    position = json['position'];
+    from = json['from'];
+    end = json['end'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    statePosting = json['state_posting'];
+    districtPosting = json['district_posting'];
+    positionHeld = json['position_held'] != null
+        ? new Religion.fromJson(json['position_held'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['position'] = this.position;
+    data['from'] = this.from;
+    data['end'] = this.end;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['state_posting'] = this.statePosting;
+    data['district_posting'] = this.districtPosting;
+    if (this.positionHeld != null) {
+      data['position_held'] = this.positionHeld!.toJson();
+    }
+    return data;
+  }
+}
+
 class PartnerExpectationInfoMdl {
   int? id;
   int? userId;
@@ -1300,8 +1292,8 @@ class PartnerExpectationInfoMdl {
   String? maritalStatus;
   Religion? religion;
   String? complexion;
-  // int? smokingStatus;
-  // int? drinkingStatus;
+  int? smokingStatus;
+  int? drinkingStatus;
   String? minDegree;
   Religion? profession;
   String? financialCondition;
@@ -1311,9 +1303,9 @@ class PartnerExpectationInfoMdl {
   Religion? community;
   int? position;
   String? maritialStatus;
-  Religion? positionHeld;
   Religion? smoking;
   Religion? drinking;
+  Religion? positionHeld;
 
   PartnerExpectationInfoMdl(
       {this.id,
@@ -1328,10 +1320,8 @@ class PartnerExpectationInfoMdl {
         this.maritalStatus,
         this.religion,
         this.complexion,
-        // this.smokingStatus,
-        // this.drinkingStatus,
-        this.smoking,
-        this.drinking,
+        this.smokingStatus,
+        this.drinkingStatus,
         this.minDegree,
         this.profession,
         this.financialCondition,
@@ -1341,6 +1331,8 @@ class PartnerExpectationInfoMdl {
         this.community,
         this.position,
         this.maritialStatus,
+        this.smoking,
+        this.drinking,
         this.positionHeld});
 
   PartnerExpectationInfoMdl.fromJson(Map<String, dynamic> json) {
@@ -1358,13 +1350,9 @@ class PartnerExpectationInfoMdl {
         ? new Religion.fromJson(json['religion'])
         : null;
     complexion = json['complexion'];
-    // smokingStatus = json['smoking_status'];
-    // drinkingStatus = json['drinking_status'];
-    smoking =
-    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
-    drinking = json['drinking'] != null
-        ? new Religion.fromJson(json['drinking'])
-        : null;
+    smokingStatus = json['smoking_status'];
+    drinkingStatus = json['drinking_status'];
+
     minDegree = json['min_degree'];
     profession = json['profession'] != null
         ? new Religion.fromJson(json['profession'])
@@ -1380,6 +1368,11 @@ class PartnerExpectationInfoMdl {
         : null;
     position = json['position'];
     maritialStatus = json['maritial_status'];
+    smoking =
+    json['smoking'] != null ? new Religion.fromJson(json['smoking']) : null;
+    drinking = json['drinking'] != null
+        ? new Religion.fromJson(json['drinking'])
+        : null;
     positionHeld = json['position_held'] != null
         ? new Religion.fromJson(json['position_held'])
         : null;
@@ -1401,20 +1394,16 @@ class PartnerExpectationInfoMdl {
       data['religion'] = this.religion!.toJson();
     }
     data['complexion'] = this.complexion;
-    // data['smoking_status'] = this.smokingStatus;
-    // data['drinking_status'] = this.drinkingStatus;
-    if (this.smoking != null) {
-      data['smoking'] = this.smoking!.toJson();
-    }
-    if (this.drinking != null) {
-      data['drinking'] = this.drinking!.toJson();
-    }
+    data['smoking_status'] = this.smokingStatus;
+    data['drinking_status'] = this.drinkingStatus;
 
     data['min_degree'] = this.minDegree;
     if (this.profession != null) {
       data['profession'] = this.profession!.toJson();
     }
+
     data['financial_condition'] = this.financialCondition;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.motherTongue != null) {
@@ -1425,6 +1414,12 @@ class PartnerExpectationInfoMdl {
     }
     data['position'] = this.position;
     data['maritial_status'] = this.maritialStatus;
+    if (this.smoking != null) {
+      data['smoking'] = this.smoking!.toJson();
+    }
+    if (this.drinking != null) {
+      data['drinking'] = this.drinking!.toJson();
+    }
     if (this.positionHeld != null) {
       data['position_held'] = this.positionHeld!.toJson();
     }
@@ -1489,70 +1484,12 @@ class PhysicalAttributes {
   }
 }
 
-class CareerInfoMdl {
-  int? id;
-  int? userId;
-  int? position;
-  String? from;
-  String? end;
-  String? createdAt;
-  String? updatedAt;
-  String? statePosting;
-  String? districtPosting;
-  Religion? positionHeld;
-
-  CareerInfoMdl(
-      {this.id,
-        this.userId,
-        this.position,
-        this.from,
-        this.end,
-        this.createdAt,
-        this.updatedAt,
-        this.statePosting,
-        this.districtPosting,
-        this.positionHeld});
-
-  CareerInfoMdl.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    position = json['position'];
-    from = json['from'];
-    end = json['end'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    statePosting = json['state_posting'];
-    districtPosting = json['district_posting'];
-    positionHeld = json['position_held'] != null
-        ? new Religion.fromJson(json['position_held'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['position'] = this.position;
-    data['from'] = this.from;
-    data['end'] = this.end;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['state_posting'] = this.statePosting;
-    data['district_posting'] = this.districtPosting;
-    if (this.positionHeld != null) {
-      data['position_held'] = this.positionHeld!.toJson();
-    }
-    return data;
-  }
-}
-
 class EducationInfoMdl {
   int? id;
   int? userId;
   String? degree;
   String? fieldOfStudy;
   String? institute;
-
 
   EducationInfoMdl(
       {this.id,
@@ -1582,3 +1519,4 @@ class EducationInfoMdl {
     return data;
   }
 }
+

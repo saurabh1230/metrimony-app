@@ -1035,6 +1035,14 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  String? _caste  = 'Yes';
+  String? get caste => _caste;
+
+  void setCasteStatus(String val) {
+    _caste = val;
+    update();
+  }
+
   String? _partnerDrinkingStatus = 'Yes';
   String? get partnerDrinkingStatus => _partnerDrinkingStatus;
 
@@ -1143,6 +1151,24 @@ class AuthController extends GetxController implements GetxService {
       update();
     }
   }
+
+  final List<String> indianStatesAndUTs = [
+    'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+    'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
+  ];
+
+  String? _indianStates;
+
+  String? get indianStates => _indianStates;
+
+  List<String> get indianstates => indianStatesAndUTs;
+
+  void setIndianStates(String state) {
+    _indianStates = state;
+    update();
+  }
+
+
 
 }
 

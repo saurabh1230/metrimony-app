@@ -151,16 +151,17 @@ Future<dynamic> getMatchesFilterApi({
 
 
 Future<dynamic> getConnectedMatchesApi({
-  required String page,
+  required String page, required String userId,
+
 }) async  {
   var headers = {
     'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
   };
-  var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}interest/all?page=$page'));
+  var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}interest/all?interesting_id=$userId&page=$page'));
   request.headers.addAll(headers);
   http.StreamedResponse response = await request.send();
   var resp = jsonDecode(await response.stream.bytesToString());
-  print(resp);
+  print('==========>  Request Connection${request}');
   print(headers);
   if (response.statusCode == 200) {
     return resp;
