@@ -81,27 +81,20 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                       width: 91,
                       height: 74,),
                     sizedBox16(),
-                    Text(
-                      "Connecting Heart.One Swipe.at a Time. Your Pathway to Lasting Love ",
-                      style: kManrope24SemiBoldBlack,
-                      textAlign: TextAlign.center,),
+                    Text("Connecting Heart.One Swipe.at a Time. Your Pathway to Lasting Love ",
+                      style: kManrope24SemiBoldBlack, textAlign: TextAlign.center,),
                     const SizedBox(height: 54,),
-                    button(
-                        context: context,
+                    button(context: context,
                         onTap: (){
-                          // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                          //     RegisterOne()));
-
-                          Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                              SignUpOnboardScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => SignUpOnboardScreen()));
                         },
                         title: 'Join Us'),
-                    SizedBox(height: 19,),
+                    const SizedBox(height: 19,),
                     Text(
                       "OR",
                       style: kManrope16SemiBold828282,
                       textAlign: TextAlign.center,),
-                    SizedBox(height: 19,),
+                    const SizedBox(height: 19,),
                     socialMediaButton(
                         context: context,
                         onTap: () {  },
