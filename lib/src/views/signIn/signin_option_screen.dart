@@ -17,7 +17,6 @@ class SignInOptionScreen extends StatefulWidget {
 }
 
 class _SignInOptionScreenState extends State<SignInOptionScreen> {
-
   @override
   Widget build(BuildContext context) {
     return ColorfulSafeArea(
