@@ -2,7 +2,10 @@ import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_expectation_screen.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_profession_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_screen_location.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_partner_expectation.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_one.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_two.dart';
@@ -20,6 +23,8 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+
+import 'sign_up_education_screen.dart';
 
 class SignUpOnboardScreen extends StatefulWidget {
   static final GlobalKey<_SignUpOnboardScreenState> pageViewKey =
@@ -123,6 +128,10 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         const SignUpScreenTwo(),
                         const SignUpScreenProfessional(),
                         const SignUpScreenPartnerExp(),
+                        const SignUpScreenLocation(),
+                        const SignUpScreenEducation(),
+                        const SignUpScreenProfessionScreen(),
+                        const SignUpScreenExpectationScreen(),
                         SingUpScreenThree(onImagePicked: (imagePath ) {
                           setState(() {
                             pickedImagePath = imagePath;
@@ -141,8 +150,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                 vertical: 10),
             child: SingleChildScrollView(
               child:
-              loading ?
-              loadingButton(context: context) :
+             /* loading ?
+              loadingButton(context: context) :*/
               button(
                   context: context,
                   onTap: (){
@@ -176,48 +185,80 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
+                    } else if (_currentPage == 4 ) {
+                      if (const SignUpScreenLocation().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    } else if (_currentPage == 5 ) {
+                      if (const SignUpScreenEducation().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    }  else if (_currentPage == 6 ) {
+                      if (const SignUpScreenProfessionScreen().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    } else if (_currentPage == 7 ) {
+                      if (const SignUpScreenExpectationScreen().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
                     }
-                    else if (_currentPage == 4) {
+
+                    else if (_currentPage == 8 ) {
                       if(pickedImagePath.isEmpty )  {
                         Fluttertoast.showToast(msg: "Please add Image and birth date");
                       } else {
                         setState(() {
                           loading = true;
                         });
+                        print('${authControl.year!}/${authControl.month!}/${authControl.day!}');
                         signUpApi(
-                          userName: authControl.userName!,
-                          email: authControl.email!,
-                          password:authControl.password!,
-                          mobileNo: authControl.phone!,
-                          passwordConfirmation: authControl.password!,
-                          firstName: authControl.firstName!,
-                          lastName: authControl.lastName!,
-                          lookingFor: 'My Self',
+                          userName: authControl.userName.toString(),
+                          email: authControl.email.toString(),
+                          password:authControl.password.toString(),
+                          mobileNo: authControl.phone.toString(),
+                          passwordConfirmation: authControl.password.toString(),
+                          firstName: authControl.firstName.toString(),
+                          lastName: authControl.lastName.toString(),
+                          lookingFor: authControl.lookingFor.toString(),
                           gender:authControl.gender!,
                           motherTongue: authControl.motherTongueIndex.toString(),
-                          birthDate: authControl.dob!,
+                          birthDate: '2024-07-09',
+                          // birthDate: '${authControl.year!}/${authControl.month!}/${authControl.day!}',
                           country:  'India',
                           countryCode:  'IN',
-                          maritalStatus: "unmarried",
+                          maritalStatus: authControl.marriedStatusIndex.toString(),
                           photo: pickedImagePath,
                           religion: authControl.religionMainIndex.toString(),
                           profession: authControl.professionIndex.toString(),
                           userType: 'Normal',
                           community:  authControl.communityMainIndex.toString(),
-                          // community:  authControl.communityMainIndex.toString(),
                           positionHeld: authControl.positionHeldIndex.toString(),
-                          state: authControl.state!,
-                          cadar: authControl.indianStates!,
-                          statePosting:  authControl.state!,
-                          districtPosting: authControl.district.toString(),
-                          postingStartDate: authControl.from.toString(),
+                          state: authControl.selectedState.toString(),
+                          cadar: authControl.cadar.toString(),
+                          statePosting:  authControl.posselectedState!,
+                          districtPosting: authControl.posselectedDistrict.toString(),
+                          postingStartDate:'2024-07-09',
+                          // postingStartDate: authControl.postingYear.toString(),
+                          // postingStartDate: authControl.from.toString(),
                           postingEndDate: '2024-07-09',
-                          degree: authControl.highestDegree!,
-                          fieldofStudy: authControl.fieldOfStudy!,
-                          institute:authControl.institute!,
-                          batchStart: authControl.batchFromString,
+                          degree: authControl.highestDegree.toString(),
+                          fieldofStudy: authControl.fieldOfStudy.toString(),
+                          institute:authControl.institute.toString(),
+                          batchStart: authControl.batchYear.toString(),
                           batchEnd: '2024',
-                          district: authControl.district.toString(),
+                          district: authControl.selectedDistrict.toString(),
                           middleName: authControl.middleName.toString(),
                           maritalStatusP: 'unmarried',
                           religionP: authControl.partnerReligion.toString(),
@@ -267,7 +308,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                   },
-                  title:_currentPage == 4 ? 'Submit' :'Next'),
+                  title:_currentPage == 8 ? 'Submit' :'Next'),
             ),
           ),
 
@@ -326,6 +367,47 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
           width: _currentPage == 4? 17 :7,
           decoration: BoxDecoration(
               color: _currentPage == 4 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+        Container(
+          height: 7,
+          width: _currentPage == 5? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 5 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+        Container(
+          height: 7,
+          width: _currentPage == 6? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 6 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+        Container(
+          height: 7,
+          width: _currentPage == 7? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 7 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+
+        Container(
+          height: 7,
+          width: _currentPage == 8 ? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 8 ?  primaryColor :
               colorD9D9D9,
               borderRadius: BorderRadius.circular(22)
           ),

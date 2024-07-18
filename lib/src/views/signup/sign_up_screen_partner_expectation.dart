@@ -6,6 +6,7 @@ import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart'
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/sizeboxes.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
@@ -28,9 +29,9 @@ class SignUpScreenPartnerExp extends StatefulWidget {
 
   @override
   State<SignUpScreenPartnerExp> createState() => _SignUpScreenPartnerExpState();
-  static final GlobalKey<FormState> _formKey5 = GlobalKey<FormState>();
+  static final GlobalKey<FormState> _formKey4 = GlobalKey<FormState>();
   bool validate() {
-    return _formKey5.currentState?.validate() ?? false;
+    return _formKey4.currentState?.validate() ?? false;
   }
 }
 
@@ -44,61 +45,28 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
     fields();
     super.initState();
   }
+  final _emailController = TextEditingController();
+  final _phNoController = TextEditingController();
 
   void fields() {
-    minAgeController.text = Get.find<AuthController>().partnerMinAge ?? '';
-    maxAgeController.text = Get.find<AuthController>().partnerMaxAge ?? '';
-    minHeightController.text = Get.find<AuthController>().partnerMinHeight ?? '';
-    maxHeightController.text = Get.find<AuthController>().partnerMaxHeight ?? '';
+    _emailController.text = Get.find<AuthController>().email ?? '';
+    _phNoController.text = Get.find<AuthController>().phone ?? '';
+
   }
 
 
 
 
 
-
-
-
-
-  final startBatchYearController = TextEditingController();
-  final endBatchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
-
-  final highestDegreeController = TextEditingController();
-  final fieldOfStudyController = TextEditingController();
-  final instituteController = TextEditingController();
-
-
-  final minHeightController = TextEditingController();
-  final maxHeightController = TextEditingController();
-
-  final minAgeController = TextEditingController();
-  final maxAgeController = TextEditingController();
-
-
-
-
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().getProfessionList();
-      Get.find<AuthController>().getPositionHeldList();
-      Get.find<AuthController>().getSmokingList();
-      Get.find<AuthController>().getDrinkingList();
-      // Get.find<AuthController>().clearStateDistrict();
-
-      // Get.find<AuthController>().getMotherTongueList();
-
-    });
-
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Scaffold(
         body: GetBuilder<AuthController>(builder: (authControl) {
-          startDateController.text =  authControl.from == null ? "Select StartDate" : authControl.from.toString();
+         /* startDateController.text =  authControl.from == null ? "Select StartDate" : authControl.from.toString();
           endDateController.text =  authControl.to == null ? "Select EndDate" : authControl.to.toString();
           startBatchYearController.text =  authControl.batchFromString;
           endBatchController.text = authControl.batchToString;
@@ -106,11 +74,126 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
               authControl.partPositionHeldList == null || authControl.partPositionHeldList!.isEmpty ||
               authControl.smokingList == null || authControl.smokingList!.isEmpty ||
               authControl.drikingList == null || authControl.drikingList!.isEmpty ?
-          const Center(child: CircularProgressIndicator()) :
-          SingleChildScrollView(
-            child: Form(key: SignUpScreenPartnerExp._formKey5,
-              child:
-              Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
+          const Center(child: CircularProgressIndicator()) :*/
+        return  SingleChildScrollView(
+            child: Form(key: SignUpScreenPartnerExp._formKey4,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      height: 104,
+                      width: 104,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        icEmailRegister,
+                      ),
+                    ),
+                  ),
+                  sizedBox20(),
+                  Text(
+                    'Please Enter Active Email and Mobile Number To Create Your Profile',
+                    textAlign: TextAlign.center,
+                    style: kManrope14Medium626262.copyWith(color: Colors.black),
+                  ),
+                  sizedBox12(),
+                  Text(
+                    'Email Id',
+                    style: kManrope25Black,
+                  ),
+                  sizedBox12(),
+                  CustomTextField(
+                    controller: _emailController,
+                    hintText: 'Email',
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setEmail(_emailController.text);
+                    },
+                  ),
+                  sizedBox20(),
+                  Text(
+                    'Phone Number',
+                    style: kManrope25Black,
+                  ),
+                  sizedBox12(),
+                  CustomTextField(
+                    inputType: TextInputType.number,
+                    isNumber: true,
+                    controller: _phNoController,
+                    hintText: 'Phone',
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter your Phone No';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setPhone(_phNoController.text);
+                    },
+                  ),
+          sizedBox20(),
+          RichText(textAlign: TextAlign.center,
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'By Creating Account, You Agreed To Our',
+                  style: kManrope14Medium626262.copyWith(color: Colors.black,fontSize: 12),
+                ),
+                TextSpan(
+                  text: ' Privacy Policy',
+                  style: kManrope14Medium626262.copyWith(color: Colors.redAccent,fontSize: 12),
+                ),
+                TextSpan(
+                  text: ' and',
+                  style: kManrope14Medium626262.copyWith(color: Colors.black,fontSize: 12),
+                ),
+                TextSpan(
+                  text: ' Terms & Condition',
+                  style: kManrope14Medium626262.copyWith(color: Colors.redAccent,fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+
+
+
+
+                ],
+              ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  /// #############################################################################################
+              /// #######################################################################
+              /// ####################################
+            /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Partner Expectation',
                     style: kManrope25Black,),
@@ -436,7 +519,7 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                     );
                   }).toList(),
                   ),
-                 /* Align(
+                 *//* Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Smoking",
                       textAlign: TextAlign.left,
@@ -493,10 +576,10 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                         },
                         defaultSelected: "Yes",
                       ),),
-                  ),*/
+                  ),*//*
 
                 ],
-              ),
+              ),*/
             ),
           );
         }),

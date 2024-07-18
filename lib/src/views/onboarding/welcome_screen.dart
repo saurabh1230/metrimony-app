@@ -127,7 +127,7 @@ class WelcomeScreen extends StatelessWidget {
                      behavior: HitTestBehavior.translucent,
                      onTap: () {
                        Navigator.push(context, MaterialPageRoute(builder: (builder)=>
-                     const SignInScreen()));},
+                     const SignInOptionScreen()));},
                      child: Text("Sign in",
                      style: kManrope18BoldBlack,),
                    )

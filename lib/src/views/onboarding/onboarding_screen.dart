@@ -1,5 +1,6 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/views/onboarding/welcome_screen.dart';
+import 'package:bureau_couple/src/views/signIn/signin_option_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -79,7 +80,7 @@ class _IntroPageState extends State<IntroPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => WelcomeScreen(),
+                              builder: (_) => const SignInOptionScreen(),
                             ),
                           );
                         }

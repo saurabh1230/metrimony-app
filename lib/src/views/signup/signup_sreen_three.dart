@@ -1,5 +1,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -18,6 +20,10 @@ class SingUpScreenThree extends StatefulWidget {
 
   @override
   State<SingUpScreenThree> createState() => _SingUpScreenThreeState();
+  static final GlobalKey<FormState> _formKeyfinal = GlobalKey<FormState>();
+  bool validate() {
+    return _formKeyfinal.currentState?.validate() ?? false;
+  }
 }
 
 class _SingUpScreenThreeState extends State<SingUpScreenThree> {
@@ -30,6 +36,8 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
     pickedImage = File(""); // I
     DateTime today = DateTime.now();
     _selectedDate = today.subtract(const Duration(days: 18 * 365));
+    fields();
+
     super.initState();
   }
 
@@ -44,11 +52,20 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
     }
   }
 
+
+
   Future<String> _saveImage(File image) async {
     return image.path;
   }
 
+  final usernameController =  TextEditingController();
+  final passwordController =  TextEditingController();
 
+  void fields() {
+    usernameController.text = Get.find<AuthController>().userName ?? '';
+    passwordController.text = Get.find<AuthController>().password ?? '';
+
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -58,67 +75,119 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
       child: Scaffold(
         body: GetBuilder<AuthController>(builder: (authControl) {
           return  SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 50,),
-                GestureDetector(
-                  onTap: () async {
-                    XFile? v = await _imgPicker.pickImage(
-                        source: ImageSource.gallery);
-                    if (v != null) {
-                      setState(
-                            () {
-                          pickedImage = File(v.path);
-                        },
-                      );
-                      widget.onImagePicked(v.path);
-                    }
+            child: Form(
+              key: SingUpScreenThree._formKeyfinal,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 50,),
+                  GestureDetector(
+                    onTap: () async {
+                      XFile? v = await _imgPicker.pickImage(
+                          source: ImageSource.gallery);
+                      if (v != null) {
+                        setState(
+                              () {
+                            pickedImage = File(v.path);
+                          },
+                        );
+                        widget.onImagePicked(v.path);
+                      }
 
-                  },
-                  child: Container(
-                    height: 104,
-                    width:  104,
-                    clipBehavior: Clip.hardEdge,
-                    decoration:  const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ) ,
-                    child: pickedImage.path.isEmpty
-                        ? Image.asset(icProfilePlaceHolder,
-                    )
-                        : Image.file(
-                      pickedImage,
-                      fit: BoxFit.cover,
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 104,
+                        width:  104,
+                        clipBehavior: Clip.hardEdge,
+                        decoration:  const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ) ,
+                        child: pickedImage.path.isEmpty
+                            ? Image.asset(icProfilePlaceHolder,
+                        )
+                            : Image.file(
+                          pickedImage,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                sizedBox20(),
-                Text("What is your birthday?",
-                  style: styleSatoshiBold(size: 25, color: Colors.black),),
-                sizedBox13(),
-                Text("Your age information will be updated on your profile page and this will displayed publicly on your profile.",
-                  style: styleSatoshiLight(size: 14, color: color828282),
-                  textAlign: TextAlign.center,),
-                SizedBox(
-                  height: 250,
-                  child: ScrollDatePicker(
-                    maximumDate:  DateTime(2006, 12, 31),
-                    selectedDate: _selectedDate,
-                    locale: const Locale('en'),
-                    onDateTimeChanged: (DateTime value) {
-                      setState(() {
-                        _selectedDate = value;
-                        final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                        String formattedDate = formatter.format(_selectedDate);
-                        authControl.setDob(formattedDate);
-                        print(formattedDate);
-                        print(_selectedDate);
-                        print('SharedPrefs().getDob()');
-
-                      });
+                  sizedBox20(),
+                  Text(
+                    'Final Step Lets Choose Profile Picture And Login Details',
+                    textAlign: TextAlign.center,
+                    style: kManrope14Medium626262.copyWith(color: Colors.black),
+                  ),
+                  sizedBox20(),
+                  // SizedBox(
+                  //   height: 250,
+                  //   child: ScrollDatePicker(
+                  //     maximumDate:  DateTime(2006, 12, 31),
+                  //     selectedDate: _selectedDate,
+                  //     locale: const Locale('en'),
+                  //     onDateTimeChanged: (DateTime value) {
+                  //       setState(() {
+                  //         _selectedDate = value;
+                  //         final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                  //         String formattedDate = formatter.format(_selectedDate);
+                  //         authControl.setDob(formattedDate);
+                  //         print(formattedDate);
+                  //         print(_selectedDate);
+                  //         print('SharedPrefs().getDob()');
+                  //
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
+                  Text(
+                    'Choose Username',
+                    textAlign: TextAlign.center,
+                    style: kManrope25Black.copyWith(fontSize: 16),
+                  ),
+                  sizedBox12(),
+                  CustomTextField(
+                    controller: usernameController,
+                    hintText: 'Username',
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter username';
+                      } else if (value.length < 6) {
+                        return 'Username must be at least 6 characters long';
+                      } else if (!RegExp(r'^[a-z0-9]+$').hasMatch(value)) {
+                        return 'Username must not contain special characters, spaces, or capital letters';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setUserName(usernameController.text);
                     },
                   ),
-                ),
-              ],
+                  sizedBox20(),
+                  Text(
+                    'Choose Password',
+                    textAlign: TextAlign.center,
+                    style: kManrope25Black.copyWith(fontSize: 16),
+                  ),
+                  sizedBox12(),
+                  CustomTextField(
+                    showTitle: true,
+                    isPassword: true,
+                    controller: passwordController,
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter your Password';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setPassword(passwordController.text);
+                    },
+                    hintText: 'Password',
+                  ),
+
+
+                ],
+              ),
             ),
           );
         } ),

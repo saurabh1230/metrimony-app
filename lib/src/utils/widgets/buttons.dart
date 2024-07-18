@@ -252,6 +252,7 @@ socialMediaButton({
   required Function() onTap,
   required String title,
   required String image,
+
 }) {
   return GestureDetector(
     onTap: onTap,
@@ -260,7 +261,7 @@ socialMediaButton({
       height: 48,
       decoration:  BoxDecoration(
           borderRadius: BorderRadius.circular(32),
-          color: Colors.transparent,
+          color: Colors.white,
           border: Border.all(
               width: 0.3,
               color: lightGrey.withOpacity(0.30)
@@ -273,7 +274,7 @@ socialMediaButton({
             Image.asset(image,
               height: 24,
               width: 24,),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
             Text(title,
               style: kManrope16MediumBlack,),
           ],

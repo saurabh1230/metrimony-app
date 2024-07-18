@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/data/response/community_model.dart';
+import 'package:bureau_couple/getx/data/response/married_status_model.dart';
 import 'package:bureau_couple/getx/data/response/mother_tongue_model.dart';
 import 'package:bureau_couple/getx/data/response/position_held.dart';
 import 'package:bureau_couple/getx/data/response/profession_model.dart';
@@ -241,7 +242,7 @@ class AuthController extends GetxController implements GetxService {
   };
 
 
-  final Map<String, List<String>> posStateDistricts = {
+  final Map<String, List<String>> posstateDistricts = {
     'Andhra Pradesh': ['Anantapur', 'Chittoor', 'East Godavari', 'Guntur', 'Krishna', 'Kurnool', 'Prakasam', 'Srikakulam', 'Sri Potti Sriramulu Nellore', 'Visakhapatnam', 'Vizianagaram', 'West Godavari', 'YSR Kadapa'],
     'Arunachal Pradesh': ['Tawang', 'West Kameng', 'East Kameng', 'Papum Pare', 'Kurung Kumey', 'Kra Daadi', 'Lower Subansiri', 'Upper Subansiri', 'West Siang', 'East Siang', 'Siang', 'Upper Siang', 'Lower Siang', 'Lower Dibang Valley', 'Dibang Valley', 'Anjaw', 'Lohit', 'Namsai', 'Changlang', 'Tirap', 'Longding'],
     'Assam': ['Baksa', 'Barpeta', 'Biswanath', 'Bongaigaon', 'Cachar', 'Charaideo', 'Chirang', 'Darrang', 'Dhemaji', 'Dhubri', 'Dibrugarh', 'Goalpara', 'Golaghat', 'Hailakandi', 'Hojai', 'Jorhat', 'Kamrup Metropolitan', 'Kamrup', 'Karbi Anglong', 'Karimganj', 'Kokrajhar', 'Lakhimpur', 'Majuli', 'Morigaon', 'Nagaon', 'Nalbari', 'Dima Hasao', 'Sivasagar', 'Sonitpur', 'South Salmara-Mankachar', 'Tinsukia', 'Udalguri', 'West Karbi Anglong'],
@@ -298,24 +299,28 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  String? _selectedPosState;
+  String? _posselectedState;
 
-  String? get selectedPosState => _selectedPosState;
+  String? get posselectedState => _posselectedState;
 
-  String? _selectedPosDistrict;
+  String? _posselectedDistrict;
 
-  String? get selectedPosDistrict => _selectedPosDistrict;
+  String? get posselectedDistrict => _posselectedDistrict;
 
-  List<String> get posStates => posStateDistricts.keys.toList();
+  List<String> get posstates => posstateDistricts.keys.toList();
 
-  List<String> get posDistricts =>
-      _selectedPosState == null || _selectedPosState!.isEmpty
+  List<String> get posdistricts =>
+      _posselectedState == null || _posselectedState!.isEmpty
           ? []
-          : posStateDistricts[_selectedState!] ?? [];
+          : posstateDistricts[_posselectedState!] ?? [];
 
-  void setPosState(String state) {
-    _selectedPosState = state;
-    _selectedPosDistrict = null;
+  void possetState(String state) {
+    _posselectedState = state;
+    _posselectedDistrict = null;
+    update();
+  }
+  void possetDistrict(String district) {
+    _posselectedDistrict = district;
     update();
   }
 
@@ -335,10 +340,10 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  void setPosDistrict(String district) {
-    _selectedPosDistrict = district;
-    update();
-  }
+  // void setPosDistrict(String district) {
+  //   _selectedPosDistrict = district;
+  //   update();
+  // }
 
   List<ReligionModel>? _religionList;
 
@@ -723,6 +728,33 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  String? _day;
+
+  String? get day => _day;
+
+  void setDay(String lastName) {
+    _day = lastName;
+    update();
+  }
+
+  String? _month;
+
+  String? get month => _month;
+
+  void setMonth(String lastName) {
+    _month = lastName;
+    update();
+  }
+
+  String? _year;
+
+  String? get year => _year;
+
+  void setYear(String lastName) {
+    _year = lastName;
+    update();
+  }
+
   String? _email;
 
   String? get email => _email;
@@ -803,7 +835,10 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-  String? _gender = "M";
+
+  final List<String> genderList = ['Male','Female','Others'];
+
+  String? _gender = "Male";
   String? get gender => _gender;
 
   void setGender(String? gender) {
@@ -838,14 +873,7 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-  String? _cadar;
 
-  String? get cadar => _cadar;
-
-  void setCadar(String cadar) {
-    _cadar = cadar;
-    update();
-  }
 
   String? _batchStartYear;
 
@@ -901,14 +929,7 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners that selectedState has changed
   }
 
-  String? _highestDegree;
 
-  String? get highestDegree => _highestDegree;
-
-  void setHighestDegree(String highestDegree) {
-    _highestDegree = highestDegree;
-    update(); // Notify listeners that selectedState has changed
-  }
 
   String? _fieldOfStudy;
 
@@ -1152,6 +1173,10 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+
+
+
+
   final List<String> indianStatesAndUTs = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
     'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
@@ -1167,6 +1192,174 @@ class AuthController extends GetxController implements GetxService {
     _indianStates = state;
     update();
   }
+
+
+  final List<String> highestDegreeList = [
+    'Doctorate', 'Master\'s', 'Bachelor\'s', 'Diploma', 'Higher Secondary', 'Secondary', 'Primary'
+  ];
+
+  String? _highestDegree;
+
+  String? get highestDegree => _highestDegree;
+
+  List<String> get highesdegree => highestDegreeList;
+
+  void setHighestDegree(String state) {
+    _highestDegree = state;
+    update();
+  }
+
+  final List<String> batchYearList = [
+    '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010',
+    '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996',
+    '1995', '1994', '1993', '1992', '1991', '1990', '1989', '1988', '1987', '1986', '1985', '1984', '1983', '1982',
+    '1981', '1980', '1979', '1978', '1977', '1976', '1975', '1974', '1973', '1972', '1971', '1970'
+  ];
+
+
+  String? _batchYear;
+
+  String? get batchYear => _batchYear;
+
+  List<String> get batchyear => batchYearList;
+
+  void setBatchYear(String state) {
+    _batchYear = state;
+    update();
+  }
+  String? _postingYear;
+
+  String? get postingYear => _postingYear;
+  void setPostingYear(String state) {
+    _postingYear = state;
+    update();
+  }
+
+
+  final List<String> cadarList = [
+      'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+      'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
+  ];
+
+  String? _cadar;
+
+  String? get cadar => _cadar;
+  List<String> get cadars => cadarList;
+
+  void setCadar(String cadar) {
+    _cadar = cadar;
+    update();
+  }
+
+
+  // final List<String> indianStatesAndUTs = [
+  //   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+  //   'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
+  // ];
+  //
+  // String? _indianStates;
+  //
+  // String? get indianStates => _indianStates;
+  //
+  // List<String> get indianstates => indianStatesAndUTs;
+  //
+  // void setIndianStates(String state) {
+  //   _indianStates = state;
+  //   update();
+  // }
+
+  /// /////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+  final List<String> lookingForList = ["MySelf", "My Son", "My Daughter", 'My Brother', 'Sister','My Friend'];
+
+  String? _lookingFor = "MySelf";
+  String? get lookingFor => _lookingFor;
+
+  void setLookingFor(String? gender) {
+    _lookingFor = gender;
+    update();
+  }
+
+
+
+
+
+
+  int? _marriedStatusIndex = 0;
+
+  int? get marriedStatusIndex => _marriedStatusIndex;
+  List<int?> _marriedStatusIds = [];
+
+  List<int?> get marriedStatusIds => _marriedStatusIds;
+  List<MarriedStatusModel>? _marriedStatusList;
+
+  List<MarriedStatusModel>? get marriedStatusList => _marriedStatusList;
+
+  List<MarriedStatusModel>? _partmarriedStatusList;
+
+  List<MarriedStatusModel>? get partmarriedStatusList => _partmarriedStatusList;
+
+  // int? _partnermarriedStatus;
+  // int? get partnermarriedStatus => _partnermarriedStatus;
+  //
+  // void setmarriedStatus(int val) {
+  //   _partnermarriedStatus = val;
+  //   update();
+  // }
+
+  void setmarriedStatusIndex(int? index, bool notify) {
+    _marriedStatusIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
+  Future<void> getmarriedStatusList() async {
+    _isLoading = true;
+    update();
+    try {
+      Response response = await authRepo.getAttributesUrl();
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = response.body['data']['maritalStatuses'];
+        // _positionHeldList = responseData
+        //     .map((json) => PositionHeldModel.fromJson(json))
+        //     .toList();
+        _marriedStatusList = responseData
+            .map((json) => MarriedStatusModel.fromJson(json))
+            .where((religion) => religion.id != 13)
+            .toList();
+        _partmarriedStatusList = responseData
+            .map((json) => MarriedStatusModel.fromJson(json))
+            .where((religion) => religion.id != 14)
+            .toList();
+        _marriedStatusIds = [0, ..._marriedStatusList!.map((e) => e.id)];
+
+        // Select the first item by default
+        if (_marriedStatusList!.isNotEmpty) {
+          _marriedStatusIndex = _marriedStatusList![0].id;
+          // _partnerPosition = _positionHeldList![0].id;
+        }
+        _isLoading = false;
+        update();
+      } else {
+        // Handle API error
+        // ApiChecker.checkApi(response);
+      }
+    } catch (error) {
+      // Handle errors, such as network failures
+      print("Error while fetching list: $error");
+      _isLoading = false;
+      update();
+    } finally {
+      _isLoading = false;
+      update();
+    }
+  }
+
+
+
 
 
 
@@ -1202,7 +1395,7 @@ class YearPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Select Year"),
+      title: const Text("Select Year"),
       content: Container(
         width: 300,
         height: 300,

@@ -35,7 +35,7 @@ textBoxSuffixIcon({
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         ),
         errorBorder: const OutlineInputBorder(
@@ -49,7 +49,7 @@ textBoxSuffixIcon({
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         ),
         hintText: hint,
@@ -57,7 +57,7 @@ textBoxSuffixIcon({
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         )),
     onChanged: onChanged,
@@ -152,9 +152,9 @@ textBox({
             horizontal: 5),
         enabledBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius ??10)),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         ),
         errorBorder:  OutlineInputBorder(
@@ -166,17 +166,18 @@ textBox({
         ),
         focusedBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius ??10)),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         ),
         hintText: hint,
+
         focusedErrorBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius ??10)),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             width: 0.5,
-            color: lightGrey.withOpacity(0.30),
+            color: Colors.black,
           ),
         )),
     validator: validator,

@@ -21,40 +21,19 @@ import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpScreenProfessional extends StatefulWidget {
+class SignUpScreenProfessionScreen extends StatefulWidget {
 
-  const SignUpScreenProfessional({super.key,});
+  const SignUpScreenProfessionScreen({super.key,});
 
   @override
-  State<SignUpScreenProfessional> createState() => _SignUpScreenProfessionalState();
-  static final GlobalKey<FormState> _formKey3 = GlobalKey<FormState>();
+  State<SignUpScreenProfessionScreen> createState() => _SignUpScreenProfessionScreenState();
+  static final GlobalKey<FormState> _formKey7 = GlobalKey<FormState>();
   bool validate() {
-    return _formKey3.currentState?.validate() ?? false;
+    return _formKey7.currentState?.validate() ?? false;
   }
 }
 
-class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
-
-  File pickedImage = File("");
-  final ImagePicker _imgPicker = ImagePicker();
-
-  final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["Male","Female","Other"];
-  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
-  final List<String> married = ["Unmarried","Widowed","Divorced"];
-
-
-
-  final cadreController = TextEditingController();
-  final stateController = TextEditingController();
-  final districtController = TextEditingController();
-
-
-
-  final startBatchYearController = TextEditingController();
-  final endBatchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
+class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScreen> {
 
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
@@ -65,11 +44,12 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
     fields();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().getReligionsList();
-      Get.find<AuthController>().getCommunityList();
-      Get.find<AuthController>().getMotherTongueList();
-      Get.find<AuthController>().getmarriedStatusList();
-      print( Get.find<AuthController>().marriedStatusList!.length);
+      Get.find<AuthController>().getProfessionList();
+      Get.find<AuthController>().getPositionHeldList();
+      // Get.find<AuthController>().clearStateDistrict();
+
+      // Get.find<AuthController>().getMotherTongueList();
+
     });
   }
 
@@ -105,107 +85,156 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
           // endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
           // startBatchYearController.text =  authControl.batchFromString;
           // endBatchController.text = authControl.batchToString;
-          return authControl.religionList == null || authControl.religionList!.isEmpty ||
-          authControl.communityList == null || authControl.communityList!.isEmpty ||
-          authControl.marriedStatusList == null || authControl.marriedStatusList!.isEmpty ||
-              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty
-              ?
+          return authControl.professionList == null || authControl.professionList!.isEmpty ||
+              authControl.positionHeldList == null || authControl.positionHeldList!.isEmpty ?
           const Center(child: CircularProgressIndicator()) :
-      SingleChildScrollView(
-            child: Form(key: SignUpScreenProfessional._formKey3,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  sizedBox20(),
-                  Center(
-                    child: Container(
-                      height: 104,
-                      width: 104,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+          SingleChildScrollView(
+            child: Form(key: SignUpScreenProfessionScreen._formKey7,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sizedBox20(),
+                    Center(
+                      child: Container(
+                        height: 104,
+                        width: 104,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(
+                          icProfessionRegister,
+                        ),
                       ),
-                      child: Image.asset(
-                        icReligionRegister,
+                    ),  sizedBox20(),
+                    Center(
+                      child: Text("Now Let's Add Professional Details",
+                        textAlign: TextAlign.center,
+                        style: kManrope14Medium626262.copyWith(color: Colors.black),
                       ),
                     ),
-                  ),
-                  sizedBox20(),
-                  Center(
-                    child: Text("Now Pick Your Identity Details",
-                      textAlign: TextAlign.center,
-                      style: kManrope14Medium626262.copyWith(color: Colors.black),
+                    sizedBox20(),
+
+                    Text(
+                      'Profession',
+                      style: kManrope25Black.copyWith(fontSize: 16),
                     ),
-                  ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      items: authControl.professionList!.map((religion) => religion.name!).toList(),
+                      onChanged: (value) {
+                        var selected = authControl.professionList!.firstWhere((religion) => religion.name == value);
+                        authControl.setProfessionIndex(selected.id, true);
+                        print(authControl.professionIndex);
+                      },
+                      title: "Profession",
+                      selectedValue: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Position',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      items: authControl.positionHeldList!.map((religion) => religion.name!).toList(),
+                      onChanged: (value) {
+                        var selected = authControl.positionHeldList!.firstWhere((religion) => religion.name == value);
+                        authControl.setPositionIndex(selected.id, true);
+                        print(authControl.positionHeldIndex);
+                      },
+                      title: "Profession",
+                      selectedValue: authControl.positionHeldList!.firstWhere((religion) => religion.id == authControl.positionHeldIndex).name,
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Cadar ',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Select Cadar",
+                      items: authControl.cadarList,
+                      selectedValue: authControl.cadar ?? authControl.cadarList.first,
+                      onChanged: (value) {
+                        authControl.setCadar(value ?? authControl.cadarList.first);
+                        print('cadre =========== >${authControl.cadar}');
+                      },
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Batch Year',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Batch Year",
+                      items: authControl.batchYearList,
+                      selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                      onChanged: (value) {
+                        authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                        print(authControl.batchYear);
+                      },
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Posting State',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Select State/UT",
+                      items: authControl.posstates,
+                      selectedValue: authControl.posselectedState,
+                      onChanged: (value) {
+                        authControl.possetState(value ?? authControl.posstates.first);
+                      },
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val == 'Select State') {
+                          return 'Please Select State';
+                        }
+                        return null;
+                      },
+                    ),
 
-                  // sizedBox20(),
-                  // Text(
-                  //   'Married Status',
-                  //   style: kManrope25Black,
-                  // ),
-                  // sizedBox12(),
-                  // CustomStyledDropdownButton(
-                  //   items: authControl.marriedStatusList!.map((religion) => religion.name!).toList(),
-                  //   onChanged: (value) {
-                  //     var selectedReligion = authControl.marriedStatusList!.firstWhere((religion) => religion.name == value);
-                  //     authControl.setReligionMainIndex(selectedReligion.id, true);
-                  //     print(authControl.religionMainIndex);
-                  //   },
-                  //   title: "Select Religion",
-                  //   selectedValue: authControl.marriedStatusList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-                  // ),
-
-                  sizedBox20(),
-                  Text(
-                    'Your Religion',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                items: authControl.religionList!.map((religion) => religion.name!).toList(),
-                onChanged: (value) {
-                  var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.name == value);
-                  authControl.setReligionMainIndex(selectedReligion.id, true);
-                  print(authControl.religionMainIndex);
-                },
-                title: "Select Religion",
-                selectedValue: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-              ),
-                  sizedBox20(),
-                  Text(
-                    'Mother Tongue',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.motherTongueList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selectedReligion = authControl.motherTongueList!.firstWhere((religion) => religion.name == value);
-                      authControl.setMotherTongueIndex(selectedReligion.id, true);
-                      print(authControl.motherTongueIndex );
-                    },
-                    title: "Select Religion",
-                    selectedValue: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex ).name,
-                  ),
-                  sizedBox20(),
-                  Text(
-                    'Your Caste',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.communityList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selected = authControl.communityList!.firstWhere((religion) => religion.name == value);
-                      authControl.setCommunityMainListIndex(selected.id, true);
-                      print(authControl.communityMainIndex);
-                    },
-                    title: "Select Caste",
-                    selectedValue: authControl.communityList!.firstWhere((religion) => religion.id == authControl.communityMainIndex).name,
-                  ),
+                    sizedBox20(),
+                    Text(
+                      'Posting District',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Select District",
+                      items: authControl.posdistricts,
+                      selectedValue: authControl.posselectedDistrict,
+                      onChanged: (value) {
+                        authControl.possetDistrict(value ?? authControl.posdistricts.first);
+                      },
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val == 'Select District') {
+                          return 'Please Select district';
+                        }
+                        return null;
+                      },
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Posting Year',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Posting Year",
+                      items: authControl.batchYearList,
+                      selectedValue: authControl.postingYear ?? authControl.batchYearList.first,
+                      onChanged: (value) {
+                        authControl.setPostingYear(value ?? authControl.batchYearList.first);
+                        print(authControl.postingYear);
+                      },
+                    ),
 
 
-                ],
-              )
+                  ],
+                )
 
 
 
@@ -228,7 +257,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
 
 
-            /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
+              /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Professional Info',
                     style: kManrope25Black,),
@@ -574,96 +603,4 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
     );
   }
 }
-class ChipList extends StatefulWidget {
-  final List<dynamic> elements;
-  final Function(dynamic) onChipSelected;
-  final dynamic? defaultSelected;
 
-  const ChipList({
-    Key? key,
-    required this.elements,
-    required this.onChipSelected,
-    this.defaultSelected,
-  }) : super(key: key);
-
-  @override
-  _ChipListState createState() => _ChipListState();
-}
-
-class _ChipListState extends State<ChipList> {
-  late dynamic selectedChip;
-  String errorMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    selectedChip = widget.defaultSelected ?? '';
-    // selectedChip = widget.defaultSelected ?? widget.elements.first; // Set the default selected chip
-    errorMessage = '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: widget.elements.map((e) => ChipBox(value: e)).toList(),
-        ),
-        if (errorMessage.isNotEmpty)
-          Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.red),
-          ),
-      ],
-    );
-  }
-
-  void handleChipSelected(dynamic chipValue) {
-    if (validateChip(chipValue)) {
-      setState(() {
-        selectedChip = chipValue;
-        widget.onChipSelected(selectedChip);
-        errorMessage = '';
-      });
-    } else {
-      setState(() {
-        errorMessage = 'Invalid chip selected';
-      });
-    }
-  }
-
-  bool validateChip(dynamic chipValue) {
-    return chipValue != null; // Simple validation: Check if the chipValue is not null
-  }
-}
-
-class ChipBox extends StatelessWidget {
-  final dynamic value;
-
-  const ChipBox({Key? key, required this.value}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _ChipListState chipListState =
-    context.findAncestorStateOfType<_ChipListState>()!;
-
-    return ActionChip(
-      onPressed: () {
-        chipListState.handleChipSelected(value);
-      },
-      backgroundColor:
-      value == chipListState.selectedChip ? color4B164C.withOpacity(0.80) : Colors.white,
-      label: Text(
-        value.toString(),
-        style:
-        TextStyle(
-          fontSize: 16,
-          color: value == chipListState.selectedChip ? Colors.white : color4B164C.withOpacity(0.80),
-        ),
-      ),
-    );
-  }
-}

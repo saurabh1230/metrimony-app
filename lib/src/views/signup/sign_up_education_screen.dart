@@ -21,40 +21,19 @@ import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpScreenProfessional extends StatefulWidget {
+class SignUpScreenEducation extends StatefulWidget {
 
-  const SignUpScreenProfessional({super.key,});
+  const SignUpScreenEducation({super.key,});
 
   @override
-  State<SignUpScreenProfessional> createState() => _SignUpScreenProfessionalState();
-  static final GlobalKey<FormState> _formKey3 = GlobalKey<FormState>();
+  State<SignUpScreenEducation> createState() => _SignUpScreenEducationState();
+  static final GlobalKey<FormState> _formKey6 = GlobalKey<FormState>();
   bool validate() {
-    return _formKey3.currentState?.validate() ?? false;
+    return _formKey6.currentState?.validate() ?? false;
   }
 }
 
-class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
-
-  File pickedImage = File("");
-  final ImagePicker _imgPicker = ImagePicker();
-
-  final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["Male","Female","Other"];
-  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
-  final List<String> married = ["Unmarried","Widowed","Divorced"];
-
-
-
-  final cadreController = TextEditingController();
-  final stateController = TextEditingController();
-  final districtController = TextEditingController();
-
-
-
-  final startBatchYearController = TextEditingController();
-  final endBatchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
+class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
 
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
@@ -64,13 +43,13 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
   void initState() {
     fields();
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().getReligionsList();
-      Get.find<AuthController>().getCommunityList();
-      Get.find<AuthController>().getMotherTongueList();
-      Get.find<AuthController>().getmarriedStatusList();
-      print( Get.find<AuthController>().marriedStatusList!.length);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Get.find<AuthController>().getReligionsList();
+    //   Get.find<AuthController>().getCommunityList();
+    //   print("checlk sttaus");
+    //   Get.find<AuthController>().getMarriedStatusList();
+    //   print( Get.find<AuthController>().marriedStatusList!.length);
+    // });
   }
 
 
@@ -106,106 +85,106 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
           // startBatchYearController.text =  authControl.batchFromString;
           // endBatchController.text = authControl.batchToString;
           return authControl.religionList == null || authControl.religionList!.isEmpty ||
-          authControl.communityList == null || authControl.communityList!.isEmpty ||
-          authControl.marriedStatusList == null || authControl.marriedStatusList!.isEmpty ||
-              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty
+              authControl.communityList == null || authControl.communityList!.isEmpty ||
+              authControl.marriedStatusList == null || authControl.marriedStatusList!.isEmpty
               ?
           const Center(child: CircularProgressIndicator()) :
-      SingleChildScrollView(
-            child: Form(key: SignUpScreenProfessional._formKey3,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  sizedBox20(),
-                  Center(
-                    child: Container(
-                      height: 104,
-                      width: 104,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+          SingleChildScrollView(
+            child: Form(key: SignUpScreenEducation._formKey6,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sizedBox20(),
+                    Center(
+                      child: Container(
+                        height: 104,
+                        width: 104,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(
+                          icDegreeRegister,
+                        ),
                       ),
-                      child: Image.asset(
-                        icReligionRegister,
+                    ),  sizedBox20(),
+                    Center(
+                      child: Text(
+                        'Few More Steps Please Add \nYour Education Details',
+                        textAlign: TextAlign.center,
+                        style: kManrope14Medium626262.copyWith(color: Colors.black),
                       ),
                     ),
-                  ),
-                  sizedBox20(),
-                  Center(
-                    child: Text("Now Pick Your Identity Details",
-                      textAlign: TextAlign.center,
-                      style: kManrope14Medium626262.copyWith(color: Colors.black),
+                    sizedBox20(),
+
+                    Text(
+                      'Highest Degress',
+                      style: kManrope25Black.copyWith(fontSize: 16),
                     ),
-                  ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Select State/UT",
+                      items: authControl.highestDegreeList,
+                      selectedValue: authControl.highestDegree ?? authControl.highestDegreeList.first,
+                      onChanged: (value) {
+                        authControl.setHighestDegree(value ?? authControl.highestDegreeList.first);
+                        print(authControl.highestDegree);
+                      },
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Field of Study',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomTextField(hintText: "Field of Study",
+                      controller: fieldOfStudyController,
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter your Field of Study';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        authControl.setFieldOfStudy(fieldOfStudyController.text);
+                        print(authControl.fieldOfStudy);
+                      },
+                      showTitle: false,),
+                    sizedBox20(),
+                    Text(
+                      'University / College ',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomTextField(hintText: "University / College ",
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter your University / College';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        authControl.setInstitute(instituteController.text);
+                      },
+                      controller: instituteController,
+                      showTitle: false,),
+                    sizedBox20(),
+                    Text(
+                      'Batch Year',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Batch Year",
+                      items: authControl.batchYearList,
+                      selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                      onChanged: (value) {
+                        authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                        print(authControl.batchYear);
+                      },
+                    ),
 
-                  // sizedBox20(),
-                  // Text(
-                  //   'Married Status',
-                  //   style: kManrope25Black,
-                  // ),
-                  // sizedBox12(),
-                  // CustomStyledDropdownButton(
-                  //   items: authControl.marriedStatusList!.map((religion) => religion.name!).toList(),
-                  //   onChanged: (value) {
-                  //     var selectedReligion = authControl.marriedStatusList!.firstWhere((religion) => religion.name == value);
-                  //     authControl.setReligionMainIndex(selectedReligion.id, true);
-                  //     print(authControl.religionMainIndex);
-                  //   },
-                  //   title: "Select Religion",
-                  //   selectedValue: authControl.marriedStatusList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-                  // ),
-
-                  sizedBox20(),
-                  Text(
-                    'Your Religion',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                items: authControl.religionList!.map((religion) => religion.name!).toList(),
-                onChanged: (value) {
-                  var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.name == value);
-                  authControl.setReligionMainIndex(selectedReligion.id, true);
-                  print(authControl.religionMainIndex);
-                },
-                title: "Select Religion",
-                selectedValue: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-              ),
-                  sizedBox20(),
-                  Text(
-                    'Mother Tongue',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.motherTongueList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selectedReligion = authControl.motherTongueList!.firstWhere((religion) => religion.name == value);
-                      authControl.setMotherTongueIndex(selectedReligion.id, true);
-                      print(authControl.motherTongueIndex );
-                    },
-                    title: "Select Religion",
-                    selectedValue: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex ).name,
-                  ),
-                  sizedBox20(),
-                  Text(
-                    'Your Caste',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.communityList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selected = authControl.communityList!.firstWhere((religion) => religion.name == value);
-                      authControl.setCommunityMainListIndex(selected.id, true);
-                      print(authControl.communityMainIndex);
-                    },
-                    title: "Select Caste",
-                    selectedValue: authControl.communityList!.firstWhere((religion) => religion.id == authControl.communityMainIndex).name,
-                  ),
-
-
-                ],
-              )
+                  ],
+                )
 
 
 
@@ -228,7 +207,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
 
 
-            /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
+              /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Professional Info',
                     style: kManrope25Black,),

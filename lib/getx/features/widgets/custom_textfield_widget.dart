@@ -30,6 +30,8 @@ class CustomTextField extends StatefulWidget {
   final bool readOnly;
   final Function()? onTap;
   final FormFieldValidator<String>? validation;
+  final String? label; // New parameter
+  final int? maximumInput; // New parameter
 
   const CustomTextField({
     Key? key,
@@ -59,6 +61,8 @@ class CustomTextField extends StatefulWidget {
     this.readOnly = false,
     this.onTap,
     this.validation,
+    this.label, // Initialize new parameter
+    this.maximumInput, // Initialize new parameter
   }) : super(key: key);
 
   @override
@@ -80,6 +84,12 @@ class CustomTextFieldState extends State<CustomTextField> {
         )
             : const SizedBox(),
         SizedBox(height: widget.showTitle ? Dimensions.paddingSize5 : 0),
+        widget.label != null // Add conditional rendering for label
+            ? Text(
+          widget.label!,
+          style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12),
+        )
+            : const SizedBox(),
         TextFormField(
           readOnly: widget.readOnly,
           validator: widget.validation,
@@ -89,8 +99,7 @@ class CustomTextFieldState extends State<CustomTextField> {
           focusNode: widget.focusNode,
           style: satoshiRegular.copyWith(fontSize: Dimensions.fontSizeDefault),
           textInputAction: widget.inputAction,
-          keyboardType:
-          widget.isAmount ? TextInputType.number : widget.inputType,
+          keyboardType: widget.isAmount ? TextInputType.number : widget.inputType,
           cursorColor: Theme.of(context).primaryColor,
           textCapitalization: widget.capitalization,
           enabled: widget.isEnabled,
@@ -105,32 +114,29 @@ class CustomTextFieldState extends State<CustomTextField> {
               ? [AutofillHints.fullStreetAddress]
               : widget.inputType == TextInputType.url
               ? [AutofillHints.url]
-              : widget.inputType ==
-              TextInputType.visiblePassword
+              : widget.inputType == TextInputType.visiblePassword
               ? [AutofillHints.password]
               : null,
           obscureText: widget.isPassword ? _obscureText : false,
-          inputFormatters: widget.inputType == TextInputType.phone
-              ? <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
-          ]
-              : widget.isAmount
-              ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))]
-              : widget.isNumber
-              ? [
-            FilteringTextInputFormatter.allow(RegExp(r'\d')),
-            LengthLimitingTextInputFormatter(10),
-          ]
-              : null,
+          inputFormatters: [
+            if (widget.inputType == TextInputType.phone)
+              FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
+            if (widget.isAmount)
+              FilteringTextInputFormatter.allow(RegExp(r'\d')),
+            if (widget.isNumber)
+              FilteringTextInputFormatter.allow(RegExp(r'\d')),
+            if (widget.isNumber)
+              LengthLimitingTextInputFormatter(10),
+            if (widget.maximumInput != null)
+              LengthLimitingTextInputFormatter(widget.maximumInput!), // Set maximum input length
+          ],
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(Dimensions.radius5),
               borderSide: BorderSide(
                 style: widget.showBorder ? BorderStyle.solid : BorderStyle.none,
                 width: 0.3,
-                color: Theme.of(context)
-                    .primaryColorDark
-                    .withOpacity(0.80),
+                color: Theme.of(context).primaryColorDark.withOpacity(0.80),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -146,9 +152,7 @@ class CustomTextFieldState extends State<CustomTextField> {
               borderSide: BorderSide(
                 style: widget.showBorder ? BorderStyle.solid : BorderStyle.none,
                 width: 0.3,
-                color: Theme.of(context)
-                    .primaryColorDark
-                    .withOpacity(0.80),
+                color: Theme.of(context).primaryColorDark.withOpacity(0.80),
               ),
             ),
             isDense: true,
@@ -174,8 +178,7 @@ class CustomTextFieldState extends State<CustomTextField> {
             )
                 : widget.prefixImage != null && widget.prefixIcon == null
                 ? Padding(
-              padding:
-              EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10),
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10),
               child: Image.asset(widget.prefixImage!, height: 20, width: 20),
             )
                 : widget.prefixImage == null && widget.prefixIcon != null

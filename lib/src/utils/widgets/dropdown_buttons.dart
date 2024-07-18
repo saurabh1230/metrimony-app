@@ -31,19 +31,18 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
       isExpanded: true,
       validator: widget.validator,
       decoration: InputDecoration(
-
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 16,
               horizontal: 5),
           enabledBorder:  OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
               width: 0.5,
               color: lightGrey.withOpacity(0.30),
             ),
           ),
           errorBorder: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
               width: 0.5,
               color: Colors.redAccent,
@@ -51,7 +50,7 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
           ),
 
           focusedBorder:  OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
               width: 0.5,
               color: lightGrey.withOpacity(0.30),
@@ -59,7 +58,7 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
           ),
           hintText: widget.title,
           focusedErrorBorder:  OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
               width: 0.5,
               color: lightGrey.withOpacity(0.30),
@@ -83,8 +82,7 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
           style: styleSatoshiLight(size: 14, color: Colors.black),
           overflow: TextOverflow.ellipsis,
         ),
-      ))
-          .toList(),
+      )).toList(),
       value: widget.selectedValue,
       onChanged: widget.onChanged,
       iconStyleData: const IconStyleData(
@@ -96,6 +94,7 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
         iconDisabledColor: Colors.grey,
       ),
       dropdownStyleData: DropdownStyleData(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         maxHeight: 1.sw,
         width: 300.sw,
         decoration: BoxDecoration(

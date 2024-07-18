@@ -83,7 +83,7 @@ final kManrope16Medium000000= GoogleFonts.manrope(
 final kManrope25Black = GoogleFonts.manrope(
   fontWeight: FontWeight.w700,
   fontSize: 25,
-  color: Colors.black,
+  color: Colors.black.withOpacity(0.70),
 );
 
 final kManrope14Regular4F4F4F = GoogleFonts.manrope(

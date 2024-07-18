@@ -21,19 +21,19 @@ import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpScreenProfessional extends StatefulWidget {
+class SignUpScreenLocation extends StatefulWidget {
 
-  const SignUpScreenProfessional({super.key,});
+  const SignUpScreenLocation({super.key,});
 
   @override
-  State<SignUpScreenProfessional> createState() => _SignUpScreenProfessionalState();
-  static final GlobalKey<FormState> _formKey3 = GlobalKey<FormState>();
+  State<SignUpScreenLocation> createState() => _SignUpScreenLocationState();
+  static final GlobalKey<FormState> _formKey5 = GlobalKey<FormState>();
   bool validate() {
-    return _formKey3.currentState?.validate() ?? false;
+    return _formKey5.currentState?.validate() ?? false;
   }
 }
 
-class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
+class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
 
   File pickedImage = File("");
   final ImagePicker _imgPicker = ImagePicker();
@@ -67,9 +67,6 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
-      Get.find<AuthController>().getMotherTongueList();
-      Get.find<AuthController>().getmarriedStatusList();
-      print( Get.find<AuthController>().marriedStatusList!.length);
     });
   }
 
@@ -95,117 +92,118 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
   @override
   Widget build(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //
+    //   // Get.find<AuthController>().clearStateDistrict();
+    //
+    //   // Get.find<AuthController>().getMotherTongueList();
+    //
+    // });
+
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Scaffold(
         body: GetBuilder<AuthController>(builder: (authControl) {
-          // startDateController.text =  authControl.from == null ? "" : authControl.from.toString();
-          // endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
-          // startBatchYearController.text =  authControl.batchFromString;
-          // endBatchController.text = authControl.batchToString;
-          return authControl.religionList == null || authControl.religionList!.isEmpty ||
-          authControl.communityList == null || authControl.communityList!.isEmpty ||
-          authControl.marriedStatusList == null || authControl.marriedStatusList!.isEmpty ||
-              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty
-              ?
-          const Center(child: CircularProgressIndicator()) :
-      SingleChildScrollView(
-            child: Form(key: SignUpScreenProfessional._formKey3,
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  sizedBox20(),
-                  Center(
-                    child: Container(
-                      height: 104,
-                      width: 104,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        icReligionRegister,
+         /* startDateController.text =  authControl.from == null ? "" : authControl.from.toString();
+          endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
+          startBatchYearController.text =  authControl.batchFromString;
+          endBatchController.text = authControl.batchToString;
+          return authControl.professionList == null || authControl.professionList!.isEmpty ||
+              authControl.positionHeldList == null || authControl.positionHeldList!.isEmpty ?
+          const Center(child: CircularProgressIndicator()) :*/
+         return SingleChildScrollView(
+            child: Form(key: SignUpScreenLocation._formKey5,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sizedBox20(),
+                    Center(
+                      child: Container(
+                        height: 104,
+                        width: 104,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.asset(
+                          icStateRegister,
+                        ),
                       ),
                     ),
-                  ),
-                  sizedBox20(),
-                  Center(
-                    child: Text("Now Pick Your Identity Details",
-                      textAlign: TextAlign.center,
-                      style: kManrope14Medium626262.copyWith(color: Colors.black),
+                    sizedBox20(),
+                    Center(
+                      child: Text(
+                        "Now Create Let's Your Profile",
+                        textAlign: TextAlign.center,
+                        style: kManrope14Medium626262.copyWith(color: Colors.black),
+                      ),
                     ),
-                  ),
+                    sizedBox20(),
+                    Text(
+                      'State',
+                      style: kManrope25Black,
+                    ),
+                    sizedBox12(),
+                    // CustomStyledDropdownButton(
+                    //   title: "Select State/UT",
+                    //   items: authControl.indianStatesAndUTs,
+                    //   selectedValue: authControl.indianStates ?? authControl.indianStatesAndUTs.first,
+                    //   onChanged: (value) {
+                    //     authControl.setIndianStates(value ?? authControl.indianStatesAndUTs.first);
+                    //     print(authControl.indianStates);
+                    //   },
+                    // ),
 
-                  // sizedBox20(),
-                  // Text(
-                  //   'Married Status',
-                  //   style: kManrope25Black,
-                  // ),
-                  // sizedBox12(),
-                  // CustomStyledDropdownButton(
-                  //   items: authControl.marriedStatusList!.map((religion) => religion.name!).toList(),
-                  //   onChanged: (value) {
-                  //     var selectedReligion = authControl.marriedStatusList!.firstWhere((religion) => religion.name == value);
-                  //     authControl.setReligionMainIndex(selectedReligion.id, true);
-                  //     print(authControl.religionMainIndex);
-                  //   },
-                  //   title: "Select Religion",
-                  //   selectedValue: authControl.marriedStatusList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-                  // ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Select State/UT",
+                    //   items: authControl.indianStatesAndUTs,
+                    //   selectedValue: authControl.indianStates ?? authControl.indianStatesAndUTs.first,
+                    //   onChanged: (value) {
+                    //     authControl.setIndianStates(value ?? authControl.indianStatesAndUTs.first);
+                    //     print(authControl.indianStates);
+                    //   },
+                    // ),
+                    CustomStyledDropdownButton(
+                      title: "Select State/UT",
+                      items: authControl.states,
+                      selectedValue: authControl.selectedState,
+                      onChanged: (value) {
+                        authControl.setState(value ?? authControl.states.first);
+                        print(authControl.selectedState);
+                      },
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val == 'Select State') {
+                          return 'Please Select State';
+                        }
+                        return null;
+                      },
+                    ),
+                    sizedBox20(),
 
-                  sizedBox20(),
-                  Text(
-                    'Your Religion',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                items: authControl.religionList!.map((religion) => religion.name!).toList(),
-                onChanged: (value) {
-                  var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.name == value);
-                  authControl.setReligionMainIndex(selectedReligion.id, true);
-                  print(authControl.religionMainIndex);
-                },
-                title: "Select Religion",
-                selectedValue: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-              ),
-                  sizedBox20(),
-                  Text(
-                    'Mother Tongue',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.motherTongueList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selectedReligion = authControl.motherTongueList!.firstWhere((religion) => religion.name == value);
-                      authControl.setMotherTongueIndex(selectedReligion.id, true);
-                      print(authControl.motherTongueIndex );
-                    },
-                    title: "Select Religion",
-                    selectedValue: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex ).name,
-                  ),
-                  sizedBox20(),
-                  Text(
-                    'Your Caste',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.communityList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selected = authControl.communityList!.firstWhere((religion) => religion.name == value);
-                      authControl.setCommunityMainListIndex(selected.id, true);
-                      print(authControl.communityMainIndex);
-                    },
-                    title: "Select Caste",
-                    selectedValue: authControl.communityList!.firstWhere((religion) => religion.id == authControl.communityMainIndex).name,
-                  ),
+                    Text(
+                      'District',
+                      style: kManrope25Black,
+                    ),
+                    sizedBox12(),
+                    CustomStyledDropdownButton(
+                      title: "Select District",
+                      items: authControl.districts,
+                      selectedValue: authControl.selectedDistrict,
+                      onChanged: (value) {
+                        authControl.setDistrict(value ?? authControl.districts.first);
+                        print(authControl.selectedDistrict);
+                      },
+                      validator: (val) {
+                        if (val == null || val.isEmpty || val == 'Select District') {
+                          return 'Please Select District';
+                        }
+                        return null;
+                      },
+                    )
 
-
-                ],
-              )
+                  ],
+                )
 
 
 
@@ -228,7 +226,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
 
 
-            /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
+              /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Professional Info',
                     style: kManrope25Black,),

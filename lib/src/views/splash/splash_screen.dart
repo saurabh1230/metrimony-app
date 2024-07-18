@@ -4,6 +4,7 @@
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/views/home/home_dashboard.dart';
+import 'package:bureau_couple/src/views/signIn/signin_option_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
   setScreen() {
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.push(context,
-          MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+          MaterialPageRoute(builder: (_) => const SignInOptionScreen()));
     });
   }
 
@@ -43,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPrefs().init();
     bool loginBool;
     bool firstRun ;
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       firstRun = SharedPrefs().getFirstRun() ?? false;
       loginBool = SharedPrefs().getLogin() ?? false;
 
@@ -93,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SignInScreen(),
+                  builder: (_) => SignInOptionScreen(),
                 ),
               );
             }
@@ -102,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => SignInScreen(),
+                builder: (_) => SignInOptionScreen(),
               ));
         }
       }

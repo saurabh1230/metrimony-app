@@ -1,5 +1,7 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
+import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
@@ -29,46 +31,38 @@ class SignUpScreenTwo extends StatefulWidget {
 
 class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
 
-  File pickedImage = File("");
-  final ImagePicker _imgPicker = ImagePicker();
-
-  final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["Male","Female","Others"];
-  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
-  final List<String> married = ["Unmarried","Widowed","Divorced"];
-  final countryController = TextEditingController();
-  final profileController = TextEditingController();
-  final countyController = TextEditingController();
-    final stateController = TextEditingController();
-  final districtController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  final genderController = TextEditingController();
-  final motherTongue = TextEditingController();
-  final professionController = TextEditingController();
-  final ageController = TextEditingController();
-  final _communityController = TextEditingController();
-  bool picked = false;
-  String selectedCountryName = '';
-  String? selectedValue;
-
-  String? motherTongueValue;
-  String motherTongueFilter = '';
-
-  String? communityValue ;
-  String communityFilter = '';
-
-  String? userTypeValue;
-  String userTypeFilter = '';
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final _dayController = TextEditingController();
+  final _monthController = TextEditingController();
+  final _yearController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
-      Get.find<AuthController>().getMotherTongueList();
+      // Get.find<AuthController>().getMotherTongueList();
+      fields();
     });
+
+    super.initState();
+  }
+
+  void fields() {
+    firstNameController.text = Get.find<AuthController>().firstName ?? '';
+    lastNameController.text = Get.find<AuthController>().lastName ?? '';
+    _dayController.text = Get.find<AuthController>().day ?? '';
+    _monthController.text = Get.find<AuthController>().month ?? '';
+    _yearController.text = Get.find<AuthController>().year ?? '';
+
+  }
+  @override
+  Widget build(BuildContext context) {
+
     String? selectedSuggestion;
+
+
 
 
     return WillPopScope(
@@ -78,248 +72,273 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
       child: Scaffold(
         body: GetBuilder<AuthController>(builder: (authControl) {
           print(authControl.religionList);
-          return (authControl.communityList == null || authControl.communityList!.isEmpty ||
-              authControl.religionList == null || authControl.religionList!.isEmpty ||
-              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty) ?
-          const Center(child: CircularProgressIndicator()) :
-           SingleChildScrollView(
+          return SingleChildScrollView(
             child: Form(
               key: SignUpScreenTwo._formKey2,
               child:
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // SizedBox(height: 50,),
-                  Text('Personal Info',
-                    style: kManrope25Black,),
-                  const SizedBox(height: 20,),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Gender",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: ChipList(
-                        elements: gender,
-                        onChipSelected: (selectedGender) {
-                          authControl.setGender(selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O");
-                          // setState(() {
-                          //
-                          //   // SharedPrefs().setGender(selectedGender);
-                          //   // SharedPrefs().getGender();
-                          // });
-                        },
-                        defaultSelected: "Male",
-                      ),),
-                  ),
-                  const SizedBox(height: 20,),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Religion",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-              Wrap(
-                spacing: 8.0,
-                children: authControl.religionList!.map((religion) {
-                  return ChoiceChip(selectedColor: color4B164C.withOpacity(0.80),
-                    backgroundColor: Colors.white, label: Text(
-                      religion.name!,
-                      style: TextStyle(
-                        color: authControl.religionMainIndex == religion.id
-                            ? Colors.white
-                            : Colors.black.withOpacity(0.80),
+                  Center(
+                    child: Container(
+                      height: 104,
+                      width: 104,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        icNameRegister,
                       ),
                     ),
-                    selected: authControl.religionMainIndex == religion.id,
-                    onSelected: (selected) {
-                      if (selected) {
-                        authControl.setReligionMainIndex(religion.id, true);
-                      }
-                    },
-                  );
-                }).toList(),
-              ),
-
-
-                  const SizedBox(height: 20,),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Caste",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
                   ),
-                  const SizedBox(height: 12,),
-
-                  Wrap(
-                    spacing: 8.0, // Adjust spacing as needed
-                    children: authControl.communityList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-
-                        label: Text(religion.name! ,style: TextStyle(color: authControl.communityMainIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                        selected: authControl.communityMainIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            authControl.setCommunityMainListIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Mother Tongue",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-                  Wrap(
-                    spacing: 8.0, // Adjust spacing as needed
-                    children: authControl.motherTongueList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-
-                        label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                        selected: authControl.motherTongueIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            authControl.setMotherTongueIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-
-
-                  const SizedBox(height: 20,),
-
-
-                /*  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Community",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,), // P
-                  // TypeAheadField<String>(
-                  //   textFieldConfiguration: TextFieldConfiguration(
-                  //     onTap: () {_communityController.clear();},
-                  //     controller: _communityController,
-                  //     enabled: authControl.isLoading ? false : true,
-                  //     decoration:  InputDecoration(
-                  //       labelText: authControl.isLoading ? 'Please Wait' : selectedSuggestion == null ? "Select MLA" : "$selectedSuggestion",
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //   ),
-                  //   suggestionsCallback: (pattern) async {
-                  //     // Map MlaModel objects to their names and filter based on the pattern
-                  //     final suggestions = authControl.communityList!
-                  //         .where((element) => element.name!.toLowerCase().contains(pattern.toLowerCase()))
-                  //         .map((mlaModel) => mlaModel.name!)
-                  //         .toList();
-                  //     return suggestions;
-                  //   },
-                  //   itemBuilder: (context, String suggestion) {
-                  //     return ListTile(
-                  //       title: Text(suggestion),
-                  //     );
-                  //   },
-                  //   onSuggestionSelected: (String suggestion) {
-                  //     final selectedItem = authControl.communityList!.firstWhere(
-                  //             (element) => element.name == suggestion);
-                  //     final selectedIndex = authControl.communityList!.indexOf(selectedItem) + 1;
-                  //     authControl.setCommunityMainListIndex(selectedIndex, true);
-                  //     selectedSuggestion = suggestion;
-                  //     _communityController.text = suggestion;
-                  //   },
-                  //
-                  // ),
-
-                  SizedBox(
-                    width: 1.sw,
-                    child: CustomStyledDropdownButton(
-                      items: const  [
-                        "Brahmin",
-                        "Rajput",
-                        'Kamma',
-                        "Yadav",
-                        'Gupta',
-                        'Sikh',
-                        'Punjabi',
-                        'Aggarwal',
-                        'Muslim',
-                        "Marathi"
-                      ],
-                      selectedValue: communityValue,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Community';
-                        }
-                        return null;
-                      },
-                      onChanged: (String? value) {
-                        setState(() {
-                          communityValue = value;
-                          communityFilter = communityValue ?? '';
-                          SharedPrefs().setCommunity( StringUtils.capitalize(communityFilter));
-
-                        });
-
-                      },
-                      title: 'Community',
+                  sizedBox20(),
+                  Center(
+                    child: Text("Let's Start With First Step",
+                      textAlign: TextAlign.center,
+                      style: kManrope14Medium626262.copyWith(color: Colors.black),
                     ),
+                  ),
+                  sizedBox20(),
+                  Text(
+                    'Your Name',
+                    style: kManrope25Black,
                   ),
                   sizedBox12(),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Mother Tongue",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  CustomTextField(
+                    showTitle: true,
+                    controller: firstNameController,
+                    capitalization: TextCapitalization.words,
+                    hintText: 'First Name',
+                    onChanged: (value) {
+                      authControl
+                          .setFirstName(firstNameController.text);
+                    },
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter First name';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(height: 12,), // P
-                  SizedBox(
-                    width: 1.sw,
-                    child: CustomStyledDropdownButton(
-                      items: const  [
-                        "Hindi",
-                        "Bhojpuri",
-                        'Marathi',
-                        "Bengali",
-                        'Odia',
-                        'Gujarati',
-                        'Urdu',
-                        "Punjabi",
-                      ],
-                      selectedValue: motherTongueValue,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter Mother Tongue';
-                        }
-                        return null;
+                  sizedBox20(),
+                  CustomTextField(
+                    showTitle: true,
+                    controller: lastNameController,
+                    capitalization: TextCapitalization.words,
+                    hintText: 'Last Name',
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Last Name';
+                      }
+                      return null;
                       },
-                      onChanged: (String? value) {
-                        setState(() {
-                          motherTongueValue = value;
-                          motherTongueFilter = motherTongueValue ?? '';
-                          SharedPrefs().setMotherTongue(motherTongueFilter);
+                    onChanged: (value) {
+                      authControl.setLastName(lastNameController.text);
+                    },
+                  ),
+                  sizedBox20(),
+                  Text(
+                    'Date of Birth',
+                    style: kManrope25Black,
+                  ),
+                  sizedBox12(),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          maximumInput: 2,
+                          isAmount: true,
+                          controller: _dayController,
+                          hintText: 'Date',
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Birth Date';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            authControl.setDay(_dayController.text);
+                            print(authControl.day);
+                          },
+                        ),
+                      ),
+                      sizedBoxWidth15(),
+                      Expanded(
+                        child: CustomTextField(
+                          maximumInput: 2,
+                          isAmount: true,
+                          controller: _monthController,
+                          hintText: 'Month',
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Birth Month';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            authControl.setMonth(_monthController.text);
+                            print(authControl.month);
+                          },
+                        ),
+                      ),
+                      sizedBoxWidth15(),
+                      Expanded(
+                        child: CustomTextField(
+                          maximumInput: 4,
+                          isAmount: true,
+                          controller: _yearController,
+                          hintText: 'Year',
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter Birth Year';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            authControl.setYear(_yearController.text);
+                            print(authControl.year);
+                          },
+                        ),
+                      ),
 
-                        });
-                      },
-                      title: 'Mother Tongue',
-                    ),
-                  ),*/
+                    ],
+                  ),
+
+
+
+
+
+
+
+
+
+
+
+
+                  /// /////////// ///////// //////// ////// Old Design ///////////
+                  // Column(
+                  //   children: [
+                  //     Text('Your Name',
+                  //       style: kManrope25Black,),
+                  //     const SizedBox(height: 20,),
+                  //     Align(
+                  //       alignment: Alignment.centerLeft,
+                  //       child: Text("Gender",
+                  //         textAlign: TextAlign.left,
+                  //         style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  //     ),
+                  //     const SizedBox(height: 12,),
+                  //     Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  //       child: Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: ChipList(
+                  //           elements: gender,
+                  //           onChipSelected: (selectedGender) {
+                  //             authControl.setGender(selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O");
+                  //             // setState(() {
+                  //             //
+                  //             //   // SharedPrefs().setGender(selectedGender);
+                  //             //   // SharedPrefs().getGender();
+                  //             // });
+                  //           },
+                  //           defaultSelected: "Male",
+                  //         ),),
+                  //     ),
+                  //     const SizedBox(height: 20,),
+                  //     Align(
+                  //       alignment: Alignment.centerLeft,
+                  //       child: Text("Religion",
+                  //         textAlign: TextAlign.left,
+                  //         style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  //     ),
+                  //     const SizedBox(height: 12,),
+                  //                   Wrap(
+                  //                     spacing: 8.0,
+                  //                     children: authControl.religionList!.map((religion) {
+                  //     return ChoiceChip(selectedColor: color4B164C.withOpacity(0.80),
+                  //       backgroundColor: Colors.white, label: Text(
+                  //         religion.name!,
+                  //         style: TextStyle(
+                  //           color: authControl.religionMainIndex == religion.id
+                  //               ? Colors.white
+                  //               : Colors.black.withOpacity(0.80),
+                  //         ),
+                  //       ),
+                  //       selected: authControl.religionMainIndex == religion.id,
+                  //       onSelected: (selected) {
+                  //         if (selected) {
+                  //           authControl.setReligionMainIndex(religion.id, true);
+                  //         }
+                  //       },
+                  //     );
+                  //                     }).toList(),
+                  //                   ),
+                  //
+                  //
+                  //     const SizedBox(height: 20,),
+                  //
+                  //     Align(
+                  //       alignment: Alignment.centerLeft,
+                  //       child: Text("Caste",
+                  //         textAlign: TextAlign.left,
+                  //         style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  //     ),
+                  //     const SizedBox(height: 12,),
+                  //
+                  //     Wrap(
+                  //       spacing: 8.0, // Adjust spacing as needed
+                  //       children: authControl.communityList!.map((religion) {
+                  //         return ChoiceChip(
+                  //           selectedColor: color4B164C.withOpacity(0.80),
+                  //           backgroundColor: Colors.white,
+                  //
+                  //           label: Text(religion.name! ,style: TextStyle(color: authControl.communityMainIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                  //           selected: authControl.communityMainIndex == religion.id,
+                  //           onSelected: (selected) {
+                  //             if (selected) {
+                  //               authControl.setCommunityMainListIndex(religion.id, true);
+                  //             }
+                  //           },
+                  //         );
+                  //       }).toList(),
+                  //     ),
+                  //     const SizedBox(height: 20,),
+                  //
+                  //     Align(
+                  //       alignment: Alignment.centerLeft,
+                  //       child: Text("Mother Tongue",
+                  //         textAlign: TextAlign.left,
+                  //         style: styleSatoshiBold(size: 16, color: Colors.black),),
+                  //     ),
+                  //     const SizedBox(height: 12,),
+                  //     Wrap(
+                  //       spacing: 8.0, // Adjust spacing as needed
+                  //       children: authControl.motherTongueList!.map((religion) {
+                  //         return ChoiceChip(
+                  //           selectedColor: color4B164C.withOpacity(0.80),
+                  //           backgroundColor: Colors.white,
+                  //
+                  //           label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
+                  //           selected: authControl.motherTongueIndex == religion.id,
+                  //           onSelected: (selected) {
+                  //             if (selected) {
+                  //               authControl.setMotherTongueIndex(religion.id, true);
+                  //             }
+                  //           },
+                  //         );
+                  //       }).toList(),
+                  //     ),
+                  //
+                  //
+                  //     const SizedBox(height: 20,),
+                  //   ],
+                  // ),
+
+
+
                   // adding
 
                   sizedBox12(),
