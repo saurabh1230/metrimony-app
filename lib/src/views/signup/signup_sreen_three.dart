@@ -10,6 +10,7 @@ import 'package:scroll_date_picker/scroll_date_picker.dart';
 import '../../constants/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
 
 typedef ImagePickedCallback = void Function(String);
@@ -132,8 +133,6 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                   //         String formattedDate = formatter.format(_selectedDate);
                   //         authControl.setDob(formattedDate);
                   //         print(formattedDate);
-                  //         print(_selectedDate);
-                  //         print('SharedPrefs().getDob()');
                   //
                   //       });
                   //     },
@@ -161,6 +160,12 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                     onChanged: (value) {
                       authControl.setUserName(usernameController.text);
                     },
+                  ),
+                  sizedBox6(),
+                  Text(
+                    'Please Choose Unique Username min 6 characters',
+                    textAlign: TextAlign.center,
+                    style: kManrope14Medium626262.copyWith(color: Colors.black,fontSize: 10)
                   ),
                   sizedBox20(),
                   Text(

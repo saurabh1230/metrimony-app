@@ -1,6 +1,7 @@
 
 
 
+import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/views/home/home_dashboard.dart';
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPrefs().init();
     bool loginBool;
     bool firstRun ;
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       firstRun = SharedPrefs().getFirstRun() ?? false;
       loginBool = SharedPrefs().getLogin() ?? false;
 
@@ -94,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SignInOptionScreen(),
+                  builder: (_) => const SignInOptionScreen(),
                 ),
               );
             }
@@ -103,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => SignInOptionScreen(),
+                builder: (_) => const SignInOptionScreen(),
               ));
         }
       }
@@ -112,7 +113,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => IntroPage(),
+            builder: (_) => const SignInOptionScreen(),
           ),
         );
       }
@@ -183,52 +184,65 @@ class _SplashScreenState extends State<SplashScreen> {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                  child: Image.asset("assets/icons/ic_heart1.png",
-                  height: 150,)),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Image.asset(
-                  height: 150,
-                  "assets/icons/ic_heart2.png",
-                ),
-              ),
-              Align(
-                  alignment: Alignment.topRight,
-                  child: Image.asset(
-                    "assets/icons/ic_heart3.png",
-                    height: 150,
-                    ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Image.asset(
-                  height: 150,
-                  "assets/icons/ic_heart2.png",
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Image.asset(
-                  height: 150,
-                  "assets/icons/ic_bottom_right.png",
-                ),
-              ),
-            ],
-          ),
-          Center(
-              child: Image.asset(
-                'assets/icons/ic_splash_logo.png',
-              color: Colors.white,
-              height: 111,
-              width: 237,
-              ),
+          Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(image: AssetImage(authBackground,),fit: BoxFit.cover)
             ),
-          ],
-        ),
+          ),
+          Center(child: Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Image.asset(icLogo,),
+          )),
+        ],
+      ),
+      // body: Stack(
+      //   children: [
+      //     Column(
+      //       children: [
+      //         Align(
+      //           alignment: Alignment.topRight,
+      //             child: Image.asset("assets/icons/ic_heart1.png",
+      //             height: 150,)),
+      //         Align(
+      //           alignment: Alignment.centerLeft,
+      //           child: Image.asset(
+      //             height: 150,
+      //             "assets/icons/ic_heart2.png",
+      //           ),
+      //         ),
+      //         Align(
+      //             alignment: Alignment.topRight,
+      //             child: Image.asset(
+      //               "assets/icons/ic_heart3.png",
+      //               height: 150,
+      //               ),
+      //         ),
+      //         Align(
+      //           alignment: Alignment.bottomLeft,
+      //           child: Image.asset(
+      //             height: 150,
+      //             "assets/icons/ic_heart2.png",
+      //           ),
+      //         ),
+      //         Align(
+      //           alignment: Alignment.bottomRight,
+      //           child: Image.asset(
+      //             height: 150,
+      //             "assets/icons/ic_bottom_right.png",
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //     Center(
+      //         child: Image.asset(
+      //           'assets/icons/ic_splash_logo.png',
+      //         color: Colors.white,
+      //         height: 111,
+      //         width: 237,
+      //         ),
+      //       ),
+      //     ],
+      //   ),
       // body: Column(
       //   children: [
       //     Container(

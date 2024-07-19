@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
+import 'package:bureau_couple/src/views/signup/add_kyc_details.dart';
+import 'package:bureau_couple/src/views/signup/kyc_wait_screen.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,10 @@ class MyApp extends StatelessWidget {
         return  GetMaterialApp(
             theme: light,
           debugShowCheckedModeBanner: false,
-            home: const SplashScreen(),);
+            // home: const KycWaitScreen(),
+            // home: AddKycDetailsScreen(),
+            home: const SplashScreen(),
+        );
         //Dashboard());
       },
     );

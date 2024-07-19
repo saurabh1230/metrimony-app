@@ -38,6 +38,7 @@ class EditBasicInfoScreen extends StatefulWidget {
 
 class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -115,6 +116,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
   void fields() {
     firstNameController.text = mainInfo?.firstname.toString() ?? '';
+    middleNameController.text = mainInfo?.middlename.toString() ?? '';
     lastNameController.text = mainInfo?.lastname.toString() ?? '';
     userNameController.text = mainInfo?.username.toString() ?? '';
     emailController.text = mainInfo?.email.toString() ?? '';
@@ -303,33 +305,34 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'First Name',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: firstNameController,
-                            decoration: AppTFDecoration(hint: 'First Name')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'First Name',
+                    //       addTextField: TextFormField(
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {});
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context); // Close the dialog
+                    //         },
+                    //         controller: firstNameController,
+                    //         decoration: AppTFDecoration(hint: 'First Name')
+                    //             .decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                   },
                   child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
+                    widget: const SizedBox(),
+                    // widget: const Icon(
+                    //   Icons.edit,
+                    //   size: 12,
+                    // ),
                     title: 'First Name',
                     data1: firstNameController.text.isEmpty
                         ? (mainInfo == null ||
@@ -344,36 +347,64 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 ),
                 // sizedBox16(),
                 const Divider(),
+            mainInfo == null ||
+                mainInfo.middlename == null ||
+                mainInfo.middlename!.isEmpty
+                ? SizedBox() :
+            Column(
+                  children: [
+                    buildDataAddRow(
+                      widget: const SizedBox(),
+                      // widget: const Icon(
+                      //   Icons.edit,
+                      //   size: 12,
+                      // ),
+                      title: 'Middle Name',
+                      data1: middleNameController.text.isEmpty
+                          ? (mainInfo == null ||
+                          mainInfo.middlename == null ||
+                          mainInfo.middlename!.isEmpty
+                          ? 'Not Added'
+                          : StringUtils.capitalize(mainInfo.middlename!))
+                          : StringUtils.capitalize(middleNameController.text),
+                      data2: StringUtils.capitalize(middleNameController.text),
+                      isControllerTextEmpty: middleNameController.text.isEmpty,
+                    ),
+                    const Divider(),
+                  ],
+                ),
+
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Last Name',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context);
-                            },
-                            controller: lastNameController,
-                            decoration: AppTFDecoration(hint: 'Last Name')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return NameEditDialogWidget(
+                    //       title: 'Last Name',
+                    //       addTextField: TextFormField(
+                    //         maxLength: 40,
+                    //         onChanged: (v) {
+                    //           setState(() {});
+                    //         },
+                    //         onEditingComplete: () {
+                    //           Navigator.pop(context);
+                    //         },
+                    //         controller: lastNameController,
+                    //         decoration: AppTFDecoration(hint: 'Last Name')
+                    //             .decoration(),
+                    //         //keyboardType: TextInputType.phone,
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                   },
                   child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
+                    widget: const SizedBox(),
+                    // widget: const Icon(
+                    //   Icons.edit,
+                    //   size: 12,
+                    // ),
                     title: 'Last Name',
                     data1: lastNameController.text.isEmpty
                         ? (mainInfo == null ||

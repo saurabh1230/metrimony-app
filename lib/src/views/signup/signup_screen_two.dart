@@ -33,6 +33,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final middleNameController = TextEditingController();
   final _dayController = TextEditingController();
   final _monthController = TextEditingController();
   final _yearController = TextEditingController();
@@ -52,6 +53,8 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
   void fields() {
     firstNameController.text = Get.find<AuthController>().firstName ?? '';
     lastNameController.text = Get.find<AuthController>().lastName ?? '';
+    middleNameController.text = Get.find<AuthController>().middleName ?? '';
+
     _dayController.text = Get.find<AuthController>().day ?? '';
     _monthController.text = Get.find<AuthController>().month ?? '';
     _yearController.text = Get.find<AuthController>().year ?? '';
@@ -125,6 +128,17 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                   sizedBox20(),
                   CustomTextField(
                     showTitle: true,
+                    controller: middleNameController,
+                    capitalization: TextCapitalization.words,
+                    hintText: 'Middle Name (Optional)',
+                    onChanged: (value) {
+                      authControl.setMiddleName(middleNameController.text);
+                      print(authControl.middleName);
+                    },
+                  ),
+                  sizedBox20(),
+                  CustomTextField(
+                    showTitle: true,
                     controller: lastNameController,
                     capitalization: TextCapitalization.words,
                     hintText: 'Last Name',
@@ -154,7 +168,11 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           hintText: 'Date',
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Birth Date';
+                              return 'Invalid Date';
+                            }
+                            final month = int.tryParse(value);
+                            if (month == null || month < 1 || month > 31) {
+                              return 'Invalid Date';
                             }
                             return null;
                           },
@@ -173,7 +191,11 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           hintText: 'Month',
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Birth Month';
+                              return 'Invalid Month';
+                            }
+                            final month = int.tryParse(value);
+                            if (month == null || month < 1 || month > 12) {
+                              return 'Invalid Month';
                             }
                             return null;
                           },
@@ -192,13 +214,18 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           hintText: 'Year',
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please Enter Birth Year';
+                              return 'Invalid Year';
+                            }
+                            final month = int.tryParse(value);
+                            if (month == null || month < 1 || month > 2006) {
+                            return 'Invalid Year';
                             }
                             return null;
                           },
                           onChanged: (value) {
                             authControl.setYear(_yearController.text);
                             print(authControl.year);
+
                           },
                         ),
                       ),

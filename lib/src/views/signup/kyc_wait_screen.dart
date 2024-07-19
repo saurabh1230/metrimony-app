@@ -1,3 +1,4 @@
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,20 @@ class KycWaitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: button(context: context, onTap: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
+          }, title: "Go back"),
+        ),
+      ),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: backButton(context: context, image: icCross, onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
-              // onBackPressed(context) ;
-            }),
-          )
+          IconButton(onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
+          }, icon: Icon(Icons.close,color: Colors.white,))
         ],
       ),
       body: SingleChildScrollView(
@@ -38,20 +43,21 @@ class KycWaitScreen extends StatelessWidget {
                   height: 180,
                   width: 180,),
                 sizedBox16(),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text('Kyc Verification',
-                    style: styleSatoshiBold(size: 22, color: Colors.black),),
+                Text(
+                  'Thank You For Registering with us',
+                  style: kManrope25Black.copyWith(fontSize: 16),
                 ),
                 sizedBox8(),
-                Text("Please while kyc verfication under process you will get notified when. verification is done!",
-                  textAlign: TextAlign.center,
-                  style: styleSatoshiRegular(size: 18, color: Colors.black),),
+                Center(
+                  child: Text(
+                    'You Will be Notified When Your Profile\n Gets Approve',
+                    textAlign: TextAlign.center,
+                    style: kManrope14Medium626262.copyWith(color: Colors.black),
+                  ),
+                ),
                 // Spacer(),
-                const SizedBox(height: 40,),
-                button(context: context, onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => const SignInScreen()));
-                }, title: "Go back")
+
+
               ],
             ),
           ),

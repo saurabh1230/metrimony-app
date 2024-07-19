@@ -111,7 +111,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                   sizedBox20(),
                   sizedBox20(),
                   Text(
-                    'This Profile Is For',
+                    'This Profile is for',
                     style: kManrope25Black,
                   ),
                   const SizedBox(height: 12,),
@@ -151,7 +151,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                   sizedBox20(),
 
                   Text(
-                    'Married Status',
+                    'Marital Status',
                     style: kManrope25Black,
                   ),
                   sizedBox12(),

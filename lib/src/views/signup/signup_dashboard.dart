@@ -2,6 +2,7 @@ import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
+import 'package:bureau_couple/src/views/signup/kyc_wait_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_expectation_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_profession_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
@@ -23,7 +24,7 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'sign_up_education_screen.dart';
 
 class SignUpOnboardScreen extends StatefulWidget {
@@ -150,8 +151,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                 vertical: 10),
             child: SingleChildScrollView(
               child:
-             /* loading ?
-              loadingButton(context: context) :*/
+              loading ?
+              loadingButton(context: context) :
               button(
                   context: context,
                   onTap: (){
@@ -217,12 +218,14 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
 
                     else if (_currentPage == 8 ) {
                       if(pickedImagePath.isEmpty )  {
-                        Fluttertoast.showToast(msg: "Please add Image and birth date");
+                        Fluttertoast.showToast(msg: "Please add Profile Image");
                       } else {
                         setState(() {
                           loading = true;
                         });
                         print('${authControl.year!}/${authControl.month!}/${authControl.day!}');
+
+
                         signUpApi(
                           userName: authControl.userName.toString(),
                           email: authControl.email.toString(),
@@ -234,8 +237,8 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           lookingFor: authControl.lookingFor.toString(),
                           gender:authControl.gender!,
                           motherTongue: authControl.motherTongueIndex.toString(),
-                          birthDate: '2024-07-09',
-                          // birthDate: '${authControl.year!}/${authControl.month!}/${authControl.day!}',
+                          // birthDate: '2024-07-09',
+                          birthDate: '${authControl.year!}-${authControl.month!}-${authControl.day!}',
                           country:  'India',
                           countryCode:  'IN',
                           maritalStatus: authControl.marriedStatusIndex.toString(),
@@ -249,7 +252,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           cadar: authControl.cadar.toString(),
                           statePosting:  authControl.posselectedState!,
                           districtPosting: authControl.posselectedDistrict.toString(),
-                          postingStartDate:'2024-07-09',
+                          postingStartDate:'${authControl.postingYear!}-${authControl.postingMonth!}-${authControl.postingDay!}',
                           // postingStartDate: authControl.postingYear.toString(),
                           // postingStartDate: authControl.from.toString(),
                           postingEndDate: '2024-07-09',
@@ -257,7 +260,9 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           fieldofStudy: authControl.fieldOfStudy.toString(),
                           institute:authControl.institute.toString(),
                           batchStart: authControl.batchYear.toString(),
-                          batchEnd: '2024',
+                          batchEnd: '2024-07-09',
+                          // batchStart: authControl.batchYear.toString(),
+                          // batchEnd: '2024',
                           district: authControl.selectedDistrict.toString(),
                           middleName: authControl.middleName.toString(),
                           maritalStatusP: 'unmarried',
@@ -291,8 +296,12 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                             SharedPrefs().setLoginToken(value['data']['access_token']);
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (builder) => const SignInScreen()),
+                              MaterialPageRoute(builder: (builder) => const AddKycDetailsScreen()),
                             );
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(builder: (builder) => const SignInScreen()),
+                            // );
 
                             ToastUtil.showToast("Registered Successfully");
 

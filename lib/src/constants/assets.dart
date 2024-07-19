@@ -63,7 +63,7 @@ const String icSearch = 'assets/icons/ic_search.png';
 const String icOnboarding1 = 'assets/images/ic_onboarding1.png';
 const String icOnboarding2 = 'assets/images/ic_onboarding2.png';
 const String icHeartFire = 'assets/icons/ic_heart_fire.png';
-const String icWait = 'assets/images/ic_wait.png';
+const String icWait = 'assets/images/im_wait.jpg';
 const String icOnboardingHeart = 'assets/icons/ic_onboarding_heart.png';
 const String icPinkTint = 'assets/images/ic_pink_tint.png';
 const String icSmileEmoji = 'assets/icons/ic_smile_emoji.png';
@@ -113,4 +113,6 @@ const String icProfileRegister = 'assets/icons/ic_profile_register.png';
 const String authBackground = 'assets/images/auth_background.png';
 const String icEmail = 'assets/icons/ic_email_.png';
 const String icPhone = 'assets/icons/ic_phone.png';
+const String icIdentity = 'assets/images/im_identity.png';
+
 

@@ -24,7 +24,7 @@ Future<dynamic> kycDetailsApi({
     'identity_proof': identityProof,
     // 'joining_date': joiningDate
   });
-  request.files.add(await http.MultipartFile.fromPath('image', photo));
+  // request.files.add(await http.MultipartFile.fromPath('image', photo));
   request.headers.addAll(headers);
   print(request.fields);
   print(headers);

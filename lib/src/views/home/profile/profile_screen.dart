@@ -246,7 +246,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         }),
       ),),
-      body: isLoading ? const BasicInfoShimmerWidget(): Stack(
+      body: isLoading || profile.data!.user!.partnerExpectation == null ||
+          profile.data!.user == null ||
+          profile.data == null
+          ? const BasicInfoShimmerWidget(): Stack(
+
         children: [
           CustomRefreshIndicator(
             onRefresh: () {

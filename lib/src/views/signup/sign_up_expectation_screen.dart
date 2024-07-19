@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
-
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 class SignUpScreenExpectationScreen extends StatefulWidget {
 
   const SignUpScreenExpectationScreen({super.key,});
@@ -111,7 +111,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                     sizedBox20(),
                     // sizedBox12(),
                     Center(
-                      child: Text("All Done Now Let's Add Partner Expectation",
+                      child: Text("All Done Now Let's Add Partner Preference",
                         textAlign: TextAlign.center,
                         style: kManrope14Medium626262.copyWith(color: Colors.black),
                       ),
@@ -204,57 +204,86 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                              const SizedBox(height: 5), //
-                              CustomTextField(   inputType: TextInputType.number,
-                                controller: minAgeController,
-                                validation: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Add Min Age';
-                                  }
-                                  return null;
-                                },
-                                hintText: 'Min Age',showTitle: false,
-                                onChanged: (val) {
-                                  authControl.setPartnerMinAge(val);
-                                  print(authControl.partnerMinAge);
-                                },
-
-                              ),
-                            ],
-                          ),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                    //           const SizedBox(height: 5), //
+                    //           CustomTextField(   inputType: TextInputType.number,
+                    //             controller: minAgeController,
+                    //             validation: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Add Min Age';
+                    //               }
+                    //               return null;
+                    //             },
+                    //             hintText: 'Min Age',showTitle: false,
+                    //             onChanged: (val) {
+                    //               authControl.setPartnerMinAge(val);
+                    //               print(authControl.partnerMinAge);
+                    //             },
+                    //
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     sizedBoxW10(),
+                    //     Expanded(
+                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                    //           const SizedBox(height: 5),
+                    //           CustomTextField(
+                    //             inputType: TextInputType.number,
+                    //             controller:maxAgeController ,
+                    //             validation: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Add Max Age';
+                    //               }
+                    //               return null;
+                    //             },
+                    //             hintText: 'Max Age',showTitle: false,
+                    //             onChanged: (val) {
+                    //               authControl.setPartnerMaxAge(val);
+                    //               print(authControl.partnerMaxAge);
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                        Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                      ],),
+                      RangeSlider(
+                        min: 20.0,
+                        max: 80.0,
+                        divisions: 10,
+                        labels: RangeLabels(
+                          authControl.startValue.value.round().toString(),
+                          authControl.endValue.value.round().toString(),
                         ),
-                        sizedBoxW10(),
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                              const SizedBox(height: 5),
-                              CustomTextField(
-                                inputType: TextInputType.number,
-                                controller:maxAgeController ,
-                                validation: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Add Max Age';
-                                  }
-                                  return null;
-                                },
-                                hintText: 'Max Age',showTitle: false,
-                                onChanged: (val) {
-                                  authControl.setPartnerMaxAge(val);
-                                  print(authControl.partnerMaxAge);
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                        values: RangeValues(
+                          authControl.startValue.value,
+                          authControl.endValue.value,
+                        ),
+                        onChanged: (values) {
+                          authControl.setAgeValue(values);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+
 
                     sizedBox20(),
                     Text(
@@ -262,64 +291,95 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                              const SizedBox(height: 5),
-                              CustomTextField(
-                                controller:minHeightController ,
-                                readOnly: true,
-                                validation: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Add Min Height';
-                                  }
-                                  return null;
-                                },
-                                onTap: () {
-                                  Get.bottomSheet( HeightPickerWidget(heightController: minHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
-                                },
-                                onChanged: (val) {
-                                  authControl.setPartnerMinHeight(minHeightController.text);
-                                  print(val);
-                                  print(authControl.partnerMinHeight);
-                                },
-                                hintText: 'Min Height',showTitle: false,
-                              ),
-                            ],
-                          ),
-                        ),
-                        sizedBoxW10(),
-                        Expanded(
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
                               Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                              const SizedBox(height: 5),
-                              CustomTextField(
-                                controller: maxHeightController,
-                                readOnly: true,
-                                validation: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Add Max Height';
-                                  }
-                                  return null;
-                                },
-                                onTap: () {
-                                  Get.bottomSheet( HeightPickerWidget(heightController: maxHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
-                                },
-                                onChanged: (val) {
-                                  authControl.setPartnerMaxHeight(maxHeightController.text);
-                                  print(authControl.partnerMaxHeight);
-                                },
-                                hintText: 'Max Height',showTitle: false,
-                              ),
-                            ],
+                            ],),
+                      Container(
+                        width: double.infinity,
+                        child: RangeSlider(
+                          min: 5.0,  // Minimum value (as double)
+                          max: 10.0, // Maximum value (as double)
+                          divisions: 5, // Number of divisions
+                          labels: RangeLabels(
+                            authControl.startHeightValue.value.toString(),
+                            authControl.endHeightValue.value.toString(),
                           ),
-                        )
-                      ],
+                          values: RangeValues(
+                            authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
+                            authControl.endHeightValue.value.toDouble(),
+                          ),
+                          onChanged: (values) {
+                            authControl.setHeightValue(values);
+                          },
+                        ),
+                      ),
+                        ],
+                      ),
                     ),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                    //           const SizedBox(height: 5),
+                    //           CustomTextField(
+                    //             controller:minHeightController ,
+                    //             readOnly: true,
+                    //             validation: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Add Min Height';
+                    //               }
+                    //               return null;
+                    //             },
+                    //             onTap: () {
+                    //               Get.bottomSheet( HeightPickerWidget(heightController: minHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
+                    //             },
+                    //             onChanged: (val) {
+                    //               authControl.setPartnerMinHeight(minHeightController.text);
+                    //               print(val);
+                    //               print(authControl.partnerMinHeight);
+                    //             },
+                    //             hintText: 'Min Height',showTitle: false,
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //     sizedBoxW10(),
+                    //     Expanded(
+                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                    //           const SizedBox(height: 5),
+                    //           CustomTextField(
+                    //             controller: maxHeightController,
+                    //             readOnly: true,
+                    //             validation: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Add Max Height';
+                    //               }
+                    //               return null;
+                    //             },
+                    //             onTap: () {
+                    //               Get.bottomSheet( HeightPickerWidget(heightController: maxHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
+                    //             },
+                    //             onChanged: (val) {
+                    //               authControl.setPartnerMaxHeight(maxHeightController.text);
+                    //               print(authControl.partnerMaxHeight);
+                    //             },
+                    //             hintText: 'Max Height',showTitle: false,
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     sizedBox20(),
                     Text(
                       'Smoking Habit',

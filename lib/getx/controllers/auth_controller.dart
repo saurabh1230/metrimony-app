@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../utils/app_constants.dart';
 
@@ -737,12 +738,48 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  String? _batchDay;
+
+  String? get batchDay => _batchDay;
+
+  void setBatchDay(String lastName) {
+    _batchDay = lastName;
+    update();
+  }
+
+  String? _postingDay;
+
+  String? get postingDay => _postingDay;
+
+  void setPostingDay(String lastName) {
+    _postingDay = lastName;
+    update();
+  }
+
   String? _month;
 
   String? get month => _month;
 
   void setMonth(String lastName) {
     _month = lastName;
+    update();
+  }
+
+  String? _batchMonth;
+
+  String? get batchMonth => _batchMonth;
+
+  void setBatchMonth(String lastName) {
+    _batchMonth = lastName;
+    update();
+  }
+
+  String? _postingMonth;
+
+  String? get postingMonth => _postingMonth;
+
+  void setPostingMonth(String lastName) {
+    _postingMonth = lastName;
     update();
   }
 
@@ -754,6 +791,26 @@ class AuthController extends GetxController implements GetxService {
     _year = lastName;
     update();
   }
+
+  String? _batchYear;
+
+  String? get batchYear => _batchYear;
+
+  void setBatchYear(String lastName) {
+    _batchYear = lastName;
+    update();
+  }
+
+  String? _postingYear;
+
+  String? get postingYear => _postingYear;
+
+  void setPostingYear(String lastName) {
+    _postingYear = lastName;
+    update();
+  }
+
+
 
   String? _email;
 
@@ -1032,6 +1089,56 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+
+  // var values = SfRangeValues(20.0, 80.0);
+  //
+  // void setValues(SfRangeValues newValues) {
+  //   values = newValues;
+  // }
+
+
+
+  // var startValue = 20.0;
+  // var endValue = 80.0;
+  //
+  // void setAgeValue(RangeValues newValues) {
+  //   startValue = newValues;
+  //   endValue = newValues.end;
+  //   update(); // Notify listeners to update the UI
+  // }
+
+  var startValue = 20.0.obs; // Use observable to update UI
+  var endValue = 80.0.obs;
+
+  void setAgeValue(RangeValues newValues) {
+    startValue.value = newValues.start; // Update the observable values
+    endValue.value = newValues.end;
+    _partnerMinAge = startValue.value.toStringAsFixed(0);
+    _partnerMaxAge = endValue.value.toStringAsFixed(0);
+    print(partnerMinAge);
+    print(partnerMaxAge);
+    update(); // Notify listeners to update the UI
+  }
+
+
+  var startHeightValue = 5.obs;  // Use RxInt for integer values
+  var endHeightValue = 10.obs;
+
+  void setHeightValue(RangeValues newValues) {
+    startHeightValue.value = newValues.start.toInt(); // Convert to integer
+    endHeightValue.value = newValues.end.toInt();
+
+    // Convert to string without decimal places
+    _partnerMinHeight = startHeightValue.value.toString();
+    _partnerMaxHeight = endHeightValue.value.toString();
+
+    // Print the updated heights
+    print(_partnerMinHeight);
+    print(_partnerMaxHeight);
+
+    update(); // Notify listeners to update the UI
+  }
+
   String? _partnerMinHeight;
   String? get partnerMinHeight => _partnerMinHeight;
 
@@ -1217,23 +1324,23 @@ class AuthController extends GetxController implements GetxService {
   ];
 
 
-  String? _batchYear;
-
-  String? get batchYear => _batchYear;
-
-  List<String> get batchyear => batchYearList;
-
-  void setBatchYear(String state) {
-    _batchYear = state;
-    update();
-  }
-  String? _postingYear;
-
-  String? get postingYear => _postingYear;
-  void setPostingYear(String state) {
-    _postingYear = state;
-    update();
-  }
+  // String? _batchYear;
+  //
+  // String? get batchYear => _batchYear;
+  //
+  // List<String> get batchyear => batchYearList;
+  //
+  // void setBatchYear(String state) {
+  //   _batchYear = state;
+  //   update();
+  // }
+  // String? _postingYear;
+  //
+  // String? get postingYear => _postingYear;
+  // void setPostingYear(String state) {
+  //   _postingYear = state;
+  //   update();
+  // }
 
 
   final List<String> cadarList = [

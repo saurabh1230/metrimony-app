@@ -39,6 +39,9 @@ class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
   final fieldOfStudyController = TextEditingController();
   final instituteController = TextEditingController();
 
+  final _dayController = TextEditingController();
+  final _monthController = TextEditingController();
+  final _yearController = TextEditingController();
   @override
   void initState() {
     fields();
@@ -169,19 +172,115 @@ class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
                       showTitle: false,),
                     sizedBox20(),
                     Text(
-                      'Batch Year',
+                      'Year of Passing',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Batch Year",
-                      items: authControl.batchYearList,
-                      selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                    CustomTextField(
+                      maximumInput: 4,
+                      isAmount: true,
+                      controller: _yearController,
+                      hintText: 'Year',
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Batch Year';
+                        }
+                        final month = int.tryParse(value);
+                        if (month == null || month < 1 || month > 2023) {
+                          return 'Invalid Year';
+                        }
+                        return null;
+                      },
                       onChanged: (value) {
-                        authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                        authControl.setBatchYear(_yearController.text);
                         print(authControl.batchYear);
+
                       },
                     ),
+                    // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 2,
+                    //         isAmount: true,
+                    //         controller: _dayController,
+                    //         hintText: 'Date',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Batch Date';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 31) {
+                    //             return 'Invalid Date';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setBatchDay(_dayController.text);
+                    //           print(authControl.batchDay);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 15,),
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 2,
+                    //         isAmount: true,
+                    //         controller: _monthController,
+                    //         hintText: 'Month',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Batch Month';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 12) {
+                    //             return 'Invalid Month';
+                    //           }
+                    //
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setBatchMonth(_monthController.text);
+                    //           print(authControl.batchMonth);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 15,),
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 4,
+                    //         isAmount: true,
+                    //         controller: _yearController,
+                    //         hintText: 'Year',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Batch Year';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 2023) {
+                    //             return 'Invalid Year';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setBatchYear(_yearController.text);
+                    //           print(authControl.batchYear);
+                    //
+                    //         },
+                    //       ),
+                    //     ),
+                    //
+                    //   ],
+                    // ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Batch Year",
+                    //   items: authControl.batchYearList,
+                    //   selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                    //     print(authControl.batchYear);
+                    //   },
+                    // ),
 
                   ],
                 )

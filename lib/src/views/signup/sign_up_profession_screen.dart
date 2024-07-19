@@ -38,6 +38,10 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final instituteController = TextEditingController();
+  final startDateController = TextEditingController();
+  final _dayController = TextEditingController();
+  final _monthController = TextEditingController();
+  final _yearController = TextEditingController();
 
   @override
   void initState() {
@@ -160,7 +164,7 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
                         print('cadre =========== >${authControl.cadar}');
                       },
                     ),
-                    sizedBox20(),
+                   /* sizedBox20(),
                     Text(
                       'Batch Year',
                       style: kManrope25Black.copyWith(fontSize: 16),
@@ -174,7 +178,7 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
                         authControl.setBatchYear(value ?? authControl.batchYearList.first);
                         print(authControl.batchYear);
                       },
-                    ),
+                    ),*/
                     sizedBox20(),
                     Text(
                       'Posting State',
@@ -222,15 +226,106 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Posting Year",
-                      items: authControl.batchYearList,
-                      selectedValue: authControl.postingYear ?? authControl.batchYearList.first,
-                      onChanged: (value) {
-                        authControl.setPostingYear(value ?? authControl.batchYearList.first);
-                        print(authControl.postingYear);
-                      },
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            maximumInput: 2,
+                            isAmount: true,
+                            controller: _dayController,
+                            hintText: 'Date',
+                            validation: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Posting Date';
+                              }
+                              final month = int.tryParse(value);
+                              if (month == null || month < 1 || month > 31) {
+                                return 'Invalid Date';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              authControl.setPostingDay(_dayController.text);
+                              print(authControl.postingDay);
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 15,),
+                        Expanded(
+                          child: CustomTextField(
+                            maximumInput: 2,
+                            isAmount: true,
+                            controller: _monthController,
+                            hintText: 'Month',
+                            validation: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Posting Month';
+                              }
+                              final month = int.tryParse(value);
+                              if (month == null || month < 1 || month > 12) {
+                                return 'Invalid Month';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              authControl.setPostingMonth(_monthController.text);
+                              print(authControl.postingMonth);
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 15,),
+                        Expanded(
+                          child: CustomTextField(
+                            maximumInput: 4,
+                            isAmount: true,
+                            controller: _yearController,
+                            hintText: 'Year',
+                            validation: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Enter Posting Year';
+                              }
+                              final month = int.tryParse(value);
+                              if (month == null || month < 1 || month > 2023) {
+                                return 'Invalid Year';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              authControl.setPostingYear(_yearController.text);
+                              print(authControl.postingYear);
+
+                            },
+                          ),
+                        ),
+
+                      ],
                     ),
+                    // CustomTextField(
+                    //   showTitle: false,
+                    //   // validation: (value) {
+                    //   //   if (value == null || value.isEmpty) {
+                    //   //     return 'Please Enter your Starting Date';
+                    //   //   }
+                    //   //   return null;
+                    //   // },
+                    //   onTap: () { Get.find<AuthController>().showDatePicker(context); },
+                    //   onChanged: (value) {
+                    //     authControl.setPostingStartDate(authControl.from.toString());
+                    //
+                    //   },
+                    //   readOnly:  true,
+                    //   hintText:"Posting Start date",
+                    //   controller: startDateController,
+                    // ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Posting Year",
+                    //   items: authControl.batchYearList,
+                    //   selectedValue: authControl.postingYear ?? authControl.batchYearList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setPostingYear(value ?? authControl.batchYearList.first);
+                    //     print(authControl.postingYear);
+                    //   },
+                    // ),
 
 
                   ],
