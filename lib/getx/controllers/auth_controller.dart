@@ -1133,8 +1133,8 @@ class AuthController extends GetxController implements GetxService {
     _partnerMaxHeight = endHeightValue.value.toString();
 
     // Print the updated heights
-    print(_partnerMinHeight);
-    print(_partnerMaxHeight);
+    print('check partner height ${partnerMinHeight}');
+    print('check partner max height ${partnerMaxHeight}');
 
     update(); // Notify listeners to update the UI
   }
