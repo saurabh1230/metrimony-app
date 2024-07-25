@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:bureau_couple/getx/data/response/community_list_model.dart';
 import 'package:bureau_couple/getx/data/response/community_model.dart';
 import 'package:bureau_couple/getx/data/response/married_status_model.dart';
 import 'package:bureau_couple/getx/data/response/mother_tongue_model.dart';
@@ -14,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../utils/app_constants.dart';
+import '../utils/colors.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
@@ -87,9 +91,11 @@ class AuthController extends GetxController implements GetxService {
   bool _spatialCheck = false;
 
   List<dynamic>? _additionalList;
-  bool _isLoading = false;
 
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+
 
   bool get showPassView => _showPassView;
 
@@ -645,6 +651,9 @@ class AuthController extends GetxController implements GetxService {
 
   List<PositionHeldModel>? get positionHeldList => _positionHeldList;
 
+
+
+
   List<PositionHeldModel>? _partPositionHeldList;
 
   List<PositionHeldModel>? get partPositionHeldList => _partPositionHeldList;
@@ -1108,7 +1117,7 @@ class AuthController extends GetxController implements GetxService {
   // }
 
   var startValue = 20.0.obs; // Use observable to update UI
-  var endValue = 80.0.obs;
+  var endValue = 50.0.obs;
 
   void setAgeValue(RangeValues newValues) {
     startValue.value = newValues.start; // Update the observable values
@@ -1120,24 +1129,43 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners to update the UI
   }
 
+  // Use RxDouble to handle decimal values
+  var startHeightValue = 5.0.obs;
+  var endHeightValue = 7.0.obs;
 
-  var startHeightValue = 5.obs;  // Use RxInt for integer values
-  var endHeightValue = 10.obs;
-
+  // Function to set new height values
   void setHeightValue(RangeValues newValues) {
-    startHeightValue.value = newValues.start.toInt(); // Convert to integer
-    endHeightValue.value = newValues.end.toInt();
+    // Update RxDouble values directly with new decimal values
+    startHeightValue.value = newValues.start;
+    endHeightValue.value = newValues.end;
 
-    // Convert to string without decimal places
-    _partnerMinHeight = startHeightValue.value.toString();
-    _partnerMaxHeight = endHeightValue.value.toString();
+    // Convert to string with one decimal place
+    String partnerMinHeight = startHeightValue.value.toStringAsFixed(1);
+    String partnerMaxHeight = endHeightValue.value.toStringAsFixed(1);
 
     // Print the updated heights
-    print('check partner height ${partnerMinHeight}');
-    print('check partner max height ${partnerMaxHeight}');
+    print('Check partner height: $partnerMinHeight');
+    print('Check partner max height: $partnerMaxHeight');
 
     update(); // Notify listeners to update the UI
   }
+  // var startHeightValue = 5.0.obs;  // Use RxInt for integer values
+  // var endHeightValue = 7.0.obs;
+  //
+  // void setHeightValue(RangeValues newValues) {
+  //   startHeightValue.value = newValues.start.toInt(); // Convert to integer
+  //   endHeightValue.value = newValues.end.toInt();
+  //
+  //   // Convert to string without decimal places
+  //   _partnerMinHeight = startHeightValue.value.toString();
+  //   _partnerMaxHeight = endHeightValue.value.toString();
+  //
+  //   // Print the updated heights
+  //   print('check partner height $partnerMinHeight');
+  //   print('check partner max height $partnerMaxHeight');
+  //
+  //   update(); // Notify listeners to update the UI
+  // }
 
   String? _partnerMinHeight;
   String? get partnerMinHeight => _partnerMinHeight;
@@ -1300,10 +1328,102 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-
   final List<String> highestDegreeList = [
-    'Doctorate', 'Master\'s', 'Bachelor\'s', 'Diploma', 'Higher Secondary', 'Secondary', 'Primary'
+    'AA',
+    'AAS',
+    'ABA',
+    'ADBus',
+    'ADIT',
+    'ADN',
+    'AE',
+    'AET',
+    'AS',
+    'AFA',
+    'B.Arch',
+    'B.Arch (Hons)',
+    'B.Com',
+    'B.Com (Hons)',
+    'B.Des',
+    'B.Ed',
+    'BFA',
+    'BHM',
+    'B.IT',
+    'BA (Hons)',
+    'BA Computer Science',
+    'B.A',
+    'B.Arch',
+    'B.Sc',
+    'B.Sc (Hons)',
+    'BCA',
+    'BDS',
+    'BEng (Hons)',
+    'BMM',
+    'BMS',
+    'B.Pharma',
+    'BPT',
+    'BVSc',
+    'CA / CPA',
+    'CFA',
+    'CS',
+    'D.Arch',
+    'D.Ed',
+    'DFA',
+    'Diploma',
+    'Doctorate',
+    'Engineering Diploma',
+    'High School',
+    'Honours',
+    'IT Diploma',
+    'LLB (Hons)',
+    'ML / LLM',
+    'M.Arch',
+    'M.Com',
+    'M.Des',
+    'M.Ed',
+    'MFA',
+    'M.Med',
+    'M.Pharma',
+    'M.S Engineering',
+    'M.Sc',
+    'M.Sc / MFin / MS',
+    'M.A',
+    'M.Arch',
+    'M.Com',
+    'MDS',
+    'M.D',
+    'M.Med',
+    'M.Phil',
+    'MPT',
+    'M.Sc',
+    'M.S Medicine',
+    'MBA',
+    'MBBS',
+    'MDS',
+    'MFin',
+    'MSc / MFin / MS',
+    'MMed',
+    'MVSc',
+    'PGDM',
+    'PGD Finance',
+    'PGDCA',
+    'Ph.D',
+    'Less Than High School',
+    'Bachelor',
+    'Master',
+    'MSW',
+    'MJMC',
+    'M.Arch',
+    'M.Des',
+    'MFA',
+    'M.Ed',
+    'M.A',
+    'MSW',
+    'MPT',
+    'Ph.D',
+    'Doctorate',
+    'Associate'
   ];
+
 
   String? _highestDegree;
 
@@ -1313,6 +1433,38 @@ class AuthController extends GetxController implements GetxService {
 
   void setHighestDegree(String state) {
     _highestDegree = state;
+    update();
+  }
+
+  final List<String> annualIncomeList = [
+    'INR Below 3 Lakh',
+    'INR 3 Lakh to 6 Lakh',
+    'INR 6 Lakh to 10 Lakh',
+    'INR 10 Lakh to 14 Lakh',
+    'INR 14 Lakh to 18 Lakh',
+    'INR 18 Lakh to 21 Lakh',
+    'INR 21 Lakh to 24 Lakh',
+    'INR 24 Lakh to 28 Lakh',
+    'INR 28 Lakh to 32 Lakh',
+    'INR 33 Lakh to 35 Lakh', // Remove duplicates
+    'INR 40 Lakh to 50 Lakh',
+    'INR 50 Lakh to 60 Lakh',
+    'INR 60 Lakh to 70 Lakh',
+    'INR 70 Lakh to 80 Lakh',
+    'INR 80 Lakh to 90 Lakh',
+    'INR 90 Lakh to 1 Crore',
+    'Above 1 Crore',
+  ].toSet().toList(); // Remove duplicates using Set
+
+
+  String? _annualIncome;
+
+  String? get annualIncome => _annualIncome;
+
+  List<String> get annualincome => annualIncomeList;
+
+  void setAnnualIncome(String state) {
+    _annualIncome = state;
     update();
   }
 
@@ -1343,9 +1495,7 @@ class AuthController extends GetxController implements GetxService {
   // }
 
 
-  final List<String> cadarList = [
-      'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
-      'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
+  final List<String> cadarList = ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry', 'Ladakh', 'Jammu and Kashmir'
   ];
 
   String? _cadar;
@@ -1358,6 +1508,20 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+
+  final List<String> documentList = [
+   'Aadhar Card', 'Driving License', 'Passport','Govt Authorized Card'
+  ];
+
+  String? _document;
+
+  String? get document => _document;
+  List<String> get setdocument => documentList;
+
+  void setDocument(String value) {
+    _document = value;
+    update();
+  }
 
   // final List<String> indianStatesAndUTs = [
   //   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
@@ -1465,10 +1629,288 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+  final List<String> creativeList = [
+    'Writing', 'Cooking', 'Singing', 'Photography', 'Playing Instruments', 'Painting',
+    'Drawing', 'Dancing', 'Acting', 'Crafting', 'Sculpting'
+  ];
+  final List<String> _selectedCreatives = [];
+  List<String> get selectedCreatives => _selectedCreatives;
+
+  void selectCreative(String gender) {
+    if (_selectedCreatives.isEmpty) {
+      _selectedCreatives.add(creativeList.first);
+    }else if (_selectedCreatives.contains(gender)) {
+      _selectedCreatives.remove(gender);
+    } else {
+      _selectedCreatives.add(gender);
+    }
+    update();
+  }
+
+  void initList() {
+    // Add the first item of the creativeList to _selectedCreatives by default
+    if (creativeList.isNotEmpty) {
+      _selectedCreatives.add(creativeList.first);
+      update(); // Notify listeners
+    }
+    if (funList.isNotEmpty) {
+      _fun.add(funList.first);
+      update(); // Notify listeners
+    }
+    if (fitnessList.isNotEmpty) {
+      _fitness.add(fitnessList.first);
+      update(); // Notify listeners
+    }
+    if (otherInterestList.isNotEmpty) {
+      _otherInterests.add(otherInterestList.first);
+      update(); // Notify listeners
+    }
+    if (hobbiesList.isNotEmpty) {
+      _hobbies.add(hobbiesList.first);
+      update(); // Notify listeners
+    }
+  }
+
+  bool isExpanded = false;
+  void toggleExpanded() {
+    isExpanded = !isExpanded;
+    update();
+  }
+
+
+  final List<String> funList = [
+    'Movies', 'Music', 'Travelling', 'Reading', 'Sports', 'Social Media',
+    'Gaming', 'Cooking', 'Hiking', 'Yoga', 'Photography', 'Fishing',
+    'Cycling', 'Gardening', 'Swimming', 'Bird Watching', 'Collecting',
+    'Knitting', 'Board Games', 'Volunteering', 'Blogging', 'Podcasting',
+    'Martial Arts', 'Puzzles', 'Rock Climbing', 'Running', 'Skiing',
+    'Snowboarding', 'Surfing', 'Tennis', 'Woodworking', 'Writing',
+    'Drawing', 'Dancing', 'Acting', 'Crafting', 'Sculpting'
+  ];
+
+  final List<String> _fun = [];
+  List<String> get fun => _fun;
+
+  void selectFun(String gender) {
+    if (_fun.contains(gender)) {
+      _fun.remove(gender);
+    } else {
+      _fun.add(gender);
+    }
+    update();
+  }
+  bool isFunExpanded = false;
+  void toggleFunExpanded() {
+    isFunExpanded = !isFunExpanded;
+    update();
+  }
+
+  final List<String> fitnessList = [
+    'Running', 'Swimming', 'Cycling', 'Yoga', 'Pilates', 'Weightlifting',
+    'Cardio', 'HIIT', 'CrossFit', 'Zumba', 'Dance Fitness', 'Boxing',
+    'Kickboxing', 'Martial Arts', 'Hiking', 'Rock Climbing', 'Rowing',
+    'Gymnastics', 'Aerobics', 'Stretching', 'Meditation', 'Tai Chi',
+    'Walking', 'Jogging', 'Jump Rope', 'Squash', 'Tennis', 'Badminton'
+  ];
+
+  final List<String> _fitness = [];
+  List<String> get fitness => _fitness;
+
+  void selectFitness(String activity) {
+    if (_fitness.contains(activity)) {
+      _fitness.remove(activity);
+    } else {
+      _fitness.add(activity);
+    }
+    update();
+  }
+
+  bool isFitnessExpanded = false;
+  void toggleFitnessExpanded() {
+    isFitnessExpanded = !isFitnessExpanded;
+    update();
+  }
+
+  final List<String> otherInterestList = [
+    'Pets', 'Farming', 'Veganism', 'Cooking', 'Gardening', 'Reading', 'Writing',
+    'Blogging', 'Podcasting', 'Traveling', 'Crafting', 'Painting', 'Sculpting',
+    'Photography', 'Videography', 'Drawing', 'Collecting', 'Bird Watching',
+    'Fishing', 'Woodworking', 'Knitting', 'Volunteering'
+  ];
+
+  final List<String> _otherInterests = [];
+  List<String> get otherInterests => _otherInterests;
+
+  void selectOtherInterest(String interest) {
+    if (_otherInterests.contains(interest)) {
+      _otherInterests.remove(interest);
+    } else {
+      _otherInterests.add(interest);
+    }
+    update();
+  }
+
+  bool isOtherInterestExpanded = false;
+  void toggleOtherInterestExpanded() {
+    isOtherInterestExpanded = !isOtherInterestExpanded;
+    update();
+  }
+
+  final List<String> hobbiesList = [
+    'Photography', 'Gardening', 'Cooking', 'Knitting', 'Painting',
+    'Drawing', 'Writing', 'Reading', 'Crafting', 'Sculpting',
+    'Collecting', 'Bird Watching', 'Fishing', 'Hiking', 'Camping',
+    'Traveling', 'Music', 'Dancing', 'Playing Instruments', 'DIY Projects',
+    'Model Building', 'Puzzle Solving', 'Cooking Classes', 'Yoga', 'Meditation'
+  ];
+
+  final List<String> _hobbies = [];
+  List<String> get hobbies => _hobbies;
+
+  void selectHobby(String hobby) {
+    if (_hobbies.contains(hobby)) {
+      _hobbies.remove(hobby);
+    } else {
+      _hobbies.add(hobby);
+    }
+    update();
+  }
+
+  bool isHobbiesExpanded = false;
+  void toggleHobbiesExpanded() {
+    isHobbiesExpanded = !isHobbiesExpanded;
+    update();
+  }
 
 
 
 
+
+
+
+  List<CommunityListModel>? _casteList;
+
+  List<CommunityListModel>? get casteList => _casteList;
+
+  List<CommunityListModel>? _partCasteList;
+
+  List<CommunityListModel>? get partCasteList => _partCasteList;
+
+  int? _casteIndex = 0;
+
+  int? get casteIndex => _casteIndex;
+
+  List<int?> _casteIds = [];
+
+  List<int?> get casteIds => _casteIds;
+
+  int? _casteMainIndex = 0;
+  int? get casteMainIndex => _casteMainIndex;
+  void setCasteMainIndex(int? index, bool notify) {
+    _casteMainIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
+  int? _casteFilterIndex = 0;
+  int? get casteFilterIndex => _casteFilterIndex;
+  void setCasteFilterIndex(int? index, bool notify) {
+    _casteFilterIndex = index;
+    if (notify) {
+      update();
+    }
+  }
+
+
+  int? _partnerCaste;
+  int? get partnerCaste => _partnerCaste;
+
+  void setPartnerCaste(int val) {
+    _partnerCaste = val;
+    update();
+  }
+
+  Future<void> getCasteList(id) async {
+    _isLoading = true;
+    update();
+    try {
+      Response response = await authRepo.getCommunityUrl(id);
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = response.body['data']['community'];
+        // _religionList =
+        //     responseData.map((json) => ReligionModel.fromJson(json)).toList();
+        _casteList = responseData
+            .map((json) => CommunityListModel.fromJson(json))
+            .where((religion) => religion.id != 10)
+            .toList();
+        _partCasteList = responseData
+            .map((json) => CommunityListModel.fromJson(json))
+            .where((religion) => religion.id != 11)
+            .toList();
+        _casteIds = [0, ..._casteList!.map((e) => e.id)];
+
+        if (_casteList!.isNotEmpty) {
+          _casteMainIndex = _casteList![0].id;
+          _partnerCaste = _casteList![0].id;
+        }
+        _isLoading = false;
+        update();
+      } else {
+        _isLoading = false;
+        update();
+      }
+    } catch (error) {
+      print("Error while fetching list: $error");
+    } finally {
+      _isLoading = false;
+      update();
+    }
+  }
+
+
+
+  bool _registerByPhone= false;
+  bool get registerByPhone => _registerByPhone;
+
+
+
+
+
+
+
+
+  onBackPressed(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Icon(Icons.exit_to_app_sharp, color: primaryColor),
+              SizedBox(width: 10),
+              Text('Close Application?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ]),
+            content: const Text('Are you sure you want to exit the Application?'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('No', style: TextStyle(fontSize: 15, color: primaryColor)),
+                onPressed: () {
+                  Navigator.of(context).pop(false); //Will not exit the App
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  'Yes',
+                  style: TextStyle(fontSize: 15, color: primaryColor),
+                ),
+                onPressed: () {
+                  exit(0);
+                },
+              )
+            ],
+          );
+        });
+  }
 
 }
 
@@ -1521,14 +1963,14 @@ class YearPickerDialog extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
             // Handle confirmation if needed
             Get.back();
           },
-          child: Text('OK'),
+          child: const Text('OK'),
         ),
       ],
     );

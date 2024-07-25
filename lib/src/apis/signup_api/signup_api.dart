@@ -50,6 +50,12 @@ required String minHeightP,
 required String maxHeightP,
 required String smokingP,
 required String drinkingP,
+  required String funList,
+  required String fitnessList,
+  required String hobbyList,
+  required String creativeList,
+  required String otherInterestList,
+  required String financialCondition,
   // required String   phone,
   // required String age,
 
@@ -105,11 +111,18 @@ required String drinkingP,
        'max_height_p' : maxHeightP,
       'smoking_status ' :smokingP,
       'drinking_status ' : drinkingP,
+      'fun' : funList,
+      'fitness' : fitnessList,
+      ' hobby' : hobbyList,
+      'creative' : creativeList,
+      'other_interest' : otherInterestList,
+    'financial_condition' : financialCondition,
+
+
     // "phone" :  phone,
     'agree': '1',
   });
   request.files.add(await http.MultipartFile.fromPath('image', photo));
-
   http.StreamedResponse response = await request.send();
   var resp = jsonDecode(await response.stream.bytesToString());
   print(resp);

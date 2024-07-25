@@ -130,6 +130,11 @@ class AuthRepo {
   }
 
 
+  Future<Response> getCommunityUrl(id) {
+    return apiClient.getData('${AppConstants.communityListUrl}?religion_id=$id');
+  }
+
+
   ///
 
 

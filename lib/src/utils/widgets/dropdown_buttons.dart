@@ -64,15 +64,9 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
               color: lightGrey.withOpacity(0.30),
             ),
           )),
-      hint:  Row(
-        children: [
-          Expanded(
-            child: Text(
-              widget.title,
-              style: styleSatoshiRegular(size: 14, color: Colors.black),
-            ),
-          ),
-        ],
+      hint:  Text(
+        widget.title,
+        style: styleSatoshiRegular(size: 14, color: Colors.black),
       ),
       items: widget.items
           .map((String item) => DropdownMenuItem<String>(
@@ -94,9 +88,9 @@ class _CustomStyledDropdownButtonState extends State<CustomStyledDropdownButton>
         iconDisabledColor: Colors.grey,
       ),
       dropdownStyleData: DropdownStyleData(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        // padding: EdgeInsets.symmetric(horizontal: 16),
         maxHeight: 1.sw,
-        width: 300.sw,
+        // width: 300.sw,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
           color: Colors.white,

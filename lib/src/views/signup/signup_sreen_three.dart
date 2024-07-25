@@ -61,10 +61,15 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
 
   final usernameController =  TextEditingController();
   final passwordController =  TextEditingController();
+  final _emailController = TextEditingController();
+  final _phNoController = TextEditingController();
+
 
   void fields() {
     usernameController.text = Get.find<AuthController>().userName ?? '';
     passwordController.text = Get.find<AuthController>().password ?? '';
+    _emailController.text = Get.find<AuthController>().email ?? '';
+    _phNoController.text = Get.find<AuthController>().phone ?? '';
 
   }
   @override
@@ -80,7 +85,7 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
               key: SingUpScreenThree._formKeyfinal,
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50,),
+                  // const SizedBox(height: 50,),
                   GestureDetector(
                     onTap: () async {
                       XFile? v = await _imgPicker.pickImage(
@@ -138,6 +143,64 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                   //     },
                   //   ),
                   // ),
+
+                  authControl.registerByPhone ?
+                  const SizedBox() :
+                  Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Email',
+                        textAlign: TextAlign.center,
+                        style: kManrope25Black.copyWith(fontSize: 16),
+                      ),
+                      sizedBox12(),
+                      CustomTextField(
+                        controller: _emailController,
+                        hintText: 'Email',
+                        validation: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          authControl.setEmail(_emailController.text);
+                        },
+                      ),
+                      sizedBox16(),
+                    ],
+                  ),
+                  // authControl.registerByPhone ?
+                 Column(crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Text(
+                       'Phone Number',
+                       textAlign: TextAlign.center,
+                       style: kManrope25Black.copyWith(fontSize: 16),
+                     ),
+                     sizedBox12(),
+                     CustomTextField(
+                       inputType: TextInputType.number,
+                       isNumber: true,
+                       controller: _phNoController,
+                       hintText: 'Phone',
+                       validation: (value) {
+                         if (value == null || value.isEmpty) {
+                           return 'Please Enter your Phone No';
+                         }
+                         return null;
+                       },
+                       onChanged: (value) {
+                         authControl.setPhone(_phNoController.text);
+                       },
+                     ) ,
+                     sizedBox16(),
+
+                   ],
+                 ) /*: const SizedBox()*/,
                   Text(
                     'Choose Username',
                     textAlign: TextAlign.center,
@@ -167,7 +230,7 @@ class _SingUpScreenThreeState extends State<SingUpScreenThree> {
                     textAlign: TextAlign.center,
                     style: kManrope14Medium626262.copyWith(color: Colors.black,fontSize: 10)
                   ),
-                  sizedBox20(),
+                  sizedBox16(),
                   Text(
                     'Choose Password',
                     textAlign: TextAlign.center,

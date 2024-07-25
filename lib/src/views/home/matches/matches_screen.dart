@@ -178,7 +178,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                 color: Colors.white,
               ),
             ),
-          )
+          ),
         ],
       ),
       body: GetBuilder<MatchesController>(builder: (matchesControl) {

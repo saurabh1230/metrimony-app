@@ -115,16 +115,21 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     capitalization: TextCapitalization.words,
                     hintText: 'First Name',
                     onChanged: (value) {
-                      authControl
-                          .setFirstName(firstNameController.text);
+                      authControl.setFirstName(firstNameController.text);
                     },
                     validation: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please Enter First name';
                       }
+                      // Regular expression to allow only letters and spaces
+                      final RegExp nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+                      if (!nameRegExp.hasMatch(value)) {
+                        return 'Please enter a valid name without special characters';
+                      }
                       return null;
                     },
                   ),
+
                   sizedBox20(),
                   CustomTextField(
                     showTitle: true,
@@ -144,10 +149,15 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                     hintText: 'Last Name',
                     validation: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please Enter Last Name';
+                        return 'Please Enter First name';
+                      }
+                      // Regular expression to allow only letters and spaces
+                      final RegExp nameRegExp = RegExp(r'^[a-zA-Z\s]+$');
+                      if (!nameRegExp.hasMatch(value)) {
+                        return 'Please enter a valid name without special characters';
                       }
                       return null;
-                      },
+                    },
                     onChanged: (value) {
                       authControl.setLastName(lastNameController.text);
                     },
@@ -172,7 +182,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                             }
                             final month = int.tryParse(value);
                             if (month == null || month < 1 || month > 31) {
-                              return 'Invalid Date';
+                              return 'Enter Date';
                             }
                             return null;
                           },
@@ -191,7 +201,7 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           hintText: 'Month',
                           validation: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Invalid Month';
+                              return 'Enter Month';
                             }
                             final month = int.tryParse(value);
                             if (month == null || month < 1 || month > 12) {
@@ -205,32 +215,54 @@ class _SignUpScreenTwoState extends State<SignUpScreenTwo> {
                           },
                         ),
                       ),
-                      sizedBoxWidth15(),
-                      Expanded(
-                        child: CustomTextField(
-                          maximumInput: 4,
-                          isAmount: true,
-                          controller: _yearController,
-                          hintText: 'Year',
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Invalid Year';
-                            }
-                            final month = int.tryParse(value);
-                            if (month == null || month < 1 || month > 2006) {
-                            return 'Invalid Year';
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            authControl.setYear(_yearController.text);
-                            print(authControl.year);
-
-                          },
-                        ),
-                      ),
+                      // sizedBoxWidth15(),
+                      // Expanded(
+                      //   child: CustomTextField(
+                      //     maximumInput: 4,
+                      //     isAmount: true,
+                      //     controller: _yearController,
+                      //     hintText: 'Year',
+                      //     validation: (value) {
+                      //       if (value == null || value.isEmpty) {
+                      //         return 'Invalid Year';
+                      //       }
+                      //       final year = int.tryParse(value);
+                      //       if (year == null || year < 1970 || year > 2006) {
+                      //         return 'Year must be between 1970 and 2006';
+                      //       }
+                      //       return null;
+                      //     },
+                      //     onChanged: (value) {
+                      //       authControl.setYear(_yearController.text);
+                      //       print(authControl.year);
+                      //
+                      //     },
+                      //   ),
+                      // ),
 
                     ],
+                  ),
+                  sizedBox20(),
+                  CustomTextField(
+                    maximumInput: 4,
+                    isAmount: true,
+                    controller: _yearController,
+                    hintText: 'Year',
+                    validation: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter Year';
+                      }
+                      final year = int.tryParse(value);
+                      if (year == null || year < 1954 || year > 2006) {
+                        return 'The Maximum Registration Age is 70';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      authControl.setYear(_yearController.text);
+                      print(authControl.year);
+
+                    },
                   ),
 
 

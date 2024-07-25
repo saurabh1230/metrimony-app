@@ -1,74 +1,48 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
-import 'package:bureau_couple/getx/features/widgets/custom_decorated_containers.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
-import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
-import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/sizeboxes.dart';
-import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
-import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
-import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../constants/string.dart';
-import '../../constants/textfield.dart';
-import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpScreenLocation extends StatefulWidget {
+class SignUpScreenProfessionLocationScreen extends StatefulWidget {
 
-  const SignUpScreenLocation({super.key,});
+  const SignUpScreenProfessionLocationScreen({super.key,});
 
   @override
-  State<SignUpScreenLocation> createState() => _SignUpScreenLocationState();
-  static final GlobalKey<FormState> _formKey5 = GlobalKey<FormState>();
+  State<SignUpScreenProfessionLocationScreen> createState() => _SignUpScreenProfessionLocationScreenState();
+  static final GlobalKey<FormState> _formKeyprofessionLocation = GlobalKey<FormState>();
   bool validate() {
-    return _formKey5.currentState?.validate() ?? false;
+    return _formKeyprofessionLocation.currentState?.validate() ?? false;
   }
 }
 
-class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
-
-  File pickedImage = File("");
-  final ImagePicker _imgPicker = ImagePicker();
-
-  final List<String> elements = ['My Self', 'My Son', 'My Sister', 'My Daughter', 'My Brother','My Friend','My Relative'];
-  final List<String> gender = ["Male","Female","Other"];
-  final List<String> religion = ["Hindu","Muslim","Jain",'Buddhist','Sikh','Christian'];
-  final List<String> married = ["Unmarried","Widowed","Divorced"];
-
-
-
-  final cadreController = TextEditingController();
-  final stateController = TextEditingController();
-  final districtController = TextEditingController();
-
-
-
-  final startBatchYearController = TextEditingController();
-  final endBatchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
+class _SignUpScreenProfessionLocationScreenState extends State<SignUpScreenProfessionLocationScreen> {
 
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final instituteController = TextEditingController();
+  final startDateController = TextEditingController();
+  final _dayController = TextEditingController();
+  final _monthController = TextEditingController();
+  final _yearController = TextEditingController();
 
   @override
   void initState() {
     fields();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<AuthController>().getReligionsList();
-      Get.find<AuthController>().getCommunityList();
+      Get.find<AuthController>().getProfessionList();
+      Get.find<AuthController>().getPositionHeldList();
+      // Get.find<AuthController>().clearStateDistrict();
+
+      // Get.find<AuthController>().getMotherTongueList();
+
     });
   }
 
@@ -94,29 +68,21 @@ class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //
-    //   // Get.find<AuthController>().clearStateDistrict();
-    //
-    //   // Get.find<AuthController>().getMotherTongueList();
-    //
-    // });
-
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Scaffold(
         body: GetBuilder<AuthController>(builder: (authControl) {
-         /* startDateController.text =  authControl.from == null ? "" : authControl.from.toString();
-          endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
-          startBatchYearController.text =  authControl.batchFromString;
-          endBatchController.text = authControl.batchToString;
+          // startDateController.text =  authControl.from == null ? "" : authControl.from.toString();
+          // endDateController.text =  authControl.to == null ? "" : authControl.to.toString();
+          // startBatchYearController.text =  authControl.batchFromString;
+          // endBatchController.text = authControl.batchToString;
           return authControl.professionList == null || authControl.professionList!.isEmpty ||
               authControl.positionHeldList == null || authControl.positionHeldList!.isEmpty ?
-          const Center(child: CircularProgressIndicator()) :*/
-         return SingleChildScrollView(
-            child: Form(key: SignUpScreenLocation._formKey5,
+          const Center(child: CircularProgressIndicator()) :
+          SingleChildScrollView(
+            child: Form(key: SignUpScreenProfessionLocationScreen._formKeyprofessionLocation,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     sizedBox20(),
@@ -129,112 +95,90 @@ class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
                           shape: BoxShape.circle,
                         ),
                         child: Image.asset(
-                          icStateRegister,
+                          icProfessionRegister,
                         ),
                       ),
                     ),
                     sizedBox20(),
                     Center(
-                      child: Text(
-                        "Now Create Let's Your Profile",
+                      child: Text("Now Let's Add Professional Posting Details",
                         textAlign: TextAlign.center,
                         style: kManrope14Medium626262.copyWith(color: Colors.black),
                       ),
                     ),
-                    sizedBox20(),
+                    // sizedBox20(),
+                    // Text(
+                    //   'Cadre',
+                    //   style: kManrope25Black.copyWith(fontSize: 16),
+                    // ),
+                    // sizedBox12(),
+                    // CustomDropdownButtonFormField<String>(
+                    //   value:  authControl.cadar ?? authControl.cadarList.first,
+                    //   items: authControl.cadarList,
+                    //   hintText: "Select Highest Degree",
+                    //   onChanged: (value) {
+                    //     authControl.setCadar(value ?? authControl.cadarList.first);
+                    //     print('cadre =========== >${authControl.cadar}');
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty || value == 'Select Cadre') {
+                    //       return 'Please Select Select Cadre';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Select Cadre",
+                    //   items: authControl.cadarList,
+                    //   selectedValue: authControl.cadar ?? authControl.cadarList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setCadar(value ?? authControl.cadarList.first);
+                    //     print('cadre =========== >${authControl.cadar}');
+                    //   },
+                    // ),
+                    /* sizedBox20(),
                     Text(
-                      'State',
-                      style: kManrope25Black,
+                      'Batch Year',
+                      style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    // CustomStyledDropdownButton(
-                    //   title: "Select State/UT",
-                    //   items: authControl.indianStatesAndUTs,
-                    //   selectedValue: authControl.indianStates ?? authControl.indianStatesAndUTs.first,
-                    //   onChanged: (value) {
-                    //     authControl.setIndianStates(value ?? authControl.indianStatesAndUTs.first);
-                    //     print(authControl.indianStates);
-                    //   },
-                    // ),
-
-                    // CustomStyledDropdownButton(
-                    //   title: "Select State/UT",
-                    //   items: authControl.indianStatesAndUTs,
-                    //   selectedValue: authControl.indianStates ?? authControl.indianStatesAndUTs.first,
-                    //   onChanged: (value) {
-                    //     authControl.setIndianStates(value ?? authControl.indianStatesAndUTs.first);
-                    //     print(authControl.indianStates);
-                    //   },
-                    // ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.selectedState,
-                          items: authControl.states,
-                          hintText: "Select State/UT",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              authControl.setState(value);
-                              print(authControl.selectedState);
-                            }
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty || value == 'Select State/UT') {
-                              return 'Please Select State';
-                            }
-                            return null;
-                          },
-                        ),
-                        // DropdownButtonFormField<String>(
-                        //   hint: const Text("Select State/UT"),
-                        //   value: authControl.selectedState,
-                        //   items: authControl.states.map((String state) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: state,
-                        //       child: Text(state),
-                        //     );
-                        //   }).toList(),
-                        //   onChanged: (String? value) {
-                        //     if (value != null) {
-                        //       authControl.setState(value);
-                        //       print(authControl.selectedState);
-                        //     }
-                        //   },
-                        //   isExpanded: true,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-                        //     border: OutlineInputBorder(
-                        //       borderRadius: BorderRadius.circular(8),
-                        //     ),
-                        //   ),
-                        //   validator: (value) {
-                        //     if (value == null || value.isEmpty || value == 'Select State/UT') {
-                        //       return 'Please Select State';
-                        //     }
-                        //     return null;
-                        //   },
-                        // ),
-                        // Validation error message display
-                        // if (authControl.selectedState == null || authControl.selectedState!.isEmpty || authControl.selectedState == 'Select State/UT')
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
-                        //     child: Text(
-                        //       'Please Select State',
-                        //       style: TextStyle(color: Theme.of(context).errorColor),
-                        //     ),
-                        //   ),
-                      ],
+                    CustomStyledDropdownButton(
+                      title: "Batch Year",
+                      items: authControl.batchYearList,
+                      selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                      onChanged: (value) {
+                        authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                        print(authControl.batchYear);
+                      },
+                    ),*/
+                    sizedBox20(),
+                    Text(
+                      'Posting State',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomDropdownButtonFormField<String>(
+                      value:  authControl.posselectedState,
+                      items: authControl.posstates,
+                      hintText: "Select Posting State",
+                      onChanged: (value) {
+                        authControl.possetState(value ?? authControl.posstates.first);
+                        print('cadre =========== >${authControl.posstates}');
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Please Posting State') {
+                          return 'Please Posting State';
+                        }
+                        return null;
+                      },
                     ),
 
-
                     // CustomStyledDropdownButton(
                     //   title: "Select State/UT",
-                    //   items: authControl.states,
-                    //   selectedValue: authControl.selectedState,
+                    //   items: authControl.posstates,
+                    //   selectedValue: authControl.posselectedState,
                     //   onChanged: (value) {
-                    //     authControl.setState(value ?? authControl.states.first);
-                    //     print(authControl.selectedState);
+                    //     authControl.possetState(value ?? authControl.posstates.first);
                     //   },
                     //   validator: (val) {
                     //     if (val == null || val.isEmpty || val == 'Select State') {
@@ -243,68 +187,193 @@ class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
                     //     return null;
                     //   },
                     // ),
-                    sizedBox20(),
 
+                    sizedBox20(),
                     Text(
-                      'District',
-                      style: kManrope25Black,
+                      'Posting District',
+                      style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.selectedDistrict,
-                          items: authControl.districts,
-                          hintText: "Select State/UT",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              authControl.setDistrict(value);
-                              print(authControl.selectedDistrict);
-                            }
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty || value == 'Select District') {
-                              return 'Please Select District';
-                            }
-                            return null;
-                          },
-                        )
-                        // CustomDecoratedContainers(
-                        //   child: DropdownButton<String>(
-                        //     hint: const Text("Select District"),
-                        //     value: authControl.selectedDistrict,
-                        //     items: authControl.districts.map((String district) {
-                        //       return DropdownMenuItem<String>(
-                        //         value: district,
-                        //         child: Text(district),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: (String? value) {
-                        //       if (value != null) {
-                        //         authControl.setDistrict(value);
-                        //         print(authControl.selectedDistrict);
-                        //         // Call validation function here if needed
-                        //       }
-                        //     },
-                        //     isExpanded: true,
-                        //     underline: const SizedBox(),
-                        //   ),
-                        // ),
-                        // // Validation error message display
-                        // if (authControl.selectedDistrict == null ||
-                        //     authControl.selectedDistrict!.isEmpty ||
-                        //     authControl.selectedDistrict == 'Select District')
-                        //   Padding(
-                        //     padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
-                        //     child: Text(
-                        //       'Please Select District',
-                        //       style: TextStyle(color: Theme.of(context).errorColor),
-                        //     ),
-                        //   ),
-                      ],
-                    )
+                    CustomDropdownButtonFormField<String>(
+                      value:  authControl.posselectedDistrict,
+                      items: authControl.posdistricts,
+                      hintText: "Please Select district",
+                      onChanged: (value) {
+                        authControl.possetDistrict(value ?? authControl.posdistricts.first);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Please Select Posting District') {
+                          return 'Please Select Posting District';
+                        }
+                        return null;
+                      },
+                    ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Select District",
+                    //   items: authControl.posdistricts,
+                    //   selectedValue: authControl.posselectedDistrict,
+                    //   onChanged: (value) {
+                    //     authControl.possetDistrict(value ?? authControl.posdistricts.first);
+                    //   },
+                    //   validator: (val) {
+                    //     if (val == null || val.isEmpty || val == 'Select District') {
+                    //       return 'Please Select district';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    sizedBox20(),
+                    Text(
+                      'Cadre',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomDropdownButtonFormField<String>(
+                      value:authControl.cadar ?? authControl.cadarList.first,
+                      items: authControl.cadarList,
+                      hintText: "Select Highest Degree",
+                      onChanged: (value) {
+                        authControl.setCadar(value ?? authControl.cadarList.first);
+                        print('cadre =========== >${authControl.cadar}');
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Select Cadre') {
+                          return 'Please Select Select Cadre';
+                        }
+                        return null;
+                      },
+                    ),
+                    sizedBox20(),
+                    Text(
+                      'Posting Year',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
 
+                    CustomTextField(
+                      maximumInput: 4,
+                      isAmount: true,
+                      controller: _yearController,
+                      hintText: 'Year',
+                      validation: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter Posting Year';
+                        }
+                        final month = int.tryParse(value);
+                        if (month == null || month < 1 || month > 2023) {
+                          return 'Invalid Year';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        authControl.setPostingYear(_yearController.text);
+                        print(authControl.postingYear);
+
+                      },
+                    ),
+
+
+                    // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 2,
+                    //         isAmount: true,
+                    //         controller: _dayController,
+                    //         hintText: 'Date',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Posting Date';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 31) {
+                    //             return 'Invalid Date';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setPostingDay(_dayController.text);
+                    //           print(authControl.postingDay);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 15,),
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 2,
+                    //         isAmount: true,
+                    //         controller: _monthController,
+                    //         hintText: 'Month',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Posting Month';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 12) {
+                    //             return 'Invalid Month';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setPostingMonth(_monthController.text);
+                    //           print(authControl.postingMonth);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 15,),
+                    //     Expanded(
+                    //       child: CustomTextField(
+                    //         maximumInput: 4,
+                    //         isAmount: true,
+                    //         controller: _yearController,
+                    //         hintText: 'Year',
+                    //         validation: (value) {
+                    //           if (value == null || value.isEmpty) {
+                    //             return 'Please Enter Posting Year';
+                    //           }
+                    //           final month = int.tryParse(value);
+                    //           if (month == null || month < 1 || month > 2023) {
+                    //             return 'Invalid Year';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {
+                    //           authControl.setPostingYear(_yearController.text);
+                    //           print(authControl.postingYear);
+                    //
+                    //         },
+                    //       ),
+                    //     ),
+                    //
+                    //   ],
+                    // ),
+
+                    // CustomTextField(
+                    //   showTitle: false,
+                    //   // validation: (value) {
+                    //   //   if (value == null || value.isEmpty) {
+                    //   //     return 'Please Enter your Starting Date';
+                    //   //   }
+                    //   //   return null;
+                    //   // },
+                    //   onTap: () { Get.find<AuthController>().showDatePicker(context); },
+                    //   onChanged: (value) {
+                    //     authControl.setPostingStartDate(authControl.from.toString());
+                    //
+                    //   },
+                    //   readOnly:  true,
+                    //   hintText:"Posting Start date",
+                    //   controller: startDateController,
+                    // ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Posting Year",
+                    //   items: authControl.batchYearList,
+                    //   selectedValue: authControl.postingYear ?? authControl.batchYearList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setPostingYear(value ?? authControl.batchYearList.first);
+                    //     print(authControl.postingYear);
+                    //   },
+                    // ),
 
 
                   ],
@@ -677,96 +746,4 @@ class _SignUpScreenLocationState extends State<SignUpScreenLocation> {
     );
   }
 }
-class ChipList extends StatefulWidget {
-  final List<dynamic> elements;
-  final Function(dynamic) onChipSelected;
-  final dynamic? defaultSelected;
 
-  const ChipList({
-    Key? key,
-    required this.elements,
-    required this.onChipSelected,
-    this.defaultSelected,
-  }) : super(key: key);
-
-  @override
-  _ChipListState createState() => _ChipListState();
-}
-
-class _ChipListState extends State<ChipList> {
-  late dynamic selectedChip;
-  String errorMessage = '';
-
-  @override
-  void initState() {
-    super.initState();
-    selectedChip = widget.defaultSelected ?? '';
-    // selectedChip = widget.defaultSelected ?? widget.elements.first; // Set the default selected chip
-    errorMessage = '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: widget.elements.map((e) => ChipBox(value: e)).toList(),
-        ),
-        if (errorMessage.isNotEmpty)
-          Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.red),
-          ),
-      ],
-    );
-  }
-
-  void handleChipSelected(dynamic chipValue) {
-    if (validateChip(chipValue)) {
-      setState(() {
-        selectedChip = chipValue;
-        widget.onChipSelected(selectedChip);
-        errorMessage = '';
-      });
-    } else {
-      setState(() {
-        errorMessage = 'Invalid chip selected';
-      });
-    }
-  }
-
-  bool validateChip(dynamic chipValue) {
-    return chipValue != null; // Simple validation: Check if the chipValue is not null
-  }
-}
-
-class ChipBox extends StatelessWidget {
-  final dynamic value;
-
-  const ChipBox({Key? key, required this.value}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final _ChipListState chipListState =
-    context.findAncestorStateOfType<_ChipListState>()!;
-
-    return ActionChip(
-      onPressed: () {
-        chipListState.handleChipSelected(value);
-      },
-      backgroundColor:
-      value == chipListState.selectedChip ? color4B164C.withOpacity(0.80) : Colors.white,
-      label: Text(
-        value.toString(),
-        style:
-        TextStyle(
-          fontSize: 16,
-          color: value == chipListState.selectedChip ? Colors.white : color4B164C.withOpacity(0.80),
-        ),
-      ),
-    );
-  }
-}

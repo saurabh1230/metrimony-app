@@ -45,11 +45,11 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
     fields();
     super.initState();
   }
-  final _emailController = TextEditingController();
+  // final _emailController = TextEditingController();
   final _phNoController = TextEditingController();
 
   void fields() {
-    _emailController.text = Get.find<AuthController>().email ?? '';
+    // _emailController.text = Get.find<AuthController>().email ?? '';
     _phNoController.text = Get.find<AuthController>().phone ?? '';
 
   }
@@ -94,36 +94,38 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                   ),
                   sizedBox20(),
                   Text(
-                    'Please Enter Active Email and Mobile Number To Create Your Profile',
+                    'Please Enter Active Mobile Number',
                     textAlign: TextAlign.center,
                     style: kManrope14Medium626262.copyWith(color: Colors.black),
                   ),
-                  sizedBox12(),
-                  Text(
-                    'Email Id',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomTextField(
-                    controller: _emailController,
-                    hintText: 'Email',
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      authControl.setEmail(_emailController.text);
-                    },
-                  ),
-                  sizedBox20(),
-                  Text(
-                    'Phone Number',
-                    style: kManrope25Black,
+                  // sizedBox12(),
+                  // Text(
+                  //   'Email Id',
+                  //   style: kManrope25Black,
+                  // ),
+                  // sizedBox12(),
+                  // CustomTextField(
+                  //   controller: _emailController,
+                  //   hintText: 'Email',
+                  //   validation: (value) {
+                  //     if (value == null || value.isEmpty) {
+                  //       return 'Please enter your email';
+                  //     } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                  //         .hasMatch(value)) {
+                  //       return 'Please enter a valid email address';
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (value) {
+                  //     authControl.setEmail(_emailController.text);
+                  //   },
+                  // ),
+                  // sizedBox20(),
+                  Center(
+                    child: Text(
+                      'Phone Number',
+                      style: kManrope25Black,
+                    ),
                   ),
                   sizedBox12(),
                   CustomTextField(
@@ -141,10 +143,10 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                       authControl.setPhone(_phNoController.text);
                     },
                   ),
-          sizedBox20(),
-          RichText(textAlign: TextAlign.center,
-            text: TextSpan(
-              children: <TextSpan>[
+              sizedBox20(),
+              RichText(textAlign: TextAlign.center,
+               text: TextSpan(
+                children: <TextSpan>[
                 TextSpan(
                   text: 'By Creating Account, You Agreed To Our',
                   style: kManrope14Medium626262.copyWith(color: Colors.black,fontSize: 12),
@@ -163,12 +165,9 @@ class _SignUpScreenPartnerExpState extends State<SignUpScreenPartnerExp> {
                 ),
               ],
             ),
-          ),
+            ),],
 
 
-
-
-                ],
               ),
 
 

@@ -1,5 +1,6 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_height_picker.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -123,16 +124,37 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.partReligionList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selectedReligion = authControl.partReligionList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPartnerReligion(selectedReligion.id!);
-                        print(authControl.partnerReligion);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion).name,// Assuming you have a selectedPosition variable
+                      items: authControl.partReligionList!.map((position) => position.name!).toList(),
+                      hintText: "Select Religion",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.partReligionList!.firstWhere((position) => position.name == value);
+                          authControl.setPartnerReligion(selected.id!);
+                          print(authControl.partnerReligion);
+                        }
                       },
-                      title: "Select Religion",
-                      selectedValue: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion ).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Religion';
+                        }
+                        return null;
+                      },
                     ),
+
+
+                    // CustomStyledDropdownButton(
+                    //   items: authControl.partReligionList!.map((religion) => religion.name!).toList(),
+                    //   onChanged: (value) {
+                    //     var selectedReligion = authControl.partReligionList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPartnerReligion(selectedReligion.id!);
+                    //     print(authControl.partnerReligion);
+                    //   },
+                    //   title: "Select Religion",
+                    //   selectedValue: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion ).name,
+                    // ),
 
                     sizedBox20(),
                     Text(
@@ -140,64 +162,143 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.partMotherTongueList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.partMotherTongueList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPartnerMotherTongue(selected.id!);
-                        print( authControl.partnerMotherTongue);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue).name,// Assuming you have a selectedPosition variable
+                      items: authControl.partMotherTongueList!.map((position) => position.name!).toList(),
+                      hintText: "Select Mother Tongue",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.partMotherTongueList!.firstWhere((position) => position.name == value);
+                          authControl.setPartnerMotherTongue(selected.id!);
+                          print( authControl.partnerMotherTongue);
+                        }
                       },
-                      title: "Mother Tongue",
-                      selectedValue: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue ).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Mother Tongue';
+                        }
+                        return null;
+                      },
                     ),
+
+                    // CustomStyledDropdownButton(
+                    //   items: authControl.partMotherTongueList!.map((religion) => religion.name!).toList(),
+                    //   onChanged: (value) {
+                    //     var selected = authControl.partMotherTongueList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPartnerMotherTongue(selected.id!);
+                    //     print( authControl.partnerMotherTongue);
+                    //   },
+                    //   title: "Mother Tongue",
+                    //   selectedValue: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue ).name,
+                    // ),
                     sizedBox20(),
                     Text(
                       'Community',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.partCommunityList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.partCommunityList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPartnerCommunity(selected.id!);
-                        print(authControl.partnerCommunity);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity).name,// Assuming you have a selectedPosition variable
+                      items: authControl.partCommunityList!.map((position) => position.name!).toList(),
+                      hintText: "Select Community",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.partCommunityList!.firstWhere((position) => position.name == value);
+                          authControl.setPartnerCommunity(selected.id!);
+                          print( authControl.partnerCommunity);
+                        }
                       },
-                      title: "Community",
-                      selectedValue: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity  ).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Community';
+                        }
+                        return null;
+                      },
                     ),
+                    // CustomStyledDropdownButton(
+                    //   items: authControl.partCommunityList!.map((religion) => religion.name!).toList(),
+                    //   onChanged: (value) {
+                    //     var selected = authControl.partCommunityList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPartnerCommunity(selected.id!);
+                    //     print(authControl.partnerCommunity);
+                    //   },
+                    //   title: "Community",
+                    //   selectedValue: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity  ).name,
+                    // ),
                     sizedBox20(),
                     Text(
                       'Profession ',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.partProfessionList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.partProfessionList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPartnerProfession(selected.id!);
-                        print(authControl.partnerProfession );
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession).name,// Assuming you have a selectedPosition variable
+                      items: authControl.partProfessionList!.map((position) => position.name!).toList(),
+                      hintText: "Select Profession",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.partProfessionList!.firstWhere((position) => position.name == value);
+                          authControl.setPartnerProfession(selected.id!);
+                          print( authControl.partnerProfession);
+                        }
                       },
-                      title: "Community",
-                      selectedValue: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession   ).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Profession';
+                        }
+                        return null;
+                      },
                     ),
+
+                    // CustomStyledDropdownButton(
+                    //   items: authControl.partProfessionList!.map((religion) => religion.name!).toList(),
+                    //   onChanged: (value) {
+                    //     var selected = authControl.partProfessionList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPartnerProfession(selected.id!);
+                    //     print(authControl.partnerProfession );
+                    //   },
+                    //   title: "Community",
+                    //   selectedValue: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession   ).name,
+                    // ),
                     sizedBox20(),
                     Text(
                       'Position',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.partPositionHeldList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.partPositionHeldList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPartnerPosition(selected.id!);
-                        print(authControl.partnerPosition);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partPositionHeldList!.firstWhere((religion) => religion.id == authControl.partnerPosition).name,// Assuming you have a selectedPosition variable
+                      items: authControl.partPositionHeldList!.map((position) => position.name!).toList(),
+                      hintText: "Select Position",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.partPositionHeldList!.firstWhere((position) => position.name == value);
+                          authControl.setPartnerPosition(selected.id!);
+                          print(authControl.partnerPosition);
+                        }
                       },
-                      title: "Community",
-                      selectedValue: authControl.partPositionHeldList!.firstWhere((religion) => religion.id == authControl.partnerPosition    ).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Position';
+                        }
+                        return null;
+                      },
                     ),
+
+                    // CustomStyledDropdownButton(
+                    //   items: authControl.partPositionHeldList!.map((religion) => religion.name!).toList(),
+                    //   onChanged: (value) {
+                    //     var selected = authControl.partPositionHeldList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPartnerPosition(selected.id!);
+                    //     print(authControl.partnerPosition);
+                    //   },
+                    //   title: "Community",
+                    //   selectedValue: authControl.partPositionHeldList!.firstWhere((religion) => religion.id == authControl.partnerPosition    ).name,
+                    // ),
                     sizedBox20(),
                     Text(
                       'Preferred Age',
@@ -266,8 +367,8 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                       ],),
                       RangeSlider(
                         min: 20.0,
-                        max: 80.0,
-                        divisions: 10,
+                        max: 50.0,
+                        divisions: 30,
                         labels: RangeLabels(
                           authControl.startValue.value.round().toString(),
                           authControl.endValue.value.round().toString(),
@@ -300,25 +401,71 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                               Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                               Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                             ],),
-                      Container(
-                        width: double.infinity,
-                        child: RangeSlider(
-                          min: 5.0,  // Minimum value (as double)
-                          max: 10.0, // Maximum value (as double)
-                          divisions: 5, // Number of divisions
-                          labels: RangeLabels(
-                            authControl.startHeightValue.value.toString(),
-                            authControl.endHeightValue.value.toString(),
+                          Container(
+                            width: double.infinity,
+                            child: Obx(() => RangeSlider(
+                              min: 5.0,  // Minimum value (as double)
+                              max: 7.0, // Maximum value (as double)
+                              divisions: 20, // Number of divisions for finer granularity
+                              labels: RangeLabels(
+                                authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                authControl.endHeightValue.value.toStringAsFixed(1),
+                              ),
+                              values: RangeValues(
+                                authControl.startHeightValue.value, // No need to convert
+                                authControl.endHeightValue.value,
+                              ),
+                              onChanged: (values) {
+                                authControl.setHeightValue(values);
+                              },
+                            )),
                           ),
-                          values: RangeValues(
-                            authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
-                            authControl.endHeightValue.value.toDouble(),
-                          ),
-                          onChanged: (values) {
-                            authControl.setHeightValue(values);
-                          },
-                        ),
-                      ),
+
+
+                          // Container(
+                          //   width: double.infinity,
+                          //   child: RangeSlider(
+                          //     min: 5.0,  // Minimum value (as double)
+                          //     max: 7.0, // Maximum value (as double)
+                          //     divisions: 20, // Number of divisions for finer granularity
+                          //     labels: RangeLabels(
+                          //       authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                          //       authControl.endHeightValue.value.toStringAsFixed(1),
+                          //     ),
+                          //     values: RangeValues(
+                          //       authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
+                          //       authControl.endHeightValue.value.toDouble(),
+                          //     ),
+                          //     onChanged: (values) {
+                          //       // Ensure values are rounded to the nearest decimal
+                          //       authControl.setHeightValue(RangeValues(
+                          //         values.start,
+                          //         values.end,
+                          //       ));
+                          //     },
+                          //   ),
+                          // ),
+
+
+                          // Container(
+                      //   width: double.infinity,
+                      //   child: RangeSlider(
+                      //     min: 5.0,  // Minimum value (as double)
+                      //     max: 7.0, // Maximum value (as double)
+                      //     divisions: 1, // Number of divisions
+                      //     labels: RangeLabels(
+                      //       authControl.startHeightValue.value.toString(),
+                      //       authControl.endHeightValue.value.toString(),
+                      //     ),
+                      //     values: RangeValues(
+                      //       authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
+                      //       authControl.endHeightValue.value.toDouble(),
+                      //     ),
+                      //     onChanged: (values) {
+                      //       authControl.setHeightValue(values);
+                      //     },
+                      //   ),
+                      // ),
                         ],
                       ),
                     ),
@@ -413,14 +560,14 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                               Text("Drinking", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                               const SizedBox(height: 5),
                               CustomStyledDropdownButton(
-                                items: authControl.smokingList!.map((religion) => religion.name!).toList(),
+                                items: authControl.drikingList!.map((religion) => religion.name!).toList(),
                                 onChanged: (value) {
-                                  var selected = authControl.smokingList!.firstWhere((religion) => religion.name == value);
-                                  authControl.setSmokingIndex(selected.id!,true);
-                                  print(authControl.smokingIndex  );
+                                  var selected = authControl.drikingList!.firstWhere((religion) => religion.name == value);
+                                  authControl.setDrikingIndex(selected.id!,true);
+                                  print(authControl.drikingIndex  );
                                 },
                                 title: "Community",
-                                selectedValue: authControl.smokingList!.firstWhere((religion) => religion.id == authControl.smokingIndex    ).name,
+                                selectedValue: authControl.drikingList!.firstWhere((religion) => religion.id == authControl.drikingIndex    ).name,
                               ),
                             ],
                           ),

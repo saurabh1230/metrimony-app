@@ -114,5 +114,6 @@ const String authBackground = 'assets/images/auth_background.png';
 const String icEmail = 'assets/icons/ic_email_.png';
 const String icPhone = 'assets/icons/ic_phone.png';
 const String icIdentity = 'assets/images/im_identity.png';
+const String icInterestRegister = 'assets/icons/ic_interest_register.png';
 
 

@@ -1,11 +1,14 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
+import 'package:bureau_couple/getx/helper/helper_widgets.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:bureau_couple/src/views/signup/kyc_wait_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_expectation_screen.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_profession_location.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_profession_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_screen_interest_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_location.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_partner_expectation.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_one.dart';
@@ -128,10 +131,12 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         const SignUpScreenOne(),
                         const SignUpScreenTwo(),
                         const SignUpScreenProfessional(),
-                        const SignUpScreenPartnerExp(),
+                        // const SignUpScreenPartnerExp(),
                         const SignUpScreenLocation(),
                         const SignUpScreenEducation(),
                         const SignUpScreenProfessionScreen(),
+                        const SignUpScreenProfessionLocationScreen(),
+                        const SignUpScreenInterest(),
                         const SignUpScreenExpectationScreen(),
                         SingUpScreenThree(onImagePicked: (imagePath ) {
                           setState(() {
@@ -179,35 +184,51 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 3 ) {
+                    }
+                   /* else if (_currentPage == 3 ) {
                       if (const SignUpScreenPartnerExp().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 4 ) {
+                    }*/ else if (_currentPage == 3 ) {
                       if (const SignUpScreenLocation().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 5 ) {
+                    } else if (_currentPage == 4 ) {
                       if (const SignUpScreenEducation().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    }  else if (_currentPage == 6 ) {
+                    }  else if (_currentPage == 5 ) {
                       if (const SignUpScreenProfessionScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
+                    } else if (_currentPage == 6 ) {
+                      if (const SignUpScreenProfessionLocationScreen().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
                     } else if (_currentPage == 7 ) {
+                      if (const SignUpScreenInterest().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    }
+                    else if (_currentPage == 8 ) {
                       if (const SignUpScreenExpectationScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -216,7 +237,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
 
-                    else if (_currentPage == 8 ) {
+                    else if (_currentPage == 9 ) {
                       if(pickedImagePath.isEmpty )  {
                         Fluttertoast.showToast(msg: "Please add Profile Image");
                       } else {
@@ -246,13 +267,14 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           religion: authControl.religionMainIndex.toString(),
                           profession: authControl.professionIndex.toString(),
                           userType: 'Normal',
-                          community:  authControl.communityMainIndex.toString(),
+                          community: authControl.casteMainIndex.toString(),
                           positionHeld: authControl.positionHeldIndex.toString(),
                           state: authControl.selectedState.toString(),
                           cadar: authControl.cadar.toString(),
                           statePosting:  authControl.posselectedState!,
                           districtPosting: authControl.posselectedDistrict.toString(),
-                          postingStartDate:'${authControl.postingYear!}-${authControl.postingMonth!}-${authControl.postingDay!}',
+                          postingStartDate:authControl.postingYear!,
+                          // postingStartDate:'${authControl.postingYear!}-${authControl.postingMonth!}-${authControl.postingDay!}',
                           // postingStartDate: authControl.postingYear.toString(),
                           // postingStartDate: authControl.from.toString(),
                           postingEndDate: '2024-07-09',
@@ -278,6 +300,13 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           maxHeightP: authControl.partnerMaxHeight.toString(),
                           smokingP: authControl.smokingIndex.toString(),
                           drinkingP: authControl.drikingIndex.toString(),
+                          // funList: authControl.fun.toString(),
+                          funList: formatList(authControl.fun),
+                          fitnessList: formatList(authControl.fitness),
+                          hobbyList: formatList(authControl.hobbies),
+                          creativeList:formatList(authControl.selectedCreatives),
+                          otherInterestList: formatList(authControl.otherInterests),
+                          financialCondition: authControl.annualIncome.toString(),
                           // phone: '',
                         ).then((value) async {
                           setState(() {
@@ -317,7 +346,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                   },
-                  title:_currentPage == 8 ? 'Submit' :'Next'),
+                  title:_currentPage == 9 ? 'Submit' :'Next'),
             ),
           ),
 
@@ -421,6 +450,28 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
               borderRadius: BorderRadius.circular(22)
           ),
         ),
+        const SizedBox(width: 3,),
+
+        Container(
+          height: 7,
+          width: _currentPage == 9 ? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 9 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        // const SizedBox(width: 3,),
+        //
+        // Container(
+        //   height: 7,
+        //   width: _currentPage == 10 ? 17 :7,
+        //   decoration: BoxDecoration(
+        //       color: _currentPage == 10 ?  primaryColor :
+        //       colorD9D9D9,
+        //       borderRadius: BorderRadius.circular(22)
+        //   ),
+        // ),
       ],
     );
   }

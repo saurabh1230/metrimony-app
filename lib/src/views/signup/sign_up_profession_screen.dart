@@ -1,25 +1,14 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
-import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
-import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/sizeboxes.dart';
-import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
-import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
-import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-import '../../constants/string.dart';
-import '../../constants/textfield.dart';
-import '../../constants/textstyles.dart';
 import '../../utils/widgets/dropdown_buttons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreenProfessionScreen extends StatefulWidget {
 
@@ -139,195 +128,75 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.positionHeldList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.positionHeldList!.firstWhere((religion) => religion.name == value);
-                        authControl.setPositionIndex(selected.id, true);
-                        print(authControl.positionHeldIndex);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.positionHeldList!.firstWhere((religion) => religion.id == authControl.positionHeldIndex).name,// Assuming you have a selectedPosition variable
+                      items: authControl.positionHeldList!.map((position) => position.name!).toList(),
+                      hintText: "Select Position",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.positionHeldList!.firstWhere((position) => position.name == value);
+                          authControl.setPositionIndex(selected.id, true);
+                          print(authControl.positionHeldIndex);
+                        }
                       },
-                      title: "Profession",
-                      selectedValue: authControl.positionHeldList!.firstWhere((religion) => religion.id == authControl.positionHeldIndex).name,
-                    ),
-                    sizedBox20(),
-                    Text(
-                      'Cadar ',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Select Cadar",
-                      items: authControl.cadarList,
-                      selectedValue: authControl.cadar ?? authControl.cadarList.first,
-                      onChanged: (value) {
-                        authControl.setCadar(value ?? authControl.cadarList.first);
-                        print('cadre =========== >${authControl.cadar}');
-                      },
-                    ),
-                   /* sizedBox20(),
-                    Text(
-                      'Batch Year',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Batch Year",
-                      items: authControl.batchYearList,
-                      selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
-                      onChanged: (value) {
-                        authControl.setBatchYear(value ?? authControl.batchYearList.first);
-                        print(authControl.batchYear);
-                      },
-                    ),*/
-                    sizedBox20(),
-                    Text(
-                      'Posting State',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Select State/UT",
-                      items: authControl.posstates,
-                      selectedValue: authControl.posselectedState,
-                      onChanged: (value) {
-                        authControl.possetState(value ?? authControl.posstates.first);
-                      },
-                      validator: (val) {
-                        if (val == null || val.isEmpty || val == 'Select State') {
-                          return 'Please Select State';
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Position';
                         }
                         return null;
                       },
                     ),
 
-                    sizedBox20(),
-                    Text(
-                      'Posting District',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Select District",
-                      items: authControl.posdistricts,
-                      selectedValue: authControl.posselectedDistrict,
-                      onChanged: (value) {
-                        authControl.possetDistrict(value ?? authControl.posdistricts.first);
-                      },
-                      validator: (val) {
-                        if (val == null || val.isEmpty || val == 'Select District') {
-                          return 'Please Select district';
-                        }
-                        return null;
-                      },
-                    ),
-                    sizedBox20(),
-                    Text(
-                      'Posting Year',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                          child: CustomTextField(
-                            maximumInput: 2,
-                            isAmount: true,
-                            controller: _dayController,
-                            hintText: 'Date',
-                            validation: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Posting Date';
-                              }
-                              final month = int.tryParse(value);
-                              if (month == null || month < 1 || month > 31) {
-                                return 'Invalid Date';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              authControl.setPostingDay(_dayController.text);
-                              print(authControl.postingDay);
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 15,),
-                        Expanded(
-                          child: CustomTextField(
-                            maximumInput: 2,
-                            isAmount: true,
-                            controller: _monthController,
-                            hintText: 'Month',
-                            validation: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Posting Month';
-                              }
-                              final month = int.tryParse(value);
-                              if (month == null || month < 1 || month > 12) {
-                                return 'Invalid Month';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              authControl.setPostingMonth(_monthController.text);
-                              print(authControl.postingMonth);
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 15,),
-                        Expanded(
-                          child: CustomTextField(
-                            maximumInput: 4,
-                            isAmount: true,
-                            controller: _yearController,
-                            hintText: 'Year',
-                            validation: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Enter Posting Year';
-                              }
-                              final month = int.tryParse(value);
-                              if (month == null || month < 1 || month > 2023) {
-                                return 'Invalid Year';
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              authControl.setPostingYear(_yearController.text);
-                              print(authControl.postingYear);
-
-                            },
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    // CustomTextField(
-                    //   showTitle: false,
-                    //   // validation: (value) {
-                    //   //   if (value == null || value.isEmpty) {
-                    //   //     return 'Please Enter your Starting Date';
-                    //   //   }
-                    //   //   return null;
-                    //   // },
-                    //   onTap: () { Get.find<AuthController>().showDatePicker(context); },
-                    //   onChanged: (value) {
-                    //     authControl.setPostingStartDate(authControl.from.toString());
-                    //
-                    //   },
-                    //   readOnly:  true,
-                    //   hintText:"Posting Start date",
-                    //   controller: startDateController,
-                    // ),
                     // CustomStyledDropdownButton(
-                    //   title: "Posting Year",
-                    //   items: authControl.batchYearList,
-                    //   selectedValue: authControl.postingYear ?? authControl.batchYearList.first,
+                    //   items: authControl.positionHeldList!.map((religion) => religion.name!).toList(),
                     //   onChanged: (value) {
-                    //     authControl.setPostingYear(value ?? authControl.batchYearList.first);
-                    //     print(authControl.postingYear);
+                    //     var selected = authControl.positionHeldList!.firstWhere((religion) => religion.name == value);
+                    //     authControl.setPositionIndex(selected.id, true);
+                    //     print(authControl.positionHeldIndex);
+                    //   },
+                    //   title: "Profession",
+                    //   selectedValue: authControl.positionHeldList!.firstWhere((religion) => religion.id == authControl.positionHeldIndex).name,
+                    // ),
+                    sizedBox20(),
+                    Text(
+                      'Annual Income',
+                      style: kManrope25Black.copyWith(fontSize: 16),
+                    ),
+                    sizedBox12(),
+                    CustomDropdownButtonFormField<String>(
+                      value:  authControl.annualIncome ?? authControl.annualIncomeList.first,// Assuming you have a selectedPosition variable
+                      items: authControl.annualIncomeList,
+                      hintText: "Select Annual Income",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          authControl.setAnnualIncome(value);
+                          print(authControl.annualIncome);
+                        }
+                      },
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Annual Income';
+                        }
+                        return null;
+                      },
+                    ),
+
+
+
+
+                    // CustomStyledDropdownButton(
+                    //   title: "Select Annual Income",
+                    //   items: authControl.annualIncomeList,
+                    //   selectedValue: authControl.annualIncome ?? authControl.annualIncomeList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setAnnualIncome(value ?? authControl.annualIncomeList.first);
+                    //     print(authControl.annualIncome);
                     //   },
                     // ),
 
-
+                    sizedBox12(),
                   ],
                 )
 

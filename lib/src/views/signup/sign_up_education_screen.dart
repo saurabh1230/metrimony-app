@@ -1,5 +1,6 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -124,15 +125,29 @@ class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      title: "Select State/UT",
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.highestDegree ,
                       items: authControl.highestDegreeList,
-                      selectedValue: authControl.highestDegree ?? authControl.highestDegreeList.first,
+                      hintText: "Select Highest Degree",
                       onChanged: (value) {
-                        authControl.setHighestDegree(value ?? authControl.highestDegreeList.first);
+                        authControl.setHighestDegree(value!);
                         print(authControl.highestDegree);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Select highest Degree') {
+                          return 'Please Select highest Degree';
+                        }
+                        return null;
+                      },
                     ),
+                    // CustomStyledDropdownButton(
+                    //   title: "Select State/UT",
+                    //   items: authControl.highestDegreeList,
+                    //   selectedValue: authControl.highestDegree ?? authControl.highestDegreeList.first,
+                    //   onChanged: (value) {
+                    //     authControl.setHighestDegree(value ?? authControl.highestDegreeList.first);
+                    //     print(authControl.highestDegree);
+                    //   },
                     sizedBox20(),
                     Text(
                       'Field of Study',

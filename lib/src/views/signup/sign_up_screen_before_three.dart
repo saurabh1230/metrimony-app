@@ -1,5 +1,7 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_decorated_containers.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -15,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import '../../../getx/data/response/community_list_model.dart';
 import '../../constants/string.dart';
 import '../../constants/textfield.dart';
 import '../../constants/textstyles.dart';
@@ -22,7 +25,6 @@ import '../../utils/widgets/dropdown_buttons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreenProfessional extends StatefulWidget {
-
   const SignUpScreenProfessional({super.key,});
 
   @override
@@ -55,7 +57,6 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
   final endBatchController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
-
   final highestDegreeController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final instituteController = TextEditingController();
@@ -69,7 +70,9 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
       Get.find<AuthController>().getmarriedStatusList();
-      print( Get.find<AuthController>().marriedStatusList!.length);
+      Get.find<AuthController>().getCasteList(Get.find<AuthController>().religionMainIndex);
+
+      print( Get.find<AuthController>().religionMainIndex);
     });
   }
 
@@ -95,6 +98,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultReligion = CommunityListModel(id: -1, name: 'None');
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -160,48 +164,196 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                     style: kManrope25Black,
                   ),
                   sizedBox12(),
-                  CustomStyledDropdownButton(
-                items: authControl.religionList!.map((religion) => religion.name!).toList(),
-                onChanged: (value) {
-                  var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.name == value);
-                  authControl.setReligionMainIndex(selectedReligion.id, true);
-                  print(authControl.religionMainIndex);
-                },
-                title: "Select Religion",
-                selectedValue: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
-              ),
-                  sizedBox20(),
-                  Text(
-                    'Mother Tongue',
-                    style: kManrope25Black,
-                  ),
-                  sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.motherTongueList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selectedReligion = authControl.motherTongueList!.firstWhere((religion) => religion.name == value);
-                      authControl.setMotherTongueIndex(selectedReligion.id, true);
-                      print(authControl.motherTongueIndex );
+                  CustomDropdownButtonFormField<String>(
+                    value: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,// Assuming you have a selectedPosition variable
+                    items: authControl.religionList!.map((position) => position.name!).toList(),
+                    hintText: "Select Religion",
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        var selected = authControl.religionList!.firstWhere((position) => position.name == value);
+                         authControl.setReligionMainIndex(selected.id, true);
+                        authControl.getCasteList(authControl.religionMainIndex);
+                        print(authControl.religionMainIndex);
+                      }
                     },
-                    title: "Select Religion",
-                    selectedValue: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex ).name,
+                    // itemLabelBuilder: (String item) => item,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Select Religion';
+                      }
+                      return null;
+                    },
                   ),
+                  // CustomDecoratedContainers(
+                  //   child: DropdownButton<int>(
+                  //     value: authControl.religionMainIndex,
+                  //     items: authControl.religionList!.map((religion) {
+                  //       return DropdownMenuItem<int>(
+                  //         value: religion.id,
+                  //         child: Text(religion.name!),
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (int? value) {
+                  //       if (value != null) {
+                  //         var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.id == value);
+                  //         authControl.setReligionMainIndex(selectedReligion.id, true);
+                  //         authControl.getCasteList(authControl.religionMainIndex);
+                  //         print(authControl.religionMainIndex);
+                  //       }
+                  //     },
+                  //     isExpanded: true,
+                  //     underline: const SizedBox(),
+                  //   ),
+                  // ),
+              //     CustomStyledDropdownButton(
+              //   items: authControl.religionList!.map((religion) => religion.name!).toList(),
+              //   onChanged: (value) {
+              //     var selectedReligion = authControl.religionList!.firstWhere((religion) => religion.name == value);
+              //     authControl.setReligionMainIndex(selectedReligion.id, true);
+              //     authControl.getCasteList(authControl.religionMainIndex);
+              //     print(authControl.religionMainIndex);
+              //   },
+              //   title: "Select Religion",
+              //   selectedValue: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,
+              // ),
                   sizedBox20(),
                   Text(
                     'Your Caste',
                     style: kManrope25Black,
                   ),
                   sizedBox12(),
-                  CustomStyledDropdownButton(
-                    items: authControl.communityList!.map((religion) => religion.name!).toList(),
-                    onChanged: (value) {
-                      var selected = authControl.communityList!.firstWhere((religion) => religion.name == value);
-                      authControl.setCommunityMainListIndex(selected.id, true);
-                      print(authControl.communityMainIndex);
+                 authControl.casteList == null || authControl.casteList!.isEmpty?
+                Container(
+                    height: 55,
+                    width: Get.size.width,
+                    padding:  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 0.5,color: Colors.black.withOpacity(0.50)),
+                      color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(Dimensions.radius5),
+                    ),
+                    child: const Center(child: Align(alignment: Alignment.centerLeft,
+                        child: Text("No Caste For Selected Religion")))) :
+                  CustomDropdownButtonFormField<String>(
+                    value: authControl.casteList!.firstWhere((religion) => religion.id == authControl.casteMainIndex).name,// Assuming you have a selectedPosition variable
+                    items: authControl.casteList!.map((position) => position.name!).toList(),
+                    hintText: "Select Caste",
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        var selected = authControl.casteList!.firstWhere((position) => position.name == value);
+                        authControl.setCasteMainIndex(selected.id, true);
+                                print(authControl.casteMainIndex);
+                      }
                     },
-                    title: "Select Caste",
-                    selectedValue: authControl.communityList!.firstWhere((religion) => religion.id == authControl.communityMainIndex).name,
+                    // itemLabelBuilder: (String item) => item,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Select Caste';
+                      }
+                      return null;
+                    },
                   ),
+                  // authControl.casteList == null || authControl.casteList!.isEmpty?
+                  // Container(
+                  //     height: 50,
+                  //     width: Get.size.width,
+                  //     padding:  const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize10),
+                  //     decoration: BoxDecoration(
+                  //       border: Border.all(width: 0.5,color: Colors.black.withOpacity(0.50)),
+                  //       color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(Dimensions.radius10),
+                  //     ),
+                  //     child: const Center(child: Align(alignment: Alignment.centerLeft,
+                  //         child: Text("Please No Community For Selected Religion")))) :
+                  // CustomDecoratedContainers(
+                  //   child: DropdownButton<int>(
+                  //     value: authControl.casteMainIndex,
+                  //     items: authControl.casteList!.map((religion) {
+                  //       return DropdownMenuItem<int>(
+                  //         value: religion.id,
+                  //         child: Text(religion.name!),
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (int? value) {
+                  //       if (value != null) {
+                  //         var selected = authControl.casteList!.firstWhere((religion) => religion.id == value);
+                  //         authControl.setCasteMainIndex(selected.id, true);
+                  //         print(authControl.casteMainIndex);
+                  //       }
+                  //     },
+                  //     isExpanded: true,
+                  //     underline: const SizedBox(),
+                  //   ),
+                  // ),
+
+
+                  sizedBox20(),
+                  Text(
+                    'Mother Tongue',
+                    style: kManrope25Black,
+                  ),
+                  sizedBox12(),
+                  CustomDropdownButtonFormField<String>(
+                    value: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex).name,// Assuming you have a selectedPosition variable
+                    items: authControl.motherTongueList!.map((position) => position.name!).toList(),
+                    hintText: "Select Religion",
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        var selected = authControl.motherTongueList!.firstWhere((position) => position.name == value);
+                        authControl.setMotherTongueIndex(selected.id, true);
+                        print(authControl.motherTongueIndex );
+                      }
+                    },
+                    // itemLabelBuilder: (String item) => item,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Select Religion';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  // CustomDecoratedContainers(
+                  //   child: DropdownButton<int>(
+                  //     value: authControl.motherTongueIndex,
+                  //     items: authControl.motherTongueList!.map((religion) {
+                  //       return DropdownMenuItem<int>(
+                  //         value: religion.id,
+                  //         child: Text(religion.name!),
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (int? value) {
+                  //       if (value != null) {
+                  //         var selected = authControl.motherTongueList!.firstWhere((religion) => religion.id == value);
+                  //         authControl.setMotherTongueIndex(selected.id, true);
+                  //             print(authControl.motherTongueIndex );
+                  //       }
+                  //     },
+                  //     isExpanded: true,
+                  //     underline: const SizedBox(),
+                  //   ),
+                  // ),
+                  // CustomStyledDropdownButton(
+                  //   items: authControl.motherTongueList!.map((religion) => religion.name!).toList(),
+                  //   onChanged: (value) {
+                  //     var selectedReligion = authControl.motherTongueList!.firstWhere((religion) => religion.name == value);
+                  //     authControl.setMotherTongueIndex(selectedReligion.id, true);
+                  //
+                  //     print(authControl.motherTongueIndex );
+                  //   },
+                  //   title: "Select Religion",
+                  //   selectedValue: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex ).name,
+                  // ),
+                  sizedBox20(),
+
+                  // CustomStyledDropdownButton(
+                  //   items: authControl.communityList!.map((religion) => religion.name!).toList(),
+                  //   onChanged: (value) {
+                  //     var selected = authControl.communityList!.firstWhere((religion) => religion.name == value);
+                  //     authControl.setCommunityMainListIndex(selected.id, true);
+                  //     print(authControl.communityMainIndex);
+                  //   },
+                  //   title: "Select Caste",
+                  //   selectedValue: authControl.communityList!.firstWhere((religion) => religion.id == authControl.communityMainIndex).name,
+                  // ),
 
 
                 ],
