@@ -191,475 +191,53 @@ class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomTextField(
-                      maximumInput: 4,
-                      isAmount: true,
-                      controller: _yearController,
-                      hintText: 'Year',
-                      validation: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please Enter Batch Year';
-                        }
-                        final month = int.tryParse(value);
-                        if (month == null || month < 1 || month > 2023) {
-                          return 'Invalid Year';
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.batchYear ,
+                      items: authControl.yearList,
+                      hintText: "Select Year of Passing",
+                      onChanged: (value) {
+                        // authControl.setHighestDegree(value!);
+                        authControl.setBatchYear(value!);
+                        print(authControl.batchYear);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Select Year of Passing') {
+                          return 'Please Select Year of Passing';
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        authControl.setBatchYear(_yearController.text);
-                        print(authControl.batchYear);
-
-                      },
                     ),
-                    // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //     Expanded(
-                    //       child: CustomTextField(
-                    //         maximumInput: 2,
-                    //         isAmount: true,
-                    //         controller: _dayController,
-                    //         hintText: 'Date',
-                    //         validation: (value) {
-                    //           if (value == null || value.isEmpty) {
-                    //             return 'Please Enter Batch Date';
-                    //           }
-                    //           final month = int.tryParse(value);
-                    //           if (month == null || month < 1 || month > 31) {
-                    //             return 'Invalid Date';
-                    //           }
-                    //           return null;
-                    //         },
-                    //         onChanged: (value) {
-                    //           authControl.setBatchDay(_dayController.text);
-                    //           print(authControl.batchDay);
-                    //         },
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 15,),
-                    //     Expanded(
-                    //       child: CustomTextField(
-                    //         maximumInput: 2,
-                    //         isAmount: true,
-                    //         controller: _monthController,
-                    //         hintText: 'Month',
-                    //         validation: (value) {
-                    //           if (value == null || value.isEmpty) {
-                    //             return 'Please Enter Batch Month';
-                    //           }
-                    //           final month = int.tryParse(value);
-                    //           if (month == null || month < 1 || month > 12) {
-                    //             return 'Invalid Month';
-                    //           }
-                    //
-                    //           return null;
-                    //         },
-                    //         onChanged: (value) {
-                    //           authControl.setBatchMonth(_monthController.text);
-                    //           print(authControl.batchMonth);
-                    //         },
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 15,),
-                    //     Expanded(
-                    //       child: CustomTextField(
-                    //         maximumInput: 4,
-                    //         isAmount: true,
-                    //         controller: _yearController,
-                    //         hintText: 'Year',
-                    //         validation: (value) {
-                    //           if (value == null || value.isEmpty) {
-                    //             return 'Please Enter Batch Year';
-                    //           }
-                    //           final month = int.tryParse(value);
-                    //           if (month == null || month < 1 || month > 2023) {
-                    //             return 'Invalid Year';
-                    //           }
-                    //           return null;
-                    //         },
-                    //         onChanged: (value) {
-                    //           authControl.setBatchYear(_yearController.text);
-                    //           print(authControl.batchYear);
-                    //
-                    //         },
-                    //       ),
-                    //     ),
-                    //
-                    //   ],
+
+                    // Text(
+                    //   'Year of Passing',
+                    //   style: kManrope25Black.copyWith(fontSize: 16),
                     // ),
-                    // CustomStyledDropdownButton(
-                    //   title: "Batch Year",
-                    //   items: authControl.batchYearList,
-                    //   selectedValue: authControl.batchYear ?? authControl.batchYearList.first,
+                    // sizedBox12(),
+                    // CustomTextField(
+                    //   maximumInput: 4,
+                    //   isAmount: true,
+                    //   controller: _yearController,
+                    //   hintText: 'Year',
+                    //   validation: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please Enter Batch Year';
+                    //     }
+                    //     final month = int.tryParse(value);
+                    //     if (month == null || month < 1 || month > 2023) {
+                    //       return 'Invalid Year';
+                    //     }
+                    //     return null;
+                    //   },
                     //   onChanged: (value) {
-                    //     authControl.setBatchYear(value ?? authControl.batchYearList.first);
+                    //
                     //     print(authControl.batchYear);
+                    //
                     //   },
                     // ),
 
+
                   ],
-                )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ///##################################################################
-
-
-
-
-              /*  Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Professional Info',
-                    style: kManrope25Black,),
-                  const  SizedBox(height: 30,),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Profession",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 5,),
-                  Wrap(
-                    spacing: 8.0,
-                    children: authControl.professionList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          religion.name!,
-                          style: TextStyle(
-                            color: authControl.professionIndex == religion.id
-                                ? Colors.white
-                                : Colors.black.withOpacity(0.80),
-                          ),
-                        ),
-                        selected: authControl.professionIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            authControl.setProfessionIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Position",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 5,),
-                  Wrap(
-                    spacing: 8.0,
-                    children: authControl.positionHeldList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          religion.name!,
-                          style: TextStyle(
-                            color: authControl.positionHeldIndex == religion.id
-                                ? Colors.white
-                                : Colors.black.withOpacity(0.80),
-                          ),
-                        ),
-                        selected: authControl.positionHeldIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            authControl.setPositionIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-                  Text("Cadres", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                  const SizedBox(height: 5),
-                  const SizedBox(height: 5),
-                  TypeAheadFormField<String>(
-                    textFieldConfiguration:  TextFieldConfiguration(
-                      controller: cadreController,
-                      decoration: authDecoration(
-                          context, "Select Cadre"
-                      ),
-                    ),
-                    suggestionsCallback: (pattern) async {
-                      return authControl.indianStatesAndUTs.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                    },
-                    itemBuilder: (context, suggestion) {
-                      return ListTile(
-                        title: Text(suggestion), ); },
-                    onSuggestionSelected: (String? suggestion) {
-                      if (suggestion != null) {
-                        authControl.setIndianStates(suggestion);
-                        cadreController.text = suggestion;
-                      }
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Select State';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => authControl.setIndianStates(value!),
-                  ),
-                  // SizedBox(
-                  //   width: 1.sw,
-                  //   child: CustomStyledDropdownButton(
-                  //     items: const  [
-                  //       "Cadres",
-                  //
-                  //     ],
-                  //     selectedValue: cadarValue,
-                  //     validator: (value) {
-                  //       if (value == null || value.isEmpty) {
-                  //         return 'Please enter Cadres';
-                  //       }
-                  //       return null;
-                  //     },
-                  //     onChanged: (String? value) {
-                  //       // setState(() {
-                  //       //   cadarValue = value;
-                  //       //   cadarFilter = cadarValue ?? '';
-                  //       //   SharedPrefs().setMotherTongue(cadarFilter);
-                  //       //
-                  //       // });
-                  //       // print(userTypeFilter);
-                  //       // print('Check ======> Usetype${userTypeFilter}');
-                  //     },
-                  //     title: 'Cadres',
-                  //   ),
-                  // ),
-                  const SizedBox(height: 20,),
-                Text("Batch Year", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Enter your Starting Year';
-                            }
-                            return null;
-                          },
-                          onTap: () {authControl.showStartingYearPickerDialog();},
-                          onChanged: (value) {
-                            authControl.setBatchStartYear(startBatchYearController.text);
-                          },
-                          readOnly:  true,
-                          hintText:"Starting year",
-                          controller: startBatchYearController,
-                        ),
-                      ),
-                      // sizedBoxW10(),
-                      // Expanded(
-                      //   child: CustomTextField(hintText:"Ending year",
-                      //     validation: (value) {
-                      //       if (value == null || value.isEmpty) {
-                      //         return 'Please Enter your Ending Year';
-                      //       }
-                      //       return null;
-                      //     },
-                      //     onChanged: (value) {
-                      //     authControl.setBatchStartYear(endBatchController.text);
-                      //     },
-                      //     onTap: () {
-                      //     authControl.showEndingYearPickerDialog();
-                      //     },
-                      //     readOnly: true,
-                      //     controller: endBatchController,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 20,),
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Select Posting State", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                      const SizedBox(height: 5),
-                      TypeAheadFormField<String>(
-                        textFieldConfiguration:  TextFieldConfiguration(
-                          controller: stateController,
-                          decoration: authDecoration(
-                              context, "Select Posting State"
-                          ),
-                        ),
-                        suggestionsCallback: (pattern) async {
-                          return authControl.posStates.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                        },
-                        itemBuilder: (context, suggestion) {
-                          return ListTile(
-                            title: Text(suggestion),
-                          );
-                        },
-                        onSuggestionSelected: (String? suggestion) {
-                          if (suggestion != null) {
-                            authControl.setPosState(suggestion);
-                            stateController.text = suggestion;
-                            authControl.setPosstate(stateController.text);
-                            print(authControl.posState);
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Select Posting State';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) => authControl.setPosState(value!),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20,),
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Select Posting District", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                      const SizedBox(height: 5),
-                      TypeAheadFormField<String>(
-                        textFieldConfiguration:  TextFieldConfiguration(
-
-                          controller: districtController,
-                          decoration: const InputDecoration(
-                            // labelText: 'Select Posting District',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        suggestionsCallback: (pattern) async {
-                          return authControl.posDistricts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                        },
-                        itemBuilder: (context, suggestion) {
-                          return ListTile(
-                            title: Text(suggestion),
-                          );
-                        },
-                        onSuggestionSelected: (String? suggestion) {
-                          if (suggestion != null) {
-                            // authControl.setDistrict(suggestion);
-                            districtController.text = suggestion;
-                            authControl.setPosDist(suggestion);
-                            print(authControl.posDistrict);
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Select Posting District';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) => authControl.setPosDistrict(value!),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20,),
-                  Text("Date of Posting", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                  const SizedBox(height: 5), //
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          showTitle: false,
-                          validation: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Enter your Starting Date';
-                            }
-                            return null;
-                          },
-                          onTap: () { Get.find<AuthController>().showDatePicker(context); },
-                          onChanged: (value) {
-                            authControl.setPostingStartDate(authControl.from.toString());
-
-                          },
-                          readOnly:  true,
-                          hintText:"Posting Start date",
-                          controller: startDateController,
-                        ),
-                      ),
-                      // sizedBoxW10(),
-                      // Expanded(
-                      //   child: CustomTextField(
-                      //     showTitle: true, validation: (value) {
-                      //       if (value == null || value.isEmpty) {
-                      //         return 'Please Enter your Ending Date';
-                      //        }
-                      //       return null;
-                      //     },
-                      //     onChanged: (value) {
-                      //       authControl.setPostingEndDate(endDateController.text);
-                      //     },
-                      //     hintText:"Ending date",
-                      //     controller: endDateController,
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 20,),
-                  Text('Education Info', style: kManrope25Black,),
-                  const SizedBox(height: 20,),
-                  Text("Highest Degree", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                  const SizedBox(height: 5), //
-                  CustomTextField(hintText: "Highest Degree",
-                  controller: highestDegreeController,
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter your Highest Degree';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                    authControl.setHighestDegree(highestDegreeController.text);
-                    },
-                  showTitle: false,),
-                  const SizedBox(height: 20,),
-                  Text("Field of Study", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                  const SizedBox(height: 5), //
-                  CustomTextField(hintText: "Field of Study",
-                    controller: fieldOfStudyController,
-                    validation: (value) {
-                    if (value == null || value.isEmpty) {
-                        return 'Please Enter your Field of Study';
-                    }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      authControl.setFieldOfStudy(fieldOfStudyController.text);
-                    },
-                    showTitle: false,),
-                  const SizedBox(height: 20,),
-                  Text("University / Institute", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                  const SizedBox(height: 5), //
-                  CustomTextField(hintText: "University / Institute",
-                    validation: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter your University / Institute';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      authControl.setInstitute(instituteController.text);
-                    },
-                    controller: instituteController,
-                    showTitle: false,),
-                  const SizedBox(height: 20,),
-                ],
-              ),*/
+                ),
             ),
           );
         }),

@@ -244,33 +244,50 @@ class _SignUpScreenProfessionLocationScreenState extends State<SignUpScreenProfe
                       },
                     ),
                     sizedBox20(),
+
                     Text(
                       'Posting Year',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-
-                    CustomTextField(
-                      maximumInput: 4,
-                      isAmount: true,
-                      controller: _yearController,
-                      hintText: 'Year',
-                      validation: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please Enter Posting Year';
-                        }
-                        final month = int.tryParse(value);
-                        if (month == null || month < 1 || month > 2023) {
-                          return 'Invalid Year';
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.postingYear ,
+                      items: authControl.yearList,
+                      hintText: "Posting Year",
+                      onChanged: (value) {
+                        // authControl.setHighestDegree(value!);
+                        authControl.setPostingYear(value!);
+                        print(authControl.postingYear);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Select Posting Year') {
+                          return 'Please Select Posting Year';
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        authControl.setPostingYear(_yearController.text);
-                        print(authControl.postingYear);
-
-                      },
                     ),
+
+                    // CustomTextField(
+                    //   maximumInput: 4,
+                    //   isAmount: true,
+                    //   controller: _yearController,
+                    //   hintText: 'Year',
+                    //   validation: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please Enter Posting Year';
+                    //     }
+                    //     final month = int.tryParse(value);
+                    //     if (month == null || month < 1 || month > 2023) {
+                    //       return 'Invalid Year';
+                    //     }
+                    //     return null;
+                    //   },
+                    //   onChanged: (value) {
+                    //     authControl.setPostingYear(_yearController.text);
+                    //     print(authControl.postingYear);
+                    //
+                    //   },
+                    // ),
 
 
                     // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
