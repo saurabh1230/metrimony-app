@@ -57,16 +57,16 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
     super.initState();
     // getMatches();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<MatchesController>().getMatchesList(
-          "1",
-          widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-          widget.filter,
-          stateController.text,
-          '',
-          '',
-          '',
-          widget.motherTongue,
-      '');
+      // Get.find<MatchesController>().getMatchesList(
+      //     "1",
+      //     widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+      //     widget.filter,
+      //     stateController.text,
+      //     '',
+      //     '',
+      //     '',
+      //     widget.motherTongue,
+      // '');
       Get.find<AuthController>().getReligionsList();
       Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getMotherTongueList();
@@ -95,35 +95,35 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
   final ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    Get.find<MatchesController>().setOffset(1);
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent &&
-          Get.find<MatchesController>().matchesList != null &&
-          !Get.find<MatchesController>().isLoading) {
-        // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
-        if (Get.find<MatchesController>().offset < 8) {
-          print(
-              "print ===========> offset before ${Get.find<MatchesController>().offset}");
-          // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
-          // customPrint('end of the page');
-          Get.find<MatchesController>()
-              .setOffset(Get.find<MatchesController>().offset + 1);
-          Get.find<MatchesController>().showBottomLoader();
-          Get.find<MatchesController>().getMatchesList(
-              Get.find<MatchesController>().offset.toString(),
-              widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-              religionFilter,
-              stateController.text,
-              '',
-              '',
-              '',
-              motherTongueFilter,
-               '');
-          Get.find<MatchesController>().offset.toString();
-        }
-      }
-    });
+    // Get.find<MatchesController>().setOffset(1);
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent &&
+    //       Get.find<MatchesController>().matchesList != null &&
+    //       !Get.find<MatchesController>().isLoading) {
+    //     // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
+    //     if (Get.find<MatchesController>().offset < 8) {
+    //       print(
+    //           "print ===========> offset before ${Get.find<MatchesController>().offset}");
+    //       // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
+    //       // customPrint('end of the page');
+    //       Get.find<MatchesController>()
+    //           .setOffset(Get.find<MatchesController>().offset + 1);
+    //       Get.find<MatchesController>().showBottomLoader();
+    //       Get.find<MatchesController>().getMatchesList(
+    //           Get.find<MatchesController>().offset.toString(),
+    //           widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+    //           religionFilter,
+    //           stateController.text,
+    //           '',
+    //           '',
+    //           '',
+    //           motherTongueFilter,
+    //            '');
+    //       Get.find<MatchesController>().offset.toString();
+    //     }
+    //   }
+    // });
 
 
 
@@ -314,7 +314,7 @@ class _FilterMatchesScreenState extends State<FilterMatchesScreen> {
                               //  size: 22,),
                             ),
                             dob: '$age yrs',
-                            text: matchesControl.matchesList![i].basicInfo?.aboutUs ??
+                            text:
                                 '',
                           )
                         ],

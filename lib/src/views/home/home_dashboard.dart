@@ -70,7 +70,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
 
   @override
   void initState() {
-    Get.find<ProfileController>().getUserDetailsApi();
+    // Get.find<ProfileController>().getUserDetailsApi();
+    Get.find<ProfileController>().getProfileDetail();
     super.initState();
   }
    int index = 0;

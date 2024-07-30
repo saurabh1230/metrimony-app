@@ -1,5 +1,10 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/screens/home/widgets/home_profile_holder.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_button%20_widget.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/theme.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -15,7 +20,6 @@ import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../../apis/members_api.dart';
-import '../../apis/members_api/request_apis.dart';
 import '../../apis/profile_apis/get_profile_api.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -48,8 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
      super.initState();
      getMatches();
      getPreferredMatch();
-     profileDetail();
-     Get.find<ProfileController>().getUserDetailsApi();
+     // profileDetail();
+     // Get.find<ProfileController>().getUserDetailsApi();
 
    }
 
@@ -62,14 +66,19 @@ class _HomeScreenState extends State<HomeScreen> {
    List<bool> like = [];
 
    getMatches() {
+     print('check============== ?>>>>>>>>>');
      matches.clear();
      isLoading = true;
      getNewMatchesApi(page: page.toString(),
-       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M", religion: '',).then((value) {
+       gender: widget.response.data!.user!.gender!.contains('Male')
+           ? "Female"
+           : widget.response.data!.user!.gender!.contains('Female')
+           ? "Male"
+           : "Others", religion: '',).then((value) {
        if (mounted) {
          setState(() {
            if (value['status'] == true) {
-             for (var v in value['data']['members']['data']) {
+             for (var v in value['data']['members']) {
                matches.add(MatchesModel.fromJson(v));
                isLoadingList.add(false);
                like.add(false); // // Add false for each new match
@@ -88,11 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
      preferredMatches.clear();
      isLoading = true;
      getNewMatchesApi(page: page.toString(),
-       gender: widget.response.data!.user!.gender!.contains("M") ? "F" :"M", religion: widget.response.data!.user!.religion!.toString(),).then((value) {
+       gender: widget.response.data!.user!.gender!.contains('Male')
+           ? "Female"
+           : widget.response.data!.user!.gender!.contains('Female')
+           ? "Male"
+           : "Others", religion: widget.response.data!.user!.religion!.toString(),).then((value) {
        if (mounted) {
          setState(() {
            if (value['status'] == true) {
-             for (var v in value['data']['members']['data']) {
+             for (var v in value['data']['members']) {
                preferredMatches.add(MatchesModel.fromJson(v));
                isLoadingList.add(false);
                like.add(false); // // Add false for each new match
@@ -110,25 +123,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
    ProfileModel  profile =  ProfileModel();
    // bool isLoading = false;
-   profileDetail() {
-     isLoading = true;
-     var resp = getProfileApi();
-     resp.then((value) {
-       if(value['status'] == true) {
-         // setState(() {
-           profile = ProfileModel.fromJson(value);
-           isLoading = false;
-           like.add(false); //
-           SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
-         // });
-       } else {
-         setState(() {
-           isLoading = false;
-         });
-       }
-
-     });
-   }
+   // profileDetail() {
+   //   isLoading = true;
+   //   var resp = getProfileApi();
+   //   resp.then((value) {
+   //     if(value['status'] == true) {
+   //       // setState(() {
+   //         profile = ProfileModel.fromJson(value);
+   //         isLoading = false;
+   //         like.add(false); //
+   //         SharedPrefs().setProfilePhoto(profile.image.toString());
+   //       // });
+   //     } else {
+   //       setState(() {
+   //         isLoading = false;
+   //       });
+   //     }
+   //
+   //   });
+   // }
 
    List<String> categoryImage = ["assets/icons/ic_pray.png","assets/icons/ic_married.png"];
    List<String> categoryTitle = ["Filter by Religion","Filter By Language"];
@@ -152,8 +165,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // buildStack(),
-                  Padding(
+                  HomeProfileHolder(
+                    img: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
+                    name: '${widget.response.data!.user!.firstname!} ${widget.response.data!.user!.lastname!}',
+                    email: widget.response.data!.user!.email!, tap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
+                  },),
+                /*  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -220,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20,),
                       ],
                     ),
-                  ),
-
+                  ),*/
+                  sizedBox16(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,9 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: GestureDetector(onTap :() {
                                 Navigator.push(
                                     context, MaterialPageRoute(
-                                    builder: (builder) =>  MatchesScreen(response: widget.response,
-                                      religion: profileControl.userDetails?.data?.user?.partnerExpectation?.religion?.id.toString() ?? '',
-                                      // Get.find<ProfileController>().userDetails!.data!.user!.religion!.id.toString(),
+                                    builder: (builder) =>  MatchesScreen(
+                                      response: widget.response,
+                                      religion: profileControl.profile?.partnerExpectation?.religionName ?? '',
                                       motherTongue: '', minHeight: '', maxHeight: '', maxWeight: '', based: '', appbar: true,))
                                 );
 
@@ -266,7 +284,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       maxHeight: '',
                                       maxWeight: '',
                                       based: '',
-                                      state: profileControl.userDetails!.data!.user!.address!.state.toString() ?? '',
+                                      state: profileControl.profile?.basicInfo?.presentAddress?.state?.toString() ?? '',
+                                      // profileControl.userDetails!.address!.state.toString() ?? '',
                                       // Get.find<ProfileController>().userDetails!.data!.user!.address!.state.toString(),
                                       appbar: true,))
                                 );
@@ -297,7 +316,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       maxWeight: '',
                                       based: '',
                                       state: '',
-                                      community: profileControl.userDetails?.data?.user?.community?.id?.toString() ?? '',
+                                      community:  profileControl.profile?.partnerExpectation?.communityName ?? '',
+                                      // profileControl.userDetails?.community?.id?.toString() ?? '',
                                       appbar: true,))
                                 );
                               },
@@ -316,7 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context, MaterialPageRoute(
                                     builder: (builder) =>  MatchesScreen(response: widget.response,
                                       religion: '',
-                                      motherTongue: profileControl.userDetails!.data!.user!.motherTongue!.id.toString(),
+                                      motherTongue:
+                                      profileControl.profile?.partnerExpectation?.motherTongueName ?? '',
                                       minHeight: '',
                                       maxHeight: '',
                                       maxWeight: '',
@@ -374,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   sizedBox14(),
                   if (isLoading) Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(color: primaryColor, size: 60,
+                      child: LoadingAnimationWidget.staggeredDotsWave(color: Theme.of(context).primaryColor, size: 60,
                       )) else SizedBox(height: 200,
                     child: ListView.separated(
                       padding: const EdgeInsets.only(left: 16),
@@ -464,7 +485,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Expanded(
                                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(matches[i].basicInfo?.religion?.name ?? '',
+                                                    Text(matches[i].basicInfo?.religionName?? '',
                                                       style: styleSatoshiRegular(size: 13, color: Colors.white),),
                                                     Text(overflow: TextOverflow.ellipsis,maxLines: 2,
                                                       matches[i].basicInfo?.presentAddress?.state ?? '',
@@ -473,39 +494,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              /*like[i] || matches[i].interestStatus == 2  ?
-                                            TickButton(tap: () {  },):
-                                            AddButton(tap: () {
-                                              setState(() {
-                                                // like[i] = !like[i];
-                                              });
-                                              sendRequestApi(
-                                                  memberId: matches[i]
-                                                      .id
-                                                      .toString())
-                                                  .then((value) {
-                                                if (value['status'] == true) {
-                                                  setState(() {
-                                                    isLoadingList[i] = false;
-                                                  });
-                                                  ToastUtil.showToast(
-                                                      "Connection Request Sent");
-                                                } else {
-                                                  setState(() {
-                                                    isLoadingList[i] = false;
-                                                  });
-
-                                                  List<dynamic> errors =
-                                                  value['message']['error'];
-                                                  String errorMessage = errors
-                                                      .isNotEmpty
-                                                      ? errors[0]
-                                                      : "An unknown error occurred.";
-                                                  Fluttertoast.showToast(
-                                                      msg: errorMessage);
-                                                }
-                                              });
-                                            },)*/
                                             ],
                                           ),
 
@@ -531,8 +519,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context, MaterialPageRoute(
                           builder: (builder) =>  MatchesScreen(response: widget.response,
-                            religion: profileControl.userDetails?.data!.user!.religion!.id! == null ?
-                            '' : profileControl.userDetails?.data!.user!.religion!.id.toString(),
+                            religion: profileControl.profile?.religionName == null ?
+                            '' : profileControl.profile?.religionName.toString(),
                             motherTongue: '',
                             minHeight: '',
                             maxHeight: '',
@@ -567,7 +555,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   sizedBox14(),
                   if (isLoading) Center(
                       child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: primaryColor,
+                        color: Theme.of(context).primaryColor,
                         size: 60,
                       )) else SizedBox(height: 200,
                     child: ListView.separated(
@@ -607,11 +595,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Image.asset(icLogo,
-                                            height: 40,
-                                            width: 40,),
+                                            height: 40,width: 40,),
                                         ),
                                     progressIndicatorBuilder: (a, b, c) =>
-                                        customShimmer(height: 0, /*width: 0,*/),
+                                        customShimmer(height: 0),
                                   ),
                                 ),
                               ),
@@ -641,11 +628,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ),
                                                   const SizedBox(width: 6,),
                                                   Container(
-                                                    height: 4,
-                                                    width: 4,
+                                                    height: 4, width: 4,
                                                     decoration: const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.white,
+                                                      shape: BoxShape.circle, color: Colors.white,
                                                     ),),
                                                   const SizedBox(width: 6,),
                                                   Text(
@@ -661,7 +646,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Column(crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    preferredMatches[i].basicInfo?.religion?.name ?? '',
+                                                    preferredMatches[i].basicInfo?.religionName ?? '',
                                                     style: styleSatoshiRegular(size: 13, color: Colors.white),
                                                   ),
                                                   Text(overflow: TextOverflow.ellipsis,maxLines: 1,
@@ -742,7 +727,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   AppBar buildAppBar() {
-    return AppBar(backgroundColor: primaryColor,
+    return AppBar(backgroundColor: Theme.of(context).primaryColor,
       shape: const  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(0),
@@ -751,32 +736,15 @@ class _HomeScreenState extends State<HomeScreen> {
       centerTitle: false,
       title: Padding(
         padding: const EdgeInsets.only(left: 6.0),
-        child: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditBasicInfoScreen()));
-              },
-              child: ClipOval(child: CustomImageWidget(image: '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',height: 40,width: 40,)),
-
-            ),
-            const SizedBox(width: 10,),
-            Text(StringUtils.capitalize(widget.response.data!.user!.firstname!.toString()),
-              style: styleSatoshiBold(size: 18, color: Colors.white),
-            ),
-          ],
+        child: Text(StringUtils.capitalize('Bureau Couple'),
+          style: styleSatoshiBold(size: 18, color: Colors.white),
         ),
       ),
       actions: [
-        GestureDetector(behavior: HitTestBehavior.translucent,
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
-          },
-            child: 
-             Padding(
-              padding:  const EdgeInsets.all(14.0),
-              child: Image.asset(icBell,height: 24,color: Colors.white,)
-            )),
+        IconButton(onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (builder) => const ConnectScreen()));
+        }, icon: const Icon(Icons.notifications,size: 24,))
+
 
       ],
       automaticallyImplyLeading: false,

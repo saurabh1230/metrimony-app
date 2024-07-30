@@ -1129,43 +1129,20 @@ class AuthController extends GetxController implements GetxService {
     update(); // Notify listeners to update the UI
   }
 
-  // Use RxDouble to handle decimal values
+
   var startHeightValue = 5.0.obs;
   var endHeightValue = 7.0.obs;
 
-  // Function to set new height values
   void setHeightValue(RangeValues newValues) {
-    // Update RxDouble values directly with new decimal values
-    startHeightValue.value = newValues.start;
-    endHeightValue.value = newValues.end;
-
-    // Convert to string with one decimal place
+    startHeightValue.value = double.parse((newValues.start).toStringAsFixed(1));
+    endHeightValue.value = double.parse((newValues.end).toStringAsFixed(1));
     String partnerMinHeight = startHeightValue.value.toStringAsFixed(1);
     String partnerMaxHeight = endHeightValue.value.toStringAsFixed(1);
-
-    // Print the updated heights
     print('Check partner height: $partnerMinHeight');
     print('Check partner max height: $partnerMaxHeight');
 
-    update(); // Notify listeners to update the UI
+    update();
   }
-  // var startHeightValue = 5.0.obs;  // Use RxInt for integer values
-  // var endHeightValue = 7.0.obs;
-  //
-  // void setHeightValue(RangeValues newValues) {
-  //   startHeightValue.value = newValues.start.toInt(); // Convert to integer
-  //   endHeightValue.value = newValues.end.toInt();
-  //
-  //   // Convert to string without decimal places
-  //   _partnerMinHeight = startHeightValue.value.toString();
-  //   _partnerMaxHeight = endHeightValue.value.toString();
-  //
-  //   // Print the updated heights
-  //   print('check partner height $partnerMinHeight');
-  //   print('check partner max height $partnerMaxHeight');
-  //
-  //   update(); // Notify listeners to update the UI
-  // }
 
   String? _partnerMinHeight;
   String? get partnerMinHeight => _partnerMinHeight;
@@ -1933,6 +1910,95 @@ class AuthController extends GetxController implements GetxService {
   ];
 
 
+  final List<String> bloodGroupsList = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-',
+  ].toSet().toList(); // Remove duplicates using Set
+
+
+  String? _bloodGroup;
+
+  String? get bloodGroup => _bloodGroup;
+
+  List<String> get bloodgroup => bloodGroupsList;
+
+  void setBloodGroup(String state) {
+    _bloodGroup = state;
+    update();
+  }
+
+  final List<String> eyeColorsList = [
+    'Brown',
+    'Blue',
+    'Green',
+    'Hazel',
+    'Amber',
+    'Gray',
+    'Black',
+    'Red',
+    'Violet',
+  ].toSet().toList(); // Remove duplicates using Set
+
+
+  String? _eyeColor;
+
+  String? get eyeColor => _eyeColor;
+
+  List<String> get eyecolor => eyeColorsList;
+
+  void setEyeColor(String state) {
+    _eyeColor = state;
+    update();
+  }
+
+
+  final List<String> hairColorList = [
+    'Black',
+    'Brown',
+    'Blonde',
+    'Red',
+    'Gray',
+    'White',
+    'Auburn',
+    'Platinum Blonde',
+    'Silver',
+    'Ash Brown',
+    'Dark Brown',
+    'Light Brown',
+  ].toSet().toList(); // Remove duplicates using Set
+
+
+  String? _hairColor;
+
+  String? get hairColor => _hairColor;
+
+  List<String> get haircolor => hairColorList;
+
+  void setHairColor(String state) {
+    _hairColor = state;
+    update();
+  }
+
+  var  attributeHeightValue = 5.0.obs;
+  void setAttributeHeightValue(double newValue) {
+    attributeHeightValue.value = newValue;
+    String partnerHeight = attributeHeightValue.value.toStringAsFixed(1);
+    update();
+  }
+
+  var attributeWeightValue = 45.obs;
+
+  void setAttributeWeightValue(int newValue) {
+    attributeWeightValue.value = newValue;
+    update();
+  }
+}
 
 
 
@@ -1971,7 +2037,7 @@ class AuthController extends GetxController implements GetxService {
         });
   }
 
-}
+
 
 
 

@@ -1,6 +1,7 @@
 
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
@@ -55,7 +56,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
     super.initState();
   }
 
-  List<CareerInfoMdl> career = [];
+  List<CareerInfo> career = [];
 
   careerInfo() {
     isLoading = true;
@@ -66,7 +67,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
         setState(() {
           // profile = ProfileModel.fromJson(value);
           for (var v in value['data']['user']['career_info']) {
-            career.add(CareerInfoMdl.fromJson(v));
+            career.add(CareerInfo.fromJson(v));
           }
           fields();
           // print(career.length);
@@ -89,11 +90,11 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
   // final positionController = TextEditingController();
 
   void fields() {
-    positionController.text = career[0].positionHeld?.name.toString() ?? '';
+    positionController.text = career[0].position.toString() ?? '';
     stateController.text = career[0].statePosting.toString() ?? '';
     districtController.text = career[0].districtPosting.toString() ?? '';
-    fromController.text = career[0].from.toString() ?? '';
-    endController.text = career[0].end.toString() ?? '';
+    // fromController.text = career[0].?? '';
+    // endController.text = career[0].end.toString() ?? '';
   }
 
 
@@ -298,8 +299,8 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                const Divider(),
                                sizedBox10(),
                                buildListRow(
-                                 title: 'Posting Date',
-                                 data1: StringUtils.capitalize('${fromController.text} - ${endController.text}'), tap: () {
+                                 title: 'Posting Year',
+                                 data1: StringUtils.capitalize('${fromController.text}'), tap: () {
                                  Get.bottomSheet(
                                    SingleChildScrollView(
                                      child: Container(color: Colors.white,

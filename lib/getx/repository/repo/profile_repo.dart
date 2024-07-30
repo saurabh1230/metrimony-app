@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bureau_couple/getx/utils/app_constants.dart';
+import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -67,6 +69,28 @@ class ProfileRepo {
       "end" : end,
     });
   }
+
+
+  Future getProfileApi() async {
+    var headers = {
+      'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
+    };
+    var request = http.Request('POST', Uri.parse('$baseUrl${AppConstants.profileDataUrl}'));
+    request.headers.addAll(headers);
+    print(headers);
+    http.StreamedResponse response = await request.send();
+    var resp = jsonDecode(await response.stream.bytesToString());
+    if(response.statusCode == 200 ) {
+      print(resp);
+      return resp;
+    } else {
+      print(resp);
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      return resp;
+    }
+  }
+
 
 
 

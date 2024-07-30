@@ -155,41 +155,41 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
             padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Complexion',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: complexionController,
-                            decoration: AppTFDecoration(
-                                hint: 'Complexion').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(title: 'Complexion',
-                    data1: complexionController.text.isEmpty
-                        ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
-                        ? 'Not Added'
-                        : physicalData.complexion!)
-                        : complexionController.text,
-                    data2: StringUtils.capitalize(complexionController.text),
-                    isControllerTextEmpty: complexionController.text.isEmpty,),
-                ),
-                sizedBox16(),
+                // GestureDetector(
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'Complexion',
+                //           addTextField: TextFormField(
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {
+                //               });
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: complexionController,
+                //             decoration: AppTFDecoration(
+                //                 hint: 'Complexion').decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(title: 'Complexion',
+                //     data1: complexionController.text.isEmpty
+                //         ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
+                //         ? 'Not Added'
+                //         : physicalData.complexion!)
+                //         : complexionController.text,
+                //     data2: StringUtils.capitalize(complexionController.text),
+                //     isControllerTextEmpty: complexionController.text.isEmpty,),
+                // ),
+                // sizedBox16(),
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(

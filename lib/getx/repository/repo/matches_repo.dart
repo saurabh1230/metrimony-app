@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:bureau_couple/getx/utils/app_constants.dart';
+import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -80,7 +82,43 @@ class MatchesRepo {
   }
 
 
-
+  Future<dynamic> getMatchesApi({
+    required String page,
+    required String gender,
+    required String religion,
+    required String profession,
+    required String state,
+    required String height,
+    required String country,
+    required String montherTongue,
+  }) async  {
+    var headers = {
+      'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}matches'));
+    request.fields.addAll({
+      'gender': gender,
+      "religion" : religion,
+      "profession" : profession,
+      "state" : state,
+      "height" : religion,
+      "country" : country,
+      "mother_tongue" : montherTongue,});
+    request.headers.addAll(headers);
+    print('=================> ${request.fields}');
+    http.StreamedResponse response = await request.send();
+    var resp = jsonDecode(await response.stream.bytesToString());
+    print(resp);
+    print(headers);
+    if (response.statusCode == 200) {
+      return resp;
+    } else {
+      print(resp);
+      print(response.reasonPhrase);
+      print(response.statusCode);
+      return resp;
+    }
+  }
 
 
 }

@@ -5,6 +5,7 @@ import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
 import 'package:bureau_couple/src/views/signup/kyc_wait_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_expectation_screen.dart';
+import 'package:bureau_couple/src/views/signup/sign_up_physical_apperance.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_profession_location.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_profession_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
@@ -133,6 +134,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         const SignUpScreenProfessional(),
                         // const SignUpScreenPartnerExp(),
                         const SignUpScreenLocation(),
+                        const SignUpScreenPhysicalAppearanceScreen(),
                         const SignUpScreenEducation(),
                         const SignUpScreenProfessionScreen(),
                         const SignUpScreenProfessionLocationScreen(),
@@ -199,28 +201,37 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 4 ) {
+                    }
+                    else if (_currentPage == 4 ) {
+                      if (const SignUpScreenPhysicalAppearanceScreen().validate()) {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    }
+                    else if (_currentPage == 5 ) {
                       if (const SignUpScreenEducation().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    }  else if (_currentPage == 5 ) {
+                    }  else if (_currentPage == 6 ) {
                       if (const SignUpScreenProfessionScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 6 ) {
+                    } else if (_currentPage == 7 ) {
                       if (const SignUpScreenProfessionLocationScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 7 ) {
+                    } else if (_currentPage == 8 ) {
                       if (const SignUpScreenInterest().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -228,7 +239,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         );
                       }
                     }
-                    else if (_currentPage == 8 ) {
+                    else if (_currentPage == 9 ) {
                       if (const SignUpScreenExpectationScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -237,14 +248,72 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
 
-                    else if (_currentPage == 9 ) {
+                    else if (_currentPage == 10 ) {
                       if(pickedImagePath.isEmpty )  {
                         Fluttertoast.showToast(msg: "Please add Profile Image");
                       } else {
                         setState(() {
                           loading = true;
                         });
-                        print('${authControl.year!}/${authControl.month!}/${authControl.day!}');
+                        // Print all authControl values separately
+                        print('userName: ${authControl.userName}');
+                        print('email: ${authControl.email}');
+                        print('password: ${authControl.password}');
+                        print('mobileNo: ${authControl.phone}');
+                        print('passwordConfirmation: ${authControl.password}');
+                        print('firstName: ${authControl.firstName}');
+                        print('lastName: ${authControl.lastName}');
+                        print('lookingFor: ${authControl.lookingFor}');
+                        print('gender: ${authControl.gender}');
+                        print('motherTongue: ${authControl.motherTongueIndex}');
+                        print('birthDate: ${authControl.year}-${authControl.month}-${authControl.day}');
+                        print('country: India');
+                        print('countryCode: IN');
+                        print('maritalStatus: ${authControl.marriedStatusIndex}');
+                        print('photo: $pickedImagePath');
+                        print('religion: ${authControl.religionMainIndex}');
+                        print('profession: ${authControl.professionIndex}');
+                        print('userType: Normal');
+                        print('community: ${authControl.casteMainIndex}');
+                        print('positionHeld: ${authControl.positionHeldIndex}');
+                        print('state: ${authControl.selectedState}');
+                        print('cadar: ${authControl.cadar}');
+                        print('statePosting: ${authControl.posselectedState}');
+                        print('districtPosting: ${authControl.posselectedDistrict}');
+                        print('postingStartDate: ${authControl.postingYear}');
+                        print('postingEndDate: 2024-07-09');
+                        print('degree: ${authControl.highestDegree}');
+                        print('fieldofStudy: ${authControl.fieldOfStudy}');
+                        print('institute: ${authControl.institute}');
+                        print('batchStart: ${authControl.batchYear}');
+                        print('batchEnd: 2024-07-09');
+                        print('district: ${authControl.selectedDistrict}');
+                        print('middleName: ${authControl.middleName}');
+                        print('maritalStatusP: unmarried');
+                        print('religionP: ${authControl.partnerReligion}');
+                        print('communityP: ${authControl.partnerCommunity}');
+                        print('motherTongueP: ${authControl.partnerMotherTongue}');
+                        print('professionP: ${authControl.partnerProfession}');
+                        print('positionP: ${authControl.partnerPosition}');
+                        print('countryP: India');
+                        print('minAgeP: ${authControl.partnerMinAge}');
+                        print('maxAgeP: ${authControl.partnerMaxAge}');
+                        print('minHeightP: ${authControl.startHeightValue.value}');
+                        print('maxHeightP: ${authControl.endHeightValue.value}');
+                        print('smokingP: ${authControl.smokingIndex}');
+                        print('drinkingP: ${authControl.drikingIndex}');
+                        print('funList: ${formatList(authControl.fun)}');
+                        print('fitnessList: ${formatList(authControl.fitness)}');
+                        print('hobbyList: ${formatList(authControl.hobbies)}');
+                        print('creativeList: ${formatList(authControl.selectedCreatives)}');
+                        print('otherInterestList: ${formatList(authControl.otherInterests)}');
+                        print('financialCondition: ${authControl.annualIncome}');
+                        print('height: ${authControl.attributeHeightValue}');
+                        print('weight: ${authControl.attributeWeightValue}');
+                        print('eyeColor: ${authControl.eyeColor}');
+                        print('bloodGroup: ${authControl.bloodGroup}');
+                        print('hairColor: ${authControl.hairColor}');
+
 
 
                         signUpApi(
@@ -258,7 +327,6 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           lookingFor: authControl.lookingFor.toString(),
                           gender:authControl.gender!,
                           motherTongue: authControl.motherTongueIndex.toString(),
-                          // birthDate: '2024-07-09',
                           birthDate: '${authControl.year!}-${authControl.month!}-${authControl.day!}',
                           country:  'India',
                           countryCode:  'IN',
@@ -274,17 +342,12 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           statePosting:  authControl.posselectedState!,
                           districtPosting: authControl.posselectedDistrict.toString(),
                           postingStartDate:authControl.postingYear!,
-                          // postingStartDate:'${authControl.postingYear!}-${authControl.postingMonth!}-${authControl.postingDay!}',
-                          // postingStartDate: authControl.postingYear.toString(),
-                          // postingStartDate: authControl.from.toString(),
                           postingEndDate: '2024-07-09',
                           degree: authControl.highestDegree.toString(),
                           fieldofStudy: authControl.fieldOfStudy.toString(),
                           institute:authControl.institute.toString(),
                           batchStart: authControl.batchYear.toString(),
                           batchEnd: '2024-07-09',
-                          // batchStart: authControl.batchYear.toString(),
-                          // batchEnd: '2024',
                           district: authControl.selectedDistrict.toString(),
                           middleName: authControl.middleName.toString(),
                           maritalStatusP: 'unmarried',
@@ -296,18 +359,21 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           countryP: 'India',
                           minAgeP: authControl.partnerMinAge.toString(),
                           maxAgeP: authControl.partnerMaxAge.toString(),
-                          minHeightP: authControl.partnerMinHeight.toString(),
-                          maxHeightP: authControl.partnerMaxHeight.toString(),
+                          minHeightP: authControl.startHeightValue.value.toString(),
+                          maxHeightP: authControl.endHeightValue.value.toString(),
                           smokingP: authControl.smokingIndex.toString(),
                           drinkingP: authControl.drikingIndex.toString(),
-                          // funList: authControl.fun.toString(),
                           funList: formatList(authControl.fun),
                           fitnessList: formatList(authControl.fitness),
                           hobbyList: formatList(authControl.hobbies),
                           creativeList:formatList(authControl.selectedCreatives),
                           otherInterestList: formatList(authControl.otherInterests),
                           financialCondition: authControl.annualIncome.toString(),
-                          // phone: '',
+                          height: authControl.attributeHeightValue.toString(),
+                          weight: authControl.attributeWeightValue.toString(),
+                          eyeColor: authControl.eyeColor.toString(),
+                          bloodGroup: authControl.bloodGroup.toString(),
+                          hairColor: authControl.hairColor.toString(),
                         ).then((value) async {
                           setState(() {
                             loading = false;
@@ -346,7 +412,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                   },
-                  title:_currentPage == 9 ? 'Submit' :'Next'),
+                  title:_currentPage == 10 ? 'Submit' :'Next'),
             ),
           ),
 
@@ -457,6 +523,17 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
           width: _currentPage == 9 ? 17 :7,
           decoration: BoxDecoration(
               color: _currentPage == 9 ?  primaryColor :
+              colorD9D9D9,
+              borderRadius: BorderRadius.circular(22)
+          ),
+        ),
+        const SizedBox(width: 3,),
+
+        Container(
+          height: 7,
+          width: _currentPage == 10 ? 17 :7,
+          decoration: BoxDecoration(
+              color: _currentPage == 10 ?  primaryColor :
               colorD9D9D9,
               borderRadius: BorderRadius.circular(22)
           ),

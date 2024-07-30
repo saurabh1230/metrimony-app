@@ -4,6 +4,8 @@ import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
+import 'package:bureau_couple/getx/features/widgets/empty_data_widget.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/views/home/matches/widgets/filter_screen.dart';
 
 import 'package:get/get.dart';
@@ -45,7 +47,13 @@ class MatchesScreen extends StatefulWidget {
   final String? based;
   final String? community;
 
-  const MatchesScreen({Key? key, required this.response, required this.appbar,  this.religion = '',  this.motherTongue = '',  this.minHeight,  this.maxHeight,  this.maxWeight,  this.based,
+  const MatchesScreen({Key? key, required this.response,
+    required this.appbar,
+    this.religion = '',
+    this.motherTongue = '',
+    this.minHeight,
+    this.maxHeight,
+    this.maxWeight,  this.based,
     this.state = '', this.community = '',})
       : super(key: key);
 
@@ -70,20 +78,39 @@ class _MatchesScreenState extends State<MatchesScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<MatchesController>().getMatchesList(
-          "1",
-          widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-          widget.religion!,
-           widget.state!,
-          minHeight.text,
-          maxHeight.text,
-          maxWeightController.text,
-          widget.motherTongue!,
-          widget.community!);
-      Get.find<AuthController>().getReligionsList();
-      Get.find<AuthController>().getCommunityList();
-      Get.find<AuthController>().getMotherTongueList();
-      Get.find<ProfileController>().getBasicInfoApi();
+      print('=============check');
+      Get.find<MatchesController>().getMatches(
+          '1',
+          Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Male')
+              ? "Female" :
+          Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Female')
+              ? "Male" :
+              "Others",
+          widget.religion.toString(),
+          '',
+          widget.state.toString(),
+          '',
+          '',
+          widget.motherTongue.toString(),
+          '');
+      // Get.find<MatchesController>().getMatchesList(
+      //     "1",
+      //     widget.response.data!.user!.gender!.contains('Male')
+      //         ? "Female"
+      //         : widget.response.data!.user!.gender!.contains('Female')
+      //         ? "Male"
+      //         : "Others",
+      //     widget.religion!,
+      //      widget.state!,
+      //     minHeight.text,
+      //     maxHeight.text,
+      //     maxWeightController.text,
+      //     widget.motherTongue!,
+      //     widget.community!);
+      // Get.find<AuthController>().getReligionsList();
+      // Get.find<AuthController>().getCommunityList();
+      // Get.find<AuthController>().getMotherTongueList();
+      // Get.find<ProfileController>().getBasicInfoApi();
     });
     // getMatches();
   }
@@ -103,36 +130,35 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Get.find<MatchesController>().setOffset(1);
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-              scrollController.position.maxScrollExtent &&
-          Get.find<MatchesController>().matchesList != null &&
-          !Get.find<MatchesController>().isLoading) {
-        // int pageSize = (Get.find<NewController>().pageSize! / 10).ceil();
-        if (Get.find<MatchesController>().offset < 8) {
-          print(
-              "print ===========> offset before ${Get.find<MatchesController>().offset}");
-          // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
-          // customPrint('end of the page');
-          Get.find<MatchesController>()
-              .setOffset(Get.find<MatchesController>().offset + 1);
-          Get.find<MatchesController>().showBottomLoader();
-          Get.find<MatchesController>().getMatchesList(
-              Get.find<MatchesController>().offset.toString(),
-              widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
-              widget.religion!,
-              stateController.text,
-              minHeight.text,
-              maxHeight.text,
-              maxWeightController.text,
-              widget.motherTongue!,
-              widget.community!,
-          );
-          Get.find<MatchesController>().offset.toString();
-        }
-      }
-    });
+
+    // Get.find<MatchesController>().setOffset(1);
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
+    //       Get.find<MatchesController>().matchesList != null &&
+    //       !Get.find<MatchesController>().isLoading) {
+    //     if (Get.find<MatchesController>().offset < 8) {
+    //       print(
+    //           "print ===========> offset before ${Get.find<MatchesController>().offset}");
+    //       // Get.find<RestaurantController>().setOffset(Get.find<RestaurantController>().offset+1);
+    //       // customPrint('end of the page');
+    //       Get.find<MatchesController>()
+    //           .setOffset(Get.find<MatchesController>().offset + 1);
+    //       Get.find<MatchesController>().showBottomLoader();
+    //       Get.find<MatchesController>().getMatchesList(
+    //           Get.find<MatchesController>().offset.toString(),
+    //           widget.response.data!.user!.gender!.contains("M") ? "F" : "M",
+    //           widget.religion!,
+    //           stateController.text,
+    //           minHeight.text,
+    //           maxHeight.text,
+    //           maxWeightController.text,
+    //           widget.motherTongue!,
+    //           widget.community!,
+    //       );
+    //       Get.find<MatchesController>().offset.toString();
+    //     }
+    //   }
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -182,9 +208,15 @@ class _MatchesScreenState extends State<MatchesScreen> {
         ],
       ),
       body: GetBuilder<MatchesController>(builder: (matchesControl) {
-        return matchesControl.matchesList != null
-            ? matchesControl.matchesList!.isNotEmpty
-                ? Padding(
+        final list =  matchesControl.matchesList;
+        final isListEmpty = list.isEmpty;
+        return  isListEmpty && !matchesControl.isLoading ? const Padding(
+          padding: EdgeInsets.only(top: Dimensions.paddingSize100),
+          child: Center(
+              child: EmptyDataWidget(title: "No Matches Yet",))) :
+        matchesControl.isLoading ?
+        const ShimmerWidget() :
+        Padding(
                     padding: const EdgeInsets.only(
                         left: 16.0, right: 16, top: 16, bottom: 0),
                     child: Stack(
@@ -248,7 +280,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           ? "user"
                                           : '${StringUtils.capitalize(matchesControl.matchesList![i].firstname ?? 'User')} ${StringUtils.capitalize(matchesControl.matchesList![i].lastname ?? 'User')}',
                                       atributeReligion:
-                                          ' ${matchesControl.matchesList![i].basicInfo?.religion?.name ?? ''}',
+                                          ' ${matchesControl.matchesList![i].religionName ?? ''}',
                                       profession: "Software Engineer",
                                       Location: '${matchesControl.matchesList?[i].address?.state ?? ''} • ${matchesControl.matchesList?[i].address?.country ?? ''} ',
 
@@ -273,9 +305,9 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                               context: context,
                                               onTap: () {
                                                 print(matchesControl.matchesList![i].id.toString());
-                                                print(Get.find<ProfileController>().userDetails!.data!.user!.id!);
+                                                print(Get.find<ProfileController>().userDetails!.id!);
                                                 favControl.sendRequestApi(
-                                                    Get.find<ProfileController>().userDetails!.data!.user!.id.toString(),
+                                                    Get.find<ProfileController>().userDetails!.id.toString(),
                                                     matchesControl.matchesList![i].id.toString());
                                               },
                                               showIcon: isConnected ? false : true,
@@ -291,14 +323,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           : GestureDetector(
                                               onTap: () {
                                                 favControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString(),
-                                                    Get.find<ProfileController>().userDetails!.data!.user!.id.toString()
+                                                    Get.find<ProfileController>().userDetails!.id.toString()
                                                 );
                                               },
                                               child: Icon(isWished ? CupertinoIcons.heart_fill : Icons.favorite_border, color: isWished ? Theme.of(context).primaryColor : Colors.grey,
                                                 size: 32,
                                               )),
                                               dob: '$age yrs',
-                                              text: matchesControl.matchesList![i].basicInfo?.aboutUs ?? '',
+                                              text: /*matchesControl.matchesList![i].basicInfo?.aboutUs ??*/ '',
                                     );
                                   }),
                                 ],
@@ -461,22 +493,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           //     ),
                           //   ),
                         ),
-                        if (matchesControl.isLoading)
-                          Center(
-                              child: Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Theme.of(context).primaryColor)),
-                          ))
-                        else
-                          const SizedBox(),
+
                       ],
                     ),
-                  )
-                : const CustomEmptyMatchScreen(title: 'No Match Found !!',
-                  isBackButton: true,)
-            : const ShimmerWidget();
+                  );
       }),
     );
   }

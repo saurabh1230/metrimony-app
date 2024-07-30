@@ -27,7 +27,11 @@ class FilterBottomSheet extends StatelessWidget {
     return GetBuilder<AuthController>(builder: (authControl) {
       return  GetBuilder<ProfileController>(builder: (profileControl) {
         return Container(
-          color: Theme.of(context).cardColor,
+          height: Get.size.height * 0.8,
+          decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(Dimensions.radius15)
+          ),
           width: Get.size.width,
           child: authControl.communityList == null || authControl.communityList!.isEmpty ||
               authControl.religionList == null || authControl.religionList!.isEmpty ||
@@ -55,11 +59,11 @@ class FilterBottomSheet extends StatelessWidget {
                                 authControl.communityFilterIndex == null;
                                 authControl.motherTongueFilterIndex == null;
                                 authControl.religionFilterIndex == null;
-                                Get.find<MatchesController>().getMatchesList(
-                                  "1",
-                                  profileControl.userDetails!.data!.user!.basicInfo!.gender!.contains("M") ? "F" : "M",
-                                  '', '', '', '', '', '', '',
-                                );
+                                // Get.find<MatchesController>().getMatchesList(
+                                //   "1",
+                                //   profileControl.userDetails!.basicInfo!.gender!.contains("M") ? "F" : "M",
+                                //   '', '', '', '', '', '', '',
+                                // );
                                 Get.back();
                               }, title: 'Clear All')
                         ],
@@ -307,18 +311,18 @@ class FilterBottomSheet extends StatelessWidget {
                       color: primaryColor,
                       context: context,
                       onTap: () {
-                        print("check ============= >");
-                          Get.find<MatchesController>().getMatchesList(
-                              "1",
-                              profileControl.userDetails!.data!.user!.basicInfo!.gender!.contains("M") ? "F" : "M",
-                              authControl.religionFilterIndex.toString(),
-                              stateController.text,
-                              '',
-                              profileControl.minHeight.toString(),
-                              profileControl.maxHeight.toString(),
-                              authControl.motherTongueFilterIndex.toString(),
-                              authControl.communityFilterIndex.toString(),
-                          );
+                        // print("check ============= >");
+                        //   Get.find<MatchesController>().getMatchesList(
+                        //       "1",
+                        //       profileControl.userDetails!.basicInfo!.gender!.contains("M") ? "F" : "M",
+                        //       authControl.religionFilterIndex.toString(),
+                        //       stateController.text,
+                        //       '',
+                        //       profileControl.minHeight.toString(),
+                        //       profileControl.maxHeight.toString(),
+                        //       authControl.motherTongueFilterIndex.toString(),
+                        //       authControl.communityFilterIndex.toString(),
+                        //   );
                           Get.back();
                         // setState(() {
                         //   Navigator.pop(context);

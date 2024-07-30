@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
@@ -35,7 +36,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
     super.initState();
   }
 
-  List<EducationInfoMdl> educationDetails = [];
+  List<EducationInfo> educationDetails = [];
   educationInfo() {
     isLoading = true;
     var resp = getProfileApi();
@@ -45,7 +46,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
         setState(() {
           // profile = ProfileModel.fromJson(value);
           for (var v in value['data']['user']['education_info']) {
-            educationDetails.add(EducationInfoMdl.fromJson(v));
+            educationDetails.add(EducationInfo.fromJson(v));
           }
           fields();
           // print(career.length);
@@ -86,199 +87,11 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
     return GetBuilder<ProfileController>(builder: (educationController) {
       return   Scaffold(
         appBar:  const CustomAppBar(title: "Education Info",
-          // menuWidget:
-          // IconButton(onPressed: () {
-          //
-          // }, icon: const Icon(Icons.edit),)
-          // Row(children: [
-          //   selectedItemId.isNotEmpty ?
-          // GestureDetector(
-          //     behavior: HitTestBehavior.translucent,
-          //     onTap: () {
-          //       educationInfoDeleteApi(id: selectedItemId
-          //       ).then((value) {
-          //         setState(() {
-          //         });
-          //         if (value['status'] == true) {
-          //           setState(() {
-          //             loading = false;
-          //             isLoading  ?  const Loading() :  educationInfo();
-          //           });
-          //
-          //           // isLoading ? Loading() :careerInfo();
-          //           // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-          //           // const KycWaitScreen()));
-          //
-          //           // ToastUtil.showToast("Login Successful");
-          //
-          //           ToastUtil.showToast("Deleted Successfully");
-          //
-          //         } else {
-          //           setState(() {
-          //             loading = false;
-          //           });
-          //
-          //
-          //           List<dynamic> errors = value['message']['error'];
-          //           String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-          //           Fluttertoast.showToast(msg: errorMessage);
-          //         }
-          //       });
-          //     },
-          //     child:const  Icon(Icons.edit,color: Colors.white,)) :
-          // const  SizedBox(),
-          //   GestureDetector(
-          //     onTap: () {
-          //
-          //       showDialog(
-          //         context: context,
-          //         builder: (BuildContext context) {
-          //           return StatefulBuilder(
-          //               builder: (BuildContext context, StateSetter setState) {
-          //                 return EditDialogWidget(
-          //                     addTextField: Column(
-          //                       crossAxisAlignment: CrossAxisAlignment.start,
-          //                       children: [
-          //                         Text("Education",
-          //                           style: styleSatoshiBold(size: 18, color: Colors.black),),
-          //                         sizedBox16(),
-          //                         Row(
-          //                           children: [
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'University / institute', controller: instituteController),
-          //                             ),
-          //                             const SizedBox(width: 6,),
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Degress', controller: degreeController),
-          //                             ),
-          //                           ],
-          //                         ),
-          //                         sizedBox10(),
-          //                         Row(
-          //                           children: [
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
-          //                             ),
-          //                             const SizedBox(width: 6,),
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Registration No',
-          //                                   controller: registrationNoController,
-          //                                   keyboard: TextInputType.number
-          //                               ),
-          //                             ),
-          //                           ],
-          //                         ),
-          //                         sizedBox10(),
-          //                         Row(
-          //                           children: [
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Roll No', controller: rollNoController,
-          //                                   keyboard: TextInputType.number),
-          //                             ),
-          //                             const SizedBox(width: 6,),
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Starting year', controller: startingYearController,
-          //                                   keyboard: TextInputType.number),
-          //                             ),
-          //                           ],
-          //                         ),
-          //                         sizedBox10(),
-          //                         Row(
-          //                           children: [
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Ending Year', controller: endingYearController,
-          //                                   keyboard: TextInputType.number),
-          //                             ),
-          //                             const SizedBox(width: 6,),
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Result in no', controller: resultController,
-          //                                   keyboard: TextInputType.number),
-          //                             ),
-          //                           ],
-          //                         ),
-          //                         sizedBox10(),
-          //                         Row(
-          //                           children: [
-          //                             Expanded(
-          //                               child: buildTextFormField(context, hint: 'Out of', controller: outOfController,
-          //                                   keyboard: TextInputType.number),
-          //                             ),
-          //
-          //                           ],
-          //                         ),
-          //                         sizedBox16(),
-          //                         loading ?
-          //                         loadingElevatedButton(context: context,
-          //                             color: primaryColor):
-          //                         elevatedButton(
-          //                             color: primaryColor,
-          //                             context: context, onTap: () {
-          //                           setState(() {
-          //                             loading =true;
-          //                           });
-          //                           educationInfoAddApi(
-          //                               institute: instituteController.text,
-          //                               degree: degreeController.text,
-          //                               fieldOfStudy: fieldOfStudyController.text,
-          //                               regNO: resultController.text,
-          //                               start: startingYearController.text,
-          //                               end: endingYearController.text,
-          //                               result: resultController.text,
-          //                               outOf: outOfController.text,
-          //                               rollNo: rollNoController.text).then((value) {
-          //                             setState(() {
-          //                             });
-          //                             if (value['status'] == true) {
-          //
-          //
-          //                               setState(() {
-          //                                 loading = false;
-          //                                 educationInfo();
-          //                               });
-          //                               instituteController.clear();
-          //                               degreeController.clear();
-          //                               fieldOfStudyController.clear();
-          //                               resultController.clear();
-          //                               startingYearController.clear();
-          //                               endingYearController.clear();
-          //                               resultController.clear();
-          //                               outOfController.clear();
-          //                               rollNoController.clear();
-          //                               Navigator.pop(context);
-          //                               ToastUtil.showToast("Updated Successfully");
-          //
-          //                             } else {
-          //                               setState(() {
-          //                                 loading = false;
-          //                               });
-          //
-          //
-          //                               List<dynamic> errors = value['message']['error'];
-          //                               String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-          //                               Fluttertoast.showToast(msg: errorMessage);
-          //                             }
-          //                           });
-          //                         }, title: "Save")
-          //                       ],
-          //                     )
-          //                 );
-          //               }
-          //           );
-          //         },
-          //       );
-          //
-          //
-          //     },
-          //     child: const Padding(
-          //       padding:  EdgeInsets.only(right: 16.0),
-          //       child: Icon(Icons.add,color: Colors.white,),
-          //     ),
-          //   )],),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
-            child: educationController.isLoading  ?
+            child: educationController.isEducationLoading  ?
             loadingElevatedButton(context: context, color: primaryColor):
             button(context: context, onTap: () {
               educationController.editEducationInfoApi('educationInfo',

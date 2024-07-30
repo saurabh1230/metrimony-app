@@ -1,9 +1,8 @@
-class MatchesModel {
+class ProfileModel {
   int? id;
   int? profileId;
   String? firstname;
   String? lastname;
-  int? lookingFor;
   String? username;
   Address? address;
   String? email;
@@ -11,7 +10,6 @@ class MatchesModel {
   String? mobile;
   String? balance;
   int? status;
-
   String? image;
   String? createdAt;
   String? updatedAt;
@@ -32,24 +30,20 @@ class MatchesModel {
   String? motherTongueName;
   String? religionName;
   String? professionName;
-  int? bookmark;
-  int? interestStatus;
+  String? positionName;
   BasicInfo? basicInfo;
   String? bloodGroups;
   String? maritialStatus;
   PartnerExpectation? partnerExpectation;
   PhysicalAttributes? physicalAttributes;
-  String? family;
   List<CareerInfo>? careerInfo;
   List<EducationInfo>? educationInfo;
-  String? limitation;
 
-  MatchesModel(
+  ProfileModel(
       {this.id,
         this.profileId,
         this.firstname,
         this.lastname,
-        this.lookingFor,
         this.username,
         this.address,
         this.email,
@@ -57,7 +51,6 @@ class MatchesModel {
         this.mobile,
         this.balance,
         this.status,
-
         this.image,
         this.createdAt,
         this.updatedAt,
@@ -78,25 +71,22 @@ class MatchesModel {
         this.motherTongueName,
         this.religionName,
         this.professionName,
-        this.bookmark,
-        this.interestStatus,
+        this.positionName,
         this.basicInfo,
         this.bloodGroups,
         this.maritialStatus,
         this.partnerExpectation,
         this.physicalAttributes,
-        this.family,
-        this.careerInfo,
-        this.educationInfo,
-        this.limitation,
-      });
 
-  MatchesModel.fromJson(Map<String, dynamic> json) {
+        this.careerInfo,
+        this.educationInfo});
+
+  ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     profileId = json['profile_id'];
     firstname = json['firstname'];
     lastname = json['lastname'];
-    lookingFor = json['looking_for'];
+
     username = json['username'];
     address =
     json['address'] != null ? new Address.fromJson(json['address']) : null;
@@ -126,8 +116,7 @@ class MatchesModel {
     motherTongueName = json['mother_tongue_name'];
     religionName = json['religion_name'];
     professionName = json['profession_name'];
-    bookmark = json['bookmark'];
-    interestStatus = json['interestStatus'];
+    positionName = json['position_name'];
     basicInfo = json['basic_info'] != null
         ? new BasicInfo.fromJson(json['basic_info'])
         : null;
@@ -139,7 +128,7 @@ class MatchesModel {
     physicalAttributes = json['physical_attributes'] != null
         ? new PhysicalAttributes.fromJson(json['physical_attributes'])
         : null;
-    family = json['family'];
+
     if (json['career_info'] != null) {
       careerInfo = <CareerInfo>[];
       json['career_info'].forEach((v) {
@@ -152,8 +141,6 @@ class MatchesModel {
         educationInfo!.add(new EducationInfo.fromJson(v));
       });
     }
-    limitation = json['limitation'];
-
   }
 
   Map<String, dynamic> toJson() {
@@ -162,7 +149,7 @@ class MatchesModel {
     data['profile_id'] = this.profileId;
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
-    data['looking_for'] = this.lookingFor;
+
     data['username'] = this.username;
     if (this.address != null) {
       data['address'] = this.address!.toJson();
@@ -193,8 +180,7 @@ class MatchesModel {
     data['mother_tongue_name'] = this.motherTongueName;
     data['religion_name'] = this.religionName;
     data['profession_name'] = this.professionName;
-    data['bookmark'] = this.bookmark;
-    data['interestStatus'] = this.interestStatus;
+    data['position_name'] = this.positionName;
     if (this.basicInfo != null) {
       data['basic_info'] = this.basicInfo!.toJson();
     }
@@ -206,7 +192,7 @@ class MatchesModel {
     if (this.physicalAttributes != null) {
       data['physical_attributes'] = this.physicalAttributes!.toJson();
     }
-    data['family'] = this.family;
+
     if (this.careerInfo != null) {
       data['career_info'] = this.careerInfo!.map((v) => v.toJson()).toList();
     }
@@ -214,8 +200,6 @@ class MatchesModel {
       data['education_info'] =
           this.educationInfo!.map((v) => v.toJson()).toList();
     }
-    data['limitation'] = this.limitation;
-
     return data;
   }
 }
@@ -275,8 +259,9 @@ class BasicInfo {
   String? communityName;
   String? professionName;
   String? motherTongueName;
-  String? smoking;
-  String? drinking;
+  String? smokingName;
+  String? drinkingName;
+  MaritialStatus? maritialStatus;
 
   BasicInfo(
       {this.id,
@@ -306,8 +291,9 @@ class BasicInfo {
         this.communityName,
         this.professionName,
         this.motherTongueName,
-        this.smoking,
-        this.drinking});
+        this.smokingName,
+        this.drinkingName,
+        this.maritialStatus});
 
   BasicInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -341,8 +327,11 @@ class BasicInfo {
     communityName = json['community_name'];
     professionName = json['profession_name'];
     motherTongueName = json['mother_tongue_name'];
-    smoking = json['smoking'];
-    drinking = json['drinking'];
+    smokingName = json['smoking_name'];
+    drinkingName = json['drinking_name'];
+    maritialStatus = json['maritial_status'] != null
+        ? new MaritialStatus.fromJson(json['maritial_status'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -357,6 +346,7 @@ class BasicInfo {
     data['smoking_status'] = this.smokingStatus;
     data['drinking_status'] = this.drinkingStatus;
     data['birth_date'] = this.birthDate;
+
     data['marital_status'] = this.maritalStatus;
     if (this.presentAddress != null) {
       data['present_address'] = this.presentAddress!.toJson();
@@ -377,8 +367,11 @@ class BasicInfo {
     data['community_name'] = this.communityName;
     data['profession_name'] = this.professionName;
     data['mother_tongue_name'] = this.motherTongueName;
-    data['smoking'] = this.smoking;
-    data['drinking'] = this.drinking;
+    data['smoking_name'] = this.smokingName;
+    data['drinking_name'] = this.drinkingName;
+    if (this.maritialStatus != null) {
+      data['maritial_status'] = this.maritialStatus!.toJson();
+    }
     return data;
   }
 }
@@ -433,6 +426,31 @@ class PermanentAddress {
   }
 }
 
+class MaritialStatus {
+  int? id;
+  String? title;
+  String? createdAt;
+  String? updatedAt;
+
+  MaritialStatus({this.id, this.title, this.createdAt, this.updatedAt});
+
+  MaritialStatus.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
 class PartnerExpectation {
   int? id;
   int? userId;
@@ -450,9 +468,6 @@ class PartnerExpectation {
   String? drinkingStatus;
   String? minDegree;
   String? profession;
-  String? personality;
-  String? financialCondition;
-  String? familyPosition;
   String? createdAt;
   String? updatedAt;
   int? motherTongue;
@@ -465,7 +480,7 @@ class PartnerExpectation {
   String? smoking;
   String? drinking;
   String? positionName;
-  String? maritialStatus;
+  Null? maritialStatus;
 
   PartnerExpectation(
       {this.id,
@@ -482,12 +497,8 @@ class PartnerExpectation {
         this.complexion,
         this.smokingStatus,
         this.drinkingStatus,
-
         this.minDegree,
         this.profession,
-        this.personality,
-        this.financialCondition,
-        this.familyPosition,
         this.createdAt,
         this.updatedAt,
         this.motherTongue,
@@ -520,9 +531,6 @@ class PartnerExpectation {
 
     minDegree = json['min_degree'];
     profession = json['profession'];
-    personality = json['personality'];
-    financialCondition = json['financial_condition'];
-    familyPosition = json['family_position'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     motherTongue = json['mother_tongue'];
@@ -557,9 +565,6 @@ class PartnerExpectation {
 
     data['min_degree'] = this.minDegree;
     data['profession'] = this.profession;
-    data['personality'] = this.personality;
-    data['financial_condition'] = this.financialCondition;
-    data['family_position'] = this.familyPosition;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['mother_tongue'] = this.motherTongue;
@@ -638,8 +643,6 @@ class CareerInfo {
   int? id;
   int? userId;
   int? position;
-  String? from;
-  String? end;
   String? createdAt;
   String? updatedAt;
   String? statePosting;
@@ -649,8 +652,7 @@ class CareerInfo {
       {this.id,
         this.userId,
         this.position,
-        this.from,
-        this.end,
+
         this.createdAt,
         this.updatedAt,
         this.statePosting,
@@ -660,8 +662,7 @@ class CareerInfo {
     id = json['id'];
     userId = json['user_id'];
     position = json['position'];
-    from = json['from'];
-    end = json['end'];
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     statePosting = json['state_posting'];
@@ -673,8 +674,7 @@ class CareerInfo {
     data['id'] = this.id;
     data['user_id'] = this.userId;
     data['position'] = this.position;
-    data['from'] = this.from;
-    data['end'] = this.end;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['state_posting'] = this.statePosting;
@@ -689,10 +689,7 @@ class EducationInfo {
   String? degree;
   String? fieldOfStudy;
   String? institute;
-  int? regNo;
-  int? rollNo;
-  String? outOf;
-  String? result;
+
   String? createdAt;
   String? updatedAt;
 
@@ -702,10 +699,7 @@ class EducationInfo {
         this.degree,
         this.fieldOfStudy,
         this.institute,
-        this.regNo,
-        this.rollNo,
-        this.outOf,
-        this.result,
+
         this.createdAt,
         this.updatedAt});
 
@@ -715,10 +709,7 @@ class EducationInfo {
     degree = json['degree'];
     fieldOfStudy = json['field_of_study'];
     institute = json['institute'];
-    regNo = json['reg_no'];
-    rollNo = json['roll_no'];
-    outOf = json['out_of'];
-    result = json['result'];
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -730,10 +721,7 @@ class EducationInfo {
     data['degree'] = this.degree;
     data['field_of_study'] = this.fieldOfStudy;
     data['institute'] = this.institute;
-    data['reg_no'] = this.regNo;
-    data['roll_no'] = this.rollNo;
-    data['out_of'] = this.outOf;
-    data['result'] = this.result;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

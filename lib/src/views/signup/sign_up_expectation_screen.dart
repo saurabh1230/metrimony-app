@@ -404,19 +404,20 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                           Container(
                             width: double.infinity,
                             child: Obx(() => RangeSlider(
-                              min: 5.0,  // Minimum value (as double)
-                              max: 7.0, // Maximum value (as double)
+                              min: 5.0, // Minimum value
+                              max: 7.0, // Maximum value
                               divisions: 20, // Number of divisions for finer granularity
                               labels: RangeLabels(
                                 authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
-                                authControl.endHeightValue.value.toStringAsFixed(1),
+                                authControl.endHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
                               ),
                               values: RangeValues(
-                                authControl.startHeightValue.value, // No need to convert
+                                authControl.startHeightValue.value,
                                 authControl.endHeightValue.value,
                               ),
                               onChanged: (values) {
-                                authControl.setHeightValue(values);
+                                authControl.setHeightValue(values); // Update the values when slider changes
+                                print('Updated range values: ${values.start.toStringAsFixed(1)} - ${values.end.toStringAsFixed(1)}');
                               },
                             )),
                           ),

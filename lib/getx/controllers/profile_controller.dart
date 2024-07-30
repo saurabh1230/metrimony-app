@@ -1,13 +1,17 @@
 
 
+
+import 'dart:convert';
+
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/getx/repository/repo/profile_repo.dart';
+import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/models/images_model.dart';
-import 'package:bureau_couple/src/models/other_person_details_models.dart';
 import 'package:bureau_couple/src/models/preference_model.dart';
-import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
 
+import '../../src/apis/profile_apis/get_profile_api.dart';
 import '../../src/models/attributes_model.dart';
 
 // import '../../../models/attributes_model.dart';
@@ -69,11 +73,11 @@ class ProfileController extends GetxController implements GetxService {
   }
 
 
-  BasicInfoMdl? _basicInfo;
-  BasicInfoMdl? get basicInfo => _basicInfo;
+  BasicInfo? _basicInfo;
+  BasicInfo? get basicInfo => _basicInfo;
 
 
-  Future<BasicInfoMdl?> getBasicInfoApi() async {
+  Future<BasicInfo?> getBasicInfoApi() async {
     _isLoading = true;
     _basicInfo = null;
     update();
@@ -83,7 +87,7 @@ class ProfileController extends GetxController implements GetxService {
         var responseData = response.body['data']['user']['basic_info'];
 
         if (responseData != null) {
-          _basicInfo = BasicInfoMdl.fromJson(responseData);
+          _basicInfo = BasicInfo.fromJson(responseData);
         } else {
           print("Error: Basic info data is null");
           _isLoading = false;
@@ -104,8 +108,8 @@ class ProfileController extends GetxController implements GetxService {
     return _basicInfo;
   }
 
-  List<CareerInfoMdl>? _careerInfo;
-  List<CareerInfoMdl>? get careerInfo => _careerInfo;
+  List<CareerInfo>? _careerInfo;
+  List<CareerInfo>? get careerInfo => _careerInfo;
 
 
   Future<void> getCareerInfo() async {
@@ -118,7 +122,7 @@ class ProfileController extends GetxController implements GetxService {
 
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['user']['career_info'];
-        List<CareerInfoMdl> newDataList = responseData.map((json) => CareerInfoMdl.fromJson(json)).toList();
+        List<CareerInfo> newDataList = responseData.map((json) => CareerInfo.fromJson(json)).toList();
 
         _careerInfo = newDataList;
         _isLoading = false;
@@ -137,8 +141,8 @@ class ProfileController extends GetxController implements GetxService {
   }
 
 
-  List<BasicInfoMdl>? _educationInfo;
-  List<BasicInfoMdl>? get educationInfo => _educationInfo;
+  List<BasicInfo>? _educationInfo;
+  List<BasicInfo>? get educationInfo => _educationInfo;
 
 
   Future<void> getEducationInfo() async {
@@ -151,7 +155,7 @@ class ProfileController extends GetxController implements GetxService {
 
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['user']['education_info'];
-        List<BasicInfoMdl> newDataList = responseData.map((json) => BasicInfoMdl.fromJson(json)).toList();
+        List<BasicInfo> newDataList = responseData.map((json) => BasicInfo.fromJson(json)).toList();
 
         _educationInfo = newDataList;
         _isLoading = false;
@@ -174,7 +178,7 @@ class ProfileController extends GetxController implements GetxService {
   PreferenceModel? get preferenceModel => _preferenceModel;
 
 
-  Future<BasicInfoMdl?> getPreferenceInfoApi() async {
+  Future<BasicInfo?> getPreferenceInfoApi() async {
     _isLoading = true;
     _preferenceModel = null;
     update();
@@ -246,45 +250,34 @@ class ProfileController extends GetxController implements GetxService {
   ProfileModel? get userDetails => _userDetails;
 
   Future<ProfileModel?> getUserDetailsApi() async {
-    _isLoading = true;
-    _userDetails = null;
-    update();
-    Response response = await profileRepo.getProfileDetails();
-    var responseData = response.body;
-    if(responseData['status'] == true) {
-      _userDetails = ProfileModel.fromJson(responseData);
+    print('========================>>>>>>>>> Start Profile Data');
+    try {
+      _isLoading = true;
+      _userDetails = null;
+      update();
+      Response response = await profileRepo.getProfileDetails();
+      if (response.statusCode == 200) {
+        var responseData = response.body['data']['user'];
+        _userDetails = ProfileModel.fromJson(responseData);
+        // if (response.body['status'] == true && responseData != null) {
+        //   _userDetails = ProfileModel.fromJson(responseData);
+        // } else {
+        //   print("Api Error: Unexpected response format");
+        // }
+      } else {
+        print("Api Error: ${response.statusText}");
+      }
+    } catch (e) {
+
+      print("Api Error: $e");
+    } finally {
       _isLoading = false;
       update();
-    } else {
-      print("Api Error ===================== >>");
     }
-
-    _isLoading = false;
-    update();
     return _userDetails;
   }
 
-  OtherProfileModel? _otherUserDetails;
-  OtherProfileModel? get otherUserDetails => _otherUserDetails;
 
-  Future<OtherProfileModel?> getOtherUserDetailsApi(otherUserId) async {
-    _isLoading = true;
-    _otherUserDetails = null;
-    update();
-    Response response = await profileRepo.getOtherUserProfile(otherUserId);
-    var responseData = response.body;
-    if(responseData['status'] == true) {
-      _otherUserDetails = OtherProfileModel.fromJson(responseData);
-      _isLoading = false;
-      update();
-    } else {
-      print("Api Error ===================== >>");
-    }
-
-    _isLoading = false;
-    update();
-    return _otherUserDetails;
-  }
 
   double _minHeight = 5.0;
   double _maxHeight = 7.0;
@@ -307,23 +300,25 @@ class ProfileController extends GetxController implements GetxService {
   String get heightRange => '${_minHeight.toInt()} - ${_maxHeight.toInt()}';
 
 
+  bool _isEducationLoading = false;
+  bool get isEducationLoading => _isEducationLoading;
   Future<void> editEducationInfoApi(type,id,degree,fieldOfStudy,institute) async {
-    _isLoading = true;
+    _isEducationLoading = true;
     update();
     Response response = await profileRepo.editEducationInfo(type, id, degree, fieldOfStudy, institute);
     var responseData = response.body;
     if(responseData['status'] == true) {
       print("Api ===================== >> $responseData");
       print(response);
-      _isLoading = false;
+      _isEducationLoading = false;
       update();
     } else {
       print(response);
       print("Api Error ===================== error >>");
-      _isLoading = false;
+      _isEducationLoading = false;
       update();
     }
-    _isLoading = false;
+    _isEducationLoading = false;
     update();
   }
 
@@ -356,6 +351,27 @@ class ProfileController extends GetxController implements GetxService {
       _isLoading = false;
       update();
     }
+  }
+
+  ProfileModel? _profile;
+  ProfileModel? get profile => _profile;
+
+  void getProfileDetail() {
+    _isLoading = true;
+    var resp = getProfileApi();
+    resp.then((value) {
+      if(value['status'] == true) {
+          var profileData = value['data']['user'];
+          if (profileData != null) {
+            _profile = ProfileModel.fromJson(profileData);
+              print(_profile!.id);
+          }
+          _isLoading = false;
+          SharedPrefs().setProfilePhoto(_profile!.image.toString());
+          } else {
+        _isLoading = false;
+      }
+    });
   }
 
   final List<String> indianStatesAndUTs = [

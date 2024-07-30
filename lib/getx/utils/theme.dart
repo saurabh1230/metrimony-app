@@ -6,7 +6,8 @@ ThemeData light = ThemeData(
   fontFamily: 'Nunito Sans',
   primaryColor: const Color(0xfff9436b),
   primaryColorDark: Colors.black,
-  secondaryHeaderColor: const Color(0xFF1E6EB3),
+  secondaryHeaderColor: const Color(0xFF0e8fd2),
+  highlightColor: Color(0xff0b1023),
   disabledColor: const Color(0xFFA0A4A8),
   brightness: Brightness.light,
   hintColor: const Color(0xFF9F9F9F),
@@ -17,3 +18,4 @@ ThemeData light = ThemeData(
 
 const Color primaryColor = Color(0xfff9436b);
 const Color casteIconColor = Color(0xff7d8f9b);
+const Color darkBlueColor = Color(0xff0b1023);

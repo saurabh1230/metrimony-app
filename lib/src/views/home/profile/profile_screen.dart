@@ -1,3 +1,4 @@
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 
@@ -56,33 +57,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker _imgPicker = ImagePicker();
   ProfileModel  profile =  ProfileModel();
   bool isLoading = false;
+
   profileDetail() {
     isLoading = true;
     var resp = getProfileApi();
     resp.then((value) {
         if(value['status'] == true) {
           setState(() {
-            profile = ProfileModel.fromJson(value);
+            var profileData = value['data']['user'];
+            if (profileData != null) {
+              setState(() {
+                profile = ProfileModel.fromJson(profileData);
+                print(profile.id);
+                print(profile.firstname);
+              });
+            }
             isLoading = false;
-            SharedPrefs().setProfilePhoto(profile.data!.user!.image.toString());
+            SharedPrefs().setProfilePhoto(profile.image.toString());
           });
         } else {
           setState(() {
             isLoading = false;
           });
         }
-
     });
   }
   //
   List<PhotosModel> photos = [];
-  getImage() {
-    isLoading = true;
+  void getImage() {
+    setState(() {
+      isLoading = true;
+    });
+
     var resp = getImagesApi();
     resp.then((value) {
-      photos.clear();
-      if (value['status'] == true) {
-        setState(() {
+      if (!mounted) return; // Check if the widget is still in the tree
+      setState(() {
+        isLoading = false;
+        photos.clear();
+        if (value['status'] == true) {
           List<dynamic> data = value['data'];
           for (var obj in data) {
             List<dynamic> galleries = obj['galleries'];
@@ -90,13 +103,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               photos.add(PhotosModel.fromJson(gallery));
             }
           }
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-      }
+        }
+      });
     });
   }
 
@@ -180,6 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.pop(context);
                             },
                             click2: () {
+                              Navigator.pop(context);
                             },
                             heading: 'Confirm Logout',
                             subheading: 'Are you sure you want to Logout?',
@@ -246,11 +255,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         }),
       ),),
-      body: isLoading || profile.data!.user!.partnerExpectation == null ||
-          profile.data!.user == null ||
-          profile.data == null
-          ? const BasicInfoShimmerWidget(): Stack(
-
+      body: isLoading || profile.partnerExpectation == null || profile == null
+          ? const BasicInfoShimmerWidget()
+          :
+      Stack(
         children: [
           CustomRefreshIndicator(
             onRefresh: () {
@@ -265,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Center(child: ClipOval(child: CustomImageWidget(image: profile.data?.user?.image != null ? '$baseProfilePhotoUrl${profile.data!.user!.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
+                    Center(child: ClipOval(child: CustomImageWidget(image: profile.image != null ? '$baseProfilePhotoUrl${profile.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
                     sizedBox10(),
                     GestureDetector(onTap: () {
                       Navigator.push(context, MaterialPageRoute(
@@ -278,7 +286,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     buildInfoRow(title: 'First Name',
-                        text: profile.data?.user?.firstname ?? '',
+                        text: profile.firstname ?? '',
                         onTap: () {
                         }),
                     // profile.data!.user!.middleName == null && profile.data!.user!.middleName!.isEmpty ?
@@ -287,17 +295,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //     text: profile.data?.user?.middleName ?? '',
                     //     onTap: () {}),
                     buildInfoRow(title: 'Last Name',
-                        text: profile.data?.user?.lastname ?? '',
+                        text: profile.lastname ?? '',
                         onTap: () {}),
                     buildInfoRow(title: 'Username',
-                        text: profile.data?.user?.username ?? '',
+                        text: profile.username ?? '',
                         onTap: () {}),
                     // buildInfoRow(title: 'Religion',
                     //     text: profile.data?.user?.religion ?? '',
                     //     onTap: () {
                     //     }),
                     buildInfoRow(title: 'Profession',
-                        text: profile.data?.user?.basicInfo?.profession?.name ?? '',
+                        text: profile.basicInfo?.professionName ?? '',
                         onTap: () {}),
                     // sizedBox20(),
                     // GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
@@ -310,11 +318,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //   ),
                     // ),
                     buildInfoRow(title: 'Email',
-                        text: profile.data?.user?.email ?? '',
+                        text: profile.email ?? '',
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Mobile no',
-                        text: profile.data?.user?.mobile ?? '',
+                        text: profile.mobile ?? '',
                         onTap: () {
                         }),
                    /* buildInfoRow(title: 'State',
@@ -322,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {
                         }),*/
                     buildInfoRow(title: 'Date of Birth',
-                        text: profile.data?.user?.basicInfo?.birthDate ?? '',
+                        text: profile.basicInfo?.birthDate ?? '',
                         onTap: () {
                         }),
                     /*buildInfoRow(title: 'City',
@@ -341,18 +349,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     buildInfoRow(
                       title: 'Degree',
-                      text: profile.data?.user?.educationInfo?.isEmpty ?? true
+                      text: profile.educationInfo?.isEmpty ?? true
                           ? ""
-                          : profile.data?.user?.educationInfo![0].degree.toString() ?? "",
+                          : profile.educationInfo![0].degree.toString() ?? "",
                       onTap: () {},
                     ),
 
 
                     buildInfoRow(
                       title: 'Study',
-                      text: profile.data?.user?.educationInfo?.isEmpty ?? true
+                      text: profile.educationInfo?.isEmpty ?? true
                           ? ""
-                          : profile.data?.user?.educationInfo?[0].fieldOfStudy?.toString() ?? "",
+                          : profile.educationInfo?[0].fieldOfStudy?.toString() ?? "",
                       onTap: () {},
                     ),
 
@@ -368,16 +376,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     buildInfoRow(
                       title: 'Position',
-                      text: profile.data?.user?.careerInfo?.isEmpty ?? true
+                      text: profile.careerInfo?.isEmpty ?? true
                           ? ""
-                          : profile.data?.user?.careerInfo?[0].positionHeld?.name?.toString() ?? "",
+                          : profile.careerInfo?[0].position.toString() ?? "",
                       onTap: () {},
                     ),
                     buildInfoRow(
                       title: 'State Of Posting',
-                      text: profile.data?.user?.careerInfo?.isEmpty ?? true
+                      text: profile.careerInfo?.isEmpty ?? true
                           ? ""
-                          : profile.data?.user?.careerInfo?[0].statePosting?.toString() ?? "",
+                          : profile.careerInfo?[0].statePosting?.toString() ?? "",
                       onTap: () {},
                     ),
 
@@ -395,24 +403,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     buildInfoRow(title: 'Religion',
                         text:  /*profile.data?.user?.partnerExpectation!.religion.toString() ?? "",*/
-                        profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.religion!.name.toString(),
+                        profile.partnerExpectation == null ? "" :
+                        profile.partnerExpectation!.religionName.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Profession',
                         text:  /*profile.data?.user?.partnerExpectation!.profession.toString() ?? "",*/
-                        profile.data!.user!.partnerExpectation == null ? "" :
-                        profile.data!.user!.partnerExpectation!.profession!.name.toString(),
+                        profile.partnerExpectation == null ? "" :
+                        profile.partnerExpectation!.professionName.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(
                       title: 'Mother Tongue',
-                      text: profile.data?.user?.partnerExpectation?.motherTongue?.name?.toString() ?? "",
+                      text: profile.partnerExpectation?.motherTongueName.toString() ?? "",
                       onTap: () {},
                     ),
                     buildInfoRow(
                       title: 'Caste',
-                      text:  profile.data?.user?.partnerExpectation?.community?.name?.toString() ?? "",
+                      text:  profile.partnerExpectation?.communityName.toString() ?? "",
                       onTap: () {},
                     ),
 
@@ -443,13 +451,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     //     onTap: () {
                     //     }),
                     buildInfoRow(title: 'Height',
-                        text: profile.data?.user?.physicalAttributes!.height.toString() ?? "",
+                        text: profile.physicalAttributes?.height.toString() ?? "",
                         // profile.data!.user!.physicalAttributes!.height == null ? "" :
                         // profile.data!.user!.physicalAttributes!.height.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Blood Group',
-                        text: profile.data?.user?.physicalAttributes!.bloodGroup.toString() ?? "",
+                        text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
                         // profile.data!.user!.physicalAttributes!.bloodGroup== null ? "" :
                         // profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
                         onTap: () {
@@ -680,7 +688,7 @@ GestureDetector buildInfoRow({
   Container chipBox({required String name}) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(12),
           ),
           border: Border.all(
@@ -688,7 +696,7 @@ GestureDetector buildInfoRow({
             color: color4B164C.withOpacity(0.20)
           ),
           color: Colors.transparent),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Text(
         name,
         style: styleSatoshiMedium(size: 16, color: color4B164C),

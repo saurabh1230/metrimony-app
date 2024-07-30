@@ -15,6 +15,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../../../../getx/data/response/profile_model.dart';
 import '../../../apis/profile_apis/basic_info_api.dart';
 import '../../../apis/profile_apis/get_profile_api.dart';
 import '../../../constants/assets.dart';
@@ -80,7 +81,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   File pickedImage = File("");
   final ImagePicker _imgPicker = ImagePicker();
 
-  BasicInfoMdl basicInfo = BasicInfoMdl();
+  BasicInfo basicInfo = BasicInfo();
   InfoModel mainInfo = InfoModel();
 
   careerInfo() {
@@ -93,7 +94,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
           var physicalAttributesData = value['data']['user']['basic_info'];
           if (physicalAttributesData != null) {
             setState(() {
-              basicInfo = BasicInfoMdl.fromJson(physicalAttributesData);
+              basicInfo = BasicInfo.fromJson(physicalAttributesData);
               fields();
             });
           }
@@ -120,20 +121,20 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     lastNameController.text = mainInfo?.lastname.toString() ?? '';
     userNameController.text = mainInfo?.username.toString() ?? '';
     emailController.text = mainInfo?.email.toString() ?? '';
-    professionController.text = basicInfo?.profession?.name.toString() ?? '';
+    professionController.text = basicInfo?.professionName.toString() ?? '';
     genderController.text = basicInfo?.gender?.toString() ?? '';
-    religionController.text = basicInfo?.religion?.name.toString() ?? '';
-    smokingController.text = basicInfo?.smoking?.name.toString() ?? '';
-    drinkingController.text = basicInfo?.drinking?.name.toString() ?? '';
+    religionController.text = basicInfo?.religionName.toString() ?? '';
+    smokingController.text = basicInfo?.smokingName.toString() ?? '';
+    drinkingController.text = basicInfo?.drinkingName.toString() ?? '';
     birthDateController.text = basicInfo?.birthDate?.toString() ?? '';
-    communityController.text = basicInfo?.community?.name.toString() ?? '';
-    motherTongueController.text = basicInfo?.motherTongue?.name.toString() ?? '';
+    communityController.text = basicInfo?.communityName.toString() ?? '';
+    motherTongueController.text = basicInfo?.motherTongueName.toString() ?? '';
     marriedStatusController.text = basicInfo?.maritalStatus?.toString() ?? '';
     stateController.text = basicInfo?.presentAddress?.state?.toString() ?? '';
     zipController.text = basicInfo?.presentAddress?.zip?.toString() ?? '';
     countryController.text =
         basicInfo?.presentAddress?.country?.toString() ?? '';
-    cityController.text = basicInfo?.presentAddress?.city?.toString() ?? '';
+    // cityController.text = basicInfo?.presentAddress?.district?.toString() ?? '';
     financialCondition.text = basicInfo?.financialCondition?.toString() ?? '';
     aboutUs.text = basicInfo?.aboutUs?.toString() ?? '';
 
@@ -353,24 +354,33 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 ? SizedBox() :
             Column(
                   children: [
-                    buildDataAddRow(
-                      widget: const SizedBox(),
-                      // widget: const Icon(
-                      //   Icons.edit,
-                      //   size: 12,
-                      // ),
-                      title: 'Middle Name',
-                      data1: middleNameController.text.isEmpty
-                          ? (mainInfo == null ||
-                          mainInfo.middlename == null ||
-                          mainInfo.middlename!.isEmpty
-                          ? 'Not Added'
-                          : StringUtils.capitalize(mainInfo.middlename!))
-                          : StringUtils.capitalize(middleNameController.text),
-                      data2: StringUtils.capitalize(middleNameController.text),
-                      isControllerTextEmpty: middleNameController.text.isEmpty,
-                    ),
-                    const Divider(),
+                    // mainInfo != null &&
+                    //     (mainInfo.middlename == null || mainInfo.middlename!.isEmpty) &&
+                    //     middleNameController.text.isEmpty
+                    //     ? const SizedBox()
+                    //     : Column(
+                    //   children: [
+                    //     buildDataAddRow(
+                    //       widget: const SizedBox(),
+                    //       // widget: const Icon(
+                    //       //   Icons.edit,
+                    //       //   size: 12,
+                    //       // ),
+                    //       title: 'Middle Name',
+                    //       data1: middleNameController.text.isEmpty
+                    //           ? (mainInfo == null ||
+                    //           mainInfo.middlename == null ||
+                    //           mainInfo.middlename!.isEmpty
+                    //           ? 'Not Added'
+                    //           : StringUtils.capitalize(mainInfo.middlename!))
+                    //           : StringUtils.capitalize(middleNameController.text),
+                    //       data2: StringUtils.capitalize(middleNameController.text),
+                    //       isControllerTextEmpty: middleNameController.text.isEmpty,
+                    //     ),
+                    //     const Divider(),
+                    //   ],
+                    // ),
+
                   ],
                 ),
 
@@ -525,9 +535,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     professionController.text.isEmpty
                         ? (basicInfo.id == null ||
                         basicInfo.profession == null ||
-                        basicInfo.profession!.name!.isEmpty
+                        basicInfo.professionName!.isEmpty
                         ? 'Not Added'
-                        : basicInfo.profession!.name.toString() )
+                        : basicInfo.professionName.toString() )
                         : professionController.text,
 
                     data2:
@@ -568,7 +578,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     data1: religionController.text.isEmpty
                         ? (basicInfo.id == null ||
                         basicInfo.religion == null ||
-                        basicInfo.religion!.name!.isEmpty
+                        basicInfo.religionName!.isEmpty
                         ? 'Not Added'
                         : basicInfo.religion.toString())
                         : religionController.text,
@@ -578,26 +588,26 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
                 // sizedBox16(),
-                const Divider(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {},
-                  child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    title: 'Married Status',
-                    data1: marriedStatusController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.maritalStatus == null ||
-                        basicInfo.maritalStatus!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.maritalStatus.toString())
-                        : marriedStatusController.text,
-                    data2: StringUtils.capitalize(
-                        marriedStatusController.text),
-                    isControllerTextEmpty:
-                    marriedStatusController.text.isEmpty,
-                  ),
-                ),
+                // const Divider(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {},
+                //   child: buildDataAddRow(
+                //     widget: const SizedBox(),
+                //     title: 'Married Status',
+                //     data1: marriedStatusController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.maritalStatus == null ||
+                //         basicInfo.maritalStatus!.isEmpty
+                //         ? 'Not Added'
+                //         : basicInfo.maritalStatus.toString())
+                //         : marriedStatusController.text,
+                //     data2: StringUtils.capitalize(
+                //         marriedStatusController.text),
+                //     isControllerTextEmpty:
+                //     marriedStatusController.text.isEmpty,
+                //   ),
+                // ),
                 // sizedBox16(),
                 const Divider(),
                 GestureDetector(
@@ -619,9 +629,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     ),
                     data1: smokingController.text.isEmpty
                         ? (basicInfo.id == null ||
-                        basicInfo.smoking!.name == null
+                        basicInfo.smokingName == null
                         ? 'Not Added'
-                        : basicInfo.smoking!.name.toString())
+                        : basicInfo.smokingName.toString())
                         : smokingController.text,
                     data2: smokingController.text,
                     isControllerTextEmpty: smokingController.text.isEmpty,
@@ -648,9 +658,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     ),
                     data1: drinkingController.text.isEmpty
                         ? (basicInfo.id == null ||
-                        basicInfo.drinking!.name == null
+                        basicInfo.drinkingName == null
                         ? 'Not Added'
-                        : basicInfo.drinking!.name.toString())
+                        : basicInfo.drinkingName.toString())
                         : drinkingController.text,
                     data2: drinkingController.text,
                     isControllerTextEmpty: drinkingController.text.isEmpty,
@@ -704,9 +714,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     data1: communityController.text.isEmpty
                         ? (basicInfo.id == null ||
                         basicInfo.community == null ||
-                        basicInfo.community!.name == null
+                        basicInfo.communityName == null
                         ? 'Not Added'
-                        : basicInfo.community!.name.toString())
+                        : basicInfo.communityName.toString())
                         : communityController.text,
                     data2: communityController.text,
                     isControllerTextEmpty: communityController.text.isEmpty,
@@ -759,11 +769,11 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     widget: const SizedBox(),
                     data1: motherTongueController.text.isEmpty
                         ? (basicInfo.id == null ||
-                        basicInfo.motherTongue == null ||
-                        basicInfo.motherTongue!.name == null ||
-                        basicInfo.motherTongue!.name!.isEmpty
+                        basicInfo.motherTongueName == null ||
+                        basicInfo.motherTongueName == null ||
+                        basicInfo.motherTongueName!.isEmpty
                         ? 'Not Added'
-                        : basicInfo.motherTongue!.name.toString())
+                        : basicInfo.motherTongueName.toString())
                         : motherTongueController.text,
                     data2: StringUtils.capitalize(motherTongueController.text),
                     isControllerTextEmpty: motherTongueController.text.isEmpty,
@@ -771,48 +781,48 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
                 ),
                 // sizedBox16(),
-                const Divider(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'City',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: cityController,
-                            decoration:
-                            AppTFDecoration(hint: 'City').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'City',
-                    data1: cityController.text.isEmpty
-                        ? (basicInfo.presentAddress?.city == null
-                        ? 'City'
-                        : basicInfo.presentAddress!.city!)
-                        : cityController.text,
-                    data2: StringUtils.capitalize(cityController.text),
-                    isControllerTextEmpty: cityController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
+                // const Divider(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'District',
+                //           addTextField: TextFormField(
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {});
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: cityController,
+                //             decoration:
+                //             AppTFDecoration(hint: 'District').decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     title: 'District',
+                //     data1: cityController.text.isEmpty
+                //         ? (basicInfo.presentAddress?.district == null
+                //         ? 'District'
+                //         : basicInfo.presentAddress!.district!)
+                //         : cityController.text,
+                //     data2: StringUtils.capitalize(cityController.text),
+                //     isControllerTextEmpty: cityController.text.isEmpty,
+                //   ),
+                //   // child: CarRowWidget(favourites: favourites!,)
+                // ),
                 // sizedBox16(),
                 const Divider(),
                 GestureDetector(
@@ -977,11 +987,11 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   });
                   updateBasicInfo(
                           profession:Get.find<AuthController>().professionIndex == null
-                              ? Get.find<ProfileController>().userDetails?.data?.user?.profession?.id?.toString() ?? '10'
+                              ? Get.find<ProfileController>().profile?.profession ?? '10'
                               : Get.find<AuthController>().professionIndex.toString(),
-                          religion: Get.find<ProfileController>().userDetails?.data?.user?.religion?.id?.toString() ?? '11',
-                          motherTongue:  Get.find<ProfileController>().userDetails?.data?.user?.motherTongue?.id?.toString() ?? '10',
-                          community: Get.find<ProfileController>().userDetails?.data?.user?.community?.id?.toString() ?? '11',
+                          religion: Get.find<ProfileController>().profile?.religionName.toString() ?? "11",
+                          motherTongue:  Get.find<ProfileController>().profile?.motherTongue ?? '10',
+                          community: Get.find<ProfileController>().profile?.community ?? '11',
                           smokingStatus: Get.find<AuthController>().smokingIndex.toString(),
                           drinkingStatus:  Get.find<AuthController>().drikingIndex.toString(),
                           maritalStatus: marriedStatusController.text,

@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
@@ -70,7 +71,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
   }
 
 
-  PartnerExpectationInfoMdl preferenceModel = PartnerExpectationInfoMdl();
+  PartnerExpectation preferenceModel = PartnerExpectation();
 
   careerInfo() {
     isLoading = true;
@@ -82,7 +83,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
           var physicalAttributesData = value['data']['user']['partner_expectation'];
           if (physicalAttributesData != null) {
             setState(() {
-              preferenceModel = PartnerExpectationInfoMdl.fromJson(physicalAttributesData);
+              preferenceModel = PartnerExpectation.fromJson(physicalAttributesData);
               fields();
             });
           }
@@ -105,13 +106,13 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
      heightController.text= preferenceModel.minHeight?.toString() ?? '';
    maxHeightController.text= preferenceModel.maxHeight?.toString() ?? '';
    // weightController.text= preferenceModel.maxWeight.toString() ?? '';
-    preferredReligionController.text= preferenceModel.religion?.name?.toString() ?? '';
-    communityController.text= preferenceModel.community?.name?.toString() ?? '';
-    smokingController.text= preferenceModel.smoking?.name?.toString() ?? '';
-   drinkingController.text= preferenceModel.drinking?.name?.toString() ?? '';
-     preferredProfession.text= preferenceModel.profession!.name?.toString() ?? '';
+    preferredReligionController.text= preferenceModel.religionName.toString() ?? '';
+    communityController.text= preferenceModel.communityName.toString() ?? '';
+   //  smokingController.text= preferenceModel.smoking?.name?.toString() ?? '';
+   // drinkingController.text= preferenceModel.drinking?.name?.toString() ?? '';
+     preferredProfession.text= preferenceModel.professionName.toString() ?? '';
     minimumDegreeController.text= preferenceModel.minDegree?.toString() ?? '';
-    financialCondition.text= preferenceModel.financialCondition?.toString() ?? '';
+    // financialCondition.text= preferenceModel.financialCondition?.toString() ?? '';
     // languageController.text= preferenceModel.language.toString() ?? '';
   }
 
@@ -677,7 +678,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? (preferenceModel.id == null ||
                           preferenceModel.religion == null
                           ? 'Not Added'
-                          : preferenceModel.religion!.name.toString())
+                          : preferenceModel.religionName.toString())
                           : preferredReligionController.text,
                       data2: preferredReligionController.text,
                       isControllerTextEmpty: preferredReligionController.text.isEmpty,
@@ -697,48 +698,48 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     child: buildDataAddRow(
                       title: 'Preferred Profession',
                       data1: preferredProfession.text.isEmpty
-                          ? (preferenceModel.id == null || preferenceModel.profession == null || preferenceModel.profession!.name!.isEmpty
+                          ? (preferenceModel.id == null || preferenceModel.profession == null || preferenceModel.professionName!.isEmpty
                           ? 'Not Added'
-                          : preferenceModel.profession!.name.toString())
+                          : preferenceModel.professionName.toString())
                           : preferredProfession.text,
                       data2: StringUtils.capitalize(preferredProfession.text),
                       isControllerTextEmpty: preferredProfession.text.isEmpty,
                       widget: const SizedBox(),
                     ),),
                   sizedBox16(),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FinancialBottomSheet(
-                            privacyStatus: '',
-                            onPop: (val) {
-                              financialCondition.text = val;
-                              print( '===>${financialCondition.text}');
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(
-                      title: 'Financial Condition',
-                      widget: const Icon(
-                        Icons.edit,
-                        size: 12,
-                      ),
-                      data1: financialCondition.text.isEmpty
-                          ? (preferenceModel.id == null ||
-                          preferenceModel.financialCondition == null
-                          ? 'Not Added'
-                          : preferenceModel.financialCondition.toString())
-                          : financialCondition.text,
-                      data2: financialCondition.text,
-                      isControllerTextEmpty: financialCondition.text.isEmpty,
-                    ),
-                  ),
-                  sizedBox16(),
+                  // GestureDetector(
+                  //   behavior: HitTestBehavior.translucent,
+                  //   onTap: () {
+                  //     showModalBottomSheet(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return FinancialBottomSheet(
+                  //           privacyStatus: '',
+                  //           onPop: (val) {
+                  //             financialCondition.text = val;
+                  //             print( '===>${financialCondition.text}');
+                  //           },
+                  //         );
+                  //       },
+                  //     );
+                  //   },
+                  //   child: buildDataAddRow(
+                  //     title: 'Financial Condition',
+                  //     widget: const Icon(
+                  //       Icons.edit,
+                  //       size: 12,
+                  //     ),
+                  //     data1: financialCondition.text.isEmpty
+                  //         ? (preferenceModel.id == null ||
+                  //         preferenceModel.financialCondition == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.financialCondition.toString())
+                  //         : financialCondition.text,
+                  //     data2: financialCondition.text,
+                  //     isControllerTextEmpty: financialCondition.text.isEmpty,
+                  //   ),
+                  // ),
+                  // sizedBox16(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
@@ -760,7 +761,7 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? (preferenceModel.id == null ||
                           preferenceModel.motherTongue == null
                           ? 'Not Added'
-                          : preferenceModel.motherTongue!.name.toString())
+                          : preferenceModel.motherTongueName.toString())
                           : motherTongueController.text,
                       data2: motherTongueController.text,
                       isControllerTextEmpty: motherTongueController.text.isEmpty,
@@ -836,34 +837,34 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   //   // child: CarRowWidget(favourites: favourites!,)
                   // ),
                   // sizedBox16(),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Get.bottomSheet(
-                        SmokingBottomSheet(onPop: (val) {
-                          smokingController.text = val;
-                        }),
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                      );
-                    },
-                    child: buildDataAddRow(
-                      title: 'Smoking status',
-                      widget: const Icon(
-                        Icons.edit,
-                        size: 12,
-                      ),
-                      data1: smokingController.text.isEmpty
-                          ? (preferenceModel.id == null ||
-                          preferenceModel.smoking == null ||
-                          preferenceModel.smoking!.name == null
-                          ? 'Not Added'
-                          : preferenceModel.smoking!.name.toString())
-                          : smokingController.text,
-                      data2: smokingController.text,
-                      isControllerTextEmpty: smokingController.text.isEmpty,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   behavior: HitTestBehavior.translucent,
+                  //   onTap: () {
+                  //     Get.bottomSheet(
+                  //       SmokingBottomSheet(onPop: (val) {
+                  //         smokingController.text = val;
+                  //       }),
+                  //       backgroundColor: Colors.transparent,
+                  //       isScrollControlled: true,
+                  //     );
+                  //   },
+                  //   child: buildDataAddRow(
+                  //     title: 'Smoking status',
+                  //     widget: const Icon(
+                  //       Icons.edit,
+                  //       size: 12,
+                  //     ),
+                  //     data1: smokingController.text.isEmpty
+                  //         ? (preferenceModel.id == null ||
+                  //         preferenceModel.smoking == null ||
+                  //         preferenceModel.smoking!.name == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.smoking!.name.toString())
+                  //         : smokingController.text,
+                  //     data2: smokingController.text,
+                  //     isControllerTextEmpty: smokingController.text.isEmpty,
+                  //   ),
+                  // ),
 
                   // GestureDetector(
                   //   behavior: HitTestBehavior.translucent,
@@ -893,34 +894,34 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   //   ),
                   // ),
                   sizedBox16(),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      Get.bottomSheet(
-                        DrinkingBottomSheet(onPop: (val) {
-                          drinkingController.text = val;
-                        }),
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                      );
-                    },
-                    child: buildDataAddRow(
-                      title: 'Drinking status',
-                      widget: const Icon(
-                        Icons.edit,
-                        size: 12,
-                      ),
-                      data1: drinkingController.text.isEmpty
-                          ? (preferenceModel.id == null ||
-                          preferenceModel.drinking == null ||
-                          preferenceModel.drinking!.name == null
-                          ? 'Not Added'
-                          : preferenceModel.drinking!.name.toString())
-                          : drinkingController.text,
-                      data2: drinkingController.text,
-                      isControllerTextEmpty: drinkingController.text.isEmpty,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   behavior: HitTestBehavior.translucent,
+                  //   onTap: () {
+                  //     Get.bottomSheet(
+                  //       DrinkingBottomSheet(onPop: (val) {
+                  //         drinkingController.text = val;
+                  //       }),
+                  //       backgroundColor: Colors.transparent,
+                  //       isScrollControlled: true,
+                  //     );
+                  //   },
+                  //   child: buildDataAddRow(
+                  //     title: 'Drinking status',
+                  //     widget: const Icon(
+                  //       Icons.edit,
+                  //       size: 12,
+                  //     ),
+                  //     data1: drinkingController.text.isEmpty
+                  //         ? (preferenceModel.id == null ||
+                  //         preferenceModel.drinking == null ||
+                  //         preferenceModel.drinking!.name == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.drinking!.name.toString())
+                  //         : drinkingController.text,
+                  //     data2: drinkingController.text,
+                  //     isControllerTextEmpty: drinkingController.text.isEmpty,
+                  //   ),
+                  // ),
 
                   // GestureDetector(
                   //   behavior: HitTestBehavior.translucent,

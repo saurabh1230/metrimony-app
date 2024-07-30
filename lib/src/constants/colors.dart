@@ -30,5 +30,5 @@ const Color color7BB972 =Color(0xff7BB972);
 const Color color7859BC =Color(0xff7859BC);
 const Color colorF2AB47=Color(0xffF2AB47);
 const Color colorF27047=Color(0xffF27047);
-const Color casteIconColor = Color(0xff7d8f9b);
+// const Color casteIconColor = Color(0xff7d8f9b);
 

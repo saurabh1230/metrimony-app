@@ -36,7 +36,6 @@ Future<dynamic> signUpApi({
   required String institute,
   required String batchStart,
   required String batchEnd,
-
   required String maritalStatusP,
   required String religionP,
   required String communityP,
@@ -44,21 +43,23 @@ Future<dynamic> signUpApi({
   required String professionP,
   required String positionP,
   required String countryP,
-required String minAgeP,
-required String maxAgeP,
-required String minHeightP,
-required String maxHeightP,
-required String smokingP,
-required String drinkingP,
+  required String minAgeP,
+  required String maxAgeP,
+  required String minHeightP,
+  required String maxHeightP,
+  required String smokingP,
+  required String drinkingP,
   required String funList,
   required String fitnessList,
   required String hobbyList,
   required String creativeList,
   required String otherInterestList,
   required String financialCondition,
-  // required String   phone,
-  // required String age,
-
+  required String height,
+  required String weight,
+  required String eyeColor,
+  required String bloodGroup,
+  required String hairColor,
   required String photo,
 }) async {
   var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}register'));
@@ -72,7 +73,7 @@ required String drinkingP,
     'country': country,
     'firstname': firstName,
     'lastname': lastName,
-    'middle_name' :middleName,
+    'middle_name': middleName,
     'marital_status': maritalStatus,
     'looking_for': lookingFor,
     'gender': gender,
@@ -98,27 +99,31 @@ required String drinkingP,
     "batch_start": batchStart,
     "batch_end": batchEnd,
 
-    'marital_status_p' :maritalStatusP,
-    'religion_p' : religionP,
-    'community_p' : communityP,
-      'mother_tongue_p' : motherTongueP,
-      'profession_p' : professionP,
-      'position_p': positionP,
-      'country_p': 'India',
-       'min_age_p' : minAgeP,
-      'max_age_p':maxAgeP,
-      'min_height_p': minHeightP,
-       'max_height_p' : maxHeightP,
-      'smoking_status ' :smokingP,
-      'drinking_status ' : drinkingP,
-      'fun' : funList,
-      'fitness' : fitnessList,
-      ' hobby' : hobbyList,
-      'creative' : creativeList,
-      'other_interest' : otherInterestList,
-    'financial_condition' : financialCondition,
-
-
+    'marital_status_p': maritalStatusP,
+    'religion_p': religionP,
+    'community_p': communityP,
+    'mother_tongue_p': motherTongueP,
+    'profession_p': professionP,
+    'position_p': positionP,
+    'country_p': 'India',
+    'min_age_p': minAgeP,
+    'max_age_p': maxAgeP,
+    'min_height_p': minHeightP,
+    'max_height_p': maxHeightP,
+    'smoking_status_p': smokingP,
+    'drinking_status_p': drinkingP,
+    'fun': funList,
+    'fitness': fitnessList,
+    ' hobby': hobbyList,
+    'creative': creativeList,
+    'other_interest': otherInterestList,
+    'financial_condition': financialCondition,
+    'height': height,
+    'weight': weight,
+    'eye_color': eyeColor,
+    'blood_group': bloodGroup,
+    'hair_color': hairColor,
+    // 'complexion' : complexion,
     // "phone" :  phone,
     'agree': '1',
   });
@@ -126,7 +131,8 @@ required String drinkingP,
   http.StreamedResponse response = await request.send();
   var resp = jsonDecode(await response.stream.bytesToString());
   print(resp);
-  print(request.fields);
+  print('=================print request field${request.fields}');
+  print('=================print request field${request.fields}');
   if (response.statusCode == 200) {
     return resp;
   } else {
@@ -136,4 +142,3 @@ required String drinkingP,
     return resp;
   }
 }
-

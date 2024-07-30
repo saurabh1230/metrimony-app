@@ -40,15 +40,7 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  final List<String>? interest = [
-    "Football",
-    "Nature",
-    "Language",
-    "Fashion",
-    "Photography",
-    "Music",
-    "Writing"
-  ];
+
   bool isLoading = false;
 
   @override
@@ -300,8 +292,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                               StringUtils.capitalize(model
                                                       .data
                                                       ?.matches
-                                                      ?.religion!
-                                                      .name ??
+                                                      ?.religionName ??
                                                   ''),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -586,15 +577,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                           image: icReligionIcon,
                                           title: 'Religion',
                                           text: model
-                                              .data!.matches!.religion!.name
+                                              .data!.matches!.religionName
                                               .toString()),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icMotherToungeIcon,
                                           title: 'Mother Tongue',
-                                          text: model
-                                              .data!.matches!.motherTongue!.name
-                                              .toString()),
+                                          text: model.data!.matches!.motherTongueName.toString()),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icMarriedStatusPro,
@@ -603,7 +592,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   .data!
                                                   .matches
                                                   ?.basicInfo
-                                                  ?.maritalStatus ??
+                                                  ?.maritialStatus!.title??
                                               "")),
                                     ],
                                   ),
@@ -712,7 +701,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     ),
                                     sizedBox6(),
                                     Text(
-                                      model.data!.matches!.profession!.name
+                                      model.data!.matches!.professionName
                                           .toString(),
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
@@ -824,16 +813,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         image: icReligionIcon,
                                         title: 'Religion',
                                         text: StringUtils.capitalize(model.data
-                                                ?.matches?.religion!.name ??
+                                                ?.matches?.religionName ??
                                             ""),
-                                        icon: model.data?.matches?.religion
-                                                    ?.name ==
+                                        icon: model.data?.matches?.religionName ==
                                                 model
                                                     .data
                                                     ?.user
                                                     ?.partnerExpectation
-                                                    ?.religion!
-                                                    .name
+                                                    ?.religionName
                                             ? tickHolder
                                             : crossholder,
                                       ),
@@ -842,14 +829,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         image: icGotraIcon,
                                         title: 'Caste',
                                         text: StringUtils.capitalize(model.data
-                                                ?.matches?.community!.name ??
+                                                ?.matches?.communityName ??
                                             ""),
-                                        icon: model.data?.matches?.community?.name == model
+                                        icon: model.data?.matches?.communityName == model
                                                     .data
                                                     ?.user
                                                     ?.partnerExpectation
-                                                    ?.community!
-                                                    .name
+                                                    ?.communityName
                                             ? tickHolder
                                             : crossholder,
                                       ),
@@ -858,12 +844,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         image: icMotherToungeIcon,
                                         title: 'Mother Tongue',
                                         text: StringUtils.capitalize(model.data
-                                                ?.matches?.motherTongue!.name ??
-                                            ""),
-                                        icon: model.data?.matches?.motherTongue
-                                                    ?.name ==
-                                                model.data?.user?.motherTongue
-                                                    ?.name
+                                                ?.matches?.motherTongueName ?? ""),
+                                        icon: model.data?.matches?.motherTongueName ==
+                                                model.data?.user?.motherTongueName
                                             // ?.motherTongue!.name
                                             ? tickHolder
                                             : crossholder,
@@ -885,11 +868,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       buildPrefProfileRow(
                                         image: icProfession,
                                         title: 'Profession',
-                                        text: StringUtils.capitalize(model.data?.matches?.profession?.name ??
-                                            ""),
-                                        icon: model.data?.matches?.profession?.name ==
-                                            model.data?.user?.profession?.name
-                                        // ?.motherTongue!.name
+                                        text: StringUtils.capitalize(model.data?.matches?.professionName ?? ""),
+                                        icon: model.data?.matches?.professionName ==
+                                            model.data?.user?.professionName
                                             ? tickHolder
                                             : crossholder,),
                                       // const Divider(),

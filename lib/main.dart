@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/views/signup/add_kyc_details.dart';

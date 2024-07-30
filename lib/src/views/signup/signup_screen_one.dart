@@ -142,13 +142,13 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                       child: ChipList(
                         elements: authControl.genderList,
                         onChipSelected: (selectedGender) {
-                          authControl.setGender(selectedGender == "Male" ? "M" : selectedGender == "Female" ? "F" : "O");
-                          print(authControl.gender);
+                          authControl.setGender(selectedGender);
                         },
                         defaultSelected: "Male",
                       ),),
                   ),
                   sizedBox20(),
+
 
                   Text(
                     'Marital Status',

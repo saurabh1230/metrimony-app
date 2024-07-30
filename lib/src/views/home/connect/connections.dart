@@ -66,7 +66,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
   getMatches() {
     isLoading = true;
     getConnectedMatchesApi(
-      page: page.toString(), userId: Get.find<ProfileController>().userDetails!.data!.user!.id.toString(),
+      page: page.toString(), userId: Get.find<ProfileController>().profile!.id.toString(),
     ).then((value) {
       if (mounted) {
         setState(() {
@@ -133,7 +133,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         return isLoading
             ? const ShimmerWidget()
             : matches.isEmpty || matches == null
-            ? const CustomEmptyMatchScreen()
+            ? const CustomEmptyMatchScreen(title: "No Connected Matches",)
             : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),
