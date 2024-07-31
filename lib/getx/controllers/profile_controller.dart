@@ -307,17 +307,17 @@ class ProfileController extends GetxController implements GetxService {
     update();
     Response response = await profileRepo.editEducationInfo(type, id, degree, fieldOfStudy, institute);
     var responseData = response.body;
-    if(responseData['status'] == true) {
-      print("Api ===================== >> $responseData");
-      print(response);
-      _isEducationLoading = false;
-      update();
-    } else {
-      print(response);
-      print("Api Error ===================== error >>");
-      _isEducationLoading = false;
-      update();
-    }
+    // if(responseData['status'] == true) {
+    //   print("Api ===================== >> $responseData");
+    //   print(response);
+    //   _isEducationLoading = false;
+    //   update();
+    // } else {
+    //   print(response);
+    //   print("Api Error ===================== error >>");
+    //   _isEducationLoading = false;
+    //   update();
+    // }
     _isEducationLoading = false;
     update();
   }

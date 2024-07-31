@@ -91,6 +91,7 @@ class MatchesRepo {
     required String height,
     required String country,
     required String montherTongue,
+    required String community,
   }) async  {
     var headers = {
       'Authorization': 'Bearer ${SharedPrefs().getLoginToken()}'
@@ -103,7 +104,8 @@ class MatchesRepo {
       "state" : state,
       "height" : religion,
       "country" : country,
-      "mother_tongue" : montherTongue,});
+      "mother_tongue" : montherTongue,
+      "community" :community });
     request.headers.addAll(headers);
     print('=================> ${request.fields}');
     http.StreamedResponse response = await request.send();

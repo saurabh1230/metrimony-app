@@ -198,19 +198,11 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                           width: 134,
                                           context: context,
                                           onTap: () {
-                                            setState(() {
-                                              // isLoadingList[i] = true;
-                                            });
-
                                             sendRequestApi(
-                                                    memberId: matchesControl
-                                                        .savedMatchesList![i].id
-                                                        .toString())
+                                                    memberId: matchesControl.savedMatchesList![i].id.toString())
                                                 .then((value) {
                                               if (value['status'] == true) {
-                                                setState(() {
-                                                  // isLoadingList[i] = false;
-                                                });
+                                                setState(() {});
                                                 ToastUtil.showToast("Connection Request Sent");
                                               } else {
                                                 setState(() {
@@ -230,13 +222,13 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                           },
                                           title: "Connect Now"),
                                       bookmark: matchesControl
-                                                  .matchesList![i].bookmark ==
+                                                  .matchesList[i].bookmark ==
                                               1
                                           ? GestureDetector(
                                               onTap: () {
                                                 favControl.unSaveBookmarkApi(
                                                     matchesControl
-                                                        .matchesList![i].id
+                                                        .matchesList[i].id
                                                         .toString());
                                               },
                                               child: Icon(
@@ -244,23 +236,14 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                                       ? CupertinoIcons.heart_fill : Icons.favorite_border,
                                                   color: isWished ? Theme.of(context).primaryColor : Colors.grey,
                                                   size: 32),
-                                            )
-                                          : const SizedBox(),
+                                            ) : const SizedBox(),
                                       dob: '$age yrs',
-                                      // height: "",
-                                      state: matchesControl.savedMatchesList![i].profile?.basicInfo?.presentAddress?.state ??
-                                          '',
-                                      text: matchesControl.savedMatchesList![i]
-                                              .profile?.basicInfo?.aboutUs ??
-                                          '',
+                                      state: matchesControl.savedMatchesList![i].profile?.basicInfo?.presentAddress?.state ?? '',
+                                      text: matchesControl.savedMatchesList![i].profile?.basicInfo?.aboutUs ?? '',
                                     );
                                   });
                                 },
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const SizedBox(
-                                  height: 16,
-                                ),
+                                separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 16),
                               ),
                             ),
                           ],

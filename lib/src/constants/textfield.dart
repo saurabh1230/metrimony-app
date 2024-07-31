@@ -53,6 +53,7 @@ textBoxSuffixIcon({
           ),
         ),
         hintText: hint,
+        hintStyle: kManrope16MediumBlack.copyWith(color: Colors.black.withOpacity(0.70)),
         focusedErrorBorder:  OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: BorderSide(
@@ -172,6 +173,7 @@ textBox({
           ),
         ),
         hintText: hint,
+        hintStyle: kManrope16MediumBlack.copyWith(color: Colors.black.withOpacity(0.70)),
 
         focusedErrorBorder:  OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius ??10)),

@@ -406,7 +406,7 @@ class MatchesController extends GetxController implements GetxService {
           state: state,
           height: height,
           country: country,
-          montherTongue: motherTongue);
+          montherTongue: motherTongue, community: community);
 
       if (result['status'] == true) {
         final newMatches = (result['data']['members'] as List)

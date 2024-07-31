@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 
@@ -59,29 +60,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = false;
 
   profileDetail() {
-    isLoading = true;
+    setState(() {
+      isLoading = true;
+    });
+
     var resp = getProfileApi();
     resp.then((value) {
-        if(value['status'] == true) {
+      if (value['status'] == true) {
+        if (mounted) {
           setState(() {
             var profileData = value['data']['user'];
             if (profileData != null) {
-              setState(() {
-                profile = ProfileModel.fromJson(profileData);
-                print(profile.id);
-                print(profile.firstname);
-              });
+              profile = ProfileModel.fromJson(profileData);
+              print(profile.id);
+              print(profile.firstname);
+              SharedPrefs().setProfilePhoto(profile.image.toString());
             }
             isLoading = false;
-            SharedPrefs().setProfilePhoto(profile.image.toString());
           });
-        } else {
+        }
+      } else {
+        if (mounted) {
           setState(() {
             isLoading = false;
           });
         }
+      }
+    }).catchError((error) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+      // Handle error
+      print("Error fetching profile: $error");
     });
   }
+
   //
   List<PhotosModel> photos = [];
   void getImage() {
@@ -462,6 +477,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
                         onTap: () {
                         }),
+                    sizedBox20(),
+                    GestureDetector(onTap: () {
+                      print(profile.fun.toString());
+                      // Navigator.push(context, MaterialPageRoute(
+                      //     builder: (builder) => const EditPhotosScreen()));
+
+                    },
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Hobbies & Interest",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                          // Image.asset(icEdit,height: 20,width: 20,),
+                        ],
+                      ),
+                    ),
+                    sizedBox16(),
+                    Row(
+                      children: [
+                        Wrap(alignment: WrapAlignment.start,
+                          spacing: 8.0,
+                          children: profile.fun
+                              .toString()
+                              .split(', ')
+                              .map((item) {
+                            return Container(
+                              padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                              decoration: BoxDecoration(
+                                border: Border.all(width:1,
+                                    color: color4B164C.withOpacity(0.80)),
+                                borderRadius: BorderRadius.circular(Dimensions.radius15)
+                              ),
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  color: color4B164C.withOpacity(0.80),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+
+                    sizedBox20(),
 
                     GestureDetector(onTap: () {
                       Navigator.push(context, MaterialPageRoute(
@@ -634,9 +692,6 @@ GestureDetector buildDataRowBold({
                 Text(title,
                   style: styleSatoshiBold(size: 16, color: color1C1C1c),
                 ),
-                // Text(text,
-                //   style: styleSatoshiMedium(size: 13, color: colorOnxy),
-                // ),
                 Image.asset(icArrowRight,
                   height: 18,
                   width: 18,)
@@ -741,7 +796,6 @@ GestureDetector buildProfileRow({
                                   overflow: TextOverflow.ellipsis,
                                   style: styleSatoshiBold(size: 14, color: Colors.black),),
                               ),
-
                             ],
                           ),
                         )

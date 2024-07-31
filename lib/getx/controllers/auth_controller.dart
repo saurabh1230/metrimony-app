@@ -720,6 +720,17 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+
+  String? _documentNo;
+
+  String? get documentNo => _documentNo;
+
+  void setDocumentNo(String firstName) {
+    _documentNo = firstName;
+    update();
+  }
+
+
   String? _middleName;
 
   String? get middleName => _middleName;

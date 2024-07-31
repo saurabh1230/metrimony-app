@@ -31,7 +31,7 @@ class AddKycDetailsScreen extends StatefulWidget {
 }
 
 class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
-
+  final _documentNoController = TextEditingController();
   final designationController = TextEditingController();
   final identityProof = TextEditingController();
   final joiningDateController = TextEditingController();
@@ -250,6 +250,28 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                               print('cadre =========== >${authControl.document}');
                             },
                           ),
+                          sizedBox20(),
+                          Text(
+                            'Add Document Number ',
+                            style: kManrope25Black.copyWith(fontSize: 16),
+                          ),
+                          sizedBox12(),
+                          CustomTextField(
+                            controller: _documentNoController,
+                            capitalization: TextCapitalization.words,
+                            hintText: 'Document Number',
+                            onChanged: (value) {
+                              authControl.setDocumentNo(_documentNoController.text);
+                              print(authControl.documentNo);
+                            },
+                            validation: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please Document Number';
+                              }
+                              return null;
+                            },
+                          ),
+
                           // const SizedBox(height: 20,),
                           // Text("Identity Proof Document Name",
                           //   style: kManrope14Medium626262,),

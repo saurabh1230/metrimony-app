@@ -92,7 +92,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
           '',
           '',
           widget.motherTongue.toString(),
-          '');
+          widget.community.toString());
       // Get.find<MatchesController>().getMatchesList(
       //     "1",
       //     widget.response.data!.user!.gender!.contains('Male')
@@ -213,7 +213,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         return  isListEmpty && !matchesControl.isLoading ? const Padding(
           padding: EdgeInsets.only(top: Dimensions.paddingSize100),
           child: Center(
-              child: EmptyDataWidget(title: "No Matches Yet",))) :
+              child: CustomEmptyMatchScreen(title: "No Matches Yet",isBackButton: true,))) :
         matchesControl.isLoading ?
         const ShimmerWidget() :
         Padding(

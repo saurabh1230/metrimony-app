@@ -85,23 +85,6 @@ class FavouriteController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
-  // Future<void> unSaveBookmarkApi(String? profileId,) async {
-  //   _isLoading = true;
-  //   update();
-  //
-  //   Response response = await matchesRepo.bookMarkUnSave(profileId);
-  //   if(response.statusCode == 200) {
-  //     int idIndex = -1;
-  //     _isBookmarkList.removeAt(int.parse(profileId!));
-  //     // _isBookmarkList.add(int.parse(profileId!));
-  //     // Get.offAllNamed(RouteHelper.getSignInRoute());
-  //     // showCustomSnackBar('Password Changed Successful', isError: false);
-  //   }else {
-  //     // ApiChecker.checkApi(response);
-  //   }
-  //   _isLoading = false;
-  //   update();
-  // }
 
   List<int?> _isConnectedIntList = [];
   List<int?> get isConnectedIntList => _isConnectedIntList;

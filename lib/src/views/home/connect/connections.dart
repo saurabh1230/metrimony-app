@@ -133,7 +133,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         return isLoading
             ? const ShimmerWidget()
             : matches.isEmpty || matches == null
-            ? const CustomEmptyMatchScreen(title: "No Connected Matches",)
+            ? const CustomEmptyMatchScreen(title: "No Connected Matches",isBackButton: true,)
             : SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16,top: 16,bottom: 16),

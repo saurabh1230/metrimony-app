@@ -571,7 +571,6 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
 
 class AttributesShimmerWidget extends StatelessWidget {
   const AttributesShimmerWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(

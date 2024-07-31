@@ -362,8 +362,22 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                     children: [
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                        Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                        Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                        Column(
+                          children: [
+                            Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                            Text('${authControl.startValue.value.round().toString()} yrs',
+                              style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                  color: Theme.of(context).primaryColor),),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                            Text('${authControl.endValue.value.round().toString()} yrs',
+                              style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                  color: Theme.of(context).primaryColor),),
+                          ],
+                        ),
                       ],),
                       RangeSlider(
                         min: 20.0,
@@ -398,8 +412,22 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                         children: [
                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                              Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                              Column(
+                                children: [
+                                  Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                  Text('${authControl.startHeightValue.value.round().toString()} ft',
+                                    style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                        color: Theme.of(context).primaryColor),),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                  Text('${authControl.endHeightValue.value.round().toString()} ft',
+                                    style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                        color: Theme.of(context).primaryColor),),
+                                ],
+                              ),
                             ],),
                           Container(
                             width: double.infinity,

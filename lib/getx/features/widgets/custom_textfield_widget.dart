@@ -32,6 +32,8 @@ class CustomTextField extends StatefulWidget {
   final FormFieldValidator<String>? validation;
   final String? label; // New parameter
   final int? maximumInput; // New parameter
+  final Color? fillColor;
+  final Color? hintColor;
 
   const CustomTextField({
     Key? key,
@@ -62,7 +64,7 @@ class CustomTextField extends StatefulWidget {
     this.onTap,
     this.validation,
     this.label, // Initialize new parameter
-    this.maximumInput, // Initialize new parameter
+    this.maximumInput, this.fillColor, this.hintColor, // Initialize new parameter
   }) : super(key: key);
 
   @override
@@ -157,10 +159,10 @@ class CustomTextFieldState extends State<CustomTextField> {
             ),
             isDense: true,
             hintText: widget.hintText,
-            fillColor: Theme.of(context).cardColor,
+            fillColor: widget.fillColor ?? Theme.of(context).cardColor,
             hintStyle: satoshiRegular.copyWith(
               fontSize: Dimensions.fontSizeDefault,
-              color: Theme.of(context).hintColor,
+              color: widget.hintColor ?? Theme.of(context).hintColor,
             ),
             filled: true,
             prefixIcon: widget.isPhone
@@ -188,7 +190,7 @@ class CustomTextFieldState extends State<CustomTextField> {
                 ? IconButton(
               icon: Icon(
                 _obscureText ? Icons.visibility_off : Icons.visibility,
-                color: Theme.of(context).hintColor.withOpacity(0.3),
+                color: widget.hintColor ?? Theme.of(context).hintColor.withOpacity(0.3),
               ),
               onPressed: _toggle,
             )

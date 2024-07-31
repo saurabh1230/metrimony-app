@@ -1,6 +1,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
 import 'package:bureau_couple/getx/utils/colors.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -8,6 +9,8 @@ import 'package:bureau_couple/getx/utils/sizeboxes.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -20,10 +23,12 @@ class FilterBottomSheet extends StatelessWidget {
   final districtController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   Get.find<ProfileController>().getBasicInfoApi();
-    //
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.find<AuthController>().getReligionsList();
+      Get.find<AuthController>().getCommunityList();
+      Get.find<AuthController>().getMotherTongueList();
+      Get.find<AuthController>().getProfessionList();
+    });
     return GetBuilder<AuthController>(builder: (authControl) {
       return  GetBuilder<ProfileController>(builder: (profileControl) {
         return Container(
@@ -33,309 +38,319 @@ class FilterBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(Dimensions.radius15)
           ),
           width: Get.size.width,
-          child: authControl.communityList == null || authControl.communityList!.isEmpty ||
-              authControl.religionList == null || authControl.religionList!.isEmpty ||
-              authControl.motherTongueList == null || authControl.motherTongueList!.isEmpty ?
+          child: authControl.partReligionList == null || authControl.partReligionList!.isEmpty ||
+              authControl.partCommunityList == null || authControl.partCommunityList!.isEmpty ||
+              authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
+              authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
+              authControl.partMotherTongueList == null || authControl.partMotherTongueList!.isEmpty ?
               const Center(child: CircularProgressIndicator()) :
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: authControl.isLoading ? const Center(child: CircularProgressIndicator()) :
-              profileControl.isLoading ? const Center(child: CircularProgressIndicator()) : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(alignment: Alignment.centerRight,
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Select Preferred Matches",
-                            style: styleSatoshiLight(
-                                size: 12, color: Colors.black),
-                          ),
-                          button(height: 24,width: 80,
-                              style: kManrope14Medium626262.copyWith(color: Colors.white),
-                              context: context, onTap: () {
-                                authControl.communityFilterIndex == null;
-                                authControl.motherTongueFilterIndex == null;
-                                authControl.religionFilterIndex == null;
-                                // Get.find<MatchesController>().getMatchesList(
-                                //   "1",
-                                //   profileControl.userDetails!.basicInfo!.gender!.contains("M") ? "F" : "M",
-                                //   '', '', '', '', '', '', '',
-                                // );
-                                Get.back();
-                              }, title: 'Clear All')
-                        ],
-                      )),
-                  sizedBox16(),
-
-                  // sizedBox16(),
-                  //
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Religion",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-                  Wrap(
-                    spacing: 8.0,
-                    children: authControl.religionList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          religion.name!,
-                          style: TextStyle(
-                            color: authControl.religionFilterIndex == religion.id
-                                ? Colors.white
-                                : Colors.black.withOpacity(0.80),
-                          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(alignment: Alignment.centerRight,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Select Preferred Matches",
+                          style: styleSatoshiLight(
+                              size: 12, color: Colors.black),
                         ),
-                        selected: authControl.religionFilterIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            // authControl.setReligionMainIndex(religion.id, true);
-                            authControl.setReligionFilterIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-            
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Community",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-            
-                  Wrap(
-                    spacing: 8.0, // Adjust spacing as needed
-                    children: authControl.communityList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-            
-                        label: Text(religion.name! ,style: TextStyle(color: authControl.communityFilterIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                        selected: authControl.communityFilterIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            // authControl.setCommunityMainListIndex(religion.id, true);
-                            authControl.setCommunityFilterIndex(religion.id, true);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-            
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Mother Tongue",
-                      textAlign: TextAlign.left,
-                      style: styleSatoshiBold(size: 16, color: Colors.black),),
-                  ),
-                  const SizedBox(height: 12,),
-                  Wrap(
-                    spacing: 8.0, // Adjust spacing as needed
-                    children: authControl.motherTongueList!.map((religion) {
-                      return ChoiceChip(
-                        selectedColor: color4B164C.withOpacity(0.80),
-                        backgroundColor: Colors.white,
-            
-                        label: Text(religion.name! ,style: TextStyle(color: authControl.motherTongueFilterIndex == religion.id ? Colors.white : Colors.black.withOpacity(0.80),),), // Adjust to match your ReligionModel structure
-                        selected: authControl.motherTongueFilterIndex == religion.id,
-                        onSelected: (selected) {
-                          if (selected) {
-                            // authControl.setMotherTongueIndex(religion.id, true);
-                            authControl.setMotherTongueFilterIndex(religion.id, true);
-                          }
-            
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20,),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Select State of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                            const SizedBox(height: 5),
-                            TypeAheadFormField<String>(
-                              textFieldConfiguration:  TextFieldConfiguration(
-                                controller: stateController,
-                                decoration: authDecoration(
-                                    context, "Select State of Posting"
+                        button(height: 24,width: 80,
+                            style: kManrope14Medium626262.copyWith(color: Colors.white),
+                            context: context, onTap: () {
+                              Get.find<MatchesController>().getMatches(
+                                  '1',
+                                  Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Male')
+                                      ? "Female" :
+                                  Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Female')
+                                      ? "Male" :
+                                  "Others",
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '');
+                              // Get.find<MatchesController>().getMatchesList(
+                              //   "1",
+                              //   profileControl.userDetails!.basicInfo!.gender!.contains("M") ? "F" : "M",
+                              //   '', '', '', '', '', '', '',
+                              // );
+                              Get.back();
+                            }, title: 'Clear All')
+                      ],
+                    )),
+                sizedBox16(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Religion",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        CustomDropdownButtonFormField<String>(
+                          value: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion).name,// Assuming you have a selectedPosition variable
+                          items: authControl.partReligionList!.map((position) => position.name!).toList(),
+                          hintText: "Select Religion",
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              var selected = authControl.partReligionList!.firstWhere((position) => position.name == value);
+                              authControl.setPartnerReligion(selected.id!);
+                              print(authControl.partnerReligion);
+                            }
+                          },
+                          // itemLabelBuilder: (String item) => item,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Select Religion';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Community",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        CustomDropdownButtonFormField<String>(
+                          value: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity).name,// Assuming you have a selectedPosition variable
+                          items: authControl.partCommunityList!.map((position) => position.name!).toList(),
+                          hintText: "Select Community",
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              var selected = authControl.partCommunityList!.firstWhere((position) => position.name == value);
+                              authControl.setPartnerCommunity(selected.id!);
+                              print( authControl.partnerCommunity);
+                            }
+                          },
+                          // itemLabelBuilder: (String item) => item,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Select Community';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Mother Tongue",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        CustomDropdownButtonFormField<String>(
+                          value: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue).name,// Assuming you have a selectedPosition variable
+                          items: authControl.partMotherTongueList!.map((position) => position.name!).toList(),
+                          hintText: "Select Mother Tongue",
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              var selected = authControl.partMotherTongueList!.firstWhere((position) => position.name == value);
+                              authControl.setPartnerMotherTongue(selected.id!);
+                              print(authControl.partnerMotherTongue);
+                            }
+                          },
+                          // itemLabelBuilder: (String item) => item,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Select Mother Tongue';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Profession",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        CustomDropdownButtonFormField<String>(
+                          value: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession).name,// Assuming you have a selectedPosition variable
+                          items: authControl.partProfessionList!.map((position) => position.name!).toList(),
+                          hintText: "Select Profession",
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              var selected = authControl.partProfessionList!.firstWhere((position) => position.name == value);
+                              authControl.setPartnerProfession(selected.id!);
+                              print( authControl.partnerProfession);
+                            }
+                          },
+                          // itemLabelBuilder: (String item) => item,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Select Profession';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("State",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        CustomDropdownButtonFormField<String>(
+                          value:  authControl.posselectedState,
+                          items: authControl.posstates,
+                          hintText: "Select Posting State",
+                          onChanged: (value) {
+                            authControl.possetState(value ?? authControl.posstates.first);
+                            print('cadre =========== >${authControl.posselectedState}');
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty || value == 'Please Posting State') {
+                              return 'Please Posting State';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Age Range",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        const SizedBox(height: 12,),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text(authControl.startValue.value.round().toString(),
+                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                            color: Theme.of(context).primaryColor),),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text(authControl.endValue.value.round().toString(),
+                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                            color: Theme.of(context).primaryColor),),
+                                    ],
+                                  ),
+                                ],),
+                              RangeSlider(
+                                min: 20.0,
+                                max: 50.0,
+                                divisions: 30,
+                                labels: RangeLabels(
+                                  authControl.startValue.value.round().toString(),
+                                  authControl.endValue.value.round().toString(),
                                 ),
+                                values: RangeValues(
+                                  authControl.startValue.value,
+                                  authControl.endValue.value,
+                                ),
+                                onChanged: (values) {
+                                  authControl.setAgeValue(values);
+                                },
                               ),
-                              suggestionsCallback: (pattern) async {
-                                return authControl.states.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                              },
-                              itemBuilder: (context, suggestion) {
-                                return ListTile(
-                                  title: Text(suggestion),
-                                );
-                              },
-                              onSuggestionSelected: (String? suggestion) {
-                                if (suggestion != null) {
-            
-                                  stateController.text = suggestion;
-                                  // authControl.setPostingState(suggestion);
-            
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Select State of Posting';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) => authControl.setState(value!),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      // sizedBoxW10(),
-                      // Expanded(
-                      //   child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Text("Select District of Posting", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                      //       const SizedBox(height: 5),
-                      //       TypeAheadFormField<String>(
-                      //         textFieldConfiguration:  TextFieldConfiguration(
-                      //           controller: districtController,
-                      //           decoration: const InputDecoration(
-                      //             labelText: 'Select District of Posting',
-                      //             border: OutlineInputBorder(),
-                      //           ),
-                      //         ),
-                      //         suggestionsCallback: (pattern) async {
-                      //           return authControl.districts.where((state) => state.toLowerCase().contains(pattern.toLowerCase())).toList();
-                      //         },
-                      //         itemBuilder: (context, suggestion) {
-                      //           return ListTile(
-                      //             title: Text(suggestion),
-                      //           );
-                      //         },
-                      //         onSuggestionSelected: (String? suggestion) {
-                      //           if (suggestion != null) {
-                      //             districtController.text = suggestion;
-                      //             authControl.setPPostingDistrict(suggestion);
-                      //           }
-                      //         },
-                      //         validator: (value) {
-                      //           if (value == null || value.isEmpty) {
-                      //             return 'Please District of Posting';
-                      //           }
-                      //           return null;
-                      //         },
-                      //         onSaved: (value) => authControl.setDistrict(value!),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("Height Range",
+                            textAlign: TextAlign.left,
+                            style: styleSatoshiBold(size: 16, color: Colors.black),),
+                        ),
+                        sizedBox12(),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            children: [
+                              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text(authControl.startHeightValue.value.round().toString(),
+                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                            color: Theme.of(context).primaryColor),),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text(authControl.endHeightValue.value.round().toString(),
+                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                            color: Theme.of(context).primaryColor),),
+                                    ],
+                                  ),
+                                ],),
+                              SizedBox(
+                                width: double.infinity,
+                                child: Obx(() => RangeSlider(
+                                  min: 5.0, // Minimum value
+                                  max: 7.0, // Maximum value
+                                  divisions: 20, // Number of divisions for finer granularity
+                                  labels: RangeLabels(
+                                    authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                    authControl.endHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                  ),
+                                  values: RangeValues(
+                                    authControl.startHeightValue.value,
+                                    authControl.endHeightValue.value,
+                                  ),
+                                  onChanged: (values) {
+                                    authControl.setHeightValue(values); // Update the values when slider changes
+                                    print('Updated range values: ${values.start.toStringAsFixed(1)} - ${values.end.toStringAsFixed(1)}');
+                                  },
+                                )),
+                              ),
+                            ],
+                          ),
+                        ),
+                        sizedBox16(),
+                        elevatedButton(
+                            color: primaryColor,
+                            context: context,
+                            onTap: () {
+                              Get.find<MatchesController>().getMatches(
+                                  '1',
+                                  Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Male')
+                                      ? "Female" :
+                                  Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Female')
+                                      ? "Male" :
+                                  "Others",
+                                  authControl.partnerReligion.toString(),
+                                  authControl.partnerProfession.toString(),
+                                  authControl.posselectedState.toString(),
+                                  '',
+                                  '',
+                                  authControl.partnerMotherTongue.toString(),
+                                  '');
+                              Get.back();
+                            },
+                            title: "Apply")
+                      ],
+                    ),
                   ),
-            
-                  const SizedBox(height: 20,),
-            
-                  // Padding(
-                  //   padding:
-                  //   const EdgeInsets.symmetric(horizontal: 0.0),
-                  //   child: SizedBox(
-                  //     width: 1.sw,
-                  //     child: CustomStyledDropdownButton(
-                  //       items: const  [
-                  //         "Hindu",
-                  //         'Muslim',
-                  //         "Jain",
-                  //         'Buddhist',
-                  //         'Sikh',
-                  //         'Marathi'
-                  //       ],
-                  //       selectedValue: religionValue,
-                  //       onChanged: (String? value) {
-                  //         setState(() {
-                  //           religionValue = value;
-                  //           religionFilter = religionValue ?? '';
-                  //
-                  //         });
-                  //       },
-                  //       title: 'Religion',
-                  //     ),
-                  //   ),
-                  // ),
-                  // sizedBox16(),
-                  // sizedBox16(),
-            
-                  // textBox(
-                  //   context: context,
-                  //   label: 'State',
-                  //   controller: stateController,
-                  //   hint: 'State',
-                  //   length: null,
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Please enter your State';
-                  //     }
-                  //     return null;
-                  //   },
-                  //   onChanged: (value) {
-                  //
-                  //   },),
-                  Text("Height Range", style: satoshiRegular.copyWith(fontSize: Dimensions.fontSize12,)),
-                  const SizedBox(height: 5),
-                SfRangeSlider(
-                  min: 5.0,
-                  max: 8.0,
-                  values: SfRangeValues(profileControl.minHeight, profileControl.maxHeight),
-                  interval: 0.4,
-                  showTicks: true,
-                  showLabels: true,
-                  enableTooltip: true,
-                  minorTicksPerInterval: 1,
-                  onChanged: (SfRangeValues values) {
-                    profileControl.setMinHeight(values.start);
-                    profileControl.setMaxHeight(values.end);
-                  },
                 ),
-            
-                  sizedBox16(),
-                  elevatedButton(
-                      color: primaryColor,
-                      context: context,
-                      onTap: () {
-                        // print("check ============= >");
-                        //   Get.find<MatchesController>().getMatchesList(
-                        //       "1",
-                        //       profileControl.userDetails!.basicInfo!.gender!.contains("M") ? "F" : "M",
-                        //       authControl.religionFilterIndex.toString(),
-                        //       stateController.text,
-                        //       '',
-                        //       profileControl.minHeight.toString(),
-                        //       profileControl.maxHeight.toString(),
-                        //       authControl.motherTongueFilterIndex.toString(),
-                        //       authControl.communityFilterIndex.toString(),
-                        //   );
-                          Get.back();
-                        // setState(() {
-                        //   Navigator.pop(context);
-                        //   isLoading = true;
-                        //   page = 1;
-                        //
-                        //
-                        //   getMatches();
-                        // });
-                      },
-                      title: "Apply")
-                ],
-              ),
+
+              ],
             ),
           ),
         );

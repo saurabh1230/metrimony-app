@@ -103,32 +103,39 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                   ),
                   sizedBox20(),
                   Center(
+                    child: Text(
+                      'Welcome To Bureau Couple',
+                      textAlign: TextAlign.center,
+                      style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
+                    ),
+                  ),
+                  Center(
                     child: Text("Let's Start Building Your Profile",
                       textAlign: TextAlign.center,
                       style: kManrope14Medium626262.copyWith(color: Colors.black),
                     ),
                   ),
                   sizedBox20(),
-                  sizedBox20(),
-                  Text(
-                    'This Profile is for',
-                    style: kManrope25Black,
-                  ),
-                  const SizedBox(height: 12,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: ChipList(
-                        elements: authControl.lookingForList,
-                        onChipSelected: (value) {
-                          authControl.setLookingFor(value);
-                          print(authControl.lookingFor);
-                        },
-                        defaultSelected: "MySelf",
-                      ),
-                    ),
-                  ),
+                  // sizedBox20(),
+                  // Text(
+                  //   'This Profile is for',
+                  //   style: kManrope25Black,
+                  // ),
+                  // const SizedBox(height: 12,),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  //   child: Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: ChipList(
+                  //       elements: authControl.lookingForList,
+                  //       onChipSelected: (value) {
+                  //         authControl.setLookingFor(value);
+                  //         print(authControl.lookingFor);
+                  //       },
+                  //       defaultSelected: "MySelf",
+                  //     ),
+                  //   ),
+                  // ),
                   sizedBox20(),
                   Text(
                     'Your Gender',
@@ -157,7 +164,8 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                   sizedBox12(),
 
                   Wrap(
-                    spacing: 8.0, children: authControl.marriedStatusList!.map((religion) {
+                    spacing: 8.0,
+                    children: authControl.marriedStatusList!.map((religion) {
                     return ChoiceChip(
                       selectedColor: color4B164C.withOpacity(0.80),
                       backgroundColor: Colors.white,

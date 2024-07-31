@@ -97,12 +97,12 @@ class _SignUpScreenPhysicalAppearanceScreenState extends State<SignUpScreenPhysi
                           shape: BoxShape.circle,
                         ),
                         child: Image.asset(
-                          icProfessionRegister,
+                          icPhysicalRegister,
                         ),
                       ),
                     ),  sizedBox20(),
                     Center(
-                      child: Text("Now Let's Add Professional Details",
+                      child: Text("Now Let's Add Physical Attributes",
                         textAlign: TextAlign.center,
                         style: kManrope14Medium626262.copyWith(color: Colors.black),
                       ),
@@ -238,10 +238,16 @@ class _SignUpScreenPhysicalAppearanceScreenState extends State<SignUpScreenPhysi
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
                       children: [
-                        Text('Min Height',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                        Text('Max Height',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                        Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                        Text(
+                                '${
+                                  authControl.attributeHeightValue.value
+                                      .toStringAsFixed(1)
+                                } ft',
+                          style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                              color: Theme.of(context).primaryColor),),
 
 
                       ],
@@ -268,8 +274,15 @@ class _SignUpScreenPhysicalAppearanceScreenState extends State<SignUpScreenPhysi
                     sizedBox12(),
                     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Min Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                        Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                        Row(
+                          children: [
+                            Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                            Text(authControl.attributeWeightValue.value.toString(),
+                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                            color: Theme.of(context).primaryColor),),
+                          ],
+                        ),
+                        // Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
                       ],
                     ),
                     SizedBox(
