@@ -81,6 +81,7 @@ dev_dependencies:
   dropdown_search: ^5.0.6
   flutter_typeahead: ^4.0.0
   dio: ^5.5.0+1
+  image_cropper: ^8.0.1
 
 
 

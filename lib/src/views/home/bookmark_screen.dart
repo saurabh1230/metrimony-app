@@ -153,7 +153,7 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                   return GetBuilder<FavouriteController>(
                                       builder: (favControl) {
                                     int? currentId = matchesControl
-                                        .matchesList![i].profileId;
+                                        .matchesList[i].profileId;
                                     bool isWished = favControl.isBookmarkList
                                         .contains(currentId);
 
@@ -164,7 +164,10 @@ class _SavedMatchesScreenState extends State<SavedMatchesScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (builder) =>
-                                                    UserProfileScreen(userId: matchesControl.savedMatchesList![i].id.toString(),)));
+                                                    UserProfileScreen(userId: matchesControl.savedMatchesList![i].id.toString(),
+                                                    ),
+                                            ),
+                                        );
                                       },
                                       imgUrl:
                                           '$baseProfilePhotoUrl${matchesControl.savedMatchesList![i].profile?.image ?? ''}',

@@ -93,7 +93,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
     positionController.text = career[0].position.toString() ?? '';
     stateController.text = career[0].statePosting.toString() ?? '';
     districtController.text = career[0].districtPosting.toString() ?? '';
-    // fromController.text = career[0].?? '';
+    fromController.text = career[0].from ?? '';
     // endController.text = career[0].end.toString() ?? '';
   }
 

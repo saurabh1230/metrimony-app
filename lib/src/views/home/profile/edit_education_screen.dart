@@ -73,7 +73,7 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
   final outOfController = TextEditingController();
 
   void fields() {
-    degreeController.text = educationDetails[0].institute.toString() ?? '';
+    degreeController.text = educationDetails[0].degree.toString() ?? '';
     fieldOfStudyController.text = educationDetails[0].fieldOfStudy.toString() ?? '';
     universityController.text = educationDetails[0].institute.toString() ?? '';
   }

@@ -1,10 +1,9 @@
-import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+
 import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
-import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
-import 'package:bureau_couple/getx/features/widgets/empty_data_widget.dart';
+
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/views/home/matches/widgets/filter_screen.dart';
 
@@ -14,25 +13,16 @@ import 'package:bureau_couple/src/models/LoginResponse.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import '../../../apis/members_api.dart';
-import '../../../apis/members_api/request_apis.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/sizedboxe.dart';
 import '../../../constants/string.dart';
-import '../../../constants/textfield.dart';
 import '../../../constants/textstyles.dart';
-import '../../../models/matches_model.dart';
 import '../../../utils/widgets/buttons.dart';
-import '../../../utils/widgets/common_widgets.dart';
-import '../../../utils/widgets/dropdown_buttons.dart';
 import '../../../utils/widgets/loader.dart';
 import '../../user_profile/user_profile.dart';
 import '../dashboard_widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MatchesScreen extends StatefulWidget {
@@ -47,15 +37,19 @@ class MatchesScreen extends StatefulWidget {
   final String? based;
   final String? community;
 
-  const MatchesScreen({Key? key, required this.response,
+  const MatchesScreen({
+    Key? key,
+    required this.response,
     required this.appbar,
     this.religion = '',
     this.motherTongue = '',
     this.minHeight,
     this.maxHeight,
-    this.maxWeight,  this.based,
-    this.state = '', this.community = '',})
-      : super(key: key);
+    this.maxWeight,
+    this.based,
+    this.state = '',
+    this.community = '',
+  }) : super(key: key);
 
   @override
   State<MatchesScreen> createState() => _MatchesScreenState();
@@ -81,11 +75,19 @@ class _MatchesScreenState extends State<MatchesScreen> {
       print('=============check');
       Get.find<MatchesController>().getMatches(
           '1',
-          Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Male')
-              ? "Female" :
-          Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Female')
-              ? "Male" :
-              "Others",
+          Get.find<ProfileController>()
+                  .profile!
+                  .basicInfo!
+                  .gender!
+                  .contains('Male')
+              ? "Female"
+              : Get.find<ProfileController>()
+                      .profile!
+                      .basicInfo!
+                      .gender!
+                      .contains('Female')
+                  ? "Male"
+                  : "Others",
           widget.religion.toString(),
           '',
           widget.state.toString(),
@@ -130,7 +132,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     // Get.find<MatchesController>().setOffset(1);
     // scrollController.addListener(() {
     //   if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
@@ -208,21 +209,25 @@ class _MatchesScreenState extends State<MatchesScreen> {
         ],
       ),
       body: GetBuilder<MatchesController>(builder: (matchesControl) {
-        final list =  matchesControl.matchesList;
+        final list = matchesControl.matchesList;
         final isListEmpty = list.isEmpty;
-        return  isListEmpty && !matchesControl.isLoading ? const Padding(
-          padding: EdgeInsets.only(top: Dimensions.paddingSize100),
-          child: Center(
-              child: CustomEmptyMatchScreen(title: "No Matches Yet",isBackButton: true,))) :
-        matchesControl.isLoading ?
-        const ShimmerWidget() :
-        Padding(
+        return isListEmpty && !matchesControl.isLoading
+            ? const Padding(
+                padding: EdgeInsets.only(top: Dimensions.paddingSize100),
+                child: Center(
+                    child: CustomEmptyMatchScreen(
+                  title: "No Matches Yet",
+                  isBackButton: true,
+                )))
+            : matchesControl.isLoading
+                ? const ShimmerWidget()
+                : Padding(
                     padding: const EdgeInsets.only(
                         left: 16.0, right: 16, top: 16, bottom: 0),
                     child: Stack(
                       children: [
                         Text(
-                          "${matchesControl.matchesList!.length} Matches Found",
+                          "${matchesControl.matchesList.length} Matches Found",
                           style: styleSatoshiLight(
                               size: 14, color: Colors.black.withOpacity(0.60)),
                         ),
@@ -231,13 +236,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           padding: const EdgeInsets.only(top: 35.0),
                           child: ListView.separated(
                             controller: scrollController,
-                            itemCount: matchesControl.matchesList!.length,
+                            itemCount: matchesControl.matchesList.length,
                             itemBuilder: (context, i) {
                               DateTime? birthDate =
-                                  matchesControl.matchesList![i].basicInfo !=
+                                  matchesControl.matchesList[i].basicInfo !=
                                           null
                                       ? DateFormat('yyyy-MM-dd').parse(
-                                          matchesControl.matchesList![i]
+                                          matchesControl.matchesList[i]
                                               .basicInfo!.birthDate!)
                                       : null;
                               int age = birthDate != null
@@ -251,86 +256,133 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   GetBuilder<FavouriteController>(
                                       builder: (favControl) {
                                     int? currentId =
-                                        matchesControl.matchesList![i].profileId;
+                                        matchesControl.matchesList[i].profileId;
                                     int? matchId =
-                                        matchesControl.matchesList![i].id;
+                                        matchesControl.matchesList[i].id;
                                     bool isWished = favControl.isBookmarkList
                                         .contains(currentId);
-                                    bool isConnected = favControl.isConnectedIntList
+                                    bool isConnected = favControl
+                                        .isConnectedIntList
                                         .contains(matchId);
                                     return otherUserdataHolder(
                                       context: context,
                                       tap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (builder) => UserProfileScreen(
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                UserProfileScreen(
                                                     userId: matchesControl
-                                                        .matchesList![i].id
+                                                        .matchesList[i].id
                                                         .toString()),
                                           ),
                                         );
                                       },
-                                      // height: matchesControl.matchesList![i]
-                                      //             .physicalAttributes!.height ==
-                                      //         null
-                                      //     ? ""
-                                      //     : "${matchesControl.matchesList![i].physicalAttributes!.height ?? ''}ft",
-                                      imgUrl: '$baseProfilePhotoUrl${matchesControl.matchesList![i].image ?? ''}',
-                                      state: matchesControl.matchesList![i].basicInfo?.presentAddress?.state ?? '',
-                                      userName: matchesControl.matchesList![i].firstname == null &&
-                                          matchesControl.matchesList![i].lastname == null
+                                      imgUrl:
+                                          '$baseProfilePhotoUrl${matchesControl.matchesList[i].image ?? ''}',
+                                      state: matchesControl
+                                              .matchesList[i]
+                                              .basicInfo
+                                              ?.presentAddress
+                                              ?.state ??
+                                          '',
+                                      userName: matchesControl.matchesList[i]
+                                                      .firstname ==
+                                                  null &&
+                                              matchesControl.matchesList[i]
+                                                      .lastname ==
+                                                  null
                                           ? "user"
-                                          : '${StringUtils.capitalize(matchesControl.matchesList![i].firstname ?? 'User')} ${StringUtils.capitalize(matchesControl.matchesList![i].lastname ?? 'User')}',
+                                          : '${StringUtils.capitalize(matchesControl.matchesList[i].firstname ?? 'User')} ${StringUtils.capitalize(matchesControl.matchesList[i].lastname ?? 'User')}',
                                       atributeReligion:
-                                          ' ${matchesControl.matchesList![i].religionName ?? ''}',
+                                          ' ${matchesControl.matchesList[i].basicInfo?.religion ?? ''}',
                                       profession: "Software Engineer",
-                                      Location: '${matchesControl.matchesList?[i].address?.state ?? ''} • ${matchesControl.matchesList?[i].address?.country ?? ''} ',
-
-                                      // Location:
-                                      //     '${matchesControl.matchesList![i].address!.state ?? ''} • ${matchesControl.matchesList![i].address!.country ?? ''} • ${matchesControl.matchesList![i].address!.district ?? ''}',
+                                      Location:
+                                          '${matchesControl.matchesList[i].address?.state ?? ''} • ${matchesControl.matchesList[i].professionName ?? ''} • ${matchesControl.matchesList[i].communityName ?? ''} ',
                                       likedColor: Colors.grey,
                                       unlikeColor: primaryColor,
-                                      button:
-                                           matchesControl.matchesList![i].interestStatus == 2 ?
-                                   connectButton(
-                                       fontSize: 14,
-                                       height: 30,
-                                       width: 134,
-                                       context: context,
-                                       onTap: () {},
-                                       showIcon: isWished ? false : true,
-                                       title: 'Request Sent' ) :
-                                          connectButton(
+                                      button: matchesControl.matchesList[i]
+                                                  .interestStatus ==
+                                              2
+                                          ? connectButton(
+                                              fontSize: 14,
+                                              height: 30,
+                                              width: 134,
+                                              context: context,
+                                              onTap: () {},
+                                              showIcon: isWished ? false : true,
+                                              title: 'Request Sent')
+                                          : connectButton(
                                               fontSize: 14,
                                               height: 30,
                                               width: 134,
                                               context: context,
                                               onTap: () {
-                                                print(matchesControl.matchesList![i].id.toString());
-                                                print(Get.find<ProfileController>().userDetails!.id!);
+                                                print(matchesControl
+                                                    .matchesList[i].id
+                                                    .toString());
+                                                print(Get.find<
+                                                        ProfileController>()
+                                                    .userDetails!
+                                                    .id!);
                                                 favControl.sendRequestApi(
-                                                    Get.find<ProfileController>().userDetails!.id.toString(),
-                                                    matchesControl.matchesList![i].id.toString());
+                                                    Get.find<
+                                                            ProfileController>()
+                                                        .userDetails!
+                                                        .id
+                                                        .toString(),
+                                                    matchesControl
+                                                        .matchesList[i].id
+                                                        .toString());
                                               },
-                                              showIcon: isConnected ? false : true,
-                                              title: isConnected ? "Request Sent" : "Connect Now"),
-                                              bookmark: matchesControl.matchesList![i].bookmark == 1
+                                              showIcon:
+                                                  isConnected ? false : true,
+                                              title: isConnected
+                                                  ? "Request Sent"
+                                                  : "Connect Now"),
+                                      bookmark: matchesControl
+                                                  .matchesList[i].bookmark ==
+                                              1
                                           ? GestureDetector(
-                                               onTap: () {favControl.unSaveBookmarkApi(matchesControl.matchesList![i].profileId.toString());},
-                                            child: Icon(CupertinoIcons.heart_fill,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                size: 32),
-                                          )
+                                              onTap: () {
+                                                favControl.unSaveBookmarkApi(
+                                                    matchesControl
+                                                        .matchesList[i]
+                                                        .profileId
+                                                        .toString());
+                                              },
+                                              child: Icon(
+                                                  CupertinoIcons.heart_fill,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                  size: 32),
+                                            )
                                           : GestureDetector(
                                               onTap: () {
-                                                favControl.bookMarkSaveApi(matchesControl.matchesList![i].profileId.toString(),
-                                                    Get.find<ProfileController>().userDetails!.id.toString()
-                                                );
+                                                favControl.bookMarkSaveApi(
+                                                    matchesControl
+                                                        .matchesList[i]
+                                                        .profileId
+                                                        .toString(),
+                                                    Get.find<
+                                                            ProfileController>()
+                                                        .userDetails!
+                                                        .id
+                                                        .toString());
                                               },
-                                              child: Icon(isWished ? CupertinoIcons.heart_fill : Icons.favorite_border, color: isWished ? Theme.of(context).primaryColor : Colors.grey,
+                                              child: Icon(
+                                                isWished
+                                                    ? CupertinoIcons.heart_fill
+                                                    : Icons.favorite_border,
+                                                color: isWished
+                                                    ? Theme.of(context)
+                                                        .primaryColor
+                                                    : Colors.grey,
                                                 size: 32,
                                               )),
-                                              dob: '$age yrs',
-                                              text: /*matchesControl.matchesList![i].basicInfo?.aboutUs ??*/ '',
+                                      dob: '$age yrs',
+                                      text: /*matchesControl.matchesList![i].basicInfo?.aboutUs ??*/
+                                          '',
                                     );
                                   }),
                                 ],
@@ -493,7 +545,6 @@ class _MatchesScreenState extends State<MatchesScreen> {
                           //     ),
                           //   ),
                         ),
-
                       ],
                     ),
                   );

@@ -150,6 +150,7 @@ class _SignUpScreenOneState extends State<SignUpScreenOne> {
                         elements: authControl.genderList,
                         onChipSelected: (selectedGender) {
                           authControl.setGender(selectedGender);
+                          print(authControl.gender);
                         },
                         defaultSelected: "Male",
                       ),),

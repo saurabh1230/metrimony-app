@@ -222,7 +222,10 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                     style: kManrope25Black,
                   ),
                   sizedBox12(),
-                 authControl.casteList == null || authControl.casteList!.isEmpty?
+                 authControl.casteList == null || authControl.casteList!.isEmpty ||
+                     authControl.religionList == null ||  authControl.religionList!.isEmpty ||
+                authControl.isLoading
+                     ?
                 Container(
                     height: 55,
                     width: Get.size.width,
@@ -232,7 +235,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                       color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(Dimensions.radius5),
                     ),
                     child: const Center(child: Align(alignment: Alignment.centerLeft,
-                        child: Text("No Caste For Selected Religion")))) :
+                        child: Text("Select Religion")))) :
                   CustomDropdownButtonFormField<String>(
                     value: authControl.casteList!.firstWhere((religion) => religion.id == authControl.casteMainIndex).name,// Assuming you have a selectedPosition variable
                     items: authControl.casteList!.map((position) => position.name!).toList(),

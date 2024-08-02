@@ -1,9 +1,6 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
-import 'package:bureau_couple/getx/features/screens/auth/register/register_1.dart';
 import 'package:bureau_couple/getx/helper/helper_widgets.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
-import 'package:bureau_couple/src/views/signIn/sign_in_screen.dart';
-import 'package:bureau_couple/src/views/signup/kyc_wait_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_expectation_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_physical_apperance.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_profession_location.dart';
@@ -11,7 +8,6 @@ import 'package:bureau_couple/src/views/signup/sign_up_profession_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_before_three.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_interest_screen.dart';
 import 'package:bureau_couple/src/views/signup/sign_up_screen_location.dart';
-import 'package:bureau_couple/src/views/signup/sign_up_screen_partner_expectation.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_one.dart';
 import 'package:bureau_couple/src/views/signup/signup_screen_two.dart';
 import 'package:bureau_couple/src/views/signup/signup_sreen_three.dart';
@@ -28,12 +24,11 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
-import 'package:intl/intl.dart';
 import 'sign_up_education_screen.dart';
 
 class SignUpOnboardScreen extends StatefulWidget {
-  static final GlobalKey<_SignUpOnboardScreenState> pageViewKey =
-  GlobalKey<_SignUpOnboardScreenState>();
+  static final GlobalKey<_SignUpOnboardScreenState> pageViewKey = GlobalKey<_SignUpOnboardScreenState>();
+  const SignUpOnboardScreen({super.key});
   @override
   _SignUpOnboardScreenState createState() => _SignUpOnboardScreenState();
 }

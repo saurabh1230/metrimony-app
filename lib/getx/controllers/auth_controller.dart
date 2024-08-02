@@ -1410,7 +1410,7 @@ class AuthController extends GetxController implements GetxService {
     'Ph.D',
     'Doctorate',
     'Associate'
-  ];
+  ].toSet().toList();
 
 
   String? _highestDegree;

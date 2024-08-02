@@ -5,7 +5,6 @@ import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,7 @@ import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
-
+import 'package:image_cropper/image_cropper.dart';
 import 'edit_preferred_matches.dart';
 class EditBasicInfoScreen extends StatefulWidget {
   const EditBasicInfoScreen({super.key});

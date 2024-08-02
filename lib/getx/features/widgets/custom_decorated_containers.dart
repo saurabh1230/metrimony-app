@@ -18,3 +18,21 @@ class CustomDecoratedContainers extends StatelessWidget {
     );
   }
 }
+
+
+class CustomBorderContainer extends StatelessWidget {
+  final Widget child;
+  const CustomBorderContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+          border: Border.all(width: 0.5,color: Colors.black),
+          borderRadius: BorderRadius.circular(12),color: Theme.of(context).cardColor
+      ),
+      child: child,
+    );
+  }
+}

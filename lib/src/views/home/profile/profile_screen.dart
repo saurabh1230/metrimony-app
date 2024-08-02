@@ -1,5 +1,7 @@
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 
@@ -286,52 +288,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(child: ClipOval(child: CustomImageWidget(image: profile.image != null ? '$baseProfilePhotoUrl${profile.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
                     sizedBox10(),
-                    GestureDetector(onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (builder) => const EditBasicInfoScreen()));},
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                           Text("Basic Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Basic Details',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (builder) => const EditBasicInfoScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                        ),
+                      ],
                     ),
                     buildInfoRow(title: 'First Name',
                         text: profile.firstname ?? '',
                         onTap: () {
                         }),
-                    // profile.data!.user!.middleName == null && profile.data!.user!.middleName!.isEmpty ?
-                    //     const SizedBox() :
-                    // buildInfoRow(title: 'Middle Name',
-                    //     text: profile.data?.user?.middleName ?? '',
-                    //     onTap: () {}),
+
                     buildInfoRow(title: 'Last Name',
                         text: profile.lastname ?? '',
                         onTap: () {}),
                     buildInfoRow(title: 'Username',
                         text: profile.username ?? '',
                         onTap: () {}),
-                    // buildInfoRow(title: 'Religion',
-                    //     text: profile.data?.user?.religion ?? '',
-                    //     onTap: () {
-                    //     }),
+
                     buildInfoRow(title: 'Profession',
                         text: profile.basicInfo?.professionName ?? '',
                         onTap: () {}),
-                    // sizedBox20(),
-                    // GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
-                    //     builder: (builder) => const EditBasicInfoScreen()));},
-                    //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Text("Account Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                    //       Image.asset(icEdit,height: 20,width: 20,),
-                    //     ],
-                    //   ),
-                    // ),
                     buildInfoRow(title: 'Email',
                         text: profile.email ?? '',
                         onTap: () {
@@ -340,27 +331,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         text: profile.mobile ?? '',
                         onTap: () {
                         }),
-                   /* buildInfoRow(title: 'State',
-                        text: profile.data?.user?.address?.state ?? '',
-                        onTap: () {
-                        }),*/
                     buildInfoRow(title: 'Date of Birth',
                         text: profile.basicInfo?.birthDate ?? '',
                         onTap: () {
                         }),
-                    /*buildInfoRow(title: 'City',
-                        text: profile.data?.user?.address?.city ?? '',
-                        onTap: () {
-                        }),*/
-                    sizedBox20(),
-                    GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
-                        builder: (builder) => const EditEducationScreen())); },
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Education Details",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
+                    sizedBox10(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Education Details',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (builder) => const EditEducationScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                        ),
+                      ],
                     ),
                     buildInfoRow(
                       title: 'Degree',
@@ -369,8 +359,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           : profile.educationInfo![0].degree.toString() ?? "",
                       onTap: () {},
                     ),
-
-
                     buildInfoRow(
                       title: 'Study',
                       text: profile.educationInfo?.isEmpty ?? true
@@ -378,22 +366,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           : profile.educationInfo?[0].fieldOfStudy?.toString() ?? "",
                       onTap: () {},
                     ),
-
-                    sizedBox20(),
-                    GestureDetector(onTap: () { Navigator.push(context, MaterialPageRoute(
-                        builder: (builder) => const EditCareerInfoScreen()));},
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Career Info",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
+                    sizedBox10(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Career Info',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                    builder: (builder) => const EditCareerInfoScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                        ),
+                      ],
                     ),
                     buildInfoRow(
                       title: 'Position',
-                      text: profile.careerInfo?.isEmpty ?? true
+                      text: profile.basicInfo?.professionName?.isEmpty ?? true
                           ? ""
-                          : profile.careerInfo?[0].position.toString() ?? "",
+                          : profile.basicInfo?.professionName?.toString() ?? "",
                       onTap: () {},
                     ),
                     buildInfoRow(
@@ -404,17 +398,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () {},
                     ),
 
-                    sizedBox20(),
-                    GestureDetector(onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (builder) => const EditPreferenceScreen()));
-                      },
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Partner Expectations",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
+                    sizedBox10(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Partner Expectations',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                      builder: (builder) => const EditPreferenceScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                        ),
+                      ],
                     ),
                     buildInfoRow(title: 'Religion',
                         text:  /*profile.data?.user?.partnerExpectation!.religion.toString() ?? "",*/
@@ -438,101 +437,243 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text:  profile.partnerExpectation?.communityName.toString() ?? "",
                       onTap: () {},
                     ),
-
-                    // buildInfoRow(title: 'Caste',
-                    //     text:/* profile.data?.user?.partnerExpectation!.community.toString() ?? "",*/
-                    //     profile.data!.user!.partnerExpectation == null ? "" :
-                    //     profile.data!.user!.partnerExpectation!.community!.name.toString(),
-                    //     onTap: () {
-                    //     }),
-                    sizedBox20(),
-                    GestureDetector(onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (builder) => const EditPhysicalAttributesScreen()));
-
-                    },
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Physical Attributes",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
+                    sizedBox10(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Physical Attributes',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (builder) => const EditPhysicalAttributesScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                        ),
+                      ],
                     ),
-                    // buildInfoRow(title: 'Weight',
-                    //     text:
-                    //     profile.data?.user?.physicalAttributes!.weight.toString() ?? "",
-                    //     // profile.data!.user!.physicalAttributes!.weight == null ? "" :
-                    //     // profile.data!.user!.physicalAttributes!.weight.toString(),
-                    //     onTap: () {
-                    //     }),
                     buildInfoRow(title: 'Height',
                         text: profile.physicalAttributes?.height.toString() ?? "",
-                        // profile.data!.user!.physicalAttributes!.height == null ? "" :
-                        // profile.data!.user!.physicalAttributes!.height.toString(),
                         onTap: () {
                         }),
                     buildInfoRow(title: 'Blood Group',
                         text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
-                        // profile.data!.user!.physicalAttributes!.bloodGroup== null ? "" :
-                        // profile.data!.user!.physicalAttributes!.bloodGroup.toString(),
                         onTap: () {
                         }),
                     sizedBox20(),
-                    GestureDetector(onTap: () {
-                      print(profile.fun.toString());
-                      // Navigator.push(context, MaterialPageRoute(
-                      //     builder: (builder) => const EditPhotosScreen()));
-
-                    },
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Interest & Hobbies',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        // IconButton(onPressed: () {}, icon: Icon(Icons.edit,
+                        // color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
+                      ],
+                    ),
+                    const SizedBox(height: 12,),
+                    Container(padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 0.5,color: Colors.black),
+                          borderRadius: BorderRadius.circular(12),color: Theme.of(context).cardColor
+                      ),
+                      child:  Column(
                         children: [
-                          Text("Hobbies & Interest",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          // Image.asset(icEdit,height: 20,width: 20,),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Wrap(alignment: WrapAlignment.start,
+                                  spacing: 4.0,
+                                  children: profile.fun
+                                      .toString()
+                                      .split(', ')
+                                      .map((item) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                      decoration: BoxDecoration(
+                                        color: color4B164C.withOpacity(0.80),
+                                          // border: Border.all(width:1,
+                                          //     color: color4B164C.withOpacity(0.80)),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                        color: Theme.of(context).cardColor),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Wrap(alignment: WrapAlignment.start,
+                                  spacing: 4.0,
+                                  children: profile.creative
+                                      .toString()
+                                      .split(', ')
+                                      .map((item) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                      decoration: BoxDecoration(
+                                          color: color4B164C.withOpacity(0.80),
+                                          // border: Border.all(width:1,
+                                          //     color: color4B164C.withOpacity(0.80)),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Wrap(alignment: WrapAlignment.start,
+                                  spacing: 4.0,
+                                  children: profile.fitness
+                                      .toString()
+                                      .split(', ')
+                                      .map((item) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                      decoration: BoxDecoration(
+                                          color: color4B164C.withOpacity(0.80),
+                                          // border: Border.all(width:1,
+                                          //     color: color4B164C.withOpacity(0.80)),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Wrap(alignment: WrapAlignment.start,
+                                  spacing: 4.0,
+                                  children: profile.hobby
+                                      .toString()
+                                      .split(', ')
+                                      .map((item) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                      decoration: BoxDecoration(
+                                          color: color4B164C.withOpacity(0.80),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Wrap(alignment: WrapAlignment.start,
+                                  spacing: 4.0,
+                                  children: profile.otherInterest
+                                      .toString()
+                                      .split(', ')
+                                      .map((item) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                      decoration: BoxDecoration(
+                                          color: color4B164C.withOpacity(0.80),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                      ),
+                                      child: Text(
+                                        item,
+                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                            color: Theme.of(context).cardColor),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                    sizedBox16(),
-                    Row(
+
+
+                    sizedBox10(),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Wrap(alignment: WrapAlignment.start,
-                          spacing: 8.0,
-                          children: profile.fun
-                              .toString()
-                              .split(', ')
-                              .map((item) {
-                            return Container(
-                              padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                              decoration: BoxDecoration(
-                                border: Border.all(width:1,
-                                    color: color4B164C.withOpacity(0.80)),
-                                borderRadius: BorderRadius.circular(Dimensions.radius15)
-                              ),
-                              child: Text(
-                                item,
-                                style: TextStyle(
-                                  color: color4B164C.withOpacity(0.80),
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                        Text(
+                          'Photos',
+                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (builder) => const EditPhotosScreen()));
+                          },
+                          child: Icon(Icons.edit,
+                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
                         ),
                       ],
                     ),
+                    // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       'Photos',
+                    //       style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                    //     ),
+                    //     IconButton(onPressed: () {
+                    //         Navigator.push(context, MaterialPageRoute(
+                    //             builder: (builder) => const EditPhotosScreen()));
+                    //     }, icon: Icon(Icons.edit,
+                    //     color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
+                    //   ],
+                    // ),
 
-                    sizedBox20(),
-
-                    GestureDetector(onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (builder) => const EditPhotosScreen()));
-
-                    },
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Photos",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          Image.asset(icEdit,height: 20,width: 20,),
-                        ],
-                      ),
-                    ),
+                    // GestureDetector(onTap: () {
+                    //   Navigator.push(context, MaterialPageRoute(
+                    //       builder: (builder) => const EditPhotosScreen()));
+                    //
+                    // },
+                    //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text("Photos",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                    //       Image.asset(icEdit,height: 20,width: 20,),
+                    //     ],
+                    //   ),
+                    // ),
                     sizedBox16(),
 
                     photos.isEmpty ||  photos == null  ?

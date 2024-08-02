@@ -1,4 +1,8 @@
 import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_decorated_containers.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
@@ -40,7 +44,6 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-
   bool isLoading = false;
 
   @override
@@ -77,8 +80,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool connected = false;
   int _currentIndex = 0;
 
-
-
   @override
   Widget build(BuildContext context) {
     String? birthDateString = model.data?.matches?.basicInfo?.birthDate;
@@ -109,17 +110,56 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 itemCount:
                                     model.data?.matches?.galleries?.length ?? 0,
                                 itemBuilder: (ctx, index, realIndex) {
-                                  return CachedNetworkImage(
-                                    imageUrl: '$baseGalleryImage${model.data?.matches?.galleries?[index].image}',
-                                    fit: BoxFit.fill,
-                                    errorWidget: (context, url, error) =>
-                                        Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset(icLogo),
-                                    ),
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            customShimmer(height: 0),
+                                  return Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomRight: Radius.circular(32),
+                                            bottomLeft: Radius.circular(32)),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              '$baseGalleryImage${model.data?.matches?.galleries?[index].image}',
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, url, error) =>
+                                              Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Image.asset(icLogo),
+                                          ),
+                                          progressIndicatorBuilder: (context,
+                                                  url, downloadProgress) =>
+                                              customShimmer(height: 0),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        child: ClipRect(
+                                          child: Container(
+                                            height: 170,
+                                            width: 1.sw,
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 0),
+                                            clipBehavior: Clip.hardEdge,
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.black
+                                                        .withOpacity(0.8),
+                                                    Colors.transparent
+                                                  ],
+                                                  stops: const [0, 10],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(32)),
+                                            // child: Image.asset(images[i],
+                                            // height: 170,),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                                 options: CarouselOptions(
@@ -133,31 +173,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       _currentIndex = index;
                                     });
                                   },
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              child: ClipRect(
-                                child: Container(
-                                  height: 170,
-                                  width: 1.sw,
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 0),
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.black.withOpacity(0.8),
-                                          Colors.transparent
-                                        ],
-                                        stops: const [0, 10],
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32)),
-                                  // child: Image.asset(images[i],
-                                  // height: 170,),
                                 ),
                               ),
                             ),
@@ -184,27 +199,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                               ),
                             ),
-                            /*   Positioned(
-                top: 40,
-                right:16,
-                child: GestureDetector(
-                  onTap: () {
-                    model.data!.matches!.bookmark == 1 ?
-                    matchesControl.unSaveBookmarkApi(matches[i].profileId.toString()) :
-
-                    matchesControl.bookMarkSaveApi(matches[i].profileId.toString());
-                    // setState(() {
-                    //   like[i] = false;
-                    // });
-                  },
-                  child: const Icon(
-                    Icons.bookmark,
-                    color: primaryColor,
-
-                    size: 22,
-                  ),
-                ),
-              ),*/
                             Positioned(
                               bottom: 30,
                               left: 40,
@@ -222,292 +216,170 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         Row(
                                           children: [
                                             Expanded(
-                                              flex: 4,
-                                              child: Text(
-                                                "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                style: styleSatoshiBold(
-                                                    size: 16,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            /* Expanded(
-                              child: bookmark,
-                            ),*/
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              StringUtils.capitalize(
-                                                  '$age yrs'),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: styleSatoshiLarge(
-                                                  size: 16,
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(
-                                              width: 6,
-                                            ),
-                                            Container(
-                                              height: 4,
-                                              width: 4,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 6,
-                                            ),
-                                            Text(
-                                              StringUtils.capitalize(
-                                                  '${model.data?.matches?.physicalAttributes?.height} ft'),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: styleSatoshiMedium(
-                                                  size: 16,
-                                                  color: Colors.white),
-                                            ),
-                                            const SizedBox(
-                                              width: 6,
-                                            ),
-                                            Container(
-                                              height: 4,
-                                              width: 4,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 6,
-                                            ),
-                                            Text(
-                                              StringUtils.capitalize(model
-                                                      .data
-                                                      ?.matches
-                                                      ?.religionName ??
-                                                  ''),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: styleSatoshiMedium(
-                                                  size: 16,
-                                                  color: Colors.white),
-                                            ),
-                                          ],
-                                        ),
-                                        // const SizedBox(height: 10,),
-                                        // Text(
-                                        //   atributeReligion,
-                                        //   maxLines: 2,
-                                        //   style: styleSatoshiMedium(
-                                        //       size: 16,
-                                        //       color: Colors.white),
-                                        // ),
-                                        const SizedBox(
-                                          height: 4,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // const Expanded(child: Icon(Icons.location_on_sharp,color: Colors.white,),
-                                            //   // child: Image.asset(icLocation,
-                                            //   //   color: Colors.white,
-                                            //   //   height: 17,
-                                            //   //   width: 17,),
-                                            // ),
-                                            const SizedBox(
-                                              width: 2,
-                                            ),
-                                            Expanded(
-                                              flex: 10,
-                                              child: Row(
+                                              flex: 3,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    model.data!.matches!
-                                                            .address!.country ??
-                                                        '',
-                                                    // '${matches[i].address!.country}',
-                                                    // "New York, USA",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-
-                                                    style: styleSatoshiLarge(
-                                                        size: 16,
-                                                        color: Colors.white),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 4,
+                                                        child: Text(
+                                                          "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style:
+                                                              styleSatoshiBold(
+                                                                  size: 22,
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                    ],
                                                   ),
                                                   const SizedBox(
-                                                    width: 3,
+                                                    height: 6,
                                                   ),
-                                                  Container(
-                                                    height: 4,
-                                                    width: 5,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: Colors.white,
-                                                    ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 4.0,
+                                                                horizontal: 8),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .greenAccent,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12)),
+                                                        child: Text(
+                                                          StringUtils
+                                                              .capitalize(
+                                                                  '$age yrs'),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style:
+                                                              styleSatoshiLarge(
+                                                                  size: 16,
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      Container(
+                                                        height: 4,
+                                                        width: 4,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 6,
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 4.0,
+                                                                horizontal: 8),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .yellowAccent
+                                                                .withOpacity(
+                                                                    0.70),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12)),
+                                                        child: Text(
+                                                          StringUtils
+                                                              .capitalize(model
+                                                                      .data
+                                                                      ?.matches
+                                                                      ?.basicInfo?.religionName ??
+                                                                  ''),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style:
+                                                              styleSatoshiLarge(
+                                                                  size: 16,
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  const SizedBox(
-                                                    width: 3,
+                                                  sizedBox10(),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        width: 2,
+                                                      ),
+                                                      Expanded(
+                                                        flex: 10,
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              '${model.data!.matches!.basicInfo!.presentAddress!.state ?? ''} • ${model.data!.matches!.basicInfo!.professionName ?? ''} • ${model.data!.matches!.basicInfo!.communityName ?? ''}',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 2,
+                                                              style: styleSatoshiLarge(
+                                                                  size: 16,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  Text(
-                                                    model
-                                                            .data!
-                                                            .matches!
-                                                            .basicInfo!
-                                                            .presentAddress!
-                                                            .state ??
-                                                        '',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                    style: styleSatoshiMedium(
-                                                        size: 16,
-                                                        color: Colors.white),
-                                                  ),
+                                                  sizedBox16(),
                                                 ],
                                               ),
                                             ),
                                           ],
                                         ),
-
-                                        sizedBox16(),
-                                        // Align(alignment: Alignment.centerRight,
-                                        //     child: Padding(
-                                        //       padding: const EdgeInsets.only(right: 16.0),
-                                        //       child: button,
-                                        //     )),
                                       ],
                                     ),
                                   ),
-                                  /*   Expanded(child:    */ /* like[i] || matches[i].interestStatus == 2  ?*/ /*
-                      TickButton(size: 50,
-                        tap: () {  },)
-                     */ /*       :
-                      AddButton(size: 50,
-                        tap: () {
-                          setState(() {
-                            // like[i] = !like[i];
-                          });
-                          sendRequestApi(
-                              memberId: matches[i]
-                                  .id
-                                  .toString())
-                              .then((value) {
-                            if (value['status'] == true) {
-                              setState(() {
-                                isLoadingList[i] = false;
-                              });
-                              ToastUtil.showToast(
-                                  "Connection Request Sent");
-                            } else {
-                              setState(() {
-                                isLoadingList[i] = false;
-                              });
-
-                              List<dynamic> errors =
-                              value['message']['error'];
-                              String errorMessage = errors
-                                  .isNotEmpty
-                                  ? errors[0]
-                                  : "An unknown error occurred.";
-                              Fluttertoast.showToast(
-                                  msg: errorMessage);
-                            }
-                          });
-                        },),*/ /*
-                ),*/
                                 ],
                               ),
                             ),
-                            // Positioned(
-                            //   bottom: 26,
-                            //   left: 26,
-                            //   child: Column(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Row(
-                            //         children: [
-                            //           Text(
-                            //             "${StringUtils.capitalize(model.data!.matches!.firstname ?? '')} ${StringUtils.capitalize(model.data!.matches!.lastname ?? 'User')}",
-                            //             overflow: TextOverflow.ellipsis,
-                            //             maxLines: 1,
-                            //             style: styleSatoshiLarge(size: 22, color: Colors.white),),
-                            //
-                            //         ],
-                            //       ),
-                            //       Text(
-                            //         StringUtils.capitalize(model.data?.matches?.religion ?? ''),
-                            //         style: styleSatoshiBold(size: 16, color: Colors.white),),
-                            //       Row(
-                            //         children: [
-                            //           Text(
-                            //             StringUtils.capitalize('$age yrs'),
-                            //             style: styleSatoshiBold(size: 16, color: Colors.white),),
-                            //           const SizedBox(width: 10,),
-                            //           Text(
-                            //             StringUtils.capitalize('${model.data?.matches?.physicalAttributes?.height} ft'),
-                            //             style: styleSatoshiBold(size: 16, color: Colors.white),),
-                            //         ],
-                            //       ),
-                            //       sizedBox16(),
-                            //       loading ? loadingButton(
-                            //           height: 30,
-                            //           width: 134,
-                            //           context: context) :button(
-                            //           fontSize: 14,
-                            //           height: 30,
-                            //           width: 134,
-                            //           context: context,
-                            //           onTap: () {
-                            //             setState(() {
-                            //               loading = true;
-                            //             });
-                            //             sendRequestApi(memberId: model.data!.matches!.id!.toString())
-                            //                 .then((value) {
-                            //               if (value['status'] == true) {
-                            //                 setState(() {
-                            //                   loading = false;
-                            //                 });
-                            //                 ToastUtil.showToast("Connection Request Sent");
-                            //
-                            //               } else {
-                            //                 setState(() {
-                            //                   loading = false;
-                            //                 });
-                            //
-                            //                 List<dynamic> errors =
-                            //                 value['message']['error'];
-                            //                 String errorMessage = errors.isNotEmpty
-                            //                     ? errors[0]
-                            //                     : "An unknown error occurred.";
-                            //                 Fluttertoast.showToast(msg: errorMessage);
-                            //               }
-                            //             });
-                            //           },
-                            //           title: "Connect Now")
-                            //     ],
-                            //   ),
-                            // ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 16, top: 30),
-                              child: backButton(
-                                  context: context,
-                                  image: icArrowLeft,
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  }),
+                              padding: const EdgeInsets.only(left: 16, top: 50),
+                              child: TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_back_rounded,
+                                    size: Dimensions.fontSize40,
+                                    color: Theme.of(context).cardColor,
+                                  )),
                             ),
                           ],
                         ),
@@ -521,196 +393,90 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: [
                           model.data!.matches!.basicInfo!.aboutUs!.isEmpty
                               ? const SizedBox()
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "About",
-                                      style: styleSatoshiBold(
-                                          size: 16, color: color1C1C1c),
-                                    ),
-                                    sizedBox10(),
-                                    ReadMoreText(
-                                      model.data?.matches?.basicInfo?.aboutUs ??
-                                          "",
-                                      trimLines: 4,
-                                      colorClickableText: Colors.pink,
-                                      trimMode: TrimMode.Line,
-                                      trimCollapsedText: 'Show more',
-                                      trimExpandedText: ' Show less',
-                                      moreStyle: styleSatoshiLight(
-                                          size: 14, color: primaryColor),
-                                      lessStyle: styleSatoshiLight(
-                                          size: 14, color: primaryColor),
-                                    ),
-                                  ],
-                                ),
+                              : CustomBorderContainer(
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'About',
+                                        style: kManrope25Black.copyWith(
+                                            fontSize: Dimensions.fontSize18,
+                                            color: Theme.of(context)
+                                                .primaryColorDark
+                                                .withOpacity(0.65)),
+                                      ),
+                                      sizedBox10(),
+                                      ReadMoreText(
+                                        model.data?.matches?.basicInfo?.aboutUs ??
+                                            "",
+                                        trimLines: 4,
+                                        colorClickableText: Colors.pink,
+                                        trimMode: TrimMode.Line,
+                                        trimCollapsedText: 'Show more',
+                                        trimExpandedText: ' Show less',
+                                        moreStyle: styleSatoshiLight(
+                                            size: 14, color: primaryColor),
+                                        lessStyle: styleSatoshiLight(
+                                            size: 14, color: primaryColor),
+                                      ),
+                                    ],
+                                  ),
+                              ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               sizedBox10(),
-                              Text(
-                                "Basic Info",
-                                style: styleSatoshiBold(
-                                    size: 16, color: color1C1C1c),
-                              ),
-                              // Text("Basic Info",style:styleSatoshiLarge(size: 16, color: Colors.black)),
-                              sizedBox16(),
-                              Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    children: [
-                                      buildProfileRow(
-                                          image: birthHolder,
-                                          title: 'Age',
-                                          text: age.toString()),
-                                      const Divider(),
-                                      buildProfileRow(
-                                          image: icHeightIcon,
-                                          title: 'Height',
-                                          text:
-                                              "${model.data?.matches?.physicalAttributes?.height} ft" ??
-                                                  ''),
-                                      const Divider(),
-                                      buildProfileRow(
-                                          image: icReligionIcon,
-                                          title: 'Religion',
-                                          text: model
-                                              .data!.matches!.religionName
-                                              .toString()),
-                                      const Divider(),
-                                      buildProfileRow(
-                                          image: icMotherToungeIcon,
-                                          title: 'Mother Tongue',
-                                          text: model.data!.matches!.motherTongueName.toString()),
-                                      const Divider(),
-                                      buildProfileRow(
-                                          image: icMarriedStatusPro,
-                                          title: 'Married Status',
-                                          text: StringUtils.capitalize(model
-                                                  .data!
-                                                  .matches
-                                                  ?.basicInfo
-                                                  ?.maritialStatus!.title??
-                                              "")),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          sizedBox16(),
-                          Text(
-                            "Professional Info",
-                            style:
-                                styleSatoshiBold(size: 16, color: color1C1C1c),
-                          ),
-                          // Text("Professional Info",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                          sizedBox16(),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+
+
+                              CustomBorderContainer(
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image.asset(
-                                      icUserHeightIcon,
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    sizedBox6(),
                                     Text(
-                                      "${model.data?.matches?.physicalAttributes?.height} ft" ??
-                                          "not added yet",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: styleSatoshiMedium(
-                                        size: 14,
-                                        color: Colors.black.withOpacity(0.70),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      icUserLocationIcon,
-                                      height: 20,
-                                      width: 20,
+                                      'Basic Info',
+                                      style: kManrope25Black.copyWith(
+                                          fontSize: Dimensions.fontSize18,
+                                          color: Theme.of(context)
+                                              .primaryColorDark
+                                              .withOpacity(0.65)),
                                     ),
-                                    sizedBox6(),
-                                    Text(
-                                      ' ${model.data!.matches!.address!.country ?? ""}',
-                                      textAlign: TextAlign.center,
-                                      style: styleSatoshiMedium(
-                                        size: 14,
-                                        color: Colors.black.withOpacity(0.70),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          sizedBox16(),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: SvgPicture.asset(
-                                        icEducation,
-                                        height: 18,
-                                        width: 18,
-                                      ),
+                                    const SizedBox(
+                                      height: 12,
                                     ),
-                                    sizedBox6(),
-                                    Text(
-                                      model.data?.matches?.educationInfo?[0]
-                                              .degree ??
-                                          "",
-                                      textAlign: TextAlign.center,
-                                      style: styleSatoshiMedium(
-                                        size: 14,
-                                        color: Colors.black.withOpacity(0.70),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      icUserBagIcon,
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    sizedBox6(),
-                                    Text(
-                                      model.data!.matches!.professionName
-                                          .toString(),
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: styleSatoshiMedium(
-                                        size: 14,
-                                        color: Colors.black.withOpacity(0.70),
-                                      ),
-                                    ),
+                                    buildProfileRow(
+                                        image: birthHolder,
+                                        title: 'Age',
+                                        text: age.toString()),
+                                    const Divider(),
+                                    buildProfileRow(
+                                        image: icHeightIcon,
+                                        title: 'Height',
+                                        text:
+                                            "${model.data?.matches?.physicalAttributes?.height} ft" ??
+                                                ''),
+                                    const Divider(),
+                                    buildProfileRow(
+                                        image: icReligionIcon,
+                                        title: 'Religion',
+                                        text: model.data!.matches!.religionName
+                                            .toString()),
+                                    const Divider(),
+                                    buildProfileRow(
+                                        image: icMotherToungeIcon,
+                                        title: 'Mother Tongue',
+                                        text: model
+                                            .data!.matches!.motherTongueName
+                                            .toString()),
+                                    const Divider(),
+                                    buildProfileRow(
+                                        image: icMarriedStatusPro,
+                                        title: 'Married Status',
+                                        text: StringUtils.capitalize(model
+                                                .data!
+                                                .matches
+                                                ?.basicInfo
+                                                ?.maritialStatus!
+                                                .title ??
+                                            "")),
                                   ],
                                 ),
                               ),
@@ -718,7 +484,348 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                           sizedBox16(),
 
-                          Card(
+                          CustomBorderContainer(
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Professional Info',
+                                  style: kManrope25Black.copyWith(
+                                      fontSize: Dimensions.fontSize18,
+                                      color: Theme.of(context)
+                                          .primaryColorDark
+                                          .withOpacity(0.65)),
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            icUserHeightIcon,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          sizedBox6(),
+                                          Text(
+                                            "${model.data?.matches?.physicalAttributes?.height} ft" ??
+                                                "not added yet",
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: styleSatoshiMedium(
+                                              size: 14,
+                                              color: Colors.black
+                                                  .withOpacity(0.70),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            icUserLocationIcon,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          sizedBox6(),
+                                          Text(
+                                            ' ${model.data!.matches!.address!.country ?? ""}',
+                                            textAlign: TextAlign.center,
+                                            style: styleSatoshiMedium(
+                                              size: 14,
+                                              color: Colors.black
+                                                  .withOpacity(0.70),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                sizedBox16(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: SvgPicture.asset(
+                                              icEducation,
+                                              height: 18,
+                                              width: 18,
+                                            ),
+                                          ),
+                                          sizedBox6(),
+                                          Text(
+                                            model
+                                                    .data
+                                                    ?.matches
+                                                    ?.educationInfo?[0]
+                                                    .degree ??
+                                                "",
+                                            textAlign: TextAlign.center,
+                                            style: styleSatoshiMedium(
+                                              size: 14,
+                                              color: Colors.black
+                                                  .withOpacity(0.70),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            icUserBagIcon,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          sizedBox6(),
+                                          Text(
+                                            model.data!.matches!.professionName
+                                                .toString(),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: styleSatoshiMedium(
+                                              size: 14,
+                                              color: Colors.black
+                                                  .withOpacity(0.70),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          sizedBox16(),
+                          CustomBorderContainer(
+                            child: Expanded(
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Interest & Hobbies',
+                                    style: kManrope25Black.copyWith(
+                                        fontSize: Dimensions.fontSize18,
+                                        color: Theme.of(context)
+                                            .primaryColorDark
+                                            .withOpacity(0.65)),
+                                  ),
+                                  const SizedBox(
+                                    height: 12,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 4.0,
+                                          children: model.data!.matches!.fun
+                                              .toString()
+                                              .split(', ')
+                                              .map((item) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical:
+                                                      Dimensions.paddingSize5),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions.paddingSize10),
+                                              decoration: BoxDecoration(
+                                                  color: color4B164C.withOpacity(0.80),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions.radius15)),
+                                              child: Text(
+                                                item,
+                                                style: satoshiBold.copyWith(
+                                                    fontSize:
+                                                        Dimensions.fontSize12,
+                                                    color: Theme.of(context)
+                                                        .cardColor),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 4.0,
+                                          children: model.data!.matches!.creative
+                                              .toString()
+                                              .split(', ')
+                                              .map((item) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical:
+                                                      Dimensions.paddingSize5),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions.paddingSize10),
+                                              decoration: BoxDecoration(
+                                                  color: color4B164C.withOpacity(0.80),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions.radius15)),
+                                              child: Text(
+                                                item,
+                                                style: satoshiBold.copyWith(
+                                                    fontSize:
+                                                        Dimensions.fontSize12,
+                                                    color: Theme.of(context)
+                                                        .cardColor),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 4.0,
+                                          children: model.data!.matches!.fitness
+                                              .toString()
+                                              .split(', ')
+                                              .map((item) {
+                                            return Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: Dimensions
+                                                          .paddingSize5),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions.paddingSize10),
+                                              decoration: BoxDecoration(
+                                                  color: color4B164C
+                                                      .withOpacity(0.80),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions.radius15)),
+                                              child: Text(
+                                                item,
+                                                style: satoshiBold.copyWith(
+                                                    fontSize:
+                                                        Dimensions.fontSize12,
+                                                    color: Theme.of(context)
+                                                        .cardColor),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 4.0,
+                                          children: model.data!.matches!.hobby
+                                              .toString()
+                                              .split(', ')
+                                              .map((item) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical:
+                                                      Dimensions.paddingSize5),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions.paddingSize10),
+                                              decoration: BoxDecoration(
+                                                  color: color4B164C
+                                                      .withOpacity(0.80),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions.radius15)),
+                                              child: Text(
+                                                item,
+                                                style: satoshiBold.copyWith(
+                                                    fontSize:
+                                                        Dimensions.fontSize12,
+                                                    color: Theme.of(context)
+                                                        .cardColor),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Wrap(
+                                          alignment: WrapAlignment.start,
+                                          spacing: 4.0,
+                                          children: model
+                                              .data!.matches!.otherInterest
+                                              .toString()
+                                              .split(', ')
+                                              .map((item) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  vertical:
+                                                      Dimensions.paddingSize5),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions.paddingSize10),
+                                              decoration: BoxDecoration(
+                                                  color: color4B164C
+                                                      .withOpacity(0.80),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions.radius15)),
+                                              child: Text(
+                                                item,
+                                                style: satoshiBold.copyWith(
+                                                    fontSize:
+                                                        Dimensions.fontSize12,
+                                                    color: Theme.of(context)
+                                                        .cardColor),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          sizedBox16(),
+                          CustomBorderContainer(
                             child: Column(
                               children: [
                                 Stack(
@@ -812,173 +919,77 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       buildPrefProfileRow(
                                         image: icReligionIcon,
                                         title: 'Religion',
-                                        text: StringUtils.capitalize(model.data
-                                                ?.matches?.religionName ??
-                                            ""),
-                                        icon: model.data?.matches?.religionName ==
-                                                model
-                                                    .data
-                                                    ?.user
-                                                    ?.partnerExpectation
-                                                    ?.religionName
-                                            ? tickHolder
-                                            : crossholder,
+                                        text: StringUtils.capitalize(
+                                            model.data?.matches?.religionName ??
+                                                ""),
+                                        iconRightWrong:
+                                            model.data?.matches?.religionName ==
+                                                    model
+                                                        .data
+                                                        ?.user
+                                                        ?.partnerExpectation
+                                                        ?.religionName
+                                                ? Icons.done
+                                                : Icons.close,
                                       ),
                                       const Divider(),
                                       buildPrefProfileRow(
                                         image: icGotraIcon,
                                         title: 'Caste',
-                                        text: StringUtils.capitalize(model.data
-                                                ?.matches?.communityName ??
+                                        text: StringUtils.capitalize(model
+                                                .data?.user?.basicInfo?.communityName ??
                                             ""),
-                                        icon: model.data?.matches?.communityName == model
+                                        iconRightWrong: model.data?.matches
+                                                    ?.communityName ==
+                                                model
                                                     .data
                                                     ?.user
                                                     ?.partnerExpectation
                                                     ?.communityName
-                                            ? tickHolder
-                                            : crossholder,
+                                            ? Icons.done
+                                            : Icons.close,
                                       ),
                                       const Divider(),
                                       buildPrefProfileRow(
                                         image: icMotherToungeIcon,
                                         title: 'Mother Tongue',
                                         text: StringUtils.capitalize(model.data
-                                                ?.matches?.motherTongueName ?? ""),
-                                        icon: model.data?.matches?.motherTongueName ==
-                                                model.data?.user?.motherTongueName
-                                            // ?.motherTongue!.name
-                                            ? tickHolder
-                                            : crossholder,
+                                                ?.user?.basicInfo?.communityName ??
+                                            ""),
+                                        iconRightWrong: model.data?.matches
+                                                    ?.motherTongueName ==
+                                                model.data?.user
+                                                    ?.motherTongueName
+                                            ? Icons.done
+                                            : Icons.close,
                                       ),
                                       const Divider(),
                                       buildPrefProfileRow(
                                         image: icState,
                                         title: 'State',
                                         text: StringUtils.capitalize(model.data
-                                            ?.matches?.address?.state ??
+                                                ?.matches?.address?.state ??
                                             ""),
-                                        icon: model.data?.matches?.address?.state ==
-                                            model.data?.user?.address?.state
-                                        // ?.motherTongue!.name
-                                            ? tickHolder
-                                            : crossholder,
+                                        iconRightWrong: model.data?.matches?.address
+                                                    ?.state ==
+                                                model.data?.user?.address?.state
+                                            // ?.motherTongue!.name
+                                            ? Icons.done
+                                            : Icons.close,
                                       ),
                                       const Divider(),
                                       buildPrefProfileRow(
                                         image: icProfession,
                                         title: 'Profession',
-                                        text: StringUtils.capitalize(model.data?.matches?.professionName ?? ""),
-                                        icon: model.data?.matches?.professionName ==
-                                            model.data?.user?.professionName
-                                            ? tickHolder
-                                            : crossholder,),
-                                      // const Divider(),
-                                      // buildPrefProfileRow(
-                                      //   image: icState,
-                                      //   title: 'Age',
-                                      //   text: StringUtils.capitalize(model.data
-                                      //       ?.matches?.address?.state ??
-                                      //       ""),
-                                      //   icon: model.data?.matches?.address?.state ==
-                                      //       model.data?.user?.address?.state
-                                      //   // ?.motherTongue!.name
-                                      //       ? tickHolder
-                                      //       : crossholder,
-                                      // ),
-                                      //   buildPrefProfileRow(
-                                      //     image: birthHolder,
-                                      //     title: 'Age',
-                                      //     text: model.data?.matches
-                                      //             ?.partnerExpectation?.maxAge
-                                      //             ?.toString() ??
-                                      //         "",
-                                      //     icon: crossholder,
-                                      //   ),
-                                      //   const Divider(),
-                                      //   buildPrefProfileRow(
-                                      //     image: icHeightIcon,
-                                      //     title: 'Height',
-                                      //     text:
-                                      //         "Min: ${model.data?.matches?.partnerExpectation?.minHeight?.toString() ?? ''} "
-                                      //         "Max: ${model.data?.matches?.partnerExpectation?.maxHeight?.toString() ?? ''} ft",
-                                      //     icon: crossholder,
-                                      //   ),
-                                      //   const Divider(),
-                                      // /*  model.data?.matches?.partnerExpectation
-                                      //               ?.religion?.isEmpty ??
-                                      //           true
-                                      //       ? SizedBox()
-                                      //       : buildPrefProfileRow(
-                                      //           image: icReligionIcon,
-                                      //           title: 'Religion',
-                                      //           text: StringUtils.capitalize(model
-                                      //                   .data
-                                      //                   ?.matches
-                                      //                   ?.partnerExpectation
-                                      //                   ?.religion ??
-                                      //               ""),
-                                      //           icon: model
-                                      //                       .data
-                                      //                       ?.matches
-                                      //                       ?.basicInfo
-                                      //                       ?.religion ==
-                                      //                   model
-                                      //                       .data
-                                      //                       ?.user
-                                      //                       ?.partnerExpectation
-                                      //                       ?.religion
-                                      //               ? tickHolder
-                                      //               : crossholder,
-                                      //         ),*/
-                                      //   const Divider(),
-                                      // buildPrefProfileRow(
-                                      //   image: icMotherToungeIcon,
-                                      //   title: 'Mother Tongue',
-                                      //   text: StringUtils.capitalize(
-                                      //       model.data?.matches?.motherTongue!.name ??
-                                      //           ""),
-                                      //   icon: model.data?.matches?.basicInfo
-                                      //               ?.motherTongue ==
-                                      //           model
-                                      //               .data
-                                      //               ?.user
-                                      //               ?.partnerExpectation
-                                      //               ?.motherTongue
-                                      //       ? tickHolder
-                                      //       : crossholder,
-                                      // ),
-                                      // const Divider(),
-                                      // buildPrefProfileRow(
-                                      //   image: weightHolder,
-                                      //   title: 'Weight',
-                                      //   text: StringUtils.capitalize(
-                                      //       'max ${model.data?.matches?.partnerExpectation?.maxWeight ?? ""}'),
-                                      //   icon: model
-                                      //               .data
-                                      //               ?.matches
-                                      //               ?.physicalAttributes
-                                      //               ?.weight ==
-                                      //           model
-                                      //               .data
-                                      //               ?.user
-                                      //               ?.partnerExpectation
-                                      //               ?.maxWeight
-                                      //       ? crossholder
-                                      //       : tickHolder,
-                                      // ),
-                                      // const Divider(),
-                                      // buildPrefProfileRow(
-                                      //   image: communityHolder,
-                                      //   title: 'Community',
-                                      //   text: StringUtils.capitalize(model
-                                      //           .data
-                                      //           ?.matches
-                                      //           ?.partnerExpectation
-                                      //           ?.community. ??
-                                      //       ""),
-                                      //   icon: crossholder,
-                                      // ),
+                                        text: StringUtils.capitalize(model.data
+                                                ?.matches?.professionName ??
+                                            ""),
+                                        iconRightWrong: model.data?.matches
+                                                    ?.professionName ==
+                                                model.data?.user?.professionName
+                                            ? Icons.done
+                                            : Icons.close,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -986,42 +997,37 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                           ),
                           sizedBox16(),
-
                           sizedBox14(),
-                         /* GetBuilder<FavouriteController>(
-                              builder: (favControl) {
-                                favControl.setConnected(true);*/
-                            /*return*/ button(
-                                fontSize: 14,
-                                height: 45,
-                                width: double.infinity,
-                                context: context,
-                                onTap: () {
-                                  setState(() {
-                                    connected = !connected;
-                                  });
-                                  sendRequestApi(
-                                    memberId:
-                                        model.data!.matches!.id!.toString(),
-                                  ).then((value) {
-                                    if (value['status'] == true) {
-                                      setState(() {});
-                                      ToastUtil.showToast(
-                                          "Connection Request Sent");
-                                    } else {
-                                      setState(() {});
+                          button(
+                              fontSize: 14,
+                              height: 45,
+                              width: double.infinity,
+                              context: context,
+                              onTap: () {
+                                setState(() {
+                                  connected = !connected;
+                                });
+                                sendRequestApi(
+                                  memberId: model.data!.matches!.id!.toString(),
+                                ).then((value) {
+                                  if (value['status'] == true) {
+                                    setState(() {});
+                                    ToastUtil.showToast(
+                                        "Connection Request Sent");
+                                  } else {
+                                    setState(() {});
 
-                                      List<dynamic> errors =
-                                          value['message']['error'];
-                                      String errorMessage = errors.isNotEmpty
-                                          ? errors[0]
-                                          : "An unknown error occurred.";
-                                      Fluttertoast.showToast(msg: errorMessage);
-                                    }
-                                  });
-                                },
-                                title:  connected ? 'Request Sent' : "Connect Now"),
-                          // }),
+                                    List<dynamic> errors =
+                                        value['message']['error'];
+                                    String errorMessage = errors.isNotEmpty
+                                        ? errors[0]
+                                        : "An unknown error occurred.";
+                                    Fluttertoast.showToast(msg: errorMessage);
+                                  }
+                                });
+                              },
+                              title:
+                                  connected ? 'Request Sent' : "Connect Now"),
                         ],
                       ),
                     ),
@@ -1029,22 +1035,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
               ),
             ),
-    );
-  }
-
-  Container chipBox({required String name}) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(12),
-          ),
-          border: Border.all(width: 0.5, color: color4B164C.withOpacity(0.20)),
-          color: Colors.transparent),
-      padding: const EdgeInsets.all(10),
-      child: Text(
-        name,
-        style: styleSatoshiMedium(size: 16, color: color4B164C),
-      ),
     );
   }
 
@@ -1100,7 +1090,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     required String image,
     required String title,
     required String text,
-    required String icon,
+    required IconData iconRightWrong,
   }) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -1141,42 +1131,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
           ),
           Expanded(
-              child: Image.asset(
-            icon,
-            height: 18,
-          ))
+              child: Icon(Icons.done))
+          
+          // Expanded(
+          //     child: Image.asset(
+          //   icon,
+          //   height: 18,
+          // ))
         ],
       ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20.0),
-          child: SvgPicture.asset(
-            icArrowBack,
-            height: 24,
-            width: 24,
-          ),
-        ),
-      ),
-      title: Row(
-        children: [
-          Center(
-            child: Text(
-              '${StringUtils.capitalize(model.data?.matches?.firstname ?? '')} ${StringUtils.capitalize(model.data?.matches?.lastname ?? '')}',
-              style: styleSatoshiBold(size: 16, color: Colors.black),
-            ),
-          ),
-        ],
-      ),
-      automaticallyImplyLeading: false,
     );
   }
 }

@@ -250,13 +250,11 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             sizedBox16(),
 
                             Text(
-                              generalInfo.text.isEmpty
-                                  ? (preferenceModel.id == null ||
-                                  preferenceModel.generalRequirement == null ||
-                                  preferenceModel.generalRequirement!.isEmpty
-                                  ? ''
-                                  : preferenceModel.generalRequirement!)
-                                  : generalInfo.text,
+                                generalInfo.text.isEmpty
+                                    ? (preferenceModel.id == null || preferenceModel.generalRequirement == null
+                                    ? 'Not Added'
+                                    : generalInfo.text)
+                                    : generalInfo.text,
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -269,41 +267,6 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                     ),
                   ),
 
-                  // sizedBox16(),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return NameEditDialogWidget(
-                  //           title: 'Country',
-                  //           addTextField: TextFormField(
-                  //             maxLength: 40,
-                  //             onChanged: (v) {
-                  //               setState(() {
-                  //               });
-                  //             },
-                  //             onEditingComplete: () {
-                  //               Navigator.pop(context); // Close the dialog
-                  //             },
-                  //             controller: countryController,
-                  //             decoration: AppTFDecoration(
-                  //                 hint: 'Country').decoration(),
-                  //             //keyboardType: TextInputType.phone,
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(title: 'Country',
-                  //     data1: countryController.text.isEmpty
-                  //         ? (preferenceModel.id == null || preferenceModel.country == null || preferenceModel.country!.isEmpty
-                  //         ? 'Not Added'
-                  //         : preferenceModel.country!)
-                  //         : countryController.text,
-                  //     data2: StringUtils.capitalize(countryController.text),
-                  //     isControllerTextEmpty: countryController.text.isEmpty, widget: SizedBox(),),
-                  // ),
                   sizedBox16(),
                   GestureDetector(
                     onTap: () {

@@ -82,9 +82,9 @@ class _AddKycDetailsScreenState extends State<AddKycDetailsScreen> {
                     setState(() {
                       loading = true;
                     });
-                      ToastUtil.showToast("Registered Successfully");
-                            Navigator.push(context, MaterialPageRoute(builder: (builder) =>
-                            const KycWaitScreen()));
+                      // ToastUtil.showToast("Registered Successfully");
+                      //       Navigator.push(context, MaterialPageRoute(builder: (builder) =>
+                      //       const KycWaitScreen()));
                     kycDetailsApi(
                       designation: 'Nil',
                       identityProof:authControl.document.toString(),
