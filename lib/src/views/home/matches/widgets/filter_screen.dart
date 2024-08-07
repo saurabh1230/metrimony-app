@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/filter_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
@@ -29,8 +30,23 @@ class FilterBottomSheet extends StatelessWidget {
       Get.find<AuthController>().getMotherTongueList();
       Get.find<AuthController>().getProfessionList();
     });
-    return GetBuilder<AuthController>(builder: (authControl) {
-      return  GetBuilder<ProfileController>(builder: (profileControl) {
+    return
+      GetBuilder<AuthController>(builder: (authControl) {
+      return  authControl.partReligionList == null || authControl.partReligionList!.isEmpty ||
+          authControl.partCommunityList == null || authControl.partCommunityList!.isEmpty ||
+          authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
+          authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
+          authControl.partMotherTongueList == null || authControl.partMotherTongueList!.isEmpty ?
+      Container(height: Get.size.height * 0.8,
+          decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(Dimensions.radius15)
+          ),
+          child: const Center(child: CircularProgressIndicator())) :
+        GetBuilder<FilterController>(builder: (filterController) {
+        final visibleCommunityChips = authControl.isExpanded
+            ? authControl.partCommunityList
+            : authControl.partCommunityList!.take(10).toList();
         return Container(
           height: Get.size.height * 0.8,
           decoration: BoxDecoration(
@@ -38,12 +54,7 @@ class FilterBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.circular(Dimensions.radius15)
           ),
           width: Get.size.width,
-          child: authControl.partReligionList == null || authControl.partReligionList!.isEmpty ||
-              authControl.partCommunityList == null || authControl.partCommunityList!.isEmpty ||
-              authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
-              authControl.partProfessionList == null || authControl.partProfessionList!.isEmpty ||
-              authControl.partMotherTongueList == null || authControl.partMotherTongueList!.isEmpty ?
-              const Center(child: CircularProgressIndicator()) :
+          child:
           Padding(
             padding: const EdgeInsets.all(16.0),
             child:  Column(
@@ -96,25 +107,50 @@ class FilterBottomSheet extends StatelessWidget {
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
                         const SizedBox(height: 12,),
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion).name,// Assuming you have a selectedPosition variable
-                          items: authControl.partReligionList!.map((position) => position.name!).toList(),
-                          hintText: "Select Religion",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              var selected = authControl.partReligionList!.firstWhere((position) => position.name == value);
-                              authControl.setPartnerReligion(selected.id!);
-                              print(authControl.partnerReligion);
-                            }
-                          },
-                          // itemLabelBuilder: (String item) => item,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select Religion';
-                            }
-                            return null;
-                          },
+                        Wrap(
+                          spacing: 8.0,
+                          children: authControl.partReligionList!.map((religion) {
+                            // Check if the current religion is in the list of selected religions
+                            final isSelected = filterController.filterReligion.contains(religion.name);
+                            return ChoiceChip(
+                              backgroundColor: Colors.white,
+                              selectedColor: color4B164C.withOpacity(0.80),
+                              label: Text(
+                                religion.name!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isSelected ? Colors.white : color4B164C.withOpacity(0.80),
+                                ),
+                              ),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                filterController.setFilterReligion(religion.name!);
+                                print(filterController.filterReligion);
+                              },
+                            );
+                          }).toList(),
                         ),
+
+
+                        // CustomDropdownButtonFormField<String>(
+                        //   value: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion).name,// Assuming you have a selectedPosition variable
+                        //   items: authControl.partReligionList!.map((position) => position.name!).toList(),
+                        //   hintText: "Select Religion",
+                        //   onChanged: (String? value) {
+                        //     if (value != null) {
+                        //       var selected = authControl.partReligionList!.firstWhere((position) => position.name == value);
+                        //       authControl.setPartnerReligion(selected.id!);
+                        //       print(authControl.partnerReligion);
+                        //     }
+                        //   },
+                        //   // itemLabelBuilder: (String item) => item,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please Select Religion';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,
@@ -123,25 +159,63 @@ class FilterBottomSheet extends StatelessWidget {
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
                         const SizedBox(height: 12,),
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity).name,// Assuming you have a selectedPosition variable
-                          items: authControl.partCommunityList!.map((position) => position.name!).toList(),
-                          hintText: "Select Community",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              var selected = authControl.partCommunityList!.firstWhere((position) => position.name == value);
-                              authControl.setPartnerCommunity(selected.id!);
-                              print( authControl.partnerCommunity);
-                            }
-                          },
-                          // itemLabelBuilder: (String item) => item,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select Community';
-                            }
-                            return null;
-                          },
+                        Wrap(
+                          spacing: 8.0,
+                          children: visibleCommunityChips!.map((val) {
+                            // Check if the current religion is in the list of selected religions
+                            final isSelected = filterController.filterCommunity.contains(val.name);
+                            return ChoiceChip(
+                              backgroundColor: Colors.white,
+                              selectedColor: color4B164C.withOpacity(0.80),
+                              label: Text(
+                                val.name!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isSelected ? Colors.white : color4B164C.withOpacity(0.80),
+                                ),
+                              ),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                filterController.setFilterCommunity(val.name!);
+                                print(filterController.filterCommunity);
+                              },
+                            );
+                          }).toList(),
                         ),
+                        Center(
+                          child: TextButton(
+                            onPressed: authControl.toggleExpanded,
+                            child: SizedBox(
+                              width: 180,
+                              child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(authControl.isExpanded ? 'View Less' : 'View More',
+                                    style:  kManrope14Medium626262.copyWith(color: Colors.black),),
+                                  const Icon(Icons.keyboard_arrow_down_rounded,color: Colors.black,)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        // CustomDropdownButtonFormField<String>(
+                        //   value: authControl.partCommunityList!.firstWhere((religion) => religion.id == authControl.partnerCommunity).name,// Assuming you have a selectedPosition variable
+                        //   items: authControl.partCommunityList!.map((position) => position.name!).toList(),
+                        //   hintText: "Select Community",
+                        //   onChanged: (String? value) {
+                        //     if (value != null) {
+                        //       var selected = authControl.partCommunityList!.firstWhere((position) => position.name == value);
+                        //       authControl.setPartnerCommunity(selected.id!);
+                        //       print( authControl.partnerCommunity);
+                        //     }
+                        //   },
+                        //   // itemLabelBuilder: (String item) => item,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please Select Community';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,
@@ -150,25 +224,48 @@ class FilterBottomSheet extends StatelessWidget {
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
                         const SizedBox(height: 12,),
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue).name,// Assuming you have a selectedPosition variable
-                          items: authControl.partMotherTongueList!.map((position) => position.name!).toList(),
-                          hintText: "Select Mother Tongue",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              var selected = authControl.partMotherTongueList!.firstWhere((position) => position.name == value);
-                              authControl.setPartnerMotherTongue(selected.id!);
-                              print(authControl.partnerMotherTongue);
-                            }
-                          },
-                          // itemLabelBuilder: (String item) => item,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select Mother Tongue';
-                            }
-                            return null;
-                          },
+                        Wrap(
+                          spacing: 8.0,
+                          children: authControl.partMotherTongueList!.map((religion) {
+                            // Check if the current religion is in the list of selected religions
+                            final isSelected = filterController.filterMotherTongue.contains(religion.name);
+                            return ChoiceChip(
+                              backgroundColor: Colors.white,
+                              selectedColor: color4B164C.withOpacity(0.80),
+                              label: Text(
+                                religion.name!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isSelected ? Colors.white : color4B164C.withOpacity(0.80),
+                                ),
+                              ),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                filterController.setFilterMotherTongue(religion.name!);
+                                print(filterController.filterMotherTongue);
+                              },
+                            );
+                          }).toList(),
                         ),
+                        // CustomDropdownButtonFormField<String>(
+                        //   value: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue).name,// Assuming you have a selectedPosition variable
+                        //   items: authControl.partMotherTongueList!.map((position) => position.name!).toList(),
+                        //   hintText: "Select Mother Tongue",
+                        //   onChanged: (String? value) {
+                        //     if (value != null) {
+                        //       var selected = authControl.partMotherTongueList!.firstWhere((position) => position.name == value);
+                        //       authControl.setPartnerMotherTongue(selected.id!);
+                        //       print(authControl.partnerMotherTongue);
+                        //     }
+                        //   },
+                        //   // itemLabelBuilder: (String item) => item,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please Select Mother Tongue';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,
@@ -177,25 +274,48 @@ class FilterBottomSheet extends StatelessWidget {
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
                         const SizedBox(height: 12,),
-                        CustomDropdownButtonFormField<String>(
-                          value: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession).name,// Assuming you have a selectedPosition variable
-                          items: authControl.partProfessionList!.map((position) => position.name!).toList(),
-                          hintText: "Select Profession",
-                          onChanged: (String? value) {
-                            if (value != null) {
-                              var selected = authControl.partProfessionList!.firstWhere((position) => position.name == value);
-                              authControl.setPartnerProfession(selected.id!);
-                              print( authControl.partnerProfession);
-                            }
-                          },
-                          // itemLabelBuilder: (String item) => item,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please Select Profession';
-                            }
-                            return null;
-                          },
+                        Wrap(
+                          spacing: 8.0,
+                          children: authControl.partProfessionList!.map((religion) {
+                            // Check if the current religion is in the list of selected religions
+                            final isSelected = filterController.filterProfession.contains(religion.name);
+                            return ChoiceChip(
+                              backgroundColor: Colors.white,
+                              selectedColor: color4B164C.withOpacity(0.80),
+                              label: Text(
+                                religion.name!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isSelected ? Colors.white : color4B164C.withOpacity(0.80),
+                                ),
+                              ),
+                              selected: isSelected,
+                              onSelected: (selected) {
+                                filterController.setFilterProfession(religion.name!);
+                                print(filterController.filterProfession);
+                              },
+                            );
+                          }).toList(),
                         ),
+                        // CustomDropdownButtonFormField<String>(
+                        //   value: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession).name,// Assuming you have a selectedPosition variable
+                        //   items: authControl.partProfessionList!.map((position) => position.name!).toList(),
+                        //   hintText: "Select Profession",
+                        //   onChanged: (String? value) {
+                        //     if (value != null) {
+                        //       var selected = authControl.partProfessionList!.firstWhere((position) => position.name == value);
+                        //       authControl.setPartnerProfession(selected.id!);
+                        //       print( authControl.partnerProfession);
+                        //     }
+                        //   },
+                        //   // itemLabelBuilder: (String item) => item,
+                        //   validator: (value) {
+                        //     if (value == null || value.isEmpty) {
+                        //       return 'Please Select Profession';
+                        //     }
+                        //     return null;
+                        //   },
+                        // ),
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,

@@ -1,3 +1,4 @@
+import 'package:bureau_couple/getx/features/widgets/custom_button%20_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/src/views/signIn/signin_option_screen.dart';
 
@@ -95,12 +96,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
                     decoration: BoxDecoration(
-                        color: primaryColor,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(12)),
                     child: Text(
                       "Sign Up",
                       style: kManrope16SemiBold828282.copyWith(
-                          color: Colors.white, fontSize: 14),
+                          color: Theme.of(context).cardColor, fontSize: 14),
                     )),
               )
             ],
@@ -210,85 +211,167 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                     sizedBox16(),
-                    loading
-                        ? loadingButton(context: context)
-                        : button(
-                            onTap: () {
-                              if (emailController.text.isNotEmpty ||
-                                  passwordController.text.isNotEmpty) {
-                                TextInput.finishAutofillContext();
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  loginApi(
-                                    password: passwordController.text,
-                                    userName: emailController.text,
-                                  ).then((value) {
-                                    response = value;
+                    loading ? const Center(child: CircularProgressIndicator()) :
+                    CustomButtonWidget(
+                      fontColor: Theme.of(context).cardColor,
+                      color: Theme.of(context).primaryColor,
+                        onPressed: () {
+                                    if (emailController.text.isNotEmpty || passwordController.text.isNotEmpty) {
+                                      TextInput.finishAutofillContext();
+                                      if (_formKey.currentState!.validate()) {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                                        loginApi(
+                                          password: passwordController.text,
+                                          userName: emailController.text,
+                                        ).then((value) {
+                                          response = value;
 
-                                    if (response?.status ==
-                                        'success' /*value['status'] == 'success'*/) {
-                                      setState(() {
-                                        loading = false;
-                                      });
-                                      print("cehc");
-                                      print(response);
-                                      SharedPrefs().setLoginToken(response!
-                                          .data!.accessToken
-                                          .toString());
-                                      SharedPrefs().setUserName(response!
-                                          .data!.user!.username
-                                          .toString());
-                                      SharedPrefs().setName(response!
-                                          .data!.user!.firstname
-                                          .toString());
-                                      SharedPrefs().setEmail((response!
-                                          .data!.user!.email
-                                          .toString()));
-                                      SharedPrefs().setPhone(response!
-                                          .data!.user!.mobile
-                                          .toString());
-                                      SharedPrefs().setProfileId(response!
-                                          .data!.user!.profileId as int);
-                                      SharedPrefs().setLoginTrue();
-                                      SharedPrefs().setProfilePhoto(response!
-                                          .data!.user!.image
-                                          .toString());
-                                      SharedPrefs().setLoginGender(response!
-                                          .data!.user!.gender
-                                          .toString());
-                                      SharedPrefs()
-                                          .setLoginEmail(emailController.text);
-                                      SharedPrefs().setLoginPassword(
-                                          passwordController.text);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (builder) =>
-                                                  HomeDashboardScreen(
-                                                    response: response!,
-                                                  )));
-                                      ToastUtil.showToast("Login Successful");
+                                          if (response?.status ==
+                                              'success' /*value['status'] == 'success'*/) {
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                            print("cehc");
+                                            print(response);
+                                            SharedPrefs().setLoginToken(response!
+                                                .data!.accessToken
+                                                .toString());
+                                            SharedPrefs().setUserName(response!
+                                                .data!.user!.username
+                                                .toString());
+                                            SharedPrefs().setName(response!
+                                                .data!.user!.firstname
+                                                .toString());
+                                            SharedPrefs().setEmail((response!
+                                                .data!.user!.email
+                                                .toString()));
+                                            SharedPrefs().setPhone(response!
+                                                .data!.user!.mobile
+                                                .toString());
+                                            SharedPrefs().setProfileId(response!
+                                                .data!.user!.profileId as int);
+                                            SharedPrefs().setLoginTrue();
+                                            SharedPrefs().setProfilePhoto(response!
+                                                .data!.user!.image
+                                                .toString());
+                                            SharedPrefs().setLoginGender(response!
+                                                .data!.user!.gender
+                                                .toString());
+                                            SharedPrefs()
+                                                .setLoginEmail(emailController.text);
+                                            SharedPrefs().setLoginPassword(
+                                                passwordController.text);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (builder) =>
+                                                        HomeDashboardScreen(
+                                                          response: response!,
+                                                        )));
+                                            ToastUtil.showToast("Login Successful");
+                                          } else {
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                            ToastUtil.showToast("Not Authorized");
+                                            // Fluttertoast.showToast(msg: "Not Authorized");
+                                          }
+                                        });
+                                      }
                                     } else {
                                       setState(() {
                                         loading = false;
                                       });
-                                      ToastUtil.showToast("Not Authorized");
-                                      // Fluttertoast.showToast(msg: "Not Authorized");
+                                      ToastUtil.showToast(
+                                          "Please Enter Username and password");
                                     }
-                                  });
-                                }
-                              } else {
-                                setState(() {
-                                  loading = false;
-                                });
-                                ToastUtil.showToast(
-                                    "Please Enter Username and password");
-                              }
-                            },
-                            context: context,
-                            title: 'Sign In'),
+
+                        },
+                        isBold: false,
+                        buttonText: 'Sign In')
+                    // loading
+                    //     ? loadingButton(context: context)
+                    //     : button(
+                    //          color: Theme.of(context).cardColor,
+                    //         onTap: () {
+                    //           if (emailController.text.isNotEmpty ||
+                    //               passwordController.text.isNotEmpty) {
+                    //             TextInput.finishAutofillContext();
+                    //             if (_formKey.currentState!.validate()) {
+                    //               setState(() {
+                    //                 loading = true;
+                    //               });
+                    //               loginApi(
+                    //                 password: passwordController.text,
+                    //                 userName: emailController.text,
+                    //               ).then((value) {
+                    //                 response = value;
+                    //
+                    //                 if (response?.status ==
+                    //                     'success' /*value['status'] == 'success'*/) {
+                    //                   setState(() {
+                    //                     loading = false;
+                    //                   });
+                    //                   print("cehc");
+                    //                   print(response);
+                    //                   SharedPrefs().setLoginToken(response!
+                    //                       .data!.accessToken
+                    //                       .toString());
+                    //                   SharedPrefs().setUserName(response!
+                    //                       .data!.user!.username
+                    //                       .toString());
+                    //                   SharedPrefs().setName(response!
+                    //                       .data!.user!.firstname
+                    //                       .toString());
+                    //                   SharedPrefs().setEmail((response!
+                    //                       .data!.user!.email
+                    //                       .toString()));
+                    //                   SharedPrefs().setPhone(response!
+                    //                       .data!.user!.mobile
+                    //                       .toString());
+                    //                   SharedPrefs().setProfileId(response!
+                    //                       .data!.user!.profileId as int);
+                    //                   SharedPrefs().setLoginTrue();
+                    //                   SharedPrefs().setProfilePhoto(response!
+                    //                       .data!.user!.image
+                    //                       .toString());
+                    //                   SharedPrefs().setLoginGender(response!
+                    //                       .data!.user!.gender
+                    //                       .toString());
+                    //                   SharedPrefs()
+                    //                       .setLoginEmail(emailController.text);
+                    //                   SharedPrefs().setLoginPassword(
+                    //                       passwordController.text);
+                    //                   Navigator.push(
+                    //                       context,
+                    //                       MaterialPageRoute(
+                    //                           builder: (builder) =>
+                    //                               HomeDashboardScreen(
+                    //                                 response: response!,
+                    //                               )));
+                    //                   ToastUtil.showToast("Login Successful");
+                    //                 } else {
+                    //                   setState(() {
+                    //                     loading = false;
+                    //                   });
+                    //                   ToastUtil.showToast("Not Authorized");
+                    //                   // Fluttertoast.showToast(msg: "Not Authorized");
+                    //                 }
+                    //               });
+                    //             }
+                    //           } else {
+                    //             setState(() {
+                    //               loading = false;
+                    //             });
+                    //             ToastUtil.showToast(
+                    //                 "Please Enter Username and password");
+                    //           }
+                    //         },
+                    //         context: context,
+                    //
+                    //         title: 'Sign In'),
                   ],
                 ))
               ],

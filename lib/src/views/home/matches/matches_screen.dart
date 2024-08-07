@@ -295,15 +295,13 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                           ? "user"
                                           : '${StringUtils.capitalize(matchesControl.matchesList[i].firstname ?? 'User')} ${StringUtils.capitalize(matchesControl.matchesList[i].lastname ?? 'User')}',
                                       atributeReligion:
-                                          ' ${matchesControl.matchesList[i].basicInfo?.religion ?? ''}',
+                                          ' ${matchesControl.matchesList[i].basicInfo?.religionName ?? ''}',
                                       profession: "Software Engineer",
                                       Location:
                                           '${matchesControl.matchesList[i].address?.state ?? ''} • ${matchesControl.matchesList[i].professionName ?? ''} • ${matchesControl.matchesList[i].communityName ?? ''} ',
                                       likedColor: Colors.grey,
                                       unlikeColor: primaryColor,
-                                      button: matchesControl.matchesList[i]
-                                                  .interestStatus ==
-                                              2
+                                      button: matchesControl.matchesList[i].interestStatus == 2
                                           ? connectButton(
                                               fontSize: 14,
                                               height: 30,

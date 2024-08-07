@@ -1,10 +1,11 @@
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/shared_prefs.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
-
+import 'package:get/get.dart';
 import 'package:bureau_couple/src/utils/urls.dart';
 import 'package:bureau_couple/src/utils/widgets/common_widgets.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
@@ -284,476 +285,478 @@ class _ProfileScreenState extends State<ProfileScreen> {
               });
               return refreshData();
             },
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(child: ClipOval(child: CustomImageWidget(image: profile.image != null ? '$baseProfilePhotoUrl${profile.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Basic Details',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (builder) => const EditBasicInfoScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    buildInfoRow(title: 'First Name',
-                        text: profile.firstname ?? '',
-                        onTap: () {
-                        }),
-
-                    buildInfoRow(title: 'Last Name',
-                        text: profile.lastname ?? '',
-                        onTap: () {}),
-                    buildInfoRow(title: 'Username',
-                        text: profile.username ?? '',
-                        onTap: () {}),
-
-                    buildInfoRow(title: 'Profession',
-                        text: profile.basicInfo?.professionName ?? '',
-                        onTap: () {}),
-                    buildInfoRow(title: 'Email',
-                        text: profile.email ?? '',
-                        onTap: () {
-                        }),
-                    buildInfoRow(title: 'Mobile no',
-                        text: profile.mobile ?? '',
-                        onTap: () {
-                        }),
-                    buildInfoRow(title: 'Date of Birth',
-                        text: profile.basicInfo?.birthDate ?? '',
-                        onTap: () {
-                        }),
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Education Details',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (builder) => const EditEducationScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    buildInfoRow(
-                      title: 'Degree',
-                      text: profile.educationInfo?.isEmpty ?? true
-                          ? ""
-                          : profile.educationInfo![0].degree.toString() ?? "",
-                      onTap: () {},
-                    ),
-                    buildInfoRow(
-                      title: 'Study',
-                      text: profile.educationInfo?.isEmpty ?? true
-                          ? ""
-                          : profile.educationInfo?[0].fieldOfStudy?.toString() ?? "",
-                      onTap: () {},
-                    ),
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Career Info',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                    builder: (builder) => const EditCareerInfoScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    buildInfoRow(
-                      title: 'Position',
-                      text: profile.basicInfo?.professionName?.isEmpty ?? true
-                          ? ""
-                          : profile.basicInfo?.professionName?.toString() ?? "",
-                      onTap: () {},
-                    ),
-                    buildInfoRow(
-                      title: 'State Of Posting',
-                      text: profile.careerInfo?.isEmpty ?? true
-                          ? ""
-                          : profile.careerInfo?[0].statePosting?.toString() ?? "",
-                      onTap: () {},
-                    ),
-
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Partner Expectations',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                      builder: (builder) => const EditPreferenceScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    buildInfoRow(title: 'Religion',
-                        text:  /*profile.data?.user?.partnerExpectation!.religion.toString() ?? "",*/
-                        profile.partnerExpectation == null ? "" :
-                        profile.partnerExpectation!.religionName.toString(),
-                        onTap: () {
-                        }),
-                    buildInfoRow(title: 'Profession',
-                        text:  /*profile.data?.user?.partnerExpectation!.profession.toString() ?? "",*/
-                        profile.partnerExpectation == null ? "" :
-                        profile.partnerExpectation!.professionName.toString(),
-                        onTap: () {
-                        }),
-                    buildInfoRow(
-                      title: 'Mother Tongue',
-                      text: profile.partnerExpectation?.motherTongueName.toString() ?? "",
-                      onTap: () {},
-                    ),
-                    buildInfoRow(
-                      title: 'Caste',
-                      text:  profile.partnerExpectation?.communityName.toString() ?? "",
-                      onTap: () {},
-                    ),
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Physical Attributes',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (builder) => const EditPhysicalAttributesScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    buildInfoRow(title: 'Height',
-                        text: profile.physicalAttributes?.height.toString() ?? "",
-                        onTap: () {
-                        }),
-                    buildInfoRow(title: 'Blood Group',
-                        text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
-                        onTap: () {
-                        }),
-                    sizedBox20(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Interest & Hobbies',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        // IconButton(onPressed: () {}, icon: Icon(Icons.edit,
-                        // color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
-                      ],
-                    ),
-                    const SizedBox(height: 12,),
-                    Container(padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 0.5,color: Colors.black),
-                          borderRadius: BorderRadius.circular(12),color: Theme.of(context).cardColor
-                      ),
-                      child:  Column(
+            child: GetBuilder<ProfileController>(builder: (profileController) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(child: ClipOval(child: CustomImageWidget(image: profile.image != null ? '$baseProfilePhotoUrl${profile.image}' : 'fallback_image_url_here',height: 100,width: 100,)),),
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Wrap(alignment: WrapAlignment.start,
-                                  spacing: 4.0,
-                                  children: profile.fun
-                                      .toString()
-                                      .split(', ')
-                                      .map((item) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                                      decoration: BoxDecoration(
-                                        color: color4B164C.withOpacity(0.80),
-                                          // border: Border.all(width:1,
-                                          //     color: color4B164C.withOpacity(0.80)),
-                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
-                                      ),
-                                      child: Text(
-                                        item,
-                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                        color: Theme.of(context).cardColor),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            'Basic Details',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
                           ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Wrap(alignment: WrapAlignment.start,
-                                  spacing: 4.0,
-                                  children: profile.creative
-                                      .toString()
-                                      .split(', ')
-                                      .map((item) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                                      decoration: BoxDecoration(
-                                          color: color4B164C.withOpacity(0.80),
-                                          // border: Border.all(width:1,
-                                          //     color: color4B164C.withOpacity(0.80)),
-                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
-                                      ),
-                                      child: Text(
-                                        item,
-                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                            color: Theme.of(context).cardColor),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Wrap(alignment: WrapAlignment.start,
-                                  spacing: 4.0,
-                                  children: profile.fitness
-                                      .toString()
-                                      .split(', ')
-                                      .map((item) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                                      decoration: BoxDecoration(
-                                          color: color4B164C.withOpacity(0.80),
-                                          // border: Border.all(width:1,
-                                          //     color: color4B164C.withOpacity(0.80)),
-                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
-                                      ),
-                                      child: Text(
-                                        item,
-                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                            color: Theme.of(context).cardColor),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Wrap(alignment: WrapAlignment.start,
-                                  spacing: 4.0,
-                                  children: profile.hobby
-                                      .toString()
-                                      .split(', ')
-                                      .map((item) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                                      decoration: BoxDecoration(
-                                          color: color4B164C.withOpacity(0.80),
-                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
-                                      ),
-                                      child: Text(
-                                        item,
-                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                            color: Theme.of(context).cardColor),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Wrap(alignment: WrapAlignment.start,
-                                  spacing: 4.0,
-                                  children: profile.otherInterest
-                                      .toString()
-                                      .split(', ')
-                                      .map((item) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
-                                      padding: const EdgeInsets.all(Dimensions.paddingSize10),
-                                      decoration: BoxDecoration(
-                                          color: color4B164C.withOpacity(0.80),
-                                          borderRadius: BorderRadius.circular(Dimensions.radius15)
-                                      ),
-                                      child: Text(
-                                        item,
-                                        style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                            color: Theme.of(context).cardColor),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditBasicInfoScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
                           ),
                         ],
                       ),
-                    ),
-
-
-                    sizedBox10(),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Photos',
-                          style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                        ),
-                        InkWell(
+                      buildInfoRow(title: 'First Name',
+                          text: profile.firstname ?? '',
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (builder) => const EditPhotosScreen()));
-                          },
-                          child: Icon(Icons.edit,
-                            color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                        ),
-                      ],
-                    ),
-                    // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Text(
-                    //       'Photos',
-                    //       style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                    //     ),
-                    //     IconButton(onPressed: () {
-                    //         Navigator.push(context, MaterialPageRoute(
-                    //             builder: (builder) => const EditPhotosScreen()));
-                    //     }, icon: Icon(Icons.edit,
-                    //     color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
-                    //   ],
-                    // ),
+                          }),
 
-                    // GestureDetector(onTap: () {
-                    //   Navigator.push(context, MaterialPageRoute(
-                    //       builder: (builder) => const EditPhotosScreen()));
-                    //
-                    // },
-                    //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Text("Photos",style:styleSatoshiMedium(size: 16, color: primaryColor)),
-                    //       Image.asset(icEdit,height: 20,width: 20,),
-                    //     ],
-                    //   ),
-                    // ),
-                    sizedBox16(),
+                      buildInfoRow(title: 'Last Name',
+                          text: profile.lastname ?? '',
+                          onTap: () {}),
+                      buildInfoRow(title: 'Username',
+                          text: profile.username ?? '',
+                          onTap: () {}),
 
-                    photos.isEmpty ||  photos == null  ?
-                    Center(child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhotosScreen()));
-
-                      },
-                      child: const DottedPlaceHolder(text:'Add Photos',),)):
-                    Stack(
-                      children: [
-                        GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: photos.length,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 8,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 1,
+                      buildInfoRow(title: 'Profession',
+                          text: profile.basicInfo?.professionName ?? '',
+                          onTap: () {}),
+                      buildInfoRow(title: 'Email',
+                          text: profile.email ?? '',
+                          onTap: () {
+                          }),
+                      buildInfoRow(title: 'Mobile no',
+                          text: profile.mobile ?? '',
+                          onTap: () {
+                          }),
+                      buildInfoRow(title: 'Date of Birth',
+                          text: profile.basicInfo?.birthDate ?? '',
+                          onTap: () {
+                          }),
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Education Details',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
                           ),
-                          itemBuilder: (_, i) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PhotoViewScreen(
-                                      imageProvider: NetworkImage(
-                                        photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditEducationScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      buildInfoRow(
+                        title: 'Degree',
+                        text: profile.educationInfo?.isEmpty ?? true
+                            ? ""
+                            : profile.educationInfo![0].degree.toString() ?? "",
+                        onTap: () {},
+                      ),
+                      buildInfoRow(
+                        title: 'Study',
+                        text: profile.educationInfo?.isEmpty ?? true
+                            ? ""
+                            : profile.educationInfo?[0].fieldOfStudy?.toString() ?? "",
+                        onTap: () {},
+                      ),
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Career Info',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditCareerInfoScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      buildInfoRow(
+                        title: 'Position',
+                        text: profile.basicInfo?.professionName?.isEmpty ?? true
+                            ? ""
+                            : profile.basicInfo?.professionName?.toString() ?? "",
+                        onTap: () {},
+                      ),
+                      buildInfoRow(
+                        title: 'State Of Posting',
+                        text: profile.careerInfo?.isEmpty ?? true
+                            ? ""
+                            : profile.careerInfo?[0].statePosting?.toString() ?? "",
+                        onTap: () {},
+                      ),
+
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Partner Expectations',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditPreferenceScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      buildInfoRow(title: 'Religion',
+                          text:  /*profile.data?.user?.partnerExpectation!.religion.toString() ?? "",*/
+                          profile.partnerExpectation == null ? "" :
+                          profile.partnerExpectation!.religionName.toString(),
+                          onTap: () {
+                          }),
+                      buildInfoRow(title: 'Profession',
+                          text:  /*profile.data?.user?.partnerExpectation!.profession.toString() ?? "",*/
+                          profile.partnerExpectation == null ? "" :
+                          profile.partnerExpectation!.professionName.toString(),
+                          onTap: () {
+                          }),
+                      buildInfoRow(
+                        title: 'Mother Tongue',
+                        text: profile.partnerExpectation?.motherTongueName.toString() ?? "",
+                        onTap: () {},
+                      ),
+                      buildInfoRow(
+                        title: 'Caste',
+                        text:  profile.partnerExpectation?.communityName.toString() ?? "",
+                        onTap: () {},
+                      ),
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Physical Attributes',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditPhysicalAttributesScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      buildInfoRow(title: 'Height',
+                          text: profileController.convertHeightToFeetInches(profile.physicalAttributes!.height.toString() ) ?? "",
+                          onTap: () {
+                          }),
+                      buildInfoRow(title: 'Blood Group',
+                          text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
+                          onTap: () {
+                          }),
+                      sizedBox20(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Interest & Hobbies',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          // IconButton(onPressed: () {}, icon: Icon(Icons.edit,
+                          // color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
+                        ],
+                      ),
+                      const SizedBox(height: 12,),
+                      Container(padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 0.5,color: Colors.black),
+                            borderRadius: BorderRadius.circular(12),color: Theme.of(context).cardColor
+                        ),
+                        child:  Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(alignment: WrapAlignment.start,
+                                    spacing: 4.0,
+                                    children: profile.fun
+                                        .toString()
+                                        .split(', ')
+                                        .map((item) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                        padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                        decoration: BoxDecoration(
+                                            color: color4B164C.withOpacity(0.80),
+                                            // border: Border.all(width:1,
+                                            //     color: color4B164C.withOpacity(0.80)),
+                                            borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                        ),
+                                        child: Text(
+                                          item,
+                                          style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).cardColor),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(alignment: WrapAlignment.start,
+                                    spacing: 4.0,
+                                    children: profile.creative
+                                        .toString()
+                                        .split(', ')
+                                        .map((item) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                        padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                        decoration: BoxDecoration(
+                                            color: color4B164C.withOpacity(0.80),
+                                            // border: Border.all(width:1,
+                                            //     color: color4B164C.withOpacity(0.80)),
+                                            borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                        ),
+                                        child: Text(
+                                          item,
+                                          style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).cardColor),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(alignment: WrapAlignment.start,
+                                    spacing: 4.0,
+                                    children: profile.fitness
+                                        .toString()
+                                        .split(', ')
+                                        .map((item) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                        padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                        decoration: BoxDecoration(
+                                            color: color4B164C.withOpacity(0.80),
+                                            // border: Border.all(width:1,
+                                            //     color: color4B164C.withOpacity(0.80)),
+                                            borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                        ),
+                                        child: Text(
+                                          item,
+                                          style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).cardColor),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(alignment: WrapAlignment.start,
+                                    spacing: 4.0,
+                                    children: profile.hobby
+                                        .toString()
+                                        .split(', ')
+                                        .map((item) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                        padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                        decoration: BoxDecoration(
+                                            color: color4B164C.withOpacity(0.80),
+                                            borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                        ),
+                                        child: Text(
+                                          item,
+                                          style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).cardColor),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Wrap(alignment: WrapAlignment.start,
+                                    spacing: 4.0,
+                                    children: profile.otherInterest
+                                        .toString()
+                                        .split(', ')
+                                        .map((item) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSize5),
+                                        padding: const EdgeInsets.all(Dimensions.paddingSize10),
+                                        decoration: BoxDecoration(
+                                            color: color4B164C.withOpacity(0.80),
+                                            borderRadius: BorderRadius.circular(Dimensions.radius15)
+                                        ),
+                                        child: Text(
+                                          item,
+                                          style: satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).cardColor),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Photos',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditPhotosScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      // Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       'Photos',
+                      //       style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                      //     ),
+                      //     IconButton(onPressed: () {
+                      //         Navigator.push(context, MaterialPageRoute(
+                      //             builder: (builder) => const EditPhotosScreen()));
+                      //     }, icon: Icon(Icons.edit,
+                      //     color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
+                      //   ],
+                      // ),
+
+                      // GestureDetector(onTap: () {
+                      //   Navigator.push(context, MaterialPageRoute(
+                      //       builder: (builder) => const EditPhotosScreen()));
+                      //
+                      // },
+                      //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text("Photos",style:styleSatoshiMedium(size: 16, color: primaryColor)),
+                      //       Image.asset(icEdit,height: 20,width: 20,),
+                      //     ],
+                      //   ),
+                      // ),
+                      sizedBox16(),
+
+                      photos.isEmpty ||  photos == null  ?
+                      Center(child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (builder) => const EditPhotosScreen()));
+
+                        },
+                        child: const DottedPlaceHolder(text:'Add Photos',),)):
+                      Stack(
+                        children: [
+                          GridView.builder(
+                            shrinkWrap: true,
+                            itemCount: photos.length,
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 1,
+                            ),
+                            itemBuilder: (_, i) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PhotoViewScreen(
+                                        imageProvider: NetworkImage(
+                                          photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
+                                        ),
                                       ),
                                     ),
+                                  );
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Container(
+                                  height: 220,
+                                  width: 130,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color:
+                                      Colors.grey,
+                                      width: 1,
+                                    ),
+                                    borderRadius: const  BorderRadius.all(Radius.circular(10)),
                                   ),
-                                );
-                              },
-                              behavior: HitTestBehavior.translucent,
-                              child: Container(
-                                height: 220,
-                                width: 130,
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color:
-                                    Colors.grey,
-                                    width: 1,
+                                  child: CachedNetworkImage(
+                                    imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        Padding(padding: const EdgeInsets.all(8.0),
+                                          child: Image.asset(icLogo, height: 40, width: 40,),),
+                                    progressIndicatorBuilder: (a, b, c) => customShimmer(height: 0, /*width: 0,*/),
                                   ),
-                                  borderRadius: const  BorderRadius.all(Radius.circular(10)),
                                 ),
-                                child: CachedNetworkImage(
-                                  imageUrl: photos[i].image != null ? '$baseGalleryImage${photos[i].image}' : '',
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) =>
-                                      Padding(padding: const EdgeInsets.all(8.0),
-                                        child: Image.asset(icLogo, height: 40, width: 40,),),
-                                  progressIndicatorBuilder: (a, b, c) => customShimmer(height: 0, /*width: 0,*/),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: Row(
-                            children: [
-                              customContainer(vertical: 5, horizontal: 10, child: Row(
-                                children: [SvgPicture.asset(ic4Dots), const SizedBox(width: 6,), const Text("See All")],),
-                                  radius: 8, color: Colors.white, click: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
-
-                                  })
-                            ],
+                              );
+                            },
                           ),
-                        )
-                      ],
-                    ),
-                    sizedBox16(),
-                  ],
+                          Positioned(
+                            bottom: 10,
+                            right: 10,
+                            child: Row(
+                              children: [
+                                customContainer(vertical: 5, horizontal: 10, child: Row(
+                                  children: [SvgPicture.asset(ic4Dots), const SizedBox(width: 6,), const Text("See All")],),
+                                    radius: 8, color: Colors.white, click: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (builder) => const OurImagesScreen()));
+
+                                    })
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      sizedBox16(),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
           // if (isLoading) Loading(),
         ],

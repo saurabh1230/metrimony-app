@@ -8,142 +8,68 @@ import '../../src/models/matches_model.dart';
 
 
 
-class FavouriteController extends GetxController implements GetxService {
-  final MatchesRepo matchesRepo;
+class FilterController extends GetxController implements GetxService {
 
-  FavouriteController({required this.matchesRepo});
+  FilterController();
 
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  bool _isConnected = false;
 
-  bool get connected => _isConnected;
+  final List<String> _filterReligion = [];
+  List<String> get filterReligion => _filterReligion;
 
-  void setConnected(bool value) {
-    _isConnected = value;
-    update();
-  }
-
-
-  int _offset = 1;
-  int get offset => _offset;
-  List<String> _pageList = [];
-  int? _pageSize;
-  int? get pageSize => _pageSize;
-
-
-  List<MatchesModel>? _matchesList;
-  List<MatchesModel>? get matchesList => _matchesList;
-
-  // int? _matchesIndex = 0;
-  // int? get matches => _matchesIndex;
-
-  void setOffset(int offset) {
-    _offset= offset;
-  }
-
-  void showBottomLoader () {
-    _isLoading = true;
-    update();
-  }
-
-
-
-
-
-  List<int?> _isBookmarkList = [];
-  List<int?> get isBookmarkList => _isBookmarkList;
-
-
-  Future<void> bookMarkSaveApi(String? profileId,String? userId,) async {
-    _isLoading = true;
-    update();
-
-    Response response = await matchesRepo.bookMarkSave(profileId,userId);
-    if(response.statusCode == 200) {
-      _isBookmarkList.add(int.parse(profileId!));
-    }else {
-      // ApiChecker.checkApi(response);
-    }
-    _isLoading = false;
-    update();
-  }
-
-
-  Future<void> unSaveBookmarkApi(String? profileId) async {
-    _isLoading = true;
-    update();
-
-    Response response = await matchesRepo.bookMarkUnSave(profileId);
-    if (response.statusCode == 200) {
-      _isBookmarkList.remove(int.parse(profileId!));
+  void setFilterReligion(String val) {
+    if (_filterReligion.contains(val)) {
+      _filterReligion.remove(val);
     } else {
-      // ApiChecker.checkApi(response);
+      _filterReligion.add(val);
     }
-    _isLoading = false;
     update();
   }
 
-  List<int?> _isConnectedIntList = [];
-  List<int?> get isConnectedIntList => _isConnectedIntList;
-  Future<void> sendRequestApi(String? userId,String? profileId,) async {
-    _isLoading = true;
-    update();
+  final List<String> _filterCommunity = [];
+  List<String> get filterCommunity => _filterCommunity;
 
-    Response response = await matchesRepo.sendRequest(userId,profileId);
-    if(response.statusCode == 200) {
-      _isConnectedIntList.add(int.parse(profileId!));
-      // List<dynamic> errors =
-      // value['message']['error'];
-      // String errorMessage = errors
-      //     .isNotEmpty
-      //     ? errors[0]
-      //     : "An unknown error occurred.";
-      // Fluttertoast.showToast(
-      //     msg: errorMessage);
-    }else {
-      // ApiChecker.checkApi(response);
+  void setFilterCommunity(String val) {
+    if (_filterCommunity.contains(val)) {
+      _filterCommunity.remove(val);
+    } else {
+      _filterCommunity.add(val);
     }
-    _isLoading = false;
     update();
   }
 
-  List<int?> _requestSent = [];
-  List<int?> get requestSent => _requestSent;
+  final List<String> _filterMotherTongue = [];
+  List<String> get filterMotherTongue => _filterMotherTongue;
 
-
-
-
-
-
-
-  final List<String> images = [
-    "assets/images/latestnews1.png",
-    "assets/images/latestnews1.png",
-    "assets/images/latestnews1.png",
-    "assets/images/latestnews1.png",
-  ];
-
-  int _categoryIndex = 0;
-  int get categoryIndex => _categoryIndex;
-  void setCategoryIndex(int index) {
-    _categoryIndex = index;
+  void setFilterMotherTongue(String val) {
+    if (_filterMotherTongue.contains(val)) {
+      _filterMotherTongue.remove(val);
+    } else {
+      _filterMotherTongue.add(val);
+    }
     update();
   }
-  int _bannerIndex = 0;
-  int get bannerIndex => _bannerIndex;
-  void setBannerIndex(int index) {
-    _bannerIndex = index;
+
+  final List<String> _filterProfession = [];
+  List<String> get filterProfession => _filterProfession;
+
+  void setFilterProfession(String val) {
+    if (_filterProfession.contains(val)) {
+      _filterProfession.remove(val);
+    } else {
+      _filterProfession.add(val);
+    }
     update();
   }
-  final CarouselController _carouselController = CarouselController();
-  final List<String> bannerImages = [
-    "assets/images/bannerdemo.jpg",
-    "assets/images/bannerdemo.jpg",
-    "assets/images/bannerdemo.jpg",
-  ];
+
+  bool isExpanded = false;
+  void toggleExpanded() {
+    isExpanded = !isExpanded;
+    update();
+  }
 
 }
 

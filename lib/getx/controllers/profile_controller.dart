@@ -390,6 +390,18 @@ class ProfileController extends GetxController implements GetxService {
     update();
   }
 
+  String convertHeightToFeetInches(String height) {
+    if (height.isEmpty) {
+      return 'Not Added';
+    }
+
+    double heightInDouble = double.tryParse(height) ?? 0.0;
+    int feet = heightInDouble.floor();
+    int inches = ((heightInDouble - feet) * 12).round();
+
+    return '$feet ft $inches inch';
+  }
+
 
 
 

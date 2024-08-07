@@ -265,7 +265,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                       Row(
                         children: [
                           Text(
-                            "Introduction",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+                            "About",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
                           ),
                           const SizedBox(width: 3,),
                           const Icon(
@@ -921,7 +921,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   // d: CarRowWidget(favourites: favourites!,)
                 ),
                 // sizedBox16(),
-                const Divider(),
+            /*    const Divider(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -963,7 +963,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: countryController.text.isEmpty,
                   ),
                   // child: CarRowWidget(favourites: favourites!,)
-                ),
+                ),*/
               ],
             ),
           ),

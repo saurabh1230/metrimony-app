@@ -94,10 +94,10 @@ class _SignInOptionScreenState extends State<SignInOptionScreen> {
                       },
                       child: Container(padding: const EdgeInsets.symmetric(horizontal: 18,vertical: 6),
                           decoration: BoxDecoration(
-                              color: primaryColor,
+                              color: Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.circular(12)
                           ),
-                          child: Text("Login",style: kManrope16SemiBold828282.copyWith(color: Colors.white,fontSize: 14),)),
+                          child: Text("Login",style: kManrope16SemiBold828282.copyWith(color: Theme.of(context).cardColor,fontSize: 14),)),
                     )
                   ],
                 ),
