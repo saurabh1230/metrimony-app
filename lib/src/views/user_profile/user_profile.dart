@@ -1,4 +1,5 @@
 import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_decorated_containers.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
@@ -93,7 +94,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: isLoading
           ? const UserProfileShimmer()
           : SingleChildScrollView(
-              child: GetBuilder(builder: (profileController) {
+              child: GetBuilder<ProfileController>(builder: (profileController) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0.0),
                   child: Column(
@@ -606,8 +607,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             ),
                                             sizedBox6(),
                                             Text(
-                                              model.data!.matches!.professionName
-                                                  .toString(),
+                                              model.data!.matches!.professionName.toString(),
                                               textAlign: TextAlign.center,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
@@ -936,10 +936,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                           image: icGotraIcon,
                                           title: 'Caste',
                                           text: StringUtils.capitalize(model
-                                              .data?.user?.basicInfo?.communityName ??
+                                              .data?.user?.partnerExpectation?.communityName ??
                                               ""),
                                           iconRightWrong: model.data?.matches
-                                              ?.communityName ==
+                                              ?.partnerExpectation?.communityName ==
                                               model
                                                   .data
                                                   ?.user
@@ -953,12 +953,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                           image: icMotherToungeIcon,
                                           title: 'Mother Tongue',
                                           text: StringUtils.capitalize(model.data
-                                              ?.user?.basicInfo?.communityName ??
+                                              ?.user?.partnerExpectation?.motherTongueName ??
                                               ""),
                                           iconRightWrong: model.data?.matches
-                                              ?.motherTongueName ==
+                                              ?.partnerExpectation?.motherTongueName ==
                                               model.data?.user
-                                                  ?.motherTongueName
+                                                  ?.partnerExpectation?.motherTongueName
                                               ? Icons.done
                                               : Icons.close,
                                         ),
@@ -981,11 +981,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                           image: icProfession,
                                           title: 'Profession',
                                           text: StringUtils.capitalize(model.data
-                                              ?.matches?.professionName ??
+                                              ?.matches?.partnerExpectation?.professionName ??
                                               ""),
                                           iconRightWrong: model.data?.matches
-                                              ?.professionName ==
-                                              model.data?.user?.professionName
+                                              ?.partnerExpectation?.professionName ==
+                                              model.data?.user?.partnerExpectation?.professionName
+                                              ? Icons.done
+                                              : Icons.close,
+                                        ),
+                                        const Divider(),
+                                        buildPrefProfileRow(
+                                          image: icGotraIcon,
+                                          title: 'Service',
+                                          text: StringUtils.capitalize(model
+                                              .data?.user?.partnerExpectation
+                                              ?.positionName ??
+                                              ""),
+                                          iconRightWrong: model.data?.matches
+                                              ?.partnerExpectation?.positionName ==
+                                              model
+                                                  .data
+                                                  ?.user
+                                                  ?.partnerExpectation
+                                                  ?.positionName
                                               ? Icons.done
                                               : Icons.close,
                                         ),
@@ -1130,7 +1148,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
               child: Icon(Icons.done))
           
           // Expanded(
@@ -1152,7 +1170,7 @@ class UserProfileShimmer extends StatelessWidget {
     return CustomShimmerEffect(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1161,7 +1179,7 @@ class UserProfileShimmer extends StatelessWidget {
                   Stack(
                     children: [
                       ClipRRect(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               bottomRight: Radius.circular(32),
                               bottomLeft: Radius.circular(32)),
                           child: Container(

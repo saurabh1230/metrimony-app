@@ -1,6 +1,10 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
@@ -148,16 +152,16 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                   maxAge: maxAgeController.text,
                   minHeight: heightController.text,
                   maxWeight: '',
-                  religion: authControl.religionMainIndex.toString(),
+                  religion: authControl.partnerReligion.toString(),
                   community: authControl.communityMainIndex.toString(),
                   smokingStatus: authControl.smokingIndex.toString(),
                   drinkingStatus: authControl.drikingIndex.toString(),
-                  profession: authControl.professionIndex.toString(),
+                  profession: authControl.partnerProfession.toString(),
                   minDegree: minimumDegreeController.text,
                   financialCondition: financialCondition.text,
                   language: languageController.text,
                   maxHeight: maxHeightController.text,
-                  motherTongue:authControl.motherTongueIndex.toString()).then((value) {
+                  motherTongue:authControl.partnerMotherTongue.toString()).then((value) {
                 setState(() {
                 });
                 if (value['status'] == true) {
@@ -203,95 +207,131 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                 children: [
                   Text("Partner Expectations",style:styleSatoshiMedium(size: 16, color: primaryColor)),
                   sizedBox16(),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return NameEditDialogWidget(
+                  //           title: 'General Introduction',
+                  //           addTextField: TextFormField(
+                  //             maxLength: 200,
+                  //             onChanged: (v) {
+                  //               setState(() {});
+                  //             },
+                  //             onEditingComplete: () {
+                  //               Navigator.pop(context); // Close the dialog
+                  //             },
+                  //             controller: generalInfo,
+                  //             decoration: AppTFDecoration(hint: 'General Introduction')
+                  //                 .decoration(),
+                  //             //keyboardType: TextInputType.phone,
+                  //           ),
+                  //         );
+                  //       },
+                  //     );
+                  //
+                  //   },
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Row(
+                  //         children: [
+                  //           Text(
+                  //             "General Information",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+                  //           ),
+                  //           const SizedBox(width: 3,),
+                  //           const Icon(
+                  //             Icons.edit,
+                  //             size: 12,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       generalInfo.text.isEmpty?
+                  //       const SizedBox() :
+                  //       Column(
+                  //         children: [
+                  //           sizedBox16(),
+                  //
+                  //           Text(
+                  //               generalInfo.text.isEmpty
+                  //                   ? (preferenceModel.id == null || preferenceModel.generalRequirement == null
+                  //                   ? 'Not Added'
+                  //                   : generalInfo.text)
+                  //                   : generalInfo.text,
+                  //             maxLines: 4,
+                  //             overflow: TextOverflow.ellipsis,
+                  //           ),
+                  //
+                  //         ],
+                  //       )
+                  //
+                  //
+                  //     ],
+                  //   ),
+                  // ),
+                  sizedBox10(),
                   GestureDetector(
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'General Introduction',
-                            addTextField: TextFormField(
-                              maxLength: 200,
-                              onChanged: (v) {
-                                setState(() {});
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: generalInfo,
-                              decoration: AppTFDecoration(hint: 'General Introduction')
-                                  .decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
-
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            sizedBox20(),
                             Text(
-                              "General Information",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+                              'Age Bracket',
+                              style: kManrope25Black.copyWith(fontSize: 16),
                             ),
-                            const SizedBox(width: 3,),
-                            const Icon(
-                              Icons.edit,
-                              size: 12,
-                            ),
+                            sizedBox12(),
+                            Obx(() => SizedBox(
+                              width: double.infinity,
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          // Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.startValue.value.round().toString()} yrs',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          // Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.endValue.value.round().toString()} yrs',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                    ],),
+                                  RangeSlider(
+                                    min: 20.0,
+                                    max: 50.0,
+                                    divisions: 30,
+                                    labels: RangeLabels(
+                                      authControl.startValue.value.round().toString(),
+                                      authControl.endValue.value.round().toString(),
+                                    ),
+                                    values: RangeValues(
+                                      authControl.startValue.value,
+                                      authControl.endValue.value,
+                                    ),
+                                    onChanged: (values) {
+                                      authControl.setAgeValue(values);
+                                      minAgeController.text = authControl.startValue.value.round().toString();
+                                      maxAgeController.text = authControl.endValue.value.round().toString();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),)
+
                           ],
                         ),
-                        generalInfo.text.isEmpty?
-                        const SizedBox() :
-                        Column(
-                          children: [
-                            sizedBox16(),
-
-                            Text(
-                                generalInfo.text.isEmpty
-                                    ? (preferenceModel.id == null || preferenceModel.generalRequirement == null
-                                    ? 'Not Added'
-                                    : generalInfo.text)
-                                    : generalInfo.text,
-                              maxLines: 4,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-
-                          ],
-                        )
-
-
-                      ],
-                    ),
-                  ),
-
-                  sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'Min Age',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: minAgeController,
-                              decoration: AppTFDecoration(
-                                  hint: 'Min Age').decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
+                      ),));
                     },
                     child: buildDataAddRow(title: 'Min Age',
                       data1: minAgeController.text.isEmpty
@@ -299,34 +339,77 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? 'Not Added'
                           : preferenceModel.minAge.toString())
                           : minAgeController.text,
-                      data2: StringUtils.capitalize(minAgeController.text),
-                      isControllerTextEmpty: minAgeController.text.isEmpty, widget: const SizedBox(),),
+                      data2: StringUtils.capitalize('${minAgeController.text} Yrs'),
+                      isControllerTextEmpty: minAgeController.text.isEmpty,
+                      widget: const Icon(
+                        Icons.edit,
+                        size: 12,
+                      ),),
                   ),
-                  sizedBox16(),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'Max Age',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: maxAgeController,
-                              decoration: AppTFDecoration(
-                                  hint: 'Max Age').decoration(),
-                              //keyboardType: TextInputType.phone,
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            sizedBox20(),
+                            Text(
+                              'Age Bracket',
+                              style: kManrope25Black.copyWith(fontSize: 16),
                             ),
-                          );
-                        },
-                      );
+                            sizedBox12(),
+                            Obx(() => SizedBox(
+                              width: double.infinity,
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          // Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.startValue.value.round().toString()} yrs',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          // Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.endValue.value.round().toString()} yrs',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                    ],),
+                                  RangeSlider(
+                                    min: 20.0,
+                                    max: 50.0,
+                                    divisions: 30,
+                                    labels: RangeLabels(
+                                      authControl.startValue.value.round().toString(),
+                                      authControl.endValue.value.round().toString(),
+                                    ),
+                                    values: RangeValues(
+                                      authControl.startValue.value,
+                                      authControl.endValue.value,
+                                    ),
+                                    onChanged: (values) {
+                                      authControl.setAgeValue(values);
+                                      minAgeController.text = authControl.startValue.value.round().toString();
+                                      maxAgeController.text = authControl.endValue.value.round().toString();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),)
+
+                          ],
+                        ),
+                      ),));
                     },
                     child: buildDataAddRow(title: 'Max Age',
                       data1: maxAgeController.text.isEmpty
@@ -334,119 +417,112 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           ? 'Not Added'
                           : preferenceModel.maxAge.toString())
                           : maxAgeController.text,
-                      data2: StringUtils.capitalize(maxAgeController.text),
-                      isControllerTextEmpty: maxAgeController.text.isEmpty, widget: const SizedBox(),),
+                      data2: StringUtils.capitalize('${maxAgeController.text} Yrs'),
+                      isControllerTextEmpty: maxAgeController.text.isEmpty,
+                      widget: const Icon(Icons.edit, size: 12,),),
                   ),
-
-                  sizedBox16(),
+                  // const Divider(),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return NameEditDialogWidget(
+                  //           title: 'Max Age',
+                  //           addTextField: TextFormField(
+                  //             maxLength: 40,
+                  //             onChanged: (v) {
+                  //               setState(() {
+                  //               });
+                  //             },
+                  //             onEditingComplete: () {
+                  //               Navigator.pop(context); // Close the dialog
+                  //             },
+                  //             controller: maxAgeController,
+                  //             decoration: AppTFDecoration(
+                  //                 hint: 'Max Age').decoration(),
+                  //             //keyboardType: TextInputType.phone,
+                  //           ),
+                  //         );
+                  //       },
+                  //     );
+                  //   },
+                  //   child: buildDataAddRow(title: 'Max Age',
+                  //     data1: maxAgeController.text.isEmpty
+                  //         ? (preferenceModel.id == null || preferenceModel.maxAge == null
+                  //         ? 'Not Added'
+                  //         : preferenceModel.maxAge.toString())
+                  //         : maxAgeController.text,
+                  //     data2: StringUtils.capitalize(maxAgeController.text),
+                  //     isControllerTextEmpty: maxAgeController.text.isEmpty, widget: const SizedBox(),),
+                  // ),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext builder) {
-
-                          // Create the modal bottom sheet widget containing the time picker and close button
-                          return SizedBox(
-                            height: MediaQuery.of(context).copyWith().size.height / 3,
-                            child: Column(
-                              children: [
-
-                                WillPopScope(
-                                  onWillPop: () async {
-
-                                    return false;
-                                  },
-                                  child: SizedBox(
-                                    height:200,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _feet - 5,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _feet = index + 5;
-                                              });
-                                            },
-                                            children: List.generate(
-                                              7, // 7 feet in the range from 5 to 11
-                                                  (index) => Center(child: Text('${index + 5}\'')),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _inches,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _inches = index;
-                                              });
-                                              print(' $_feet-${_inches.toString().padLeft(2, '0')}');
-                                            },
-                                            children: List.generate(
-                                              12, // 12 inches in a foot
-                                                  (index) => Center(child: Text('$index\"')),
-                                            ),
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-
-
-                                // Close button
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-
-                                  children: [
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent, // Change the background color to red
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Close',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.white),),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8,),
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            heightController.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
-                                            print('$_feet.${_inches.toString().padLeft(1, '0')}');
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Save',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.black),),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ],
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            sizedBox20(),
+                            Text(
+                              'Height Bracket',
+                              style: kManrope25Black.copyWith(fontSize: 16),
                             ),
-                          );
-                        },
-                      );
+                            sizedBox12(),
+                            Obx(() => SizedBox(
+                              width: double.infinity,
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          // Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.startHeightValue.value.round().toString()} ft',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          // Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.endHeightValue.value.round().toString()} ft',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                    ],),
+                                  Container(
+                                    width: double.infinity,
+                                    child: Obx(() => RangeSlider(
+                                      min: 5.0, // Minimum value
+                                      max: 7.0, // Maximum value
+                                      divisions: 20, // Number of divisions for finer granularity
+                                      labels: RangeLabels(
+                                        authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                        authControl.endHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                      ),
+                                      values: RangeValues(
+                                        authControl.startHeightValue.value,
+                                        authControl.endHeightValue.value,
+                                      ),
+                                      onChanged: (values) {
+                                        authControl.setHeightValue(values);
+                                        heightController.text =  authControl.startHeightValue.value.toStringAsFixed(1);
+                                        maxHeightController.text =  authControl.endHeightValue.value.toStringAsFixed(1);
+                                      },
+                                    )),
+                                  ),
+                                ],
+                              ),
+                            ),)
 
+                          ],
+                        ),
+                      ),));
                     },
                     child: buildDataAddRow(title: 'Min Height ',
                         data1: heightController.text.isEmpty
@@ -454,182 +530,123 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                             ? 'Not Added'
                             : preferenceModel.minHeight.toString())
                             : heightController.text,
-                        data2: heightController.text,
-                        isControllerTextEmpty: heightController.text.isEmpty, widget: SizedBox()),
+                        data2: Get.find<ProfileController>().convertHeightToFeetInches(heightController.text),
+                        isControllerTextEmpty: heightController.text.isEmpty, widget: const Icon(Icons.edit, size: 12,),),
                     // child: CarRowWidget(favourites: favourites!,)
                   ),
-                  sizedBox16(),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext builder) {
-
-                          // Create the modal bottom sheet widget containing the time picker and close button
-                          return SizedBox(
-                            height: MediaQuery.of(context).copyWith().size.height / 3,
-                            child: Column(
-                              children: [
-
-                                WillPopScope(
-                                  onWillPop: () async {
-
-                                    return false;
-                                  },
-                                  child: SizedBox(
-                                    height:200,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _feet2 - 5,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _feet2 = index + 5;
-                                              });
-                                            },
-                                            children: List.generate(
-                                              7, // 7 feet in the range from 5 to 11
-                                                  (index) => Center(child: Text('${index + 5}\'')),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _inches2,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _inches2 = index;
-                                              });
-                                              print(' $_feet2-${_inches2.toString().padLeft(2, '0')}');
-                                            },
-                                            children: List.generate(
-                                              12, // 12 inches in a foot
-                                                  (index) => Center(child: Text('$index\"')),
-                                            ),
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-
-                                  children: [
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent, // Change the background color to red
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Close',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.white),),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8,),
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            maxHeightController.text = '$_feet2.${_inches2.toString().padLeft(1, '0')}';
-                                            // maxHeightController.text = '$_feet2-${_inches2.toString()}';
-                                            print('$_feet2.${_inches2.toString().padLeft(1, '0')}');
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Save',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.black),),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ],
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            sizedBox20(),
+                            Text(
+                              'Height Bracket',
+                              style: kManrope25Black.copyWith(fontSize: 16),
                             ),
-                          );
-                        },
-                      );
+                            sizedBox12(),
+                            Obx(() => SizedBox(
+                              width: double.infinity,
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          // Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.startHeightValue.value.round().toString()} ft',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          // Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                          Text('${authControl.endHeightValue.value.round().toString()} ft',
+                                            style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
+                                                color: Theme.of(context).primaryColor),),
+                                        ],
+                                      ),
+                                    ],),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Obx(() => RangeSlider(
+                                      min: 5.0, // Minimum value
+                                      max: 7.0, // Maximum value
+                                      divisions: 20, // Number of divisions for finer granularity
+                                      labels: RangeLabels(
+                                        authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                        authControl.endHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                      ),
+                                      values: RangeValues(
+                                        authControl.startHeightValue.value,
+                                        authControl.endHeightValue.value,
+                                      ),
+                                      onChanged: (values) {
+                                        authControl.setHeightValue(values);
+                                        heightController.text =  authControl.startHeightValue.value.toStringAsFixed(1);
+                                        maxHeightController.text =  authControl.endHeightValue.value.toStringAsFixed(1);
+                                      },
+                                    )),
+                                  ),
+                                ],
+                              ),
+                            ),)
 
-                    },
+                          ],
+                        ),
+                      ),));
+                      },
                     child: buildDataAddRow(title: 'Max Height ',
                         data1: maxHeightController.text.isEmpty
                             ? (preferenceModel.id == null || preferenceModel.minHeight == null || preferenceModel.minHeight!.isEmpty
                             ? 'Not Added'
                             : preferenceModel.minHeight.toString())
                             : maxHeightController.text,
-                        data2: maxHeightController.text,
-                        isControllerTextEmpty: maxHeightController.text.isEmpty, widget: const SizedBox()),
+                        data2: Get.find<ProfileController>().convertHeightToFeetInches(maxHeightController.text),
+                        isControllerTextEmpty: maxHeightController.text.isEmpty,
+                      widget: const Icon(Icons.edit, size: 12,),),
                     // child: CarRowWidget(favourites: favourites!,)
                   ),
-
-                  /*  sizedBox16(),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Max Weight',
-                          addTextField: TextFormField(
-                            keyboardType: TextInputType.number,
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {
-                              });
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context);
-                            },
-                            controller: weightController,
-                            decoration: AppTFDecoration(
-                                hint: 'Max Weight').decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(title: 'Max Weight',
-                    data1: weightController.text.isEmpty
-                        ? (preferenceModel.id == null || preferenceModel.maxWeight == null || preferenceModel.maxWeight!.isEmpty
-                        ? 'Not Added'
-                        : preferenceModel.maxWeight.toString())
-                        : weightController.text,
-                    data2: weightController.text,
-                    isControllerTextEmpty: weightController.text.isEmpty, widget: SizedBox(),),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),*/
-                  sizedBox16(),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ReligionSheet(
-                            privacyStatus: '',
-                            onPop: (val) {
-                              preferredReligionController.text = val;
-                              print(preferredReligionController.text);
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                          Text(
+                            'Preferred Religion',
+                            style: kManrope25Black.copyWith(fontSize: 16),
+                          ),
+                          sizedBox12(),
+                          CustomDropdownButtonFormField<String>(
+                            value: authControl.partReligionList!.firstWhere((religion) => religion.id == authControl.partnerReligion).name,// Assuming you have a selectedPosition variable
+                            items: authControl.partReligionList!.map((position) => position.name!).toList(),
+                            hintText: "Select Religion",
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                var selected = authControl.partReligionList!.firstWhere((position) => position.name == value);
+                                authControl.setPartnerReligion(selected.id!);
+                                preferredReligionController.text = selected.name.toString();
+                                // authControl.setPartnerReligion(selected.id!);
+                                // print(authControl.partnerReligion);
+                              }
                             },
-                          );
-                        },
-                      );
+                          ),
+
+
+                        ],),
+                      ),));
                     },
                     child: buildDataAddRow(
                       title: 'Preferred Religion',
@@ -647,16 +664,35 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                       isControllerTextEmpty: preferredReligionController.text.isEmpty,
                     ),
                   ),
-                  sizedBox16(),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     onTap: () {
-                      Get.bottomSheet(
-                        PositionBottomSheet(onPop: (val ) {
-                          preferredProfession.text = val;
-                        },),
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                      );
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Preferred Profession',
+                              style: kManrope25Black.copyWith(fontSize: 16),
+                            ),
+                            sizedBox12(),
+                            CustomDropdownButtonFormField<String>(
+                              value: authControl.partProfessionList!.firstWhere((religion) => religion.id == authControl.partnerProfession).name,// Assuming you have a selectedPosition variable
+                              items: authControl.partProfessionList!.map((position) => position.name!).toList(),
+                              hintText: "Select Profession",
+                              onChanged: (String? value) {
+                                if (value != null) {
+                                  var selected = authControl.partProfessionList!.firstWhere((position) => position.name == value);
+                                  authControl.setPartnerProfession(selected.id!);
+                                  preferredProfession.text = selected.name.toString();
+                                }
+                              },
+                            ),
+                          ],),
+                      ),));
                     },
                     child: buildDataAddRow(
                       title: 'Preferred Profession',
@@ -667,52 +703,39 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                           : preferredProfession.text,
                       data2: StringUtils.capitalize(preferredProfession.text),
                       isControllerTextEmpty: preferredProfession.text.isEmpty,
-                      widget: const SizedBox(),
+                      widget: const Icon(Icons.edit, size: 12,),
                     ),),
-                  sizedBox16(),
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: () {
-                  //     showModalBottomSheet(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return FinancialBottomSheet(
-                  //           privacyStatus: '',
-                  //           onPop: (val) {
-                  //             financialCondition.text = val;
-                  //             print( '===>${financialCondition.text}');
-                  //           },
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(
-                  //     title: 'Financial Condition',
-                  //     widget: const Icon(
-                  //       Icons.edit,
-                  //       size: 12,
-                  //     ),
-                  //     data1: financialCondition.text.isEmpty
-                  //         ? (preferenceModel.id == null ||
-                  //         preferenceModel.financialCondition == null
-                  //         ? 'Not Added'
-                  //         : preferenceModel.financialCondition.toString())
-                  //         : financialCondition.text,
-                  //     data2: financialCondition.text,
-                  //     isControllerTextEmpty: financialCondition.text.isEmpty,
-                  //   ),
-                  // ),
-                  // sizedBox16(),
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      Get.bottomSheet(
-                         MotherTongueBottomSheet(onPop: (val ) {
-                           motherTongueController.text = val;
-                         },),
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                      );
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Preferred Mother Tongue',
+                              style: kManrope25Black.copyWith(fontSize: 16),
+                            ),
+                            sizedBox12(),
+                            CustomDropdownButtonFormField<String>(
+                              value: authControl.partMotherTongueList!.firstWhere((religion) => religion.id == authControl.partnerMotherTongue).name,// Assuming you have a selectedPosition variable
+                              items: authControl.partMotherTongueList!.map((position) => position.name!).toList(),
+                              hintText: "Select Mother Tongue",
+                              onChanged: (String? value) {
+                                if (value != null) {
+                                  var selected = authControl.partMotherTongueList!.firstWhere((position) => position.name == value);
+                                  authControl.setPartnerMotherTongue(selected.id!);
+                                  motherTongueController.text = selected.name.toString();
+                                }
+                              },
+                            ),
+                          ],),
+                      ),));
+
                     },
                     child: buildDataAddRow(
                       title: 'Mother Tongue',
@@ -730,240 +753,9 @@ class _EditPreferenceScreenState extends State<EditPreferenceScreen> {
                       isControllerTextEmpty: motherTongueController.text.isEmpty,
                     ),
                   ),
-                /*  sizedBox16(),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CommuitySheet(
-                            privacyStatus: '',
-                            onPop: (val) {
-                              communityController.text = val;
-                              print(communityController.text);
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(
-                      title: 'Community',
-                      widget: const Icon(
-                        Icons.edit,
-                        size: 12,
-                      ),
-                      data1: communityController.text.isEmpty
-                          ? (preferenceModel.id == null ||
-                          preferenceModel.community == null
-                          ? 'Not Added'
-                          : preferenceModel.community)
-                          : communityController.text,
-                      data2: communityController.text,
-                      isControllerTextEmpty: communityController.text.isEmpty,
-                    ),
-                  ),*/
-                  sizedBox16(),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return NameEditDialogWidget(
-                  //           title: 'Minimum Degree',
-                  //           addTextField: TextFormField(
-                  //             maxLength: 40,
-                  //             onChanged: (v) {
-                  //               setState(() {
-                  //               });
-                  //             },
-                  //             onEditingComplete: () {
-                  //               Navigator.pop(context); // Close the dialog
-                  //             },
-                  //             controller: minimumDegreeController,
-                  //             decoration: AppTFDecoration(
-                  //                 hint: 'Minimum Degree').decoration(),
-                  //             //keyboardType: TextInputType.phone,
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(title: 'Minimum Degree',
-                  //     data1: minimumDegreeController.text.isEmpty
-                  //         ? (preferenceModel.id == null || preferenceModel.minDegree == null || preferenceModel.minDegree!.isEmpty
-                  //         ? 'Not Added'
-                  //         : preferenceModel.minDegree!)
-                  //         : minimumDegreeController.text,
-                  //     data2: StringUtils.capitalize(minimumDegreeController.text),
-                  //     isControllerTextEmpty: minimumDegreeController.text.isEmpty, widget: SizedBox(),),
-                  //   // child: CarRowWidget(favourites: favourites!,)
-                  // ),
-                  // sizedBox16(),
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: () {
-                  //     Get.bottomSheet(
-                  //       SmokingBottomSheet(onPop: (val) {
-                  //         smokingController.text = val;
-                  //       }),
-                  //       backgroundColor: Colors.transparent,
-                  //       isScrollControlled: true,
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(
-                  //     title: 'Smoking status',
-                  //     widget: const Icon(
-                  //       Icons.edit,
-                  //       size: 12,
-                  //     ),
-                  //     data1: smokingController.text.isEmpty
-                  //         ? (preferenceModel.id == null ||
-                  //         preferenceModel.smoking == null ||
-                  //         preferenceModel.smoking!.name == null
-                  //         ? 'Not Added'
-                  //         : preferenceModel.smoking!.name.toString())
-                  //         : smokingController.text,
-                  //     data2: smokingController.text,
-                  //     isControllerTextEmpty: smokingController.text.isEmpty,
-                  //   ),
-                  // ),
-
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: () {
-                  //     Get.bottomSheet(
-                  //       SmokingBottomSheet(onPop: (val ) {
-                  //         smokingController.text = val;
-                  //       },),
-                  //       backgroundColor: Colors.transparent,
-                  //       isScrollControlled: true,
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(
-                  //     title: 'Smoking status',
-                  //     widget: const Icon(
-                  //       Icons.edit,
-                  //       size: 12,
-                  //     ),
-                  //     data1: smokingController.text.isEmpty
-                  //         ? (preferenceModel.id == null ||
-                  //         preferenceModel.smoking!.name == null
-                  //         ? 'Not Added'
-                  //         : preferenceModel.smoking!.name.toString())
-                  //         : smokingController.text,
-                  //     data2: smokingController.text,
-                  //     isControllerTextEmpty: smokingController.text.isEmpty,
-                  //   ),
-                  // ),
-                  sizedBox16(),
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: () {
-                  //     Get.bottomSheet(
-                  //       DrinkingBottomSheet(onPop: (val) {
-                  //         drinkingController.text = val;
-                  //       }),
-                  //       backgroundColor: Colors.transparent,
-                  //       isScrollControlled: true,
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(
-                  //     title: 'Drinking status',
-                  //     widget: const Icon(
-                  //       Icons.edit,
-                  //       size: 12,
-                  //     ),
-                  //     data1: drinkingController.text.isEmpty
-                  //         ? (preferenceModel.id == null ||
-                  //         preferenceModel.drinking == null ||
-                  //         preferenceModel.drinking!.name == null
-                  //         ? 'Not Added'
-                  //         : preferenceModel.drinking!.name.toString())
-                  //         : drinkingController.text,
-                  //     data2: drinkingController.text,
-                  //     isControllerTextEmpty: drinkingController.text.isEmpty,
-                  //   ),
-                  // ),
-
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: () {
-                  //     Get.bottomSheet(
-                  //       DrinkingBottomSheet(onPop: (val ) {
-                  //         drinkingController.text = val;
-                  //       },),
-                  //       backgroundColor: Colors.transparent,
-                  //       isScrollControlled: true,
-                  //     );
-                  //     // showModalBottomSheet(
-                  //     //   context: context,
-                  //     //   builder: (BuildContext context) {
-                  //     //     return DrinkingStatusBottomSheet(
-                  //     //       privacyStatus: '',
-                  //     //       onPop: (val) {
-                  //     //         drinkingController.text = val;
-                  //     //         // print(smokingController.text);
-                  //     //       },
-                  //     //     );
-                  //     //   },
-                  //     // );
-                  //   },
-                  //   child: buildDataAddRow(
-                  //     title: 'Drinking status',
-                  //     widget: const Icon(
-                  //       Icons.edit,
-                  //       size: 12,
-                  //     ),
-                  //     data1: drinkingController.text.isEmpty
-                  //         ? (preferenceModel.id == null ||
-                  //         preferenceModel.drinking!.name == null
-                  //         ? 'Not Added'
-                  //         : preferenceModel.drinking.toString())
-                  //         : drinkingController.text,
-                  //     data2: drinkingController.text,
-                  //     isControllerTextEmpty: drinkingController.text.isEmpty,
-                  //   ),
-                  //   // child: CarRowWidget(drinkingController)
-                  // ),
-                  sizedBox16(),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return NameEditDialogWidget(
-                  //           title: 'Language',
-                  //           addTextField: TextFormField(
-                  //             maxLength: 40,
-                  //             onChanged: (v) {
-                  //               setState(() {
-                  //               });
-                  //             },
-                  //             onEditingComplete: () {
-                  //               Navigator.pop(context); // Close the dialog
-                  //             },
-                  //             controller: languageController,
-                  //             decoration: AppTFDecoration(
-                  //                 hint: 'Language').decoration(),
-                  //             //keyboardType: TextInputType.phone,
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(title: 'Language',
-                  //     data1: languageController.text.isEmpty
-                  //         ? (preferenceModel.id == null || preferenceModel.language == null || preferenceModel.language!.isEmpty
-                  //         ? 'Not Added'
-                  //         : preferenceModel.language.toString())
-                  //         : languageController.text,
-                  //     data2: StringUtils.capitalize(removeBrackets(languageController.text)),
-                  //     isControllerTextEmpty: languageController.text.isEmpty, widget: SizedBox(),),
-                  //   // child: CarRowWidget(favourites: favourites!,)
-                  // ),
-
-
+                  sizedBox10(),
+                  const Divider(),
+                  sizedBox10(),
 
 
 
@@ -2035,8 +1827,8 @@ class PositionBottomSheet extends StatelessWidget {
                   );
                 }).toList(),
               ),
-        
-        
+
+
               ],
             ),
           ),

@@ -217,6 +217,28 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                         return null;
                       },
                     ),
+
+                    sizedBox20(),
+                    Text(
+                      'Diet',
+                      style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
+                    ),
+                    sizedBox12(),
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.partnerDiet ,
+                      items: authControl.dietList,
+                      hintText: "Select Diet Type",
+                      onChanged: (value) {
+                        authControl.setPartnerDiet(value!);
+                        print(authControl.partnerDiet);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value == 'Select Diet Type') {
+                          return 'Please Select Your Diet Type';
+                        }
+                        return null;
+                      },
+                    ),
                     // CustomStyledDropdownButton(
                     //   items: authControl.partCommunityList!.map((religion) => religion.name!).toList(),
                     //   onChanged: (value) {
@@ -301,61 +323,10 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                     // ),
                     sizedBox20(),
                     Text(
-                      'Preferred Age',
+                      'Age Bracket',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                    //           const SizedBox(height: 5), //
-                    //           CustomTextField(   inputType: TextInputType.number,
-                    //             controller: minAgeController,
-                    //             validation: (value) {
-                    //               if (value == null || value.isEmpty) {
-                    //                 return 'Add Min Age';
-                    //               }
-                    //               return null;
-                    //             },
-                    //             hintText: 'Min Age',showTitle: false,
-                    //             onChanged: (val) {
-                    //               authControl.setPartnerMinAge(val);
-                    //               print(authControl.partnerMinAge);
-                    //             },
-                    //
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     sizedBoxW10(),
-                    //     Expanded(
-                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                    //           const SizedBox(height: 5),
-                    //           CustomTextField(
-                    //             inputType: TextInputType.number,
-                    //             controller:maxAgeController ,
-                    //             validation: (value) {
-                    //               if (value == null || value.isEmpty) {
-                    //                 return 'Add Max Age';
-                    //               }
-                    //               return null;
-                    //             },
-                    //             hintText: 'Max Age',showTitle: false,
-                    //             onChanged: (val) {
-                    //               authControl.setPartnerMaxAge(val);
-                    //               print(authControl.partnerMaxAge);
-                    //             },
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
                 SizedBox(
                   width: double.infinity,
                   child: Column(
@@ -364,7 +335,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                         children: [
                         Column(
                           children: [
-                            Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                            // Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                             Text('${authControl.startValue.value.round().toString()} yrs',
                               style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                   color: Theme.of(context).primaryColor),),
@@ -372,7 +343,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                         ),
                         Column(
                           children: [
-                            Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                            // Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                             Text('${authControl.endValue.value.round().toString()} yrs',
                               style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                   color: Theme.of(context).primaryColor),),
@@ -402,7 +373,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
 
                     sizedBox20(),
                     Text(
-                      'Preferred Height',
+                      'Height Bracket',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
@@ -414,7 +385,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                             children: [
                               Column(
                                 children: [
-                                  Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                  // Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                                   Text('${authControl.startHeightValue.value.round().toString()} ft',
                                     style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                         color: Theme.of(context).primaryColor),),
@@ -422,7 +393,7 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                               ),
                               Column(
                                 children: [
-                                  Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                  // Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
                                   Text('${authControl.endHeightValue.value.round().toString()} ft',
                                     style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                         color: Theme.of(context).primaryColor),),
@@ -451,114 +422,12 @@ class _SignUpScreenExpectationScreenState extends State<SignUpScreenExpectationS
                           ),
 
 
-                          // Container(
-                          //   width: double.infinity,
-                          //   child: RangeSlider(
-                          //     min: 5.0,  // Minimum value (as double)
-                          //     max: 7.0, // Maximum value (as double)
-                          //     divisions: 20, // Number of divisions for finer granularity
-                          //     labels: RangeLabels(
-                          //       authControl.startHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
-                          //       authControl.endHeightValue.value.toStringAsFixed(1),
-                          //     ),
-                          //     values: RangeValues(
-                          //       authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
-                          //       authControl.endHeightValue.value.toDouble(),
-                          //     ),
-                          //     onChanged: (values) {
-                          //       // Ensure values are rounded to the nearest decimal
-                          //       authControl.setHeightValue(RangeValues(
-                          //         values.start,
-                          //         values.end,
-                          //       ));
-                          //     },
-                          //   ),
-                          // ),
-
-
-                          // Container(
-                      //   width: double.infinity,
-                      //   child: RangeSlider(
-                      //     min: 5.0,  // Minimum value (as double)
-                      //     max: 7.0, // Maximum value (as double)
-                      //     divisions: 1, // Number of divisions
-                      //     labels: RangeLabels(
-                      //       authControl.startHeightValue.value.toString(),
-                      //       authControl.endHeightValue.value.toString(),
-                      //     ),
-                      //     values: RangeValues(
-                      //       authControl.startHeightValue.value.toDouble(), // Convert RxInt to double
-                      //       authControl.endHeightValue.value.toDouble(),
-                      //     ),
-                      //     onChanged: (values) {
-                      //       authControl.setHeightValue(values);
-                      //     },
-                      //   ),
-                      // ),
                         ],
                       ),
                     ),
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                    //           const SizedBox(height: 5),
-                    //           CustomTextField(
-                    //             controller:minHeightController ,
-                    //             readOnly: true,
-                    //             validation: (value) {
-                    //               if (value == null || value.isEmpty) {
-                    //                 return 'Add Min Height';
-                    //               }
-                    //               return null;
-                    //             },
-                    //             onTap: () {
-                    //               Get.bottomSheet( HeightPickerWidget(heightController: minHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
-                    //             },
-                    //             onChanged: (val) {
-                    //               authControl.setPartnerMinHeight(minHeightController.text);
-                    //               print(val);
-                    //               print(authControl.partnerMinHeight);
-                    //             },
-                    //             hintText: 'Min Height',showTitle: false,
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     sizedBoxW10(),
-                    //     Expanded(
-                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                    //           const SizedBox(height: 5),
-                    //           CustomTextField(
-                    //             controller: maxHeightController,
-                    //             readOnly: true,
-                    //             validation: (value) {
-                    //               if (value == null || value.isEmpty) {
-                    //                 return 'Add Max Height';
-                    //               }
-                    //               return null;
-                    //             },
-                    //             onTap: () {
-                    //               Get.bottomSheet( HeightPickerWidget(heightController: maxHeightController,), backgroundColor: Colors.transparent, isScrollControlled: true);
-                    //             },
-                    //             onChanged: (val) {
-                    //               authControl.setPartnerMaxHeight(maxHeightController.text);
-                    //               print(authControl.partnerMaxHeight);
-                    //             },
-                    //             hintText: 'Max Height',showTitle: false,
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
                     sizedBox20(),
                     Text(
-                      'Smoking Habit',
+                      'Smoking & Drinking Habit',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),

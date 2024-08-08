@@ -2,6 +2,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
@@ -115,11 +116,16 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
              button(
                  context: context,
                  onTap: () {
-
                    if(authControl.positionHeldIndex == 0) {
                      showCustomSnackBar("Please Select Position");
                    } else {
-                     profileControl.editCareerInfoApi(career[0].id.toString(), authControl.positionHeldIndex.toString(), stateController.text, districtController.text, fromController.text, endController.text);
+                     profileControl.editCareerInfoApi(
+                         career[0].id.toString(),
+                         authControl.positionHeldIndex.toString(),
+                         stateController.text,
+                         districtController.text,
+                         fromController.text,
+                         endController.text);
                      print(positionController.text);
                      print(fromController.text);
                      print(endController.text);
@@ -151,115 +157,116 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
                child: Column(
                  children: [
-                   if (career.isEmpty || career == null) Center(
-                       child: GestureDetector(
-                         onTap: () {
-                           showDialog(
-                             context: context,
-                             builder: (BuildContext context) {
-                               return StatefulBuilder(
-                                   builder: (BuildContext context, StateSetter setState) {
-                                     return EditDialogWidget(
-                                         addTextField: Column(
-                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                           children: [
-                                             Text("Career Info",
-                                               style: styleSatoshiBold(size: 18, color: Colors.black),),
-                                             sizedBox16(),
-                                             Row(
-                                               children: [
-                                                 Expanded(
-                                                   child: buildTextFormField(context,
-                                                       hint: 'company', controller: companyController),
-                                                 ),
-                                                 const SizedBox(width: 6,),
-                                                 Expanded(
-                                                   child: buildTextFormField(context,
-                                                       hint: 'designation',
-                                                       controller: designationController),
-                                                 ),
-                                               ],
-                                             ),
-                                             sizedBox16(),
-                                             Row(
-                                               children: [
-                                                 Expanded(
-                                                   child: buildTextFormField(context,
-                                                       hint: 'start',
-                                                       controller: startingYearController,
-                                                       keyboard: TextInputType.number),
-                                                 ),
-                                                 const SizedBox(
-                                                   width: 6,
-                                                 ),
-                                                 Expanded(
-                                                   child: buildTextFormField(context,
-                                                       hint: 'end No',
-                                                       controller: endingYearController,
-                                                       keyboard: TextInputType.number),
-                                                 ),
-                                               ],
-                                             ),
-                                             sizedBox10(),
-                                             sizedBox16(),
-                                             loading
-                                                 ? loadingElevatedButton(
-                                                 context: context, color: primaryColor)
-                                                 : elevatedButton(
-                                                 color: primaryColor,
-                                                 context: context,
-                                                 onTap: () {
-                                                   setState(() {
-                                                     loading = true;
-                                                   });
-
-                                                   careerInfoAddApi(
-                                                     // id: career[0].id.toString(),
-                                                       company: companyController.text,
-                                                       designation: designationController.text,
-                                                       startYear: startingYearController.text,
-                                                       endYear: endingYearController.text)
-                                                       .then((value) {
-                                                     if (value['status'] == true) {
-                                                       Navigator.pop(context);
-                                                       setState(() {
-                                                         loading = false;
-                                                         careerInfo();
-                                                       });
-                                                       companyController.clear();
-                                                       designationController.clear();
-                                                       startingYearController.clear();
-                                                       endingYearController.clear();
-                                                       ToastUtil.showToast("Updated Successfully");
-                                                     } else {
-                                                       setState(() {
-                                                         loading = false;
-                                                       });
-                                                       Get.back();
-
-                                                       List<dynamic> errors =
-                                                       value['message']['error'];
-                                                       String errorMessage = errors.isNotEmpty
-                                                           ? errors[0]
-                                                           : "An unknown error occurred.";
-                                                       Fluttertoast.showToast(msg: errorMessage);
-                                                     }
-                                                   });
-                                                 },
-                                                 title: "Save")
-                                           ],
-                                         ));
-                                   });
-                             },
-                           );
-
-
-                         },
-                         child: const Padding(
-                           padding: EdgeInsets.only(top: 50.0),
-                           child: DottedPlaceHolder(text: "Add Career Info"),
-                         ),
-                       )) else ListView.builder(
+                   // if (career.isEmpty || career == null) Center(
+                   //     child: GestureDetector(
+                   //       onTap: () {
+                   //         showDialog(
+                   //           context: context,
+                   //           builder: (BuildContext context) {
+                   //             return StatefulBuilder(
+                   //                 builder: (BuildContext context, StateSetter setState) {
+                   //                   return EditDialogWidget(
+                   //                       addTextField: Column(
+                   //                         crossAxisAlignment: CrossAxisAlignment.start,
+                   //                         children: [
+                   //                           Text("Career Info",
+                   //                             style: styleSatoshiBold(size: 18, color: Colors.black),),
+                   //                           sizedBox16(),
+                   //                           Row(
+                   //                             children: [
+                   //                               Expanded(
+                   //                                 child: buildTextFormField(context,
+                   //                                     hint: 'company', controller: companyController),
+                   //                               ),
+                   //                               const SizedBox(width: 6,),
+                   //                               Expanded(
+                   //                                 child: buildTextFormField(context,
+                   //                                     hint: 'designation',
+                   //                                     controller: designationController),
+                   //                               ),
+                   //                             ],
+                   //                           ),
+                   //                           sizedBox16(),
+                   //                           Row(
+                   //                             children: [
+                   //                               Expanded(
+                   //                                 child: buildTextFormField(context,
+                   //                                     hint: 'start',
+                   //                                     controller: startingYearController,
+                   //                                     keyboard: TextInputType.number),
+                   //                               ),
+                   //                               const SizedBox(
+                   //                                 width: 6,
+                   //                               ),
+                   //                               Expanded(
+                   //                                 child: buildTextFormField(context,
+                   //                                     hint: 'end No',
+                   //                                     controller: endingYearController,
+                   //                                     keyboard: TextInputType.number),
+                   //                               ),
+                   //                             ],
+                   //                           ),
+                   //                           sizedBox10(),
+                   //                           sizedBox16(),
+                   //                           loading
+                   //                               ? loadingElevatedButton(
+                   //                               context: context, color: primaryColor)
+                   //                               : elevatedButton(
+                   //                               color: primaryColor,
+                   //                               context: context,
+                   //                               onTap: () {
+                   //                                 setState(() {
+                   //                                   loading = true;
+                   //                                 });
+                   //
+                   //                                 careerInfoAddApi(
+                   //                                   // id: career[0].id.toString(),
+                   //                                     company: companyController.text,
+                   //                                     designation: designationController.text,
+                   //                                     startYear: startingYearController.text,
+                   //                                     endYear: endingYearController.text)
+                   //                                     .then((value) {
+                   //                                   if (value['status'] == true) {
+                   //                                     Navigator.pop(context);
+                   //                                     setState(() {
+                   //                                       loading = false;
+                   //                                       careerInfo();
+                   //                                     });
+                   //                                     companyController.clear();
+                   //                                     designationController.clear();
+                   //                                     startingYearController.clear();
+                   //                                     endingYearController.clear();
+                   //                                     ToastUtil.showToast("Updated Successfully");
+                   //                                   } else {
+                   //                                     setState(() {
+                   //                                       loading = false;
+                   //                                     });
+                   //                                     Get.back();
+                   //
+                   //                                     List<dynamic> errors =
+                   //                                     value['message']['error'];
+                   //                                     String errorMessage = errors.isNotEmpty
+                   //                                         ? errors[0]
+                   //                                         : "An unknown error occurred.";
+                   //                                     Fluttertoast.showToast(msg: errorMessage);
+                   //                                   }
+                   //                                 });
+                   //                               },
+                   //                               title: "Save")
+                   //                         ],
+                   //                       ));
+                   //                 });
+                   //           },
+                   //         );
+                   //
+                   //
+                   //       },
+                   //       child: const Padding(
+                   //         padding: EdgeInsets.only(top: 50.0),
+                   //         child: DottedPlaceHolder(text: "Add Career Info"),
+                   //       ),
+                   //     )) else
+                         ListView.builder(
                        physics: const NeverScrollableScrollPhysics(),
                        shrinkWrap: true,
                        itemCount: career.length,
@@ -279,154 +286,194 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                                  title: 'Position',
                                  data1: StringUtils.capitalize(positionController.text), tap: () {
                                  Get.bottomSheet(
-                                   PositionBottomSheet(onPop: (val ) {
-                                     positionController.text = val;
-
-                                     print(val);
-                                   },
-                                     onPopId: (value) {
-                                       positionIdController.text = value;
-                                       print(positionIdController.text);
-
-                                     },
-                                   ),
-
-                                   backgroundColor: Colors.transparent,
-                                   isScrollControlled: true,
-                                 );
-                               },
-                               ),
-                               const Divider(),
-                               sizedBox10(),
-                               buildListRow(
-                                 title: 'Posting Year',
-                                 data1: StringUtils.capitalize('${fromController.text}'), tap: () {
-                                 Get.bottomSheet(
                                    SingleChildScrollView(
-                                     child: Container(color: Colors.white,
-                                       padding: const EdgeInsets.all(16),
+                                     child: Container(color: Theme.of(context).cardColor,
+                                       padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                                        child: Column(
                                          children: [
-                                           Align(
-                                             alignment: Alignment.centerLeft,
-                                             child: Text("Date of Posting",
-                                               textAlign: TextAlign.left,
-                                               style: styleSatoshiBold(size: 16, color: Colors.black),),
+                                           Text(
+                                             'Profession',
+                                             style: kManrope25Black.copyWith(fontSize: 16),
                                            ),
-                                           const SizedBox(height: 5), //
-                                           Row(
-                                             children: [
-                                               Expanded(
-                                                 child: CustomTextField(
-                                                   showTitle: true,
-                                                   validation: (value) {
-                                                     if (value == null || value.isEmpty) {
-                                                       return 'Please Enter your Starting Date';
-                                                     }
-                                                     return null;
-                                                   },
-                                                   onTap: () {
-                                                     Get.find<AuthController>().showDatePicker(context);
-                                                     fromController.text = authControl.from!;
-                                                     endController.text =  authControl.to!;
-                                                     // authControl.update();
+                                           sizedBox12(),
+                                           CustomDropdownButtonFormField<String>(
+                                             value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+                                             items: authControl.professionList!.map((position) => position.name!).toList(),
+                                             hintText: "Select Position",
+                                             onChanged: (String? value) {
+                                               if (value != null) {
+                                                 var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+                                                 authControl.setProfessionIndex(selected.id, true);
+                                                 positionController.text = selected.name.toString();
+                                                 print(authControl.professionIndex);
+                                               }
+                                             },
 
-                                                   },
-                                                   onChanged: (value) {
-                                                     print(' ===== > Print $value');
-
-                                                     // authControl.setPostingStartDate(authControl.from.toString());
-
-                                                   },
-                                                   readOnly:  true,
-                                                   hintText:"Starting date",
-                                                   controller: fromController,
-                                                 ),
-                                               ),
-                                               const SizedBox(width: 10,),
-                                               Expanded(
-                                                 child: CustomTextField(
-                                                   showTitle: true, validation: (value) {
-                                                   if (value == null || value.isEmpty) {
-                                                     return 'Please Enter your Ending Date';
-                                                   }
-                                                   return null;
-                                                 },
-                                                   onChanged: (value) {
-                                                     authControl.setPostingEndDate(endController.text);
-                                                   },
-                                                   hintText:"Ending date",
-                                                   controller: endController,
-                                                 ),
-                                               ),
-                                             ],
                                            ),
                                          ],
-                                       ),
-                                     ),
+                                       ),),
                                    ),
-                                   backgroundColor: Colors.transparent,
-                                   isScrollControlled: true,);
-
-                                 print(stateController.text);
-                                 print(districtController.text);
+                                 );
                                },
+                                 widget: const Icon(
+                             Icons.edit,
+                             size: 12,
+                           ),
                                ),
+                               // const Divider(),
+                               // sizedBox10(),
+                               // buildListRow(
+                               //   title: 'Posting Year',
+                               //   data1: StringUtils.capitalize('${fromController.text}'), tap: () {
+                               //   Get.bottomSheet(
+                               //     SingleChildScrollView(
+                               //       child: Container(color: Colors.white,
+                               //         padding: const EdgeInsets.all(16),
+                               //         child: Column(
+                               //           children: [
+                               //             Align(
+                               //               alignment: Alignment.centerLeft,
+                               //               child: Text("Date of Posting",
+                               //                 textAlign: TextAlign.left,
+                               //                 style: styleSatoshiBold(size: 16, color: Colors.black),),
+                               //             ),
+                               //             const SizedBox(height: 5), //
+                               //             Row(
+                               //               children: [
+                               //                 Expanded(
+                               //                   child: CustomTextField(
+                               //                     showTitle: true,
+                               //                     validation: (value) {
+                               //                       if (value == null || value.isEmpty) {
+                               //                         return 'Please Enter your Starting Date';
+                               //                       }
+                               //                       return null;
+                               //                     },
+                               //                     onTap: () {
+                               //                       Get.find<AuthController>().showDatePicker(context);
+                               //                       fromController.text = authControl.from!;
+                               //                       endController.text =  authControl.to!;
+                               //                       // authControl.update();
+                               //
+                               //                     },
+                               //                     onChanged: (value) {
+                               //                       print(' ===== > Print $value');
+                               //
+                               //                       // authControl.setPostingStartDate(authControl.from.toString());
+                               //
+                               //                     },
+                               //                     readOnly:  true,
+                               //                     hintText:"Starting date",
+                               //                     controller: fromController,
+                               //                   ),
+                               //                 ),
+                               //                 const SizedBox(width: 10,),
+                               //                 Expanded(
+                               //                   child: CustomTextField(
+                               //                     showTitle: true, validation: (value) {
+                               //                     if (value == null || value.isEmpty) {
+                               //                       return 'Please Enter your Ending Date';
+                               //                     }
+                               //                     return null;
+                               //                   },
+                               //                     onChanged: (value) {
+                               //                       authControl.setPostingEndDate(endController.text);
+                               //                     },
+                               //                     hintText:"Ending date",
+                               //                     controller: endController,
+                               //                   ),
+                               //                 ),
+                               //               ],
+                               //             ),
+                               //           ],
+                               //         ),
+                               //       ),
+                               //     ),
+                               //     backgroundColor: Colors.transparent,
+                               //     isScrollControlled: true,);
+                               //
+                               //   print(stateController.text);
+                               //   print(districtController.text);
+                               // },
+                               // ),
                                sizedBox10(),
                                const Divider(),
-                               Align(alignment: Alignment.centerRight,
-                                   child: InkWell(
-                                     onTap: () {
-                                       Get.bottomSheet(
-                                         SelectStateAndDistrict( onStatePop: (val) {
-                                           stateController.text = val;
-                                           print('=========?${stateController.text}');
-                                           Get.find<AuthController>().update();
-                                         }, onDistrictPop: (val) {
-                                           districtController.text = val;
-                                           Get.find<AuthController>().update();
-                                         },),
-                                         backgroundColor: Colors.transparent,
-                                         isScrollControlled: true,);
-                                     },
-                                     child: Container(
-                                       padding: const EdgeInsets.only(top: 10,bottom: 10,left: 16),
-                                       child: Text('Edit',
-                                         style: kManrope16Medium.copyWith(color: Colors.red),),
-                                     ),
-                                   )
-                               ),
+                               sizedBox10(),
+                               // Align(alignment: Alignment.centerRight,
+                               //     child: InkWell(
+                               //       onTap: () {
+                               //         Get.bottomSheet(
+                               //           SelectStateAndDistrict( onStatePop: (val) {
+                               //             stateController.text = val;
+                               //             print('=========?${stateController.text}');
+                               //             Get.find<AuthController>().update();
+                               //           }, onDistrictPop: (val) {
+                               //             districtController.text = val;
+                               //             Get.find<AuthController>().update();
+                               //           },),
+                               //           backgroundColor: Colors.transparent,
+                               //           isScrollControlled: true,);
+                               //       },
+                               //       child: Container(
+                               //         padding: const EdgeInsets.only(top: 10,bottom: 10,left: 16),
+                               //         child: Text('Edit',
+                               //           style: kManrope16Medium.copyWith(color: Colors.red),),
+                               //       ),
+                               //     )
+                               // ),
                                buildListRow(
                                  title: 'State Of Posting',
                                  data1: stateController.text, tap: () {
-                                 // Get.bottomSheet(
-                                 //   SelectStateAndDistrict( onStatePop: (String ) {
-                                 //     stateController.text = String;
-                                 //     print('=========?${stateController.text}');
-                                 //     Get.find<AuthController>().update();
-                                 //   }, onDistrictPop: (String ) {
-                                 //     districtController.text = String;
-                                 //   },),
-                                 //   backgroundColor: Colors.transparent,
-                                 //   isScrollControlled: true,);
-
-                               },
-                               ),
+                                 Get.bottomSheet(
+                                   SingleChildScrollView(
+                                     child: Container(color: Theme.of(context).cardColor,
+                                       padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                                       child: Column(
+                                         children: [
+                                           Text(
+                                             'State of Posting',
+                                             style: kManrope25Black.copyWith(fontSize: 16),
+                                           ),
+                                           sizedBox12(),
+                                           CustomDropdownButtonFormField<String>(
+                                             value:  authControl.posselectedState,
+                                             items: authControl.posstates,
+                                             hintText: "Select Posting State",
+                                             onChanged: (value) {
+                                               authControl.possetState(value ?? authControl.posstates.first);
+                                               print('cadre =========== >${authControl.posselectedState}');
+                                               stateController.text = authControl.posselectedState.toString();
+                                             },
+                                             validator: (value) {
+                                               if (value == null || value.isEmpty || value == 'Please Posting State') {
+                                                 return 'Please Posting State';
+                                               }
+                                               return null;
+                                             },
+                                           ),
+                                         ],
+                                       ),),
+                                   ),
+                                 );
+                                }, widget: const Icon(
+                                 Icons.edit,
+                                 size: 12,),),
+                               sizedBox6(),
                                const Divider(),
                                sizedBox10(),
-                               buildListRow(
-                                 title: 'District Of Posting',
-                                 data1: districtController.text, tap: () {
-                                 // Get.bottomSheet(
-                                 //   SelectStateAndDistrict( onStatePop: (String ) {
-                                 //     stateController.text = String;
-                                 //   }, onDistrictPop: (String ) {
-                                 //     districtController.text = String;
-                                 //   },),
-                                 //   backgroundColor: Colors.transparent,
-                                 //   isScrollControlled: true,);
-                               },
-                               ),
+                               // buildListRow(
+                               //   title: 'District Of Posting',
+                               //   data1: districtController.text, tap: () {
+                               //   // Get.bottomSheet(
+                               //   //   SelectStateAndDistrict( onStatePop: (String ) {
+                               //   //     stateController.text = String;
+                               //   //   }, onDistrictPop: (String ) {
+                               //   //     districtController.text = String;
+                               //   //   },),
+                               //   //   backgroundColor: Colors.transparent,
+                               //   //   isScrollControlled: true,);
+                               // },
+                               // ),
                              ],
                            ),
                          );
@@ -446,6 +493,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
   GestureDetector buildListRow({
     required String title,
     required String data1,
+    required Widget widget,
     required Function() tap,
   }) {
     return GestureDetector(
@@ -453,10 +501,16 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
       child: Row(
         children: [
           Expanded(
-            child: Text(
-              title,
+            child: Row(
+              children: [
+                Text(
+                  '${title}  ',
+                ),
+                widget,
+              ],
             ),
           ),
+
           Expanded(
             // flex: 3,
             child: SizedBox(

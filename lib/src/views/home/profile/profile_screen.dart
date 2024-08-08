@@ -460,6 +460,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           text: profileController.convertHeightToFeetInches(profile.physicalAttributes!.height.toString() ) ?? "",
                           onTap: () {
                           }),
+                      buildInfoRow(title: 'Weight',
+                          text: '${profile.physicalAttributes?.weight?.split('.')[0] ?? ""} Kg',
+                          onTap: () {
+                          }),
+
                       buildInfoRow(title: 'Blood Group',
                           text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
                           onTap: () {

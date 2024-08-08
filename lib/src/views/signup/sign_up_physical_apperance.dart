@@ -241,16 +241,9 @@ class _SignUpScreenPhysicalAppearanceScreenState extends State<SignUpScreenPhysi
                     Row(
                       children: [
                         Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                        Text(
-                                '${
-                                  authControl.attributeHeightValue.value
-                                      .toStringAsFixed(1)
-                                } ft',
+                        Text('${authControl.attributeHeightValue.value.toStringAsFixed(1)} ft',
                           style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                              color: Theme.of(context).primaryColor),),
-
-
-                      ],
+                              color: Theme.of(context).primaryColor),),],
                     ),
                     SizedBox(
                       width: double.infinity,
@@ -277,7 +270,7 @@ class _SignUpScreenPhysicalAppearanceScreenState extends State<SignUpScreenPhysi
                         Row(
                           children: [
                             Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                            Text(authControl.attributeWeightValue.value.toString(),
+                            Text('${authControl.attributeWeightValue.value.toString()} Kg',
                             style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
                             color: Theme.of(context).primaryColor),),
                           ],

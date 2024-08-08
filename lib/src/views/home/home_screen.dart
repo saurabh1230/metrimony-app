@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               '$baseProfilePhotoUrl${SharedPrefs().getProfilePhoto()}',
                           name:
                               '${widget.response.data!.user!.firstname!} ${widget.response.data!.user!.lastname!}',
-                          email: widget.response.data!.user!.email!,
+                          // email: widget.response.data!.user!.email!,
                           tap: () {
                             Navigator.push(
                                 context,

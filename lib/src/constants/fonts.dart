@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -82,7 +83,7 @@ final kManrope16Medium000000= GoogleFonts.manrope(
 
 final kManrope25Black = GoogleFonts.manrope(
   fontWeight: FontWeight.w700,
-  fontSize: 25,
+  fontSize: Dimensions.fontSize18,
   color: Colors.black.withOpacity(0.70),
 );
 

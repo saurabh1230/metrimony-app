@@ -329,12 +329,22 @@ class ProfileController extends GetxController implements GetxService {
       Response response = await profileRepo.editCareerInfo(id, position, stateOfPosting, districtOfPosting, from, end);
 
       print(response);
+
       if (response != null && response.body != null) {
         var responseData = response.body;
+
         if (responseData['status'] == true) {
-          // Success handling
-          _isLoading = false;
-          update();
+          // Assume `responseData` contains an index that should be an int
+          int? index = int.tryParse(responseData['index']?.toString() ?? '');
+
+          if (index != null) {
+            // Success handling
+            _isLoading = false;
+            update();
+          } else {
+            // Handle the case where index conversion fails
+            print("Failed to convert index to int");
+          }
         } else {
           // Error handling from API
           _isLoading = false;
@@ -351,6 +361,7 @@ class ProfileController extends GetxController implements GetxService {
       _isLoading = false;
       update();
     }
+
   }
 
   ProfileModel? _profile;

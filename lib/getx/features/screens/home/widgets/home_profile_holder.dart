@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 class HomeProfileHolder extends StatelessWidget {
   final String img;
   final String name;
-  final String email;
+  // final String email;
   final Function() tap;
-  const HomeProfileHolder({super.key, required this.img, required this.name, required this.email, required this.tap});
+  const HomeProfileHolder({super.key, required this.img, required this.name,/* required this.email, */required this.tap});
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +33,12 @@ class HomeProfileHolder extends StatelessWidget {
               Text(StringUtils.capitalize(name),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: styleSatoshiBold(size: Dimensions.fontSize15, color: Colors.white),),
+                style: styleSatoshiBold(size: Dimensions.fontSize20, color: Colors.white),),
               sizedBox4(),
-              Text(StringUtils.capitalize(email),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: styleSatoshiLight(size: Dimensions.fontSize10, color: Colors.white),),
+              // Text(StringUtils.capitalize(email),
+              //   maxLines: 1,
+              //   overflow: TextOverflow.ellipsis,
+              //   style: styleSatoshiLight(size: Dimensions.fontSize10, color: Colors.white),),
               CustomButtonWidget(
                 height: 30,width: 100,isBold: false,
                 buttonText: 'EDIT PROFILE',

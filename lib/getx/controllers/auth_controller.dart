@@ -393,16 +393,18 @@ class AuthController extends GetxController implements GetxService {
       Response response = await authRepo.getAttributesUrl();
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['religions'];
-        // _religionList =
-        //     responseData.map((json) => ReligionModel.fromJson(json)).toList();
-        _religionList = responseData
-            .map((json) => ReligionModel.fromJson(json))
-            .where((religion) => religion.id != 10)
-            .toList();
-        _partReligionList = responseData
-            .map((json) => ReligionModel.fromJson(json))
-            .where((religion) => religion.id != 11)
-            .toList();
+        _religionList =
+            responseData.map((json) => ReligionModel.fromJson(json)).toList();
+        _partReligionList =
+            responseData.map((json) => ReligionModel.fromJson(json)).toList();
+        // _religionList = responseData
+        //     .map((json) => ReligionModel.fromJson(json))
+        //     .where((religion) => religion.id != 10)
+        //     .toList();
+        // _partReligionList = responseData
+        //     .map((json) => ReligionModel.fromJson(json))
+        //     .where((religion) => religion.id != 11)
+        //     .toList();
         _religionIds = [0, ..._religionList!.map((e) => e.id)];
 
         if (_religionList!.isNotEmpty) {
@@ -540,17 +542,20 @@ class AuthController extends GetxController implements GetxService {
       Response response = await authRepo.getAttributesUrl();
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['motherTongue'];
-        // _motherTongueList = responseData
-        //     .map((json) => MotherTongueModel.fromJson(json))
-        //     .toList();
         _motherTongueList = responseData
             .map((json) => MotherTongueModel.fromJson(json))
-            .where((religion) => religion.id != 9)
             .toList();
         _partMotherTongueList = responseData
             .map((json) => MotherTongueModel.fromJson(json))
-            .where((religion) => religion.id != 10)
             .toList();
+        // _motherTongueList = responseData
+        //     .map((json) => MotherTongueModel.fromJson(json))
+        //     .where((religion) => religion.id != 9)
+        //     .toList();
+        // _partMotherTongueList = responseData
+        //     .map((json) => MotherTongueModel.fromJson(json))
+        //     .where((religion) => religion.id != 10)
+        //     .toList();
 
         _motherTongueIds = [0, ..._motherTongueList!.map((e) => e.id)];
         _partnerMotherTongue = _motherTongueList![0].id;
@@ -606,16 +611,18 @@ class AuthController extends GetxController implements GetxService {
       Response response = await authRepo.getAttributesUrl();
       if (response.statusCode == 200) {
         List<dynamic> responseData = response.body['data']['profession'];
-        // _professionList =
-        //     responseData.map((json) => ProfessionModel.fromJson(json)).toList();
-        _professionList = responseData
-            .map((json) => ProfessionModel.fromJson(json))
-            .where((religion) => religion.id != 9)
-            .toList();
-        _partProfessionList = responseData
-            .map((json) => ProfessionModel.fromJson(json))
-            .where((religion) => religion.id != 10)
-            .toList();
+        _professionList =
+            responseData.map((json) => ProfessionModel.fromJson(json)).toList();
+        _partProfessionList =
+            responseData.map((json) => ProfessionModel.fromJson(json)).toList();
+        // _professionList = responseData
+        //     .map((json) => ProfessionModel.fromJson(json))
+        //     .where((religion) => religion.id != 9)
+        //     .toList();
+        // _partProfessionList = responseData
+        //     .map((json) => ProfessionModel.fromJson(json))
+        //     .where((religion) => religion.id != 10)
+        //     .toList();
 
         _professionIds = [0, ..._professionList!.map((e) => e.id)];
 
@@ -1999,7 +2006,7 @@ class AuthController extends GetxController implements GetxService {
   var  attributeHeightValue = 5.0.obs;
   void setAttributeHeightValue(double newValue) {
     attributeHeightValue.value = newValue;
-    String partnerHeight = attributeHeightValue.value.toStringAsFixed(1);
+    // String partnerHeight = attributeHeightValue.value.toStringAsFixed(1);
     update();
   }
 
@@ -2009,6 +2016,28 @@ class AuthController extends GetxController implements GetxService {
     attributeWeightValue.value = newValue;
     update();
   }
+
+  final List<String> dietList = [
+   'Veg','Non-Veg','Ocassionally Non-Veg','Eggetarian','Jain','Vegan'
+  ].toSet().toList();
+
+
+  String? _diet;
+  String? get diet => _diet;
+  String? _partnerDiet;
+  String? get partnerDiet => _partnerDiet;
+
+  List<String> get getDiet => highestDegreeList;
+
+  void setDiet(String val) {
+    _diet = val;
+    update();
+  }
+  void setPartnerDiet(String val) {
+    _partnerDiet = val;
+    update();
+  }
+
 }
 
 

@@ -1,4 +1,9 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
@@ -94,7 +99,7 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Physical Attributes",isBackButtonExist: true,),
+      appBar: const CustomAppBar(title: "Edit Physical Attributes",isBackButtonExist: true,),
       // appBar: buildAppBar(context),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,355 +156,301 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
           return careerInfo();
         },
         child: GetBuilder<ProfileController>(builder: (profileController) {
-          return SingleChildScrollView(
-            physics: const  AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-              child: Column(
-                children: [
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return NameEditDialogWidget(
-                  //           title: 'Complexion',
-                  //           addTextField: TextFormField(
-                  //             maxLength: 40,
-                  //             onChanged: (v) {
-                  //               setState(() {
-                  //               });
-                  //             },
-                  //             onEditingComplete: () {
-                  //               Navigator.pop(context); // Close the dialog
-                  //             },
-                  //             controller: complexionController,
-                  //             decoration: AppTFDecoration(
-                  //                 hint: 'Complexion').decoration(),
-                  //             //keyboardType: TextInputType.phone,
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(title: 'Complexion',
-                  //     data1: complexionController.text.isEmpty
-                  //         ? (physicalData.id == null || physicalData.complexion == null || physicalData.complexion!.isEmpty
-                  //         ? 'Not Added'
-                  //         : physicalData.complexion!)
-                  //         : complexionController.text,
-                  //     data2: StringUtils.capitalize(complexionController.text),
-                  //     isControllerTextEmpty: complexionController.text.isEmpty,),
-                  // ),
-                  // sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext builder) {
-                          // Create the modal bottom sheet widget containing the time picker and close button
-                          return SizedBox(
-                            height: MediaQuery.of(context).copyWith().size.height / 3,
-                            child: Column(
-                              children: [
-
-                                WillPopScope(
-                                  onWillPop: () async {
-
-                                    return false;
-                                  },
-                                  child: SizedBox(
-                                    height:200,
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _feet - 5,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _feet = index + 5;
-                                              });
-                                            },
-                                            children: List.generate(
-                                              7, // 7 feet in the range from 5 to 11
-                                                  (index) => Center(child: Text('${index + 5}\'')),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: CupertinoPicker(
-                                            scrollController: FixedExtentScrollController(
-                                              initialItem: _inches,
-                                            ),
-                                            itemExtent: 32,
-                                            onSelectedItemChanged: (index) {
-                                              setState(() {
-                                                _inches = index;
-                                              });
-                                              print(' $_feet-${_inches.toString().padLeft(2, '0')}');
-                                            },
-                                            children: List.generate(
-                                              12, // 12 inches in a foot
-                                                  (index) => Center(child: Text('$index\"')),
-                                            ),
-                                          ),
-                                        ),
-
-                                      ],
-                                    ),
+          return GetBuilder<AuthController>(builder: (authControl) {
+            return SingleChildScrollView(
+              physics: const  AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.bottomSheet(
+                            SingleChildScrollView(
+                              child: Container(color: Theme.of(context).cardColor,
+                                padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Select Height',
+                                    style: kManrope25Black.copyWith(fontSize: 16),
                                   ),
-                                ),
+                                  sizedBox12(),
+                                  Row(
+                                    children: [
+                                      Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                                      Obx(() => Text(
+                                        '${authControl.attributeHeightValue.value.toStringAsFixed(1)} ft',
+                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                            color: Theme.of(context).primaryColor),),),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: Obx(() => Slider(
+                                      min: 5.0,
+                                      max: 7.0,
+                                      divisions: 20, // Number of divisions for finer granularity
+                                      label: authControl.attributeHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                      value: authControl.attributeHeightValue.value, // Single value
+                                      onChanged: (value) {
+                                        authControl.setAttributeHeightValue(value);
+                                        print(authControl.attributeHeightValue);
+                                        heightController.text = authControl.attributeHeightValue.toString();
+                                      },
+                                    )),
+                                  ),
+                                ],),
+                              ),)
+                        );
 
-                                // Close button
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                      },
+                      child: buildDataAddRow(title: 'Height',
+                          data1: heightController.text.isEmpty
+                              ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
+                              ? 'Not Added'
+                              : physicalData.height.toString())
+                              : heightController.text,
+                          data2: profileController.convertHeightToFeetInches(heightController.text),
+                          isControllerTextEmpty: heightController.text.isEmpty),
+                      // child: CarRowWidget(favourites: favourites!,)
+                    ),
+                    sizedBox16(),
+                    GestureDetector(
+                      onTap: () {
+                      Get.bottomSheet(SingleChildScrollView(child: Container(
+                        color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
+                          Text(
+                            'Select Weight',
+                            style: kManrope25Black.copyWith(fontSize: 16),
+                          ),
+                          sizedBox12(),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                                  Obx(() => Text('${authControl.attributeWeightValue.value.toString()} Kg',
+                                    style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                        color: Theme.of(context).primaryColor),),),
 
-                                  children: [
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent, // Change the background color to red
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Close',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.white),),
-                                      ),
-                                    ),
-                                    SizedBox(width: 8,),
-                                    Flexible(
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            // heightController.text = ' $_feet-${_inches.toString().padLeft(2, '0')}';
-                                            heightController.text = '$_feet.${_inches.toString().padLeft(1, '0')}';
-                                            print('$_feet.${_inches.toString().padLeft(1, '0')}');
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child:  Text('Save',
-                                          style: styleSatoshiMedium(
-                                              size: 13,
-                                              color: Colors.white),),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(title: 'Height',
-                        data1: heightController.text.isEmpty
-                            ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
+                                ],
+                              ),
+                              // Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                            ],
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Obx(() => Slider(
+                              min: 45.0,
+                              max: 120.0,
+                              divisions: 75, // Number of divisions for finer granularity
+                              label: authControl.attributeWeightValue.value.toString(),
+                              value: authControl.attributeWeightValue.value.toDouble(),
+                              onChanged: (value) {
+                                authControl.setAttributeWeightValue(value.toInt());
+                                print(authControl.attributeWeightValue);
+                                weightController.text = authControl.attributeWeightValue.toString();
+                              },
+                            )),
+                          ),
+                        ],),
+                      ) ,));
+                      },
+                      child: buildDataAddRow(title: 'Weight',
+                        data1: weightController.text.isEmpty
+                            ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
                             ? 'Not Added'
-                            : physicalData.height.toString())
-                            : '${heightController.text}',
-                        data2: '${profileController.convertHeightToFeetInches(heightController.text)}',
-                        isControllerTextEmpty: heightController.text.isEmpty),
-                    // child: CarRowWidget(favourites: favourites!,)
-                  ),
-                  // sizedBox16(),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (BuildContext context) {
-                  //         return NameEditDialogWidget(
-                  //           title: 'Weight in kgs',
-                  //           addTextField: TextFormField(
-                  //             keyboardType: TextInputType.number,
-                  //             maxLength: 40,
-                  //             onChanged: (v) {
-                  //               setState(() {
-                  //
-                  //               });
-                  //             },
-                  //             onEditingComplete: () {
-                  //               Navigator.pop(context); // Close the dialog
-                  //             },
-                  //             controller: weightController,
-                  //             decoration: AppTFDecoration(
-                  //                 hint: 'Weight').decoration(),
-                  //             //keyboardType: TextInputType.phone,
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: buildDataAddRow(title: 'Weight',
-                  //     data1: weightController.text.isEmpty
-                  //         ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
-                  //         ? 'Not Added'
-                  //         : physicalData.weight.toString())
-                  //         : weightController.text,
-                  //     data2: weightController.text,
-                  //     isControllerTextEmpty: weightController.text.isEmpty,),
-                  //   // child: CarRowWidget(favourites: favourites!,)
-                  // ),
-                  sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'Blood Group',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: bloodGroupController,
-                              decoration: AppTFDecoration(
-                                  hint: 'Blood Group').decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(title: 'Blood Group',
-                      data1: bloodGroupController.text.isEmpty
-                          ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
-                          ? 'Not Added'
-                          : physicalData.bloodGroup.toString())
-                          : bloodGroupController.text,
-                      data2: StringUtils.capitalize(bloodGroupController.text),
-                      isControllerTextEmpty: bloodGroupController.text.isEmpty,),
-                    // child: CarRowWidget(favourites: favourites!,)
-                  ),
-                  sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'EyeColor ',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
+                            : physicalData.weight.toString())
+                            : weightController.text,
+                        data2:'${weightController.text.split('.')[0]} Kg',
+                        isControllerTextEmpty: weightController.text.isEmpty,),
+                      // child: CarRowWidget(favourites: favourites!,)
+                    ),
+                    sizedBox16(),
+                    GestureDetector(
+                      onTap: () {
+                       Get.bottomSheet(SingleChildScrollView(child: Container(
+                         color: Theme.of(context).cardColor,
+                         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text(
+                               'Blood Group',
+                               style: kManrope25Black.copyWith(fontSize: 16),
+                             ),
+                             sizedBox12(),
+                             CustomDropdownButtonFormField<String>(
+                               value:  authControl.bloodGroup ?? authControl.bloodGroupsList.first,// Assuming you have a selectedPosition variable
+                               items: authControl.bloodGroupsList,
+                               hintText: "Select Blood Group",
+                               onChanged: (String? value) {
+                                 if (value != null) {
+                                   authControl.setBloodGroup(value);
+                                   print(authControl.bloodGroup);
+                                   bloodGroupController.text = value;
+                                   print(bloodGroupController.text);
+                                 }
+                               },
+                               // itemLabelBuilder: (String item) => item,
+                               validator: (value) {
+                                 if (value == null || value.isEmpty) {
+                                   return 'Please Select Annual Income';
+                                 }
+                                 return null;
+                               },
+                             ),
 
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: eyeColorController,
-                              decoration: AppTFDecoration(
-                                  hint: 'EyeColor').decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(title: 'EyeColor',
-                      data1: eyeColorController.text.isEmpty
-                          ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
-                          ? 'Not Added'
-                          : physicalData.eyeColor.toString())
-                          : eyeColorController.text,
-                      data2: StringUtils.capitalize(eyeColorController.text),
-                      isControllerTextEmpty: eyeColorController.text.isEmpty,),
-                    // child: CarRowWidget(favourites: favourites!,)
-                  ),
-                  sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'Hair Color',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
+                           ],
+                         ),
+                       ),));
+                      },
+                      child: buildDataAddRow(title: 'Blood Group',
+                        data1: bloodGroupController.text.isEmpty
+                            ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
+                            ? 'Not Added'
+                            : physicalData.bloodGroup.toString())
+                            : bloodGroupController.text,
+                        data2: StringUtils.capitalize(bloodGroupController.text),
+                        isControllerTextEmpty: bloodGroupController.text.isEmpty,),
+                      // child: CarRowWidget(favourites: favourites!,)
+                    ),
+                    sizedBox16(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.bottomSheet(SingleChildScrollView(child: Container(
+                          color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Eye Color',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value:  authControl.eyeColor ?? authControl.eyeColorsList.first,// Assuming you have a selectedPosition variable
+                                items: authControl.eyeColorsList,
+                                hintText: "Select Eye Color",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    authControl.setEyeColor(value);
+                                    print(authControl.eyeColor);
+                                    eyeColorController.text = value;
+                                  }
+                                },
+                                // itemLabelBuilder: (String item) => item,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Select Eye Color';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),));
+                      },
+                      child: buildDataAddRow(title: 'EyeColor',
+                        data1: eyeColorController.text.isEmpty
+                            ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
+                            ? 'Not Added'
+                            : physicalData.eyeColor.toString())
+                            : eyeColorController.text,
+                        data2: StringUtils.capitalize(eyeColorController.text),
+                        isControllerTextEmpty: eyeColorController.text.isEmpty,),
+                      // child: CarRowWidget(favourites: favourites!,)
+                    ),
+                    sizedBox16(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.bottomSheet(SingleChildScrollView(
+                          child: Container(color: Theme.of(context).cardColor,
+                            padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hair Color',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value:  authControl.hairColor ?? authControl.hairColorList.first,// Assuming you have a selectedPosition variable
+                                items: authControl.hairColorList,
+                                hintText: "Hair Color",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    authControl.setHairColor(value);
+                                    print(authControl.hairColor);
+                                    hairColorController.text = value;
+                                  }
+                                },
+                                // itemLabelBuilder: (String item) => item,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Select Hair Color';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),),
+                        ));
+                      },
+                      child: buildDataAddRow(title: 'Hair Color',
+                        data1: hairColorController.text.isEmpty
+                            ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
+                            ? 'Not Added'
+                            : physicalData.weight.toString())
+                            : hairColorController.text,
+                        data2: StringUtils.capitalize(hairColorController.text),
+                        isControllerTextEmpty: hairColorController.text.isEmpty,),
+                      // child: CarRowWidget(favourites: favourites!,)
+                    ),
+                    sizedBox16(),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) {
+                    //         return NameEditDialogWidget(
+                    //           title: 'Disability',
+                    //           addTextField: TextFormField(
+                    //             maxLength: 40,
+                    //             onChanged: (v) {
+                    //               setState(() {
+                    //               });
+                    //             },
+                    //             onEditingComplete: () {
+                    //               Navigator.pop(context); // Close the dialog
+                    //             },
+                    //             controller: disablityController,
+                    //             decoration: AppTFDecoration(
+                    //                 hint: 'Disability').decoration(),
+                    //             //keyboardType: TextInputType.phone,
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    //   child: buildDataAddRow(title: 'Disability',
+                    //     data1: disablityController.text.isEmpty
+                    //         ? (physicalData.id == null || physicalData.disability == null || physicalData.disability!.isEmpty
+                    //         ? 'Not Added'
+                    //         : physicalData.disability.toString())
+                    //         : disablityController.text,
+                    //     data2: StringUtils.capitalize(disablityController.text),
+                    //     isControllerTextEmpty: disablityController.text.isEmpty,),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
 
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: hairColorController,
-                              decoration: AppTFDecoration(
-                                  hint: 'Hair Color').decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(title: 'Hair Color',
-                      data1: hairColorController.text.isEmpty
-                          ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
-                          ? 'Not Added'
-                          : physicalData.weight.toString())
-                          : hairColorController.text,
-                      data2: StringUtils.capitalize(hairColorController.text),
-                      isControllerTextEmpty: hairColorController.text.isEmpty,),
-                    // child: CarRowWidget(favourites: favourites!,)
-                  ),
-                  sizedBox16(),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return NameEditDialogWidget(
-                            title: 'Disability',
-                            addTextField: TextFormField(
-                              maxLength: 40,
-                              onChanged: (v) {
-                                setState(() {
-                                });
-                              },
-                              onEditingComplete: () {
-                                Navigator.pop(context); // Close the dialog
-                              },
-                              controller: disablityController,
-                              decoration: AppTFDecoration(
-                                  hint: 'Disability').decoration(),
-                              //keyboardType: TextInputType.phone,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    child: buildDataAddRow(title: 'Disability',
-                      data1: disablityController.text.isEmpty
-                          ? (physicalData.id == null || physicalData.disability == null || physicalData.disability!.isEmpty
-                          ? 'Not Added'
-                          : physicalData.disability.toString())
-                          : disablityController.text,
-                      data2: StringUtils.capitalize(disablityController.text),
-                      isControllerTextEmpty: disablityController.text.isEmpty,),
-                    // child: CarRowWidget(favourites: favourites!,)
-                  ),
-
-
-
-
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          });
         }),
       ),
     );

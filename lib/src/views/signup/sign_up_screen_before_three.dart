@@ -161,7 +161,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   sizedBox20(),
                   Text(
                     ' Religion',
-                    style: kManrope25Black,
+                    style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
                   ),
                   sizedBox12(),
                   CustomDropdownButtonFormField<String>(
@@ -219,7 +219,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   sizedBox20(),
                   Text(
                     'Your Caste',
-                    style: kManrope25Black,
+                    style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
                   ),
                   sizedBox12(),
                  authControl.casteList == null || authControl.casteList!.isEmpty ||
@@ -291,7 +291,7 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                   sizedBox20(),
                   Text(
                     'Mother Tongue',
-                    style: kManrope25Black,
+                    style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
                   ),
                   sizedBox12(),
                   CustomDropdownButtonFormField<String>(
@@ -309,6 +309,27 @@ class _SignUpScreenProfessionalState extends State<SignUpScreenProfessional> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please Select Religion';
+                      }
+                      return null;
+                    },
+                  ),
+                  sizedBox20(),
+                  Text(
+                    'Diet',
+                    style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
+                  ),
+                  sizedBox12(),
+                  CustomDropdownButtonFormField<String>(
+                    value: authControl.diet ,
+                    items: authControl.dietList,
+                    hintText: "Select Diet Type",
+                    onChanged: (value) {
+                      authControl.setDiet(value!);
+                      print(authControl.diet);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value == 'Select Diet Type') {
+                        return 'Please Select Your Diet Type';
                       }
                       return null;
                     },

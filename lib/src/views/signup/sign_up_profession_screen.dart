@@ -112,15 +112,24 @@ class _SignUpScreenProfessionScreenState extends State<SignUpScreenProfessionScr
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),
-                    CustomStyledDropdownButton(
-                      items: authControl.professionList!.map((religion) => religion.name!).toList(),
-                      onChanged: (value) {
-                        var selected = authControl.professionList!.firstWhere((religion) => religion.name == value);
-                        authControl.setProfessionIndex(selected.id, true);
-                        print(authControl.professionIndex);
+                    CustomDropdownButtonFormField<String>(
+                      value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+                      items: authControl.professionList!.map((position) => position.name!).toList(),
+                      hintText: "Select Position",
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+                          authControl.setProfessionIndex(selected.id, true);
+                          print(authControl.professionIndex);
+                        }
                       },
-                      title: "Profession",
-                      selectedValue: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,
+                      // itemLabelBuilder: (String item) => item,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Select Position';
+                        }
+                        return null;
+                      },
                     ),
                     sizedBox20(),
                     Text(

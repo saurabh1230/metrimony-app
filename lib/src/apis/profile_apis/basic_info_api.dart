@@ -24,6 +24,7 @@ Future<dynamic> updateBasicInfo({
   required String financialCondition,
   required String firstName,
   required String lastName,
+  // required String email,
   required String aboutUs,
 
 
@@ -55,6 +56,7 @@ Future<dynamic> updateBasicInfo({
     'lastname': lastName,
     'firstname': firstName,
     "about_us" : aboutUs,
+    // 'email' :email
     // "height" : "5.45",
     "user_type" : "1"
 

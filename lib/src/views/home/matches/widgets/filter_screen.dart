@@ -342,7 +342,7 @@ class FilterBottomSheet extends StatelessWidget {
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("Age Range",
+                          child: Text("Age Bracket ",
                             textAlign: TextAlign.left,
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
@@ -355,16 +355,16 @@ class FilterBottomSheet extends StatelessWidget {
                                 children: [
                                   Column(
                                     children: [
-                                      Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                                      Text(authControl.startValue.value.round().toString(),
+                                      // Text("Min Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text('${authControl.startValue.value.round().toString()} yrs',
                                         style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                             color: Theme.of(context).primaryColor),),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                                      Text(authControl.endValue.value.round().toString(),
+                                      // Text("Max Age", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text('${authControl.endValue.value.round().toString()} yrs',
                                         style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                             color: Theme.of(context).primaryColor),),
                                     ],
@@ -392,7 +392,7 @@ class FilterBottomSheet extends StatelessWidget {
                         const SizedBox(height: 20,),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text("Height Range",
+                          child: Text("Height Bracket ",
                             textAlign: TextAlign.left,
                             style: styleSatoshiBold(size: 16, color: Colors.black),),
                         ),
@@ -405,16 +405,16 @@ class FilterBottomSheet extends StatelessWidget {
                                 children: [
                                   Column(
                                     children: [
-                                      Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                                      Text(authControl.startHeightValue.value.round().toString(),
+                                      // Text("Min Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text('${authControl.startHeightValue.value.round().toString()} Ft',
                                         style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                             color: Theme.of(context).primaryColor),),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
-                                      Text(authControl.endHeightValue.value.round().toString(),
+                                      // Text("Max Height", style: satoshiMedium.copyWith(fontSize: Dimensions.fontSizeDefault,)),
+                                      Text('${authControl.endHeightValue.value.round().toString()} Ft',
                                         style:satoshiBold.copyWith(fontSize: Dimensions.fontSizeDefault,
                                             color: Theme.of(context).primaryColor),),
                                     ],

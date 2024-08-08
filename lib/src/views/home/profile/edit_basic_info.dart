@@ -1,9 +1,11 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
@@ -66,7 +68,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       careerInfo();
-      Get.find<ProfileController>().getUserDetailsApi();
+      // Get.find<ProfileController>().getUserDetailsApi();
       Get.find<AuthController>().getSmokingList();
       Get.find<AuthController>().getDrinkingList();
       Get.find<AuthController>().getProfessionList();
@@ -94,7 +96,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
           if (physicalAttributesData != null) {
             setState(() {
               basicInfo = BasicInfo.fromJson(physicalAttributesData);
-              fields();
+              // fields();
             });
           }
           var info = value['data']['user'];
@@ -137,14 +139,20 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     financialCondition.text = basicInfo?.financialCondition?.toString() ?? '';
     aboutUs.text = basicInfo?.aboutUs?.toString() ?? '';
 
+
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(builder: (profileControl) {
+    return GetBuilder<AuthController>(builder: (authControl) {
+
+      String? professionId = basicInfo.religion.toString();
+      print('================? check profession Id ${professionId}');
+
       return  Scaffold(
         appBar: const CustomAppBar(title: "Basic Info",),
-        bottomNavigationBar: buildBottombarPadding(context),
+        bottomNavigationBar: buildBottombarPadding(context,professionId),
         body: isLoading
             ? const BasicInfoShimmerWidget()
             : SingleChildScrollView(
@@ -299,36 +307,40 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     ],
                   ),
                 ),
+                sizedBox16(),
 
                 const Divider(),
-                // sizedBox16(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'First Name',
-                    //       addTextField: TextFormField(
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {});
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: firstNameController,
-                    //         decoration: AppTFDecoration(hint: 'First Name')
-                    //             .decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'First Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            controller: firstNameController,
+                            decoration: AppTFDecoration(hint: 'First Name')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: buildDataAddRow(
-                    widget: const SizedBox(),
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
                     // widget: const Icon(
                     //   Icons.edit,
                     //   size: 12,
@@ -345,75 +357,74 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: firstNameController.text.isEmpty,
                   ),
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
-            mainInfo == null ||
-                mainInfo.middlename == null ||
-                mainInfo.middlename!.isEmpty
-                ? SizedBox() :
-            Column(
-                  children: [
-                    // mainInfo != null &&
-                    //     (mainInfo.middlename == null || mainInfo.middlename!.isEmpty) &&
-                    //     middleNameController.text.isEmpty
-                    //     ? const SizedBox()
-                    //     : Column(
-                    //   children: [
-                    //     buildDataAddRow(
-                    //       widget: const SizedBox(),
-                    //       // widget: const Icon(
-                    //       //   Icons.edit,
-                    //       //   size: 12,
-                    //       // ),
-                    //       title: 'Middle Name',
-                    //       data1: middleNameController.text.isEmpty
-                    //           ? (mainInfo == null ||
-                    //           mainInfo.middlename == null ||
-                    //           mainInfo.middlename!.isEmpty
-                    //           ? 'Not Added'
-                    //           : StringUtils.capitalize(mainInfo.middlename!))
-                    //           : StringUtils.capitalize(middleNameController.text),
-                    //       data2: StringUtils.capitalize(middleNameController.text),
-                    //       isControllerTextEmpty: middleNameController.text.isEmpty,
-                    //     ),
-                    //     const Divider(),
-                    //   ],
-                    // ),
-
-                  ],
-                ),
-
+            // mainInfo == null ||
+            //     mainInfo.middlename == null ||
+            //     mainInfo.middlename!.isEmpty
+            //     ? SizedBox() :
+            // Column(
+            //       children: [
+            //         // mainInfo != null &&
+            //         //     (mainInfo.middlename == null || mainInfo.middlename!.isEmpty) &&
+            //         //     middleNameController.text.isEmpty
+            //         //     ? const SizedBox()
+            //         //     : Column(
+            //         //   children: [
+            //         //     buildDataAddRow(
+            //         //       widget: const SizedBox(),
+            //         //       // widget: const Icon(
+            //         //       //   Icons.edit,
+            //         //       //   size: 12,
+            //         //       // ),
+            //         //       title: 'Middle Name',
+            //         //       data1: middleNameController.text.isEmpty
+            //         //           ? (mainInfo == null ||
+            //         //           mainInfo.middlename == null ||
+            //         //           mainInfo.middlename!.isEmpty
+            //         //           ? 'Not Added'
+            //         //           : StringUtils.capitalize(mainInfo.middlename!))
+            //         //           : StringUtils.capitalize(middleNameController.text),
+            //         //       data2: StringUtils.capitalize(middleNameController.text),
+            //         //       isControllerTextEmpty: middleNameController.text.isEmpty,
+            //         //     ),
+            //         //     const Divider(),
+            //         //   ],
+            //         // ),
+            //
+            //       ],
+            //     ),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'Last Name',
-                    //       addTextField: TextFormField(
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {});
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context);
-                    //         },
-                    //         controller: lastNameController,
-                    //         decoration: AppTFDecoration(hint: 'Last Name')
-                    //             .decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return NameEditDialogWidget(
+                          title: 'Last Name',
+                          addTextField: TextFormField(
+                            maxLength: 40,
+                            onChanged: (v) {
+                              setState(() {});
+                            },
+                            onEditingComplete: () {
+                              Navigator.pop(context);
+                            },
+                            controller: lastNameController,
+                            decoration: AppTFDecoration(hint: 'Last Name')
+                                .decoration(),
+                            //keyboardType: TextInputType.phone,
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    // widget: const Icon(
-                    //   Icons.edit,
-                    //   size: 12,
-                    // ),
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
                     title: 'Last Name',
                     data1: lastNameController.text.isEmpty
                         ? (mainInfo == null ||
@@ -426,8 +437,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: lastNameController.text.isEmpty,
                   ),
                 ),
+                sizedBox6(),
                 const Divider(),
-                // sizedBox16(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -455,6 +467,10 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   },
                   child: buildDataAddRow(
                     widget: const SizedBox(),
+                    // widget: const Icon(
+                    //   Icons.edit,
+                    //   size: 12,
+                    // ),
                     title: 'User Name',
                     data1: userNameController.text.isEmpty
                         ? (mainInfo == null ||
@@ -467,13 +483,35 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: userNameController.text.isEmpty,
                   ),
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () {},
+                  onTap: () {
+                    // Get.dialog(NameEditDialogWidget(
+                    //   title: 'Email',
+                    //   addTextField: TextFormField(
+                    //     maxLength: 40,
+                    //     onChanged: (v) {
+                    //       setState(() {});
+                    //     },
+                    //     onEditingComplete: () {
+                    //       Navigator.pop(context); // Close the dialog
+                    //     },
+                    //     controller: emailController,
+                    //     decoration: AppTFDecoration(hint: 'Email')
+                    //         .decoration(),
+                    //     //keyboardType: TextInputType.phone,
+                    //   ),
+                    // ));
+                  },
                   child: buildDataAddRow(
                     widget: const SizedBox(),
+                    // widget: const Icon(
+                    //   Icons.edit,
+                    //   size: 12,
+                    // ),
                     title: 'Email',
                     data1: emailController.text.isEmpty
                         ? (mainInfo == null ||
@@ -486,21 +524,43 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: emailController.text.isEmpty,
                   ),
                 ),
+                sizedBox6(),
                 const Divider(),
-                // sizedBox16(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     Get.bottomSheet(
-                      ProfessionBottomSheet(onPop: (val ) {
-                        professionController.text = val;
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                          children: [
+                            Text(
+                              'Profession',
+                              style: kManrope25Black.copyWith(fontSize: 16),
+                            ),
+                            sizedBox12(),
+                            CustomDropdownButtonFormField<String>(
+                              value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+                              items: authControl.professionList!.map((position) => position.name!).toList(),
+                              hintText: "Select Position",
+                              onChanged: (String? value) {
+                                if (value != null) {
+                                  var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+                                  authControl.setProfessionIndex(selected.id, true);
 
-                        print(val);
-                      },
+                                  professionController.text = selected.name.toString();
+                                  professionId = selected.id.toString();
+                                  print(authControl.professionIndex);
+                                }
+                              },
+
+                            ),
+                          ],
+                        ),),
                       ),
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,
-                    );
+                   );
                     // showDialog(
                     //   context: context,
                     //   builder: (BuildContext context) {
@@ -546,7 +606,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   ),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -570,9 +630,14 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 const Divider(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
-                  onTap: () {},
+                  onTap: () {
+
+                  },
                   child: buildDataAddRow(
-                    widget: const SizedBox(),
+                    widget: const Icon(
+                      Icons.edit,
+                      size: 12,
+                    ),
                     title: 'Religion',
                     data1: religionController.text.isEmpty
                         ? (basicInfo.id == null ||
@@ -972,7 +1037,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     });
   }
 
-  Padding buildBottombarPadding(BuildContext context) {
+  Padding buildBottombarPadding(BuildContext context,String professionId,) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -985,9 +1050,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     loading = true;
                   });
                   updateBasicInfo(
-                          profession:Get.find<AuthController>().professionIndex == null
-                              ? Get.find<ProfileController>().profile?.profession ?? '10'
-                              : Get.find<AuthController>().professionIndex.toString(),
+                          profession:professionId,
                           religion: Get.find<ProfileController>().profile?.religionName.toString() ?? "11",
                           motherTongue:  Get.find<ProfileController>().profile?.motherTongue ?? '10',
                           community: Get.find<ProfileController>().profile?.community ?? '11',
