@@ -88,9 +88,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
       onWillPop: () => onBackMove(context),
       child: Scaffold(
         body: [
-          HomeScreen(response: widget.response,),
-          MatchesDashboard(initialIndex: 0,),
-          ConnectDashboard(),
+          HomeScreen(response: widget.response),
+          const MatchesDashboard(initialIndex: 0,),
+          ConnectDashboard(initialIndex: 0,),
           const ProfileScreen(),
         ][index],
         bottomNavigationBar: bottomBar(),

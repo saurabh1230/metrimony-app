@@ -34,9 +34,7 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
   void initState() {
     super.initState();
     _pageIndex = widget.initialIndex;
-
     _pageController = PageController(initialPage: _pageIndex);
-
     // Fetch initial matches based on gender and other parameters
     _fetchMatches();
   }
@@ -112,24 +110,24 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                         showIcon: !isWished,
                         title: 'Request Sent',
                       ) : connectButton(
-                        fontSize: 14,
-                        height: 30,
-                        width: 134,
-                        context: context,
-                        onTap: () {
-                          favControl.sendRequestApi(
-                            Get.find<ProfileController>().userDetails!.id.toString(),
-                            match.id.toString(),
-                          );
-                        },
-                        showIcon: !isConnected,
-                        title: isConnected ? 'Request Sent' : 'Connect Now'),
+                          fontSize: 14,
+                          height: 30,
+                          width: 134,
+                          context: context,
+                          onTap: () {
+                            favControl.sendRequestApi(
+                              Get.find<ProfileController>().userDetails!.id.toString(),
+                              match.id.toString(),
+                            );
+                          },
+                          showIcon: !isConnected,
+                          title: isConnected ? 'Request Sent' : 'Connect Now'),
                       bookmark: match.bookmark == 1
                           ? GestureDetector(onTap: () {
-                           favControl.unSaveBookmarkApi(match.profileId.toString());
-                            },
-                            child: Icon(CupertinoIcons.heart_fill, color: Theme.of(context).primaryColor, size: 32),
-                          )
+                        favControl.unSaveBookmarkApi(match.profileId.toString());
+                      },
+                        child: Icon(CupertinoIcons.heart_fill, color: Theme.of(context).primaryColor, size: 32),
+                      )
                           : GestureDetector(
                         onTap: () {
                           favControl.bookMarkSaveApi(
@@ -181,7 +179,10 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                           final isSelected = i == _pageIndex;
                           return GestureDetector(
                             onTap: () {
-                              _pageController.jumpToPage(i);
+                              setState(() {
+                                _pageIndex = i;
+                                _pageController.jumpToPage(i);
+                              });
                             },
                             child: Container(
                               padding: const EdgeInsets.only(bottom: 8.0),
@@ -213,14 +214,26 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                         child: PageView.builder(
                           controller: _pageController,
                           onPageChanged: (index) {
-                            print(index);
-                            if(index == 0) {
-                              Get.find<MatchesController>().getMatches(
-                                '1', genderFilter, '2', '', '', '', '', '', '',
-                              );
-
-                            }
-                            filterControl.setSelectedMatchFilterTop(index);
+                            setState(() {
+                              _pageIndex = index;
+                            });
+                            // if (index == 0) {
+                            //   Get.find<MatchesController>().getMatches(
+                            //     '1', genderFilter, '2', '', '', '', '', '', '',
+                            //   );
+                            // } else if (index == 1) {
+                            //   Get.find<MatchesController>().getMatches(
+                            //     '1', genderFilter, 'Muslim', '', '', '', '', '', '',
+                            //   );
+                            // } else if (index == 2) {
+                            //   Get.find<MatchesController>().getMatches(
+                            //     '1', genderFilter, '', '', '', '', '', '', '',
+                            //   );
+                            // } else if (index == 3) {
+                            //   Get.find<MatchesController>().getMatches(
+                            //     '1', genderFilter, '', '', '', '', '', '', '',
+                            //   );
+                            // }
                             _loadMatchesForFilter(index);
                           },
                           itemCount: filterControl.matchFilterTopList.length,
@@ -241,32 +254,26 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
   }
 
   void _loadMatchesForFilter(int index) {
-    final gender = Get.find<ProfileController>().profile?.basicInfo?.gender ?? '';
-    final genderFilter = gender.contains('Male') ? 'Female' : (gender.contains('Female') ? 'Male' : 'Others');
-
-    switch (index) {
-      case 0:
-        Get.find<MatchesController>().getMatches(
-          '1', genderFilter, '2', '', '', '', '', '', '',
-        );
-        break;
-      case 1:
-        Get.find<MatchesController>().getMatches(
-          '1', genderFilter, 'Muslim', '', '', '', '', '', '',
-        );
-        break;
-      case 2:
-        Get.find<MatchesController>().getMatches(
-          '1', genderFilter, '', '', '', '', '', '', '',
-        );
-        break;
-      case 3:
-        Get.find<MatchesController>().getMatches(
-          '1', genderFilter, '', '', '', '', '', '', '',
-        );
-        break;
-      default:
-        break;
+    final gender = Get.find<ProfileController>().profile?.basicInfo?.gender;
+    final genderFilter = gender?.contains('Male') ?? false
+        ? 'Female'
+        : (gender?.contains('Female') ?? false ? 'Male' : 'Others');
+    if (index == 0) {
+      Get.find<MatchesController>().getMatches(
+        '1', genderFilter, '2', '', '', '', '', '', '',
+      );
+    } else if (index == 1) {
+      Get.find<MatchesController>().getMatches(
+        '1', genderFilter, 'Muslim', '', '', '', '', '', '',
+      );
+    } else if (index == 2) {
+      Get.find<MatchesController>().getMatches(
+        '1', genderFilter, '', '', '', '', '', '', '',
+      );
+    } else if (index == 3) {
+      Get.find<MatchesController>().getMatches(
+        '1', genderFilter, '', '', '', '', '', '', '',
+      );
     }
   }
 }

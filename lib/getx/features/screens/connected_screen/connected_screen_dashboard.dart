@@ -10,19 +10,23 @@ import 'package:get/get.dart';
 
 
 class ConnectDashboard extends StatefulWidget {
-  ConnectDashboard({super.key});
+  final int initialIndex;
+  ConnectDashboard({super.key, required this.initialIndex});
 
   @override
   State<ConnectDashboard> createState() => _ConnectDashboardState();
 }
 
 class _ConnectDashboardState extends State<ConnectDashboard> {
-  final PageController _pageController = PageController();
-  final ScrollController scrollController = ScrollController();
+  late final PageController _pageController;
+  int _pageIndex = 0;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _pageIndex = widget.initialIndex;
+    _pageController = PageController(initialPage: _pageIndex);
     Get.find<MatchesController>().getMatches(
         '1',
         Get.find<ProfileController>().profile!.basicInfo!.gender!.contains('Male')
@@ -64,14 +68,13 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemBuilder: (_, i) {
-                      final isSelected = i == filterControl.selectedMatchFilterTop;
+                      final isSelected = i == _pageIndex;
                       return GestureDetector(
                         onTap: () {
-                          // _pageController.animateToPage(
-                          //   i,
-                          //   duration: const Duration(milliseconds: 300),
-                          //   curve: Curves.easeInOut,
-                          // );
+                          setState(() {
+                            _pageIndex = i;
+                            _pageController.jumpToPage(i);
+                          });
                         },
                         child: Container(
                           padding: const EdgeInsets.only(bottom: 8.0),
@@ -101,7 +104,9 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                   child: PageView.builder(
                     controller: _pageController,
                     onPageChanged: (index) {
-                      filterControl.setSelectedMatchFilterTop(index);
+                      setState(() {
+                        _pageIndex = index;
+                      });
                       // _loadMatchesForFilter(index);
                     },
                     itemCount: filterControl.matchFilterTopList.length,
