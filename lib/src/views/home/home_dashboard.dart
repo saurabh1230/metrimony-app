@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
+import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/screens/connected_screen/connected_screen_dashboard.dart';
+import 'package:bureau_couple/getx/features/screens/matches/matches_dashboard.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/textstyles.dart';
@@ -72,6 +75,10 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
   void initState() {
     // Get.find<ProfileController>().getUserDetailsApi();
     Get.find<ProfileController>().getProfileDetail();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('=============check');
+
+    });
     super.initState();
   }
    int index = 0;
@@ -81,10 +88,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
       onWillPop: () => onBackMove(context),
       child: Scaffold(
         body: [
-           HomeScreen(response: widget.response,),
-           MatchesScreen(response: widget.response, appbar: false,),
-           ConnectionScreen(response: widget.response,),
-           // FilterMatchesScreen(response:  widget.response,),
+          HomeScreen(response: widget.response,),
+          MatchesDashboard(initialIndex: 0,),
+          ConnectDashboard(),
           const ProfileScreen(),
         ][index],
         bottomNavigationBar: bottomBar(),
@@ -126,6 +132,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     setState(() {
                       index = 1;
                     });
+
                   },
                   child: Column(
                     children: [
@@ -147,6 +154,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                     setState(() {
                       index = 2;
                     });
+
                   },
                   child: Column(
                     children: [
@@ -177,7 +185,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                        /* color: index ==3 ? primaryColor : color353839,*/),
                       const SizedBox(height: 5,),
                       Text("Profile",style: styleSatoshiMedium(size: 12,
-                           color: index ==3 ? primaryColor : color353839,)
+                           color: index == 3 ? primaryColor : color353839,)
                         ,)
                     ],
                   ),

@@ -394,6 +394,7 @@ class MatchesController extends GetxController implements GetxService {
       String community
       ) async {
     _matchesList = [];
+    _matchesList.clear();
     print('check Api======>');
     try {
       _isLoading = true;
@@ -406,7 +407,8 @@ class MatchesController extends GetxController implements GetxService {
           state: state,
           height: height,
           country: country,
-          montherTongue: motherTongue, community: community);
+          montherTongue: motherTongue,
+          community: community);
 
       if (result['status'] == true) {
         final newMatches = (result['data']['members'] as List)

@@ -331,7 +331,17 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  final List<String> _filterPostingState = [];
+  List<String> get filterPostingState => _filterPostingState;
 
+  void setFilterPostingState(String state) {
+    if (_filterPostingState.contains(state)) {
+      _filterPostingState.remove(state);
+    } else {
+      _filterPostingState.add(state);
+    }
+    update();
+  }
 
 
 

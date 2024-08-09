@@ -2,9 +2,11 @@
 import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/screens/filter/filter_screen.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
 
 import 'package:bureau_couple/getx/utils/dimensions.dart';
+import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';
 import 'package:bureau_couple/src/views/home/matches/widgets/filter_screen.dart';
 
 import 'package:get/get.dart';
@@ -162,52 +164,54 @@ class _MatchesScreenState extends State<MatchesScreen> {
     // });
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Matches",
-          style: styleSatoshiBold(size: 20, color: Colors.white),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (builder) => const SavedMatchesScreen()));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 16.0,
-              ),
-              child: SvgPicture.asset(
-                sortList,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              Get.bottomSheet(
-                FilterBottomSheet(),
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.only(
-                  right: 16.0, top: 6, bottom: 6, left: 10),
-              child: SvgPicture.asset(
-                filter,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: const CustomAppBar(title: '',isBackButtonExist : true,),
+      // appBar: AppBar(
+      //   backgroundColor: primaryColor,
+      //   centerTitle: false,
+      //   automaticallyImplyLeading: false,
+      //   title: Text(
+      //     "Matches",
+      //     style: styleSatoshiBold(size: 20, color: Colors.white),
+      //   ),
+      //   actions: [
+      //     GestureDetector(
+      //       onTap: () {
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (builder) => const SavedMatchesScreen()));
+      //       },
+      //       child: Padding(
+      //         padding: const EdgeInsets.only(
+      //           right: 16.0,
+      //         ),
+      //         child: SvgPicture.asset(
+      //           sortList,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     ),
+      //     GestureDetector(
+      //       behavior: HitTestBehavior.translucent,
+      //       onTap: () {
+      //         Get.to(FilterScreen());
+      //         // Get.bottomSheet(
+      //         //   FilterBottomSheet(),
+      //         //   backgroundColor: Colors.transparent,
+      //         //   isScrollControlled: true,
+      //         // );
+      //       },
+      //       child: Container(
+      //         padding: const EdgeInsets.only(
+      //             right: 16.0, top: 6, bottom: 6, left: 10),
+      //         child: SvgPicture.asset(
+      //           filter,
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: GetBuilder<MatchesController>(builder: (matchesControl) {
         final list = matchesControl.matchesList;
         final isListEmpty = list.isEmpty;

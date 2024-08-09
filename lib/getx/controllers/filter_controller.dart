@@ -70,6 +70,18 @@ class FilterController extends GetxController implements GetxService {
     isExpanded = !isExpanded;
     update();
   }
+  final List<String> matchFilterTopList = ['Religion','Caste','Preferred','New'];
+  final List<String> connectedFilterTopList = ['Sent','Received','Connected',];
+  int _selectedMatchFilterTop = 0;
+  int get selectedMatchFilterTop => _selectedMatchFilterTop;
+
+
+  void setSelectedMatchFilterTop (int index) {
+    _selectedMatchFilterTop = index;
+    update(); // This will call GetBuilder to rebuild the widget
+  }
+
+
 
 }
 

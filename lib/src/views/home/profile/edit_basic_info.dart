@@ -133,14 +133,10 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     marriedStatusController.text = basicInfo?.maritalStatus?.toString() ?? '';
     stateController.text = basicInfo?.presentAddress?.state?.toString() ?? '';
     zipController.text = basicInfo?.presentAddress?.zip?.toString() ?? '';
-    countryController.text =
-        basicInfo?.presentAddress?.country?.toString() ?? '';
+    countryController.text = basicInfo?.presentAddress?.country?.toString() ?? '';
     // cityController.text = basicInfo?.presentAddress?.district?.toString() ?? '';
     financialCondition.text = basicInfo?.financialCondition?.toString() ?? '';
     aboutUs.text = basicInfo?.aboutUs?.toString() ?? '';
-
-
-
   }
 
   @override
@@ -167,8 +163,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 GestureDetector(
                   // onTap: _pickImage
                   onTap: () async {
-                    XFile? v = await _imgPicker.pickImage(
-                        source: ImageSource.gallery);
+                    XFile? v = await _imgPicker.pickImage(source: ImageSource.gallery);
                     if (v != null) {
                       setState(
                             () {
@@ -608,6 +603,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 ),
                 sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {},
@@ -626,8 +622,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   ),
                   // child: CarRowWidget(favourites: favourites!,)
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -673,7 +670,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 //   ),
                 // ),
                 // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -701,8 +700,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: smokingController.text.isEmpty,
                   ),
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -731,8 +731,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   ),
                   // child: CarRowWidget(drinkingController)
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {},
@@ -750,8 +751,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: birthDateController.text.isEmpty,
                   ),
                 ),
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -787,9 +789,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                   ),
 
                 ),
-
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
@@ -822,9 +824,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     isControllerTextEmpty: financialCondition.text.isEmpty,
                   ),
                 ),
-
-                // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {},
@@ -888,7 +890,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 //   // child: CarRowWidget(favourites: favourites!,)
                 // ),
                 // sizedBox16(),
+                sizedBox6(),
                 const Divider(),
+                sizedBox6(),
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
