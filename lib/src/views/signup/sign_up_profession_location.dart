@@ -188,26 +188,26 @@ class _SignUpScreenProfessionLocationScreenState extends State<SignUpScreenProfe
                     //   },
                     // ),
 
-                    sizedBox20(),
-                    Text(
-                      'Posting District',
-                      style: kManrope25Black.copyWith(fontSize: 16),
-                    ),
-                    sizedBox12(),
-                    CustomDropdownButtonFormField<String>(
-                      value:  authControl.posselectedDistrict,
-                      items: authControl.posdistricts,
-                      hintText: "Please Select district",
-                      onChanged: (value) {
-                        authControl.possetDistrict(value ?? authControl.posdistricts.first);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty || value == 'Please Select Posting District') {
-                          return 'Please Select Posting District';
-                        }
-                        return null;
-                      },
-                    ),
+                    // sizedBox20(),
+                    // Text(
+                    //   'Posting District',
+                    //   style: kManrope25Black.copyWith(fontSize: 16),
+                    // ),
+                    // sizedBox12(),
+                    // CustomDropdownButtonFormField<String>(
+                    //   value:  authControl.posselectedDistrict,
+                    //   items: authControl.posdistricts,
+                    //   hintText: "Please Select district",
+                    //   onChanged: (value) {
+                    //     authControl.possetDistrict(value ?? authControl.posdistricts.first);
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty || value == 'Please Select Posting District') {
+                    //       return 'Please Select Posting District';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     // CustomStyledDropdownButton(
                     //   title: "Select District",
                     //   items: authControl.posdistricts,

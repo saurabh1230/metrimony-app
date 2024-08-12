@@ -1,5 +1,6 @@
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/screens/interest/edit_interest_screen.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
@@ -169,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       builder: (BuildContext context) {
                         return DeleteAccountDialog(
                           titleButton1: 'Back',
-                          click1: () {Navigator.pop(context);},
+                          click1: () {},
                           click2: () {Navigator.push(context, MaterialPageRoute(builder: (builder) => const  SignInScreen()));},
                           heading: 'Delete this Account?',
                           subheading: ' This Account with will be permanently deleted',
@@ -404,6 +405,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
+                            'Physical Attributes',
+                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (builder) => const EditPhysicalAttributesScreen()));
+                            },
+                            child: Icon(Icons.edit,
+                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
+                          ),
+                        ],
+                      ),
+                      buildInfoRow(title: 'Height',
+                          text: profileController.convertHeightToFeetInches(profile.physicalAttributes!.height.toString() ) ?? "",
+                          onTap: () {
+                          }),
+                      buildInfoRow(title: 'Weight',
+                          text: '${profile.physicalAttributes?.weight?.split('.')[0] ?? ""} Kg',
+                          onTap: () {
+                          }),
+
+                      buildInfoRow(title: 'Blood Group',
+                          text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
+                          onTap: () {
+                          }),
+                      sizedBox10(),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
                             'Partner Expectations',
                             style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
                           ),
@@ -439,36 +470,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         text:  profile.partnerExpectation?.communityName.toString() ?? "",
                         onTap: () {},
                       ),
-                      sizedBox10(),
-                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Physical Attributes',
-                            style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (builder) => const EditPhysicalAttributesScreen()));
-                            },
-                            child: Icon(Icons.edit,
-                              color: Theme.of(context).primaryColorDark.withOpacity(0.65),),
-                          ),
-                        ],
-                      ),
-                      buildInfoRow(title: 'Height',
-                          text: profileController.convertHeightToFeetInches(profile.physicalAttributes!.height.toString() ) ?? "",
-                          onTap: () {
-                          }),
-                      buildInfoRow(title: 'Weight',
-                          text: '${profile.physicalAttributes?.weight?.split('.')[0] ?? ""} Kg',
-                          onTap: () {
-                          }),
 
-                      buildInfoRow(title: 'Blood Group',
-                          text: profile.physicalAttributes?.bloodGroup.toString() ?? "",
-                          onTap: () {
-                          }),
+
                       sizedBox20(),
                       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -476,11 +479,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             'Interest & Hobbies',
                             style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18,color: Theme.of(context).primaryColorDark.withOpacity(0.65)),
                           ),
-                          // IconButton(onPressed: () {}, icon: Icon(Icons.edit,
-                          // color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
+                          IconButton(onPressed: () {
+                            Get.to(const EditInterestScreen());
+                          }, icon: Icon(Icons.edit,
+                          color: Theme.of(context).primaryColorDark.withOpacity(0.65),))
                         ],
                       ),
-                      const SizedBox(height: 12,),
+                      // const SizedBox(height: 12,),
                       Container(padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                             border: Border.all(width: 0.5,color: Colors.black),

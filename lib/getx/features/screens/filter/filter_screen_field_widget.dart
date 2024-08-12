@@ -13,7 +13,7 @@ class FilterScreenField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(onTap: tap,
+    return GestureDetector(onTap: tap,
       child: Column(
           children : [
             Column(crossAxisAlignment: CrossAxisAlignment.start,

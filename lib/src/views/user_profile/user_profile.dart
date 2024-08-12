@@ -447,7 +447,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       buildProfileRow(
                                           image: birthHolder,
                                           title: 'Age',
-                                          text: age.toString()),
+                                          text: '${age.toString()} Yrs'),
                                       const Divider(),
                                       buildProfileRow(
                                           image: icHeightIcon,
@@ -500,7 +500,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   const SizedBox(
                                     height: 12,
                                   ),
-                                  Row(
+                                  /*Row(
                                     children: [
                                       Expanded(
                                         child: Column(
@@ -557,7 +557,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       ),
                                     ],
                                   ),
-                                  sizedBox16(),
+                                  sizedBox16(),*/
                                   Row(
                                     children: [
                                       Expanded(

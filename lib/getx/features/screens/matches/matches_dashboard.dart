@@ -2,6 +2,8 @@ import 'package:bureau_couple/getx/controllers/favourite_controller.dart';
 import 'package:bureau_couple/getx/controllers/filter_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
+import 'package:bureau_couple/getx/features/widgets/matches_shimmer_widget.dart';
 import 'package:bureau_couple/getx/utils/app_constants.dart';
 import 'package:bureau_couple/getx/utils/colors.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -57,18 +59,32 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
   }
 
   Widget _buildMatchesList(BuildContext context, MatchesController matchesControl) {
-    return Padding(
+    final list = matchesControl.matchesList;
+    final isListEmpty = list.isEmpty;
+    return
+      isListEmpty && !matchesControl.isLoading
+          ? const Padding(
+          padding: EdgeInsets.only(top: Dimensions.paddingSize100),
+          child: Center(
+              child: CustomEmptyMatchScreen(
+                title: "No Matches Yet",
+                isBackButton: true,
+              )))
+          : matchesControl.isLoading
+          ? const ShimmerWidget()
+          :
+      Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
       child: Stack(
         children: [
-          Text("${matchesControl.matchesList.length} Matches Found",
+          Text(
+            "${matchesControl.matchesList.length} Matches Found",
             style: styleSatoshiLight(size: 14, color: Colors.black.withOpacity(0.60)),
           ),
           sizedBox10(),
           Padding(
             padding: const EdgeInsets.only(top: 35.0),
             child: ListView.separated(
-              controller: _scrollController,
               itemCount: matchesControl.matchesList.length,
               itemBuilder: (context, i) {
                 final match = matchesControl.matchesList[i];
@@ -109,24 +125,28 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                         onTap: () {},
                         showIcon: !isWished,
                         title: 'Request Sent',
-                      ) : connectButton(
-                          fontSize: 14,
-                          height: 30,
-                          width: 134,
-                          context: context,
-                          onTap: () {
-                            favControl.sendRequestApi(
-                              Get.find<ProfileController>().userDetails!.id.toString(),
-                              match.id.toString(),
-                            );
-                          },
-                          showIcon: !isConnected,
-                          title: isConnected ? 'Request Sent' : 'Connect Now'),
+                      )
+                          : connectButton(
+                        fontSize: 14,
+                        height: 30,
+                        width: 134,
+                        context: context,
+                        onTap: () {
+                          favControl.sendRequestApi(
+                            Get.find<ProfileController>().userDetails!.id.toString(),
+                            match.id.toString(),
+                          );
+                        },
+                        showIcon: !isConnected,
+                        title: isConnected ? 'Request Sent' : 'Connect Now',
+                      ),
                       bookmark: match.bookmark == 1
-                          ? GestureDetector(onTap: () {
-                        favControl.unSaveBookmarkApi(match.profileId.toString());
-                      },
-                        child: Icon(CupertinoIcons.heart_fill, color: Theme.of(context).primaryColor, size: 32),
+                          ? GestureDetector(
+                        onTap: () {
+                          favControl.unSaveBookmarkApi(match.profileId.toString());
+                        },
+                        child: Icon(CupertinoIcons.heart_fill,
+                            color: Theme.of(context).primaryColor, size: 32),
                       )
                           : GestureDetector(
                         onTap: () {
@@ -161,10 +181,6 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
       builder: (matchesControl) {
         return GetBuilder<FilterController>(
           builder: (filterControl) {
-            final gender = Get.find<ProfileController>().profile?.basicInfo?.gender;
-            final genderFilter = gender?.contains('Male') ?? false
-                ? 'Female'
-                : (gender?.contains('Female') ?? false ? 'Male' : 'Others');
             return SafeArea(
               child: Scaffold(
                 body: Column(
@@ -172,7 +188,11 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                     SizedBox(
                       height: 50,
                       child: ListView.builder(
-                        padding: const EdgeInsets.only(top: Dimensions.paddingSize10),
+                        padding: const EdgeInsets.only(
+                          top: Dimensions.paddingSize10,
+                          right: Dimensions.paddingSizeDefault, // Add padding to the right
+                        ),
+                        controller: _scrollController, // Add the scroll controller
                         itemCount: filterControl.matchFilterTopList.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (_, i) {
@@ -217,23 +237,6 @@ class _MatchesDashboardState extends State<MatchesDashboard> {
                             setState(() {
                               _pageIndex = index;
                             });
-                            // if (index == 0) {
-                            //   Get.find<MatchesController>().getMatches(
-                            //     '1', genderFilter, '2', '', '', '', '', '', '',
-                            //   );
-                            // } else if (index == 1) {
-                            //   Get.find<MatchesController>().getMatches(
-                            //     '1', genderFilter, 'Muslim', '', '', '', '', '', '',
-                            //   );
-                            // } else if (index == 2) {
-                            //   Get.find<MatchesController>().getMatches(
-                            //     '1', genderFilter, '', '', '', '', '', '', '',
-                            //   );
-                            // } else if (index == 3) {
-                            //   Get.find<MatchesController>().getMatches(
-                            //     '1', genderFilter, '', '', '', '', '', '', '',
-                            //   );
-                            // }
                             _loadMatchesForFilter(index);
                           },
                           itemCount: filterControl.matchFilterTopList.length,

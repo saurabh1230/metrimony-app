@@ -2,6 +2,7 @@ import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
+import 'package:bureau_couple/getx/features/widgets/edit_details_textfield.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
@@ -29,7 +30,6 @@ import '../../../utils/widgets/name_edit_dialog.dart';
 import '../../../utils/widgets/textfield_decoration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'edit_preferred_matches.dart';
 class EditBasicInfoScreen extends StatefulWidget {
   const EditBasicInfoScreen({super.key});
@@ -58,7 +58,16 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
   final countryController = TextEditingController();
   final cityController = TextEditingController();
   final financialCondition = TextEditingController();
+  final dietTypeController = TextEditingController();
   final aboutUs = TextEditingController();
+
+  final _professionIdController = TextEditingController();
+  final _religionIdController = TextEditingController();
+  final _casteIdController = TextEditingController();
+  final _motherTongueIdController = TextEditingController();
+  final _smokingIdController = TextEditingController();
+  final _drinkingIdController = TextEditingController();
+
   bool load = false;
   bool loading = false;
   bool isLoading = false;
@@ -69,14 +78,14 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       careerInfo();
       // Get.find<ProfileController>().getUserDetailsApi();
+      Get.find<AuthController>().getReligionsList();
+      Get.find<AuthController>().getCommunityList();
       Get.find<AuthController>().getSmokingList();
       Get.find<AuthController>().getDrinkingList();
       Get.find<AuthController>().getProfessionList();
-
-
+      Get.find<AuthController>().getMotherTongueList();
     });
     super.initState();
-
   }
 
   File pickedImage = File("");
@@ -137,18 +146,25 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     // cityController.text = basicInfo?.presentAddress?.district?.toString() ?? '';
     financialCondition.text = basicInfo?.financialCondition?.toString() ?? '';
     aboutUs.text = basicInfo?.aboutUs?.toString() ?? '';
+    _professionIdController.text = basicInfo?.profession  ?? '';
+    _religionIdController.text =   Get.find<ProfileController>().profile?.religion ?? '';
+    _casteIdController.text = basicInfo?.community ?? '';
+    _motherTongueIdController.text = basicInfo.motherTongue ?? '';
+    _smokingIdController.text = basicInfo.smokingStatus.toString() ?? '';
+    _drinkingIdController.text = basicInfo.drinkingStatus.toString() ?? '';
+   Get.find<AuthController>().getCasteList(Get.find<ProfileController>().profile?.religion);
+
+
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (authControl) {
-
-      String? professionId = basicInfo.religion.toString();
-      print('================? check profession Id ${professionId}');
+      print('print  ============================= >>${Get.find<AuthController>().professionId.toString()}');
 
       return  Scaffold(
         appBar: const CustomAppBar(title: "Basic Info",),
-        bottomNavigationBar: buildBottombarPadding(context,professionId),
+        bottomNavigationBar: buildBottombarPadding(context,authControl),
         body: isLoading
             ? const BasicInfoShimmerWidget()
             : SingleChildScrollView(
@@ -161,7 +177,6 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                     child: Text("Basic Info",style:styleSatoshiMedium(size: 16, color: primaryColor))),
                 sizedBox16(),
                 GestureDetector(
-                  // onTap: _pickImage
                   onTap: () async {
                     XFile? v = await _imgPicker.pickImage(source: ImageSource.gallery);
                     if (v != null) {
@@ -237,123 +252,485 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                       }
                     },
                     title: "Add"),
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Introduction',
-                          addTextField: TextFormField(
-                            maxLength: 500,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: aboutUs,
-                            decoration: AppTFDecoration(hint: 'Introduction')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
 
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "About",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
-                          ),
-                          const SizedBox(width: 3,),
-                          const Icon(
-                            Icons.edit,
-                            size: 12,
-                          ),
-                        ],
+                // GestureDetector(
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'Introduction',
+                //           addTextField: TextFormField(
+                //             maxLength: 500,
+                //             onChanged: (v) {
+                //               setState(() {});
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: aboutUs,
+                //             decoration: AppTFDecoration(hint: 'Introduction')
+                //                 .decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //
+                //   },
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       EditDetailsTextField(title: 'About', controller: aboutUs,),
+                //       // Row(
+                //       //   children: [
+                //       //     Text(
+                //       //       "About",style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+                //       //     ),
+                //       //     const SizedBox(width: 3,),
+                //       //     const Icon(
+                //       //       Icons.edit,
+                //       //       size: 12,
+                //       //     ),
+                //       //   ],
+                //       // ),
+                //       // aboutUs.text.isEmpty?
+                //       // const SizedBox() :
+                //       // Column(
+                //       //   children: [
+                //       //     sizedBox16(),
+                //       //
+                //       //     Text(
+                //       //       aboutUs.text.isEmpty
+                //       //           ? (basicInfo.id == null ||
+                //       //           basicInfo.aboutUs == null ||
+                //       //           basicInfo.aboutUs!.isEmpty
+                //       //           ? ''
+                //       //           : basicInfo.aboutUs!)
+                //       //           : aboutUs.text,
+                //       //       maxLines: 4,
+                //       //       overflow: TextOverflow.ellipsis,
+                //       //     ),
+                //       //
+                //       //   ],
+                //       // )
+                //
+                //
+                //     ],
+                //   ),
+                // ),
+                // sizedBox16(),
+                //
+                // const Divider(),
+                sizedBox6(),
+                EditDetailsTextField(title: 'First Name', controller: firstNameController,),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Last Name', controller: lastNameController,),
+                sizedBox6(),
+                EditDetailsTextField(isNonEditable: true,
+                  title: 'User Name', controller: userNameController,
+                readOnly: true,),
+                sizedBox6(),
+                EditDetailsTextField(isNonEditable: true,
+                  title: 'Email', controller: emailController, readOnly: true,),
+                sizedBox6(),
+                EditDetailsTextField(
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Profession',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.professionList!.map((position) => position.name!).toList(),
+                                hintText: "Select Position",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+                                    authControl.setProfessionIndex(selected.id, true);
+
+                                    professionController.text = selected.name.toString();
+                                    _professionIdController.text = selected.id.toString();
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
                       ),
-                      aboutUs.text.isEmpty?
-                      const SizedBox() :
-                      Column(
-                        children: [
-                          sizedBox16(),
+                    );
+                  },readOnly:  true,
 
-                          Text(
-                            aboutUs.text.isEmpty
-                                ? (basicInfo.id == null ||
-                                basicInfo.aboutUs == null ||
-                                basicInfo.aboutUs!.isEmpty
-                                ? ''
-                                : basicInfo.aboutUs!)
-                                : aboutUs.text,
-                            maxLines: 4,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                        ],
-                      )
-
-
-                    ],
-                  ),
-                ),
-                sizedBox16(),
-
-                const Divider(),
+                  title: 'profession', controller: professionController,),
                 sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'First Name',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: firstNameController,
-                            decoration: AppTFDecoration(hint: 'First Name')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
+                EditDetailsTextField(isNonEditable: true,
+                  title: 'Gender', controller: genderController,readOnly: true,),
+                sizedBox6(),
+                EditDetailsTextField(
+                  title: 'Religion', controller: religionController,readOnly: true,
+                  onTap:() {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Religion',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.religionList!.map((position) => position.name!).toList(),
+                                hintText: "Select Religion",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.religionList!.firstWhere((position) => position.name == value);
+                                    authControl.setReligionMainIndex(selected.id, true);
+                                    religionController.text = selected.name.toString();
+                                    _religionIdController.text = selected.id.toString();
+                                    authControl.getCasteList(selected.id.toString());
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
                     );
                   },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    // widget: const Icon(
-                    //   Icons.edit,
-                    //   size: 12,
-                    // ),
-                    title: 'First Name',
-                    data1: firstNameController.text.isEmpty
-                        ? (mainInfo == null ||
-                        mainInfo.firstname == null ||
-                        mainInfo.firstname!.isEmpty
-                        ? 'Not Added'
-                        : StringUtils.capitalize(mainInfo.firstname!))
-                        : firstNameController.text,
-                    data2: StringUtils.capitalize(firstNameController.text),
-                    isControllerTextEmpty: firstNameController.text.isEmpty,
-                  ),
                 ),
                 sizedBox6(),
-                const Divider(),
+                EditDetailsTextField(title: 'Smoking Habit', controller: smokingController,readOnly: true,
+                onTap: () {
+                  Get.bottomSheet(
+                    SingleChildScrollView(
+                      child: Container(color: Theme.of(context).cardColor,
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Smoking Habit',
+                              style: kManrope25Black.copyWith(fontSize: 16),
+                            ),
+                            sizedBox12(),
+                            CustomDropdownButtonFormField<String>(
+                              value: authControl.smokingList!.firstWhere((religion) => religion.id == authControl.smokingIndex).name,// Assuming you have a selectedPosition variable
+                              items: authControl.smokingList!.map((position) => position.name!).toList(),
+                              hintText: "Smoking Habit",
+                              onChanged: (String? value) {
+                                if (value != null) {
+                                  var selected = authControl.smokingList!.firstWhere((position) => position.name == value);
+                                  authControl.setSmokingIndex(selected.id!,true);
+                                  smokingController.text = selected.name.toString();
+                                  _smokingIdController.text = selected.id.toString();
+
+                                }
+                              },
+
+                            ),
+                          ],
+                        ),),
+                    ),
+                  );
+                },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Drinking Habit', controller: drinkingController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Drinking Habit',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.drikingList!.firstWhere((religion) => religion.id == authControl.drikingIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.drikingList!.map((position) => position.name!).toList(),
+                                hintText: "Drinking Habit",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.drikingList!.firstWhere((position) => position.name == value);
+                                    authControl.setDrikingIndex(selected.id!,true);
+                                    drinkingController.text = selected.name.toString();
+                                    _drinkingIdController.text = selected.id.toString();
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Drinking Habit', controller: drinkingController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Drinking Habit',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.drikingList!.firstWhere((religion) => religion.id == authControl.drikingIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.drikingList!.map((position) => position.name!).toList(),
+                                hintText: "Drinking Habit",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.drikingList!.firstWhere((position) => position.name == value);
+                                    authControl.setDrikingIndex(selected.id!,true);
+                                    drinkingController.text = selected.name.toString();
+                                    _drinkingIdController.text = selected.id.toString();
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Date of Birth', controller: birthDateController,readOnly: true,isNonEditable: true,),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Caste', controller: communityController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Caste',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.casteList!.firstWhere((religion) => religion.id == authControl.casteMainIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.casteList!.map((position) => position.name!).toList(),
+                                hintText: "Select Caste",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.casteList!.firstWhere((position) => position.name == value);
+                                    authControl.setCasteMainIndex(selected.id, true);
+                                    communityController.text = selected.name.toString();
+                                    _casteIdController.text = selected.id.toString();
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Diet', controller: dietTypeController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Diet',
+                                style: kManrope25Black.copyWith(fontSize: Dimensions.fontSize18),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.diet ,
+                                items: authControl.dietList,
+                                hintText: "Select Diet Type",
+                                onChanged: (value) {
+                                  authControl.setDiet(value!);
+                                  print(authControl.diet);
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Annual Income', controller: financialCondition,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Annual Income',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value:  authControl.annualIncome ?? authControl.annualIncomeList.first,// Assuming you have a selectedPosition variable
+                                items: authControl.annualIncomeList,
+                                hintText: "Select Annual Income",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    authControl.setAnnualIncome(value);
+                                    financialCondition.text = value;
+                                    print(authControl.annualIncome);
+                                  }
+                                },
+                                // itemLabelBuilder: (String item) => item,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Select Annual Income';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'Mother Tongue', controller: motherTongueController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Mother Tongue',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex).name,// Assuming you have a selectedPosition variable
+                                items: authControl.motherTongueList!.map((position) => position.name!).toList(),
+                                hintText: "Mother Tongue",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    var selected = authControl.motherTongueList!.firstWhere((position) => position.name == value);
+                                    authControl.setMotherTongueIndex(selected.id, true);
+                                    motherTongueController.text = selected.name.toString();
+                                    _motherTongueIdController.text = selected.id.toString();
+                                    authControl.getCasteList(selected.id.toString());
+
+                                  }
+                                },
+
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'State', controller: stateController,readOnly: true,
+                  onTap: () {
+                    Get.bottomSheet(
+                      SingleChildScrollView(
+                        child: Container(color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(
+                            children: [
+                              Text(
+                                'State',
+                                style: kManrope25Black.copyWith(fontSize: 16),
+                              ),
+                              sizedBox12(),
+                              CustomDropdownButtonFormField<String>(
+                                value: authControl.selectedState,
+                                items: authControl.states,
+                                hintText: "Select State/UT",
+                                onChanged: (String? value) {
+                                  if (value != null) {
+                                    authControl.setState(value);
+                                    stateController.text = value;
+                                    print(authControl.selectedState);
+                                  }
+                                },
+                              ),
+                            ],
+                          ),),
+                      ),
+                    );
+                  },),
+                sizedBox6(),
+                EditDetailsTextField(title: 'About', controller: aboutUs,),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'First Name',
+                //           addTextField: TextFormField(
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {});
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: firstNameController,
+                //             decoration: AppTFDecoration(hint: 'First Name')
+                //                 .decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     // widget: const Icon(
+                //     //   Icons.edit,
+                //     //   size: 12,
+                //     // ),
+                //     title: 'First Name',
+                //     data1: firstNameController.text.isEmpty
+                //         ? (mainInfo == null ||
+                //         mainInfo.firstname == null ||
+                //         mainInfo.firstname!.isEmpty
+                //         ? 'Not Added'
+                //         : StringUtils.capitalize(mainInfo.firstname!))
+                //         : firstNameController.text,
+                //     data2: StringUtils.capitalize(firstNameController.text),
+                //     isControllerTextEmpty: firstNameController.text.isEmpty,
+                //   ),
+                // ),
+                // sizedBox6(),
+                // const Divider(),
             // mainInfo == null ||
             //     mainInfo.middlename == null ||
             //     mainInfo.middlename!.isEmpty
@@ -389,265 +766,297 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
             //
             //       ],
             //     ),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Last Name',
-                          addTextField: TextFormField(
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context);
-                            },
-                            controller: lastNameController,
-                            decoration: AppTFDecoration(hint: 'Last Name')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'Last Name',
-                    data1: lastNameController.text.isEmpty
-                        ? (mainInfo == null ||
-                        mainInfo.lastname == null ||
-                        mainInfo.lastname!.isEmpty
-                        ? 'Not Added'
-                        : StringUtils.capitalize(mainInfo.lastname!))
-                        : StringUtils.capitalize(lastNameController.text),
-                    data2: StringUtils.capitalize(lastNameController.text),
-                    isControllerTextEmpty: lastNameController.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'User Name',
-                    //       addTextField: TextFormField(
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {});
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: userNameController,
-                    //         decoration: AppTFDecoration(hint: 'User Name')
-                    //             .decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-                  },
-                  child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    // widget: const Icon(
-                    //   Icons.edit,
-                    //   size: 12,
-                    // ),
-                    title: 'User Name',
-                    data1: userNameController.text.isEmpty
-                        ? (mainInfo == null ||
-                        mainInfo.username == null ||
-                        mainInfo.username!.isEmpty
-                        ? 'User Name'
-                        : mainInfo.username!)
-                        : userNameController.text,
-                    data2: userNameController.text,
-                    isControllerTextEmpty: userNameController.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // Get.dialog(NameEditDialogWidget(
-                    //   title: 'Email',
-                    //   addTextField: TextFormField(
-                    //     maxLength: 40,
-                    //     onChanged: (v) {
-                    //       setState(() {});
-                    //     },
-                    //     onEditingComplete: () {
-                    //       Navigator.pop(context); // Close the dialog
-                    //     },
-                    //     controller: emailController,
-                    //     decoration: AppTFDecoration(hint: 'Email')
-                    //         .decoration(),
-                    //     //keyboardType: TextInputType.phone,
-                    //   ),
-                    // ));
-                  },
-                  child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    // widget: const Icon(
-                    //   Icons.edit,
-                    //   size: 12,
-                    // ),
-                    title: 'Email',
-                    data1: emailController.text.isEmpty
-                        ? (mainInfo == null ||
-                        mainInfo.username == null ||
-                        mainInfo.username!.isEmpty
-                        ? 'Email'
-                        : mainInfo.username!)
-                        : emailController.text,
-                    data2: emailController.text,
-                    isControllerTextEmpty: emailController.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.bottomSheet(
-                      SingleChildScrollView(
-                        child: Container(color: Theme.of(context).cardColor,
-                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-                          child: Column(
-                          children: [
-                            Text(
-                              'Profession',
-                              style: kManrope25Black.copyWith(fontSize: 16),
-                            ),
-                            sizedBox12(),
-                            CustomDropdownButtonFormField<String>(
-                              value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
-                              items: authControl.professionList!.map((position) => position.name!).toList(),
-                              hintText: "Select Position",
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  var selected = authControl.professionList!.firstWhere((position) => position.name == value);
-                                  authControl.setProfessionIndex(selected.id, true);
-
-                                  professionController.text = selected.name.toString();
-                                  professionId = selected.id.toString();
-                                  print(authControl.professionIndex);
-                                }
-                              },
-
-                            ),
-                          ],
-                        ),),
-                      ),
-                   );
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'Profession',
-                    //       addTextField: TextFormField(
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {});
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: professionController,
-                    //         decoration: AppTFDecoration(hint: 'Profession')
-                    //             .decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-                  },
-                  child: buildDataAddRow(
-                    // widget: const SizedBox(),
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'Profession',
-                    data1:
-                    professionController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.profession == null ||
-                        basicInfo.professionName!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.professionName.toString() )
-                        : professionController.text,
-
-                    data2:
-                    StringUtils.capitalize(professionController.text),
-                    isControllerTextEmpty:
-                    professionController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {},
-                  child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    title: 'Gender',
-                    data1: genderController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.gender == null ||
-                        basicInfo.gender!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.gender.toString())
-                        : genderController.text,
-                    data2: StringUtils.capitalize(genderController.text.contains("F") ? "Female" :"Male"),
-                    isControllerTextEmpty: genderController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-
-                  },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'Religion',
-                    data1: religionController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.religion == null ||
-                        basicInfo.religionName!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.religion.toString())
-                        : religionController.text,
-                    data2: religionController.text,
-                    isControllerTextEmpty: religionController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {
+            //         showDialog(
+            //           context: context,
+            //           builder: (BuildContext context) {
+            //             return NameEditDialogWidget(
+            //               title: 'Last Name',
+            //               addTextField: TextFormField(
+            //                 maxLength: 40,
+            //                 onChanged: (v) {
+            //                   setState(() {});
+            //                 },
+            //                 onEditingComplete: () {
+            //                   Navigator.pop(context);
+            //                 },
+            //                 controller: lastNameController,
+            //                 decoration: AppTFDecoration(hint: 'Last Name')
+            //                     .decoration(),
+            //                 //keyboardType: TextInputType.phone,
+            //               ),
+            //             );
+            //           },
+            //         );
+            //       },
+            //       child: buildDataAddRow(
+            //         widget: const Icon(
+            //           Icons.edit,
+            //           size: 12,
+            //         ),
+            //         title: 'Last Name',
+            //         data1: lastNameController.text.isEmpty
+            //             ? (mainInfo == null ||
+            //             mainInfo.lastname == null ||
+            //             mainInfo.lastname!.isEmpty
+            //             ? 'Not Added'
+            //             : StringUtils.capitalize(mainInfo.lastname!))
+            //             : StringUtils.capitalize(lastNameController.text),
+            //         data2: StringUtils.capitalize(lastNameController.text),
+            //         isControllerTextEmpty: lastNameController.text.isEmpty,
+            //       ),
+            //     ),
+            //     sizedBox6(),
+            //     const Divider(),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {
+            //         // showDialog(
+            //         //   context: context,
+            //         //   builder: (BuildContext context) {
+            //         //     return NameEditDialogWidget(
+            //         //       title: 'User Name',
+            //         //       addTextField: TextFormField(
+            //         //         maxLength: 40,
+            //         //         onChanged: (v) {
+            //         //           setState(() {});
+            //         //         },
+            //         //         onEditingComplete: () {
+            //         //           Navigator.pop(context); // Close the dialog
+            //         //         },
+            //         //         controller: userNameController,
+            //         //         decoration: AppTFDecoration(hint: 'User Name')
+            //         //             .decoration(),
+            //         //         //keyboardType: TextInputType.phone,
+            //         //       ),
+            //         //     );
+            //         //   },
+            //         // );
+            //       },
+            //       child: buildDataAddRow(
+            //         widget: const SizedBox(),
+            //         // widget: const Icon(
+            //         //   Icons.edit,
+            //         //   size: 12,
+            //         // ),
+            //         title: 'User Name',
+            //         data1: userNameController.text.isEmpty
+            //             ? (mainInfo == null ||
+            //             mainInfo.username == null ||
+            //             mainInfo.username!.isEmpty
+            //             ? 'User Name'
+            //             : mainInfo.username!)
+            //             : userNameController.text,
+            //         data2: userNameController.text,
+            //         isControllerTextEmpty: userNameController.text.isEmpty,
+            //       ),
+            //     ),
+            //     sizedBox6(),
+            //     const Divider(),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {
+            //         // Get.dialog(NameEditDialogWidget(
+            //         //   title: 'Email',
+            //         //   addTextField: TextFormField(
+            //         //     maxLength: 40,
+            //         //     onChanged: (v) {
+            //         //       setState(() {});
+            //         //     },
+            //         //     onEditingComplete: () {
+            //         //       Navigator.pop(context); // Close the dialog
+            //         //     },
+            //         //     controller: emailController,
+            //         //     decoration: AppTFDecoration(hint: 'Email')
+            //         //         .decoration(),
+            //         //     //keyboardType: TextInputType.phone,
+            //         //   ),
+            //         // ));
+            //       },
+            //       child: buildDataAddRow(
+            //         widget: const SizedBox(),
+            //         // widget: const Icon(
+            //         //   Icons.edit,
+            //         //   size: 12,
+            //         // ),
+            //         title: 'Email ',
+            //         data1: emailController.text.isEmpty
+            //             ? (mainInfo == null ||
+            //             mainInfo.username == null ||
+            //             mainInfo.username!.isEmpty
+            //             ? 'Email'
+            //             : mainInfo.username!)
+            //             : emailController.text,
+            //         data2: emailController.text,
+            //         isControllerTextEmpty: emailController.text.isEmpty,
+            //       ),
+            //     ),
+            //     sizedBox6(),
+            //     const Divider(),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {
+            //         Get.bottomSheet(
+            //           SingleChildScrollView(
+            //             child: Container(color: Theme.of(context).cardColor,
+            //               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+            //               child: Column(
+            //               children: [
+            //                 Text(
+            //                   'Profession',
+            //                   style: kManrope25Black.copyWith(fontSize: 16),
+            //                 ),
+            //                 sizedBox12(),
+            //                 CustomDropdownButtonFormField<String>(
+            //                   value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+            //                   items: authControl.professionList!.map((position) => position.name!).toList(),
+            //                   hintText: "Select Position",
+            //                   onChanged: (String? value) {
+            //                     if (value != null) {
+            //                       var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+            //                       authControl.setProfessionIndex(selected.id, true);
+            //
+            //                       professionController.text = selected.name.toString();
+            //                       _professionIdController.text = selected.id.toString();
+            //
+            //                     }
+            //                   },
+            //
+            //                 ),
+            //               ],
+            //             ),),
+            //           ),
+            //        );
+            //         // showDialog(
+            //         //   context: context,
+            //         //   builder: (BuildContext context) {
+            //         //     return NameEditDialogWidget(
+            //         //       title: 'Profession',
+            //         //       addTextField: TextFormField(
+            //         //         maxLength: 40,
+            //         //         onChanged: (v) {
+            //         //           setState(() {});
+            //         //         },
+            //         //         onEditingComplete: () {
+            //         //           Navigator.pop(context); // Close the dialog
+            //         //         },
+            //         //         controller: professionController,
+            //         //         decoration: AppTFDecoration(hint: 'Profession')
+            //         //             .decoration(),
+            //         //         //keyboardType: TextInputType.phone,
+            //         //       ),
+            //         //     );
+            //         //   },
+            //         // );
+            //       },
+            //       child: buildDataAddRow(
+            //         // widget: const SizedBox(),
+            //         widget: const Icon(
+            //           Icons.edit,
+            //           size: 12,
+            //         ),
+            //         title: 'Profession',
+            //         data1:
+            //         professionController.text.isEmpty
+            //             ? (basicInfo.id == null ||
+            //             basicInfo.profession == null ||
+            //             basicInfo.professionName!.isEmpty
+            //             ? 'Not Added'
+            //             : basicInfo.professionName.toString() )
+            //             : professionController.text,
+            //
+            //         data2:
+            //         StringUtils.capitalize(professionController.text),
+            //         isControllerTextEmpty:
+            //         professionController.text.isEmpty,
+            //       ),
+            //       // child: CarRowWidget(favourites: favourites!,)
+            //     ),
+            //     sizedBox6(),
+            //     const Divider(),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {},
+            //       child: buildDataAddRow(
+            //         widget: const SizedBox(),
+            //         title: 'Gender',
+            //         data1: genderController.text.isEmpty
+            //             ? (basicInfo.id == null ||
+            //             basicInfo.gender == null ||
+            //             basicInfo.gender!.isEmpty
+            //             ? 'Not Added'
+            //             : basicInfo.gender.toString())
+            //             : genderController.text,
+            //         data2: StringUtils.capitalize(genderController.text.contains("F") ? "Female" :"Male"),
+            //         isControllerTextEmpty: genderController.text.isEmpty,
+            //       ),
+            //       // child: CarRowWidget(favourites: favourites!,)
+            //     ),
+            //     sizedBox6(),
+            //     const Divider(),
+            //     sizedBox6(),
+            //     GestureDetector(
+            //       behavior: HitTestBehavior.translucent,
+            //       onTap: () {
+            //         Get.bottomSheet(
+            //           SingleChildScrollView(
+            //             child: Container(color: Theme.of(context).cardColor,
+            //               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+            //               child: Column(
+            //                 children: [
+            //                   Text(
+            //                     'Religion',
+            //                     style: kManrope25Black.copyWith(fontSize: 16),
+            //                   ),
+            //                   sizedBox12(),
+            //                   CustomDropdownButtonFormField<String>(
+            //                     value: authControl.religionList!.firstWhere((religion) => religion.id == authControl.religionMainIndex).name,// Assuming you have a selectedPosition variable
+            //                     items: authControl.religionList!.map((position) => position.name!).toList(),
+            //                     hintText: "Select Religion",
+            //                     onChanged: (String? value) {
+            //                       if (value != null) {
+            //                         var selected = authControl.religionList!.firstWhere((position) => position.name == value);
+            //                         authControl.setReligionMainIndex(selected.id, true);
+            //                         religionController.text = selected.name.toString();
+            //                         _religionIdController.text = selected.id.toString();
+            //                         authControl.getCasteList(selected.id.toString());
+            //
+            //                       }
+            //                     },
+            //
+            //                   ),
+            //                 ],
+            //               ),),
+            //           ),
+            //         );
+            //
+            //
+            //       },
+            //       child: buildDataAddRow(
+            //         widget: const Icon(
+            //           Icons.edit,
+            //           size: 12,
+            //         ),
+            //         title: 'Religion',
+            //         data1: religionController.text.isEmpty
+            //             ? (basicInfo.id == null ||
+            //             basicInfo.religion == null ||
+            //             basicInfo.religionName!.isEmpty
+            //             ? 'Not Added'
+            //             : basicInfo.religion.toString())
+            //             : religionController.text,
+            //         data2: religionController.text,
+            //         isControllerTextEmpty: religionController.text.isEmpty,
+            //       ),
+            //       // child: CarRowWidget(favourites: favourites!,)
+            //     ),
                 // sizedBox16(),
                 // const Divider(),
                 // GestureDetector(
@@ -670,182 +1079,315 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 //   ),
                 // ),
                 // sizedBox16(),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.bottomSheet(
-                      SmokingBottomSheet(onPop: (val ) {
-                        smokingController.text = val;
-                      },),
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,
-                    );
-                  },
-                  child: buildDataAddRow(
-                    title: 'Smoking Habit',
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    data1: smokingController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.smokingName == null
-                        ? 'Not Added'
-                        : basicInfo.smokingName.toString())
-                        : smokingController.text,
-                    data2: smokingController.text,
-                    isControllerTextEmpty: smokingController.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.bottomSheet(
-                      DrinkingBottomSheet(onPop: (val ) {
-                        drinkingController.text = val;
-                      },),
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,
-                    );
-                  },
-                  child: buildDataAddRow(
-                    title: 'Drinking Habit',
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    data1: drinkingController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.drinkingName == null
-                        ? 'Not Added'
-                        : basicInfo.drinkingName.toString())
-                        : drinkingController.text,
-                    data2: drinkingController.text,
-                    isControllerTextEmpty: drinkingController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(drinkingController)
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {},
-                  child: buildDataAddRow(
-                    widget: const SizedBox(),
-                    title: 'Birth date',
-                    data1: birthDateController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.birthDate == null ||
-                        basicInfo.birthDate!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.birthDate!.toString())
-                        : birthDateController.text,
-                    data2: birthDateController.text,
-                    isControllerTextEmpty: birthDateController.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return CommuitySheet(
-                    //       privacyStatus: '',
-                    //       onPop: (val) {
-                    //         communityController.text = val;
-                    //         print(communityController.text);
-                    //       },
-                    //     );
-                    //   },
-                    // );
-                  },
-                  child: buildDataAddRow(
-                    title: 'Caste',
-                    widget: const SizedBox(),
-                    // widget: const Icon(
-                    //   Icons.edit,
-                    //   size: 12,
-                    // ),
-                    data1: communityController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.community == null ||
-                        basicInfo.communityName == null
-                        ? 'Not Added'
-                        : basicInfo.communityName.toString())
-                        : communityController.text,
-                    data2: communityController.text,
-                    isControllerTextEmpty: communityController.text.isEmpty,
-                  ),
-
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return FinancialBottomSheet(
-                          privacyStatus: '',
-                          onPop: (val) {
-                            financialCondition.text = val;
-                            print(financialCondition.text);
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(
-                    title: 'Financial Condition',
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    data1: financialCondition.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.financialCondition == null
-                        ? 'Not Added'
-                        : basicInfo.financialCondition.toString())
-                        : financialCondition.text,
-                    data2: financialCondition.text,
-                    isControllerTextEmpty: financialCondition.text.isEmpty,
-                  ),
-                ),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {},
-                  child: buildDataAddRow(
-                    title: 'Mother Tongue',
-                    widget: const SizedBox(),
-                    data1: motherTongueController.text.isEmpty
-                        ? (basicInfo.id == null ||
-                        basicInfo.motherTongueName == null ||
-                        basicInfo.motherTongueName == null ||
-                        basicInfo.motherTongueName!.isEmpty
-                        ? 'Not Added'
-                        : basicInfo.motherTongueName.toString())
-                        : motherTongueController.text,
-                    data2: StringUtils.capitalize(motherTongueController.text),
-                    isControllerTextEmpty: motherTongueController.text.isEmpty,
-                  ),
-
-                ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'Smoking Habit',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value: authControl.smokingList!.firstWhere((religion) => religion.id == authControl.smokingIndex).name,// Assuming you have a selectedPosition variable
+                //                 items: authControl.smokingList!.map((position) => position.name!).toList(),
+                //                 hintText: "Smoking Habit",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     var selected = authControl.smokingList!.firstWhere((position) => position.name == value);
+                //                     authControl.setSmokingIndex(selected.id!,true);
+                //                     smokingController.text = selected.name.toString();
+                //                     _smokingIdController.text = selected.id.toString();
+                //
+                //                   }
+                //                 },
+                //
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     title: 'Smoking Habit',
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     data1: smokingController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.smokingName == null
+                //         ? 'Not Added'
+                //         : basicInfo.smokingName.toString())
+                //         : smokingController.text,
+                //     data2: smokingController.text,
+                //     isControllerTextEmpty: smokingController.text.isEmpty,
+                //   ),
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'Smoking Habit',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value: authControl.drikingList!.firstWhere((religion) => religion.id == authControl.drikingIndex).name,// Assuming you have a selectedPosition variable
+                //                 items: authControl.drikingList!.map((position) => position.name!).toList(),
+                //                 hintText: "Mother Tongue",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     var selected = authControl.drikingList!.firstWhere((position) => position.name == value);
+                //                     authControl.setDrikingIndex(selected.id!,true);
+                //                     drinkingController.text = selected.name.toString();
+                //                     _drinkingIdController.text = selected.id.toString();
+                //
+                //                   }
+                //                 },
+                //
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     title: 'Drinking Habit',
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     data1: drinkingController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.drinkingName == null
+                //         ? 'Not Added'
+                //         : basicInfo.drinkingName.toString())
+                //         : drinkingController.text,
+                //     data2: drinkingController.text,
+                //     isControllerTextEmpty: drinkingController.text.isEmpty,
+                //   ),
+                //   // child: CarRowWidget(drinkingController)
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {},
+                //   child: buildDataAddRow(
+                //     widget: const SizedBox(),
+                //     title: 'Birth date',
+                //     data1: birthDateController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.birthDate == null ||
+                //         basicInfo.birthDate!.isEmpty
+                //         ? 'Not Added'
+                //         : basicInfo.birthDate!.toString())
+                //         : birthDateController.text,
+                //     data2: birthDateController.text,
+                //     isControllerTextEmpty: birthDateController.text.isEmpty,
+                //   ),
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'Caste',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value: authControl.casteList!.firstWhere((religion) => religion.id == authControl.casteMainIndex).name,// Assuming you have a selectedPosition variable
+                //                 items: authControl.casteList!.map((position) => position.name!).toList(),
+                //                 hintText: "Select Caste",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     var selected = authControl.casteList!.firstWhere((position) => position.name == value);
+                //                     authControl.setCasteMainIndex(selected.id, true);
+                //                     communityController.text = selected.name.toString();
+                //                     _casteIdController.text = selected.id.toString();
+                //
+                //                   }
+                //                 },
+                //
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //     // showModalBottomSheet(
+                //     //   context: context,
+                //     //   builder: (BuildContext context) {
+                //     //     return CommuitySheet(
+                //     //       privacyStatus: '',
+                //     //       onPop: (val) {
+                //     //         communityController.text = val;
+                //     //         print(communityController.text);
+                //     //       },
+                //     //     );
+                //     //   },
+                //     // );
+                //   },
+                //   child: buildDataAddRow(
+                //     title: 'Caste',
+                //     // widget: const SizedBox(),
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     data1: communityController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.community == null ||
+                //         basicInfo.communityName == null
+                //         ? 'Not Added'
+                //         : basicInfo.communityName.toString())
+                //         : communityController.text,
+                //     data2: communityController.text,
+                //     isControllerTextEmpty: communityController.text.isEmpty,
+                //   ),
+                //
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'Annual Income',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value:  authControl.annualIncome ?? authControl.annualIncomeList.first,// Assuming you have a selectedPosition variable
+                //                 items: authControl.annualIncomeList,
+                //                 hintText: "Select Annual Income",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     authControl.setAnnualIncome(value);
+                //                     financialCondition.text = value;
+                //                     print(authControl.annualIncome);
+                //                   }
+                //                 },
+                //                 // itemLabelBuilder: (String item) => item,
+                //                 validator: (value) {
+                //                   if (value == null || value.isEmpty) {
+                //                     return 'Please Select Annual Income';
+                //                   }
+                //                   return null;
+                //                 },
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     title: 'Annual Income',
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     data1: financialCondition.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.financialCondition == null
+                //         ? 'Not Added'
+                //         : basicInfo.financialCondition.toString())
+                //         : financialCondition.text,
+                //     data2: financialCondition.text,
+                //     isControllerTextEmpty: financialCondition.text.isEmpty,
+                //   ),
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'Mother Tongue',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value: authControl.motherTongueList!.firstWhere((religion) => religion.id == authControl.motherTongueIndex).name,// Assuming you have a selectedPosition variable
+                //                 items: authControl.motherTongueList!.map((position) => position.name!).toList(),
+                //                 hintText: "Mother Tongue",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     var selected = authControl.motherTongueList!.firstWhere((position) => position.name == value);
+                //                     authControl.setMotherTongueIndex(selected.id, true);
+                //                     motherTongueController.text = selected.name.toString();
+                //                     _motherTongueIdController.text = selected.id.toString();
+                //                     authControl.getCasteList(selected.id.toString());
+                //
+                //                   }
+                //                 },
+                //
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     title: 'Mother Tongue',
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     data1: motherTongueController.text.isEmpty
+                //         ? (basicInfo.id == null ||
+                //         basicInfo.motherTongueName == null ||
+                //         basicInfo.motherTongueName == null ||
+                //         basicInfo.motherTongueName!.isEmpty
+                //         ? 'Not Added'
+                //         : basicInfo.motherTongueName.toString())
+                //         : motherTongueController.text,
+                //     data2: StringUtils.capitalize(motherTongueController.text),
+                //     isControllerTextEmpty: motherTongueController.text.isEmpty,
+                //   ),
+                //
+                // ),
                 // sizedBox16(),
                 // const Divider(),
                 // GestureDetector(
@@ -890,105 +1432,126 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                 //   // child: CarRowWidget(favourites: favourites!,)
                 // ),
                 // sizedBox16(),
-                sizedBox6(),
-                const Divider(),
-                sizedBox6(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.bottomSheet(
-                      SelectStateBottomSheet( onStatePop: (val) {
-                        stateController.text = val;
-                        print('=========?${stateController.text}');
-                      },),
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,);
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return NameEditDialogWidget(
-                    //       title: 'State',
-                    //       addTextField: TextFormField(
-                    //         maxLength: 40,
-                    //         onChanged: (v) {
-                    //           setState(() {});
-                    //         },
-                    //         onEditingComplete: () {
-                    //           Navigator.pop(context); // Close the dialog
-                    //         },
-                    //         controller: stateController,
-                    //         decoration:
-                    //         AppTFDecoration(hint: 'State').decoration(),
-                    //         //keyboardType: TextInputType.phone,
-                    //       ),
-                    //     );
-                    //   },
-                    // );
-                  },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'State',
-                    data1: stateController.text.isEmpty
-                        ? (basicInfo.presentAddress == null ||
-                        basicInfo.presentAddress!.state == null
-                        ? 'State'
-                        : basicInfo.presentAddress!.state!)
-                        : stateController.text,
-                    data2: StringUtils.capitalize(stateController.text),
-                    isControllerTextEmpty: stateController.text.isEmpty,
-                  ),
-                  // child: CarRowWidget(favourites: favourites!,)
-                ),
-                // sizedBox16(),
-                const Divider(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return NameEditDialogWidget(
-                          title: 'Zip Code',
-                          addTextField: TextFormField(
-                            keyboardType: TextInputType.number,
-                            maxLength: 40,
-                            onChanged: (v) {
-                              setState(() {});
-                            },
-                            onEditingComplete: () {
-                              Navigator.pop(context); // Close the dialog
-                            },
-                            controller: zipController,
-                            decoration: AppTFDecoration(hint: 'Zip Code')
-                                .decoration(),
-                            //keyboardType: TextInputType.phone,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: buildDataAddRow(
-                    widget: const Icon(
-                      Icons.edit,
-                      size: 12,
-                    ),
-                    title: 'Zip Code',
-                    data1: zipController.text.isEmpty
-                        ? (basicInfo.presentAddress == null ||
-                        basicInfo.presentAddress!.zip == null
-                        ? 'Zip Code'
-                        : basicInfo.presentAddress!.zip!)
-                        : zipController.text,
-                    data2: zipController.text,
-                    isControllerTextEmpty: zipController.text.isEmpty,
-                  ),
-
-                  // chil
-                  // d: CarRowWidget(favourites: favourites!,)
-                ),
+                // sizedBox6(),
+                // const Divider(),
+                // sizedBox6(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.bottomSheet(
+                //       SingleChildScrollView(
+                //         child: Container(color: Theme.of(context).cardColor,
+                //           padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                //           child: Column(
+                //             children: [
+                //               Text(
+                //                 'State',
+                //                 style: kManrope25Black.copyWith(fontSize: 16),
+                //               ),
+                //               sizedBox12(),
+                //               CustomDropdownButtonFormField<String>(
+                //                 value: authControl.selectedState,
+                //                 items: authControl.states,
+                //                 hintText: "Select State/UT",
+                //                 onChanged: (String? value) {
+                //                   if (value != null) {
+                //                     authControl.setState(value);
+                //                     stateController.text = value;
+                //                     print(authControl.selectedState);
+                //                   }
+                //                 },
+                //               ),
+                //             ],
+                //           ),),
+                //       ),
+                //     );
+                //
+                //     // showDialog(
+                //     //   context: context,
+                //     //   builder: (BuildContext context) {
+                //     //     return NameEditDialogWidget(
+                //     //       title: 'State',
+                //     //       addTextField: TextFormField(
+                //     //         maxLength: 40,
+                //     //         onChanged: (v) {
+                //     //           setState(() {});
+                //     //         },
+                //     //         onEditingComplete: () {
+                //     //           Navigator.pop(context); // Close the dialog
+                //     //         },
+                //     //         controller: stateController,
+                //     //         decoration:
+                //     //         AppTFDecoration(hint: 'State').decoration(),
+                //     //         //keyboardType: TextInputType.phone,
+                //     //       ),
+                //     //     );
+                //     //   },
+                //     // );
+                //   },
+                //   child: buildDataAddRow(
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     title: 'State',
+                //     data1: stateController.text.isEmpty
+                //         ? (basicInfo.presentAddress == null ||
+                //         basicInfo.presentAddress!.state == null
+                //         ? 'State'
+                //         : basicInfo.presentAddress!.state!)
+                //         : stateController.text,
+                //     data2: StringUtils.capitalize(stateController.text),
+                //     isControllerTextEmpty: stateController.text.isEmpty,
+                //   ),
+                //   // child: CarRowWidget(favourites: favourites!,)
+                // ),
+                // sizedBox6(),
+                // const Divider(),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     showDialog(
+                //       context: context,
+                //       builder: (BuildContext context) {
+                //         return NameEditDialogWidget(
+                //           title: 'Zip Code',
+                //           addTextField: TextFormField(
+                //             keyboardType: TextInputType.number,
+                //             maxLength: 40,
+                //             onChanged: (v) {
+                //               setState(() {});
+                //             },
+                //             onEditingComplete: () {
+                //               Navigator.pop(context); // Close the dialog
+                //             },
+                //             controller: zipController,
+                //             decoration: AppTFDecoration(hint: 'Zip Code')
+                //                 .decoration(),
+                //             //keyboardType: TextInputType.phone,
+                //           ),
+                //         );
+                //       },
+                //     );
+                //   },
+                //   child: buildDataAddRow(
+                //     widget: const Icon(
+                //       Icons.edit,
+                //       size: 12,
+                //     ),
+                //     title: 'Zip Code',
+                //     data1: zipController.text.isEmpty
+                //         ? (basicInfo.presentAddress == null ||
+                //         basicInfo.presentAddress!.zip == null
+                //         ? 'Zip Code'
+                //         : basicInfo.presentAddress!.zip!)
+                //         : zipController.text,
+                //     data2: zipController.text,
+                //     isControllerTextEmpty: zipController.text.isEmpty,
+                //   ),
+                //
+                //   // chil
+                //   // d: CarRowWidget(favourites: favourites!,)
+                // ),
                 // sizedBox16(),
             /*    const Divider(),
                 GestureDetector(
@@ -1041,7 +1604,7 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     });
   }
 
-  Padding buildBottombarPadding(BuildContext context,String professionId,) {
+  Padding buildBottombarPadding(BuildContext context,AuthController controller) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -1050,16 +1613,17 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
             : button(
                 context: context,
                 onTap: () {
+
                   setState(() {
                     loading = true;
                   });
                   updateBasicInfo(
-                          profession:professionId,
-                          religion: Get.find<ProfileController>().profile?.religionName.toString() ?? "11",
-                          motherTongue:  Get.find<ProfileController>().profile?.motherTongue ?? '10',
-                          community: Get.find<ProfileController>().profile?.community ?? '11',
-                          smokingStatus: Get.find<AuthController>().smokingIndex.toString(),
-                          drinkingStatus:  Get.find<AuthController>().drikingIndex.toString(),
+                          profession:_professionIdController.text,
+                          religion: _religionIdController.text,
+                          motherTongue:  _motherTongueIdController.text,
+                          community: _casteIdController.text,
+                          smokingStatus: _smokingIdController.text,
+                          drinkingStatus:  _drinkingIdController.text,
                           maritalStatus: marriedStatusController.text,
                           birthDate: birthDateController.text,
                           state: stateController.text,

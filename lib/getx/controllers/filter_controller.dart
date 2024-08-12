@@ -71,7 +71,7 @@ class FilterController extends GetxController implements GetxService {
     update();
   }
   final List<String> matchFilterTopList = ['Religion','Caste','Preferred','New'];
-  final List<String> connectedFilterTopList = ['Sent','Received','Connected',];
+  final List<String> connectedFilterTopList = ['Sent','Received','Connected','Pending'];
   int _selectedMatchFilterTop = 0;
   int get selectedMatchFilterTop => _selectedMatchFilterTop;
 

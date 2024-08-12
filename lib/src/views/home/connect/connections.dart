@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/Custom_image_widget.dart';
+import 'package:bureau_couple/getx/features/widgets/matches_shimmer_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:bureau_couple/src/views/home/bookmark_screen.dart';

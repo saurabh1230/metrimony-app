@@ -169,7 +169,7 @@ class _SignUpScreenEducationState extends State<SignUpScreenEducation> {
                       showTitle: false,),
                     sizedBox20(),
                     Text(
-                      'University / College ',
+                      'University / College',
                       style: kManrope25Black.copyWith(fontSize: 16),
                     ),
                     sizedBox12(),

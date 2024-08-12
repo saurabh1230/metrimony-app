@@ -18,6 +18,7 @@ ThemeData light = ThemeData(
 
 
 // const Color primaryColor = Color(0xfff9436b);
+const Color themeRedColor = Colors.redAccent;
 const Color primaryColor = Color(0xffa4aca4);
 const Color casteIconColor = Color(0xff7d8f9b);
 const Color darkBlueColor = Color(0xff0b1023);

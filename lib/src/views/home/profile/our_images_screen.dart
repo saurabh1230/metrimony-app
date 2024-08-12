@@ -1,3 +1,5 @@
+import 'package:bureau_couple/getx/utils/styles.dart';
+import 'package:bureau_couple/getx/utils/theme.dart';
 import 'package:bureau_couple/src/models/images_model.dart';
 import 'package:bureau_couple/src/utils/widgets/loader.dart';
 import 'package:flutter/material.dart';
@@ -113,13 +115,10 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                         loading = false;
                         isLoading  ? Loading() :    getImage();
                       });
-
                       // isLoading ? Loading() :careerInfo();
                       // Navigator.push(context, MaterialPageRoute(builder: (builder) =>
                       // const KycWaitScreen()));
-
                       // ToastUtil.showToast("Login Successful");
-
                       ToastUtil.showToast("Deleted Successfully");
                       print('done');
                     } else {
@@ -134,7 +133,7 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                     }
                   });
                 },
-                  child: Icon(Icons.delete)),
+                  child: Icon(Icons.delete,color: Theme.of(context).primaryColor,)),
             ],
           ),
         ) :
@@ -171,9 +170,9 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                           child: Icon(Icons.add)),
                     ],
                   ),
+                  Center(child: Text('Select Image (Hold to delete photo)',style: satoshiLight.copyWith(color:themeRedColor,),)),
                   sizedBox14(),
                   SizedBox(
-                    // height: 500,
                     child: GridView.builder(
                       shrinkWrap: true,
                       itemCount: photos.length,
@@ -201,7 +200,7 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                             },
                         onLongPress: () {
                           setState(() {
-                            selectedItemId = photos[i].id.toString(); // Set the ID of the selected item
+                            selectedItemId = photos[i].id.toString();
                           });
                         },
                           child: Container(
@@ -211,9 +210,6 @@ class _OurImagesScreenState extends State<OurImagesScreen> {
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color:
-                                /*selectedItems.contains(photos[i].id.toString())
-                                    ? primaryColor // Border color for selected or long-pressed items
-                                    : */
                                 selectedItemId == photos[i].id.toString()
                                     ? Colors.red
                                     : Colors.grey,

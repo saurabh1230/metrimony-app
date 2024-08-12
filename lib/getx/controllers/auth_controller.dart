@@ -29,11 +29,13 @@ class AuthController extends GetxController implements GetxService {
   });
 
   int? _userId;
-
   int? get userId => _userId;
 
   String? firstNameString;
   String? lastNameString;
+
+  String? _professionId = '';
+  String? get professionId => _professionId;
 
   XFile? _pickedImage;
 
@@ -594,8 +596,11 @@ class AuthController extends GetxController implements GetxService {
   }
 
   int? _professionIndex = 0;
-
   int? get professionIndex => _professionIndex;
+
+
+
+
   List<int?> _professionIds = [];
 
   List<int?> get professionIds => _professionIds;
@@ -2039,12 +2044,13 @@ class AuthController extends GetxController implements GetxService {
 
   List<String> get getDiet => highestDegreeList;
 
-  void setDiet(String val) {
-    _diet = val;
+  void setDiet(String? val) {
+    _diet = val?.isNotEmpty == true ? val : dietList.first;
     update();
   }
-  void setPartnerDiet(String val) {
-    _partnerDiet = val;
+
+  void setPartnerDiet(String? val) {
+    _partnerDiet = val?.isNotEmpty == true ? val : dietList.first;
     update();
   }
 

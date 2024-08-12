@@ -128,7 +128,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         const SignUpScreenTwo(),
                         const SignUpScreenProfessional(),
                         // const SignUpScreenPartnerExp(),
-                        const SignUpScreenLocation(),
+                        // const SignUpScreenLocation(),
                         const SignUpScreenPhysicalAppearanceScreen(),
                         const SignUpScreenEducation(),
                         const SignUpScreenProfessionScreen(),
@@ -189,15 +189,16 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                           curve: Curves.easeInOut,
                         );
                       }
-                    }*/ else if (_currentPage == 3 ) {
-                      if (const SignUpScreenLocation().validate()) {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    }
-                    else if (_currentPage == 4 ) {
+                    }*/
+                    // else if (_currentPage == 3 ) {
+                    //   if (const SignUpScreenLocation().validate()) {
+                    //     _pageController.nextPage(
+                    //       duration: const Duration(milliseconds: 200),
+                    //       curve: Curves.easeInOut,
+                    //     );
+                    //   }
+                    // }
+                    else if (_currentPage == 3 ) {
                       if (const SignUpScreenPhysicalAppearanceScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -205,28 +206,28 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         );
                       }
                     }
-                    else if (_currentPage == 5 ) {
+                    else if (_currentPage == 4 ) {
                       if (const SignUpScreenEducation().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    }  else if (_currentPage == 6 ) {
+                    }  else if (_currentPage == 5 ) {
                       if (const SignUpScreenProfessionScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 7 ) {
+                    } else if (_currentPage == 6 ) {
                       if (const SignUpScreenProfessionLocationScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
                           curve: Curves.easeInOut,
                         );
                       }
-                    } else if (_currentPage == 8 ) {
+                    } else if (_currentPage == 7 ) {
                       if (const SignUpScreenInterest().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -234,7 +235,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                         );
                       }
                     }
-                    else if (_currentPage == 9 ) {
+                    else if (_currentPage == 8 ) {
                       if (const SignUpScreenExpectationScreen().validate()) {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 200),
@@ -243,7 +244,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
 
-                    else if (_currentPage == 10 ) {
+                    else if (_currentPage == 9 ) {
                       if(pickedImagePath.isEmpty )  {
                         Fluttertoast.showToast(msg: "Please add Profile Image");
                       } else {
@@ -407,7 +408,7 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
                       }
                     }
                   },
-                  title:_currentPage == 10 ? 'Submit' :'Next'),
+                  title:_currentPage == 9 ? 'Submit' :'Next'),
             ),
           ),
 
@@ -522,17 +523,17 @@ class _SignUpOnboardScreenState extends State<SignUpOnboardScreen> {
               borderRadius: BorderRadius.circular(22)
           ),
         ),
-        const SizedBox(width: 3,),
-
-        Container(
-          height: 7,
-          width: _currentPage == 10 ? 17 :7,
-          decoration: BoxDecoration(
-              color: _currentPage == 10 ?  primaryColor :
-              colorD9D9D9,
-              borderRadius: BorderRadius.circular(22)
-          ),
-        ),
+        // const SizedBox(width: 3,),
+        //
+        // Container(
+        //   height: 7,
+        //   width: _currentPage == 10 ? 17 :7,
+        //   decoration: BoxDecoration(
+        //       color: _currentPage == 10 ?  primaryColor :
+        //       colorD9D9D9,
+        //       borderRadius: BorderRadius.circular(22)
+        //   ),
+        // ),
         // const SizedBox(width: 3,),
         //
         // Container(

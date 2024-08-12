@@ -1,5 +1,6 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/matches_controller.dart';
+import 'package:bureau_couple/getx/features/widgets/matches_shimmer_widget.dart';
 import 'package:bureau_couple/src/constants/assets.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';

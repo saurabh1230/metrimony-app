@@ -1,6 +1,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
+import 'package:bureau_couple/getx/features/widgets/edit_details_textfield.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/fonts.dart';
@@ -34,7 +35,9 @@ class EditPhysicalAttributesScreen extends StatefulWidget {
 class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScreen> {
   final complexionController = TextEditingController();
   final heightController = TextEditingController();
+  final heightControllerFeet = TextEditingController();
   final weightController = TextEditingController();
+  final weightControllerKgs = TextEditingController();
   final bloodGroupController = TextEditingController();
   final eyeColorController = TextEditingController();
   final hairColorController = TextEditingController();
@@ -79,8 +82,11 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
 
   void fields() {
     complexionController.text = physicalData.complexion.toString() ?? '';
-    heightController.text =physicalData.height.toString() ?? '';
+    // heightController.text = physicalData.height.toString() ?? '';
+    heightController.text = physicalData.height.toString() ?? '';
+    heightControllerFeet.text = Get.find<ProfileController>().convertHeightToFeetInches(physicalData.height.toString() ) ?? "";
     weightController.text =physicalData.weight.toString() ?? '';
+    weightControllerKgs.text = '${physicalData.weight.toString()} Kgs' ?? '';
     bloodGroupController.text = physicalData.bloodGroup.toString()?? '';
     eyeColorController.text =physicalData.eyeColor.toString() ?? '';
     hairColorController.text = physicalData.hairColor.toString() ?? '';
@@ -163,162 +169,135 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                 padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
                 child: Column(
                   children: [
-                    GestureDetector(
+                    EditDetailsTextField(title: 'Height', controller: heightControllerFeet,readOnly: true,
                       onTap: () {
                         Get.bottomSheet(
                             SingleChildScrollView(
                               child: Container(color: Theme.of(context).cardColor,
                                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                                 child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Select Height',
-                                    style: kManrope25Black.copyWith(fontSize: 16),
-                                  ),
-                                  sizedBox12(),
-                                  Row(
-                                    children: [
-                                      Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                                      Obx(() => Text(
-                                        '${authControl.attributeHeightValue.value.toStringAsFixed(1)} ft',
-                                        style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                            color: Theme.of(context).primaryColor),),),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Obx(() => Slider(
-                                      min: 5.0,
-                                      max: 7.0,
-                                      divisions: 20, // Number of divisions for finer granularity
-                                      label: authControl.attributeHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
-                                      value: authControl.attributeHeightValue.value, // Single value
-                                      onChanged: (value) {
-                                        authControl.setAttributeHeightValue(value);
-                                        print(authControl.attributeHeightValue);
-                                        heightController.text = authControl.attributeHeightValue.toString();
-                                      },
-                                    )),
-                                  ),
-                                ],),
+                                  children: [
+                                    Text(
+                                      'Select Height',
+                                      style: kManrope25Black.copyWith(fontSize: 16),
+                                    ),
+                                    sizedBox12(),
+                                    Row(
+                                      children: [
+                                        Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                                        Obx(() => Text(
+                                          '${authControl.attributeHeightValue.value.toStringAsFixed(1)} ft',
+                                          style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                              color: Theme.of(context).primaryColor),),),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Obx(() => Slider(
+                                        min: 5.0,
+                                        max: 7.0,
+                                        divisions: 20, // Number of divisions for finer granularity
+                                        label: authControl.attributeHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                                        value: authControl.attributeHeightValue.value, // Single value
+                                        onChanged: (value) {
+                                          authControl.setAttributeHeightValue(value);
+                                          print(authControl.attributeHeightValue);
+                                          heightController.text = authControl.attributeHeightValue.toString();
+                                          heightControllerFeet.text = Get.find<ProfileController>().convertHeightToFeetInches(authControl.attributeHeightValue.toString() );
+                                        },
+                                      )),
+                                    ),
+                                  ],),
                               ),)
                         );
 
-                      },
-                      child: buildDataAddRow(title: 'Height',
-                          data1: heightController.text.isEmpty
-                              ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
-                              ? 'Not Added'
-                              : physicalData.height.toString())
-                              : heightController.text,
-                          data2: profileController.convertHeightToFeetInches(heightController.text),
-                          isControllerTextEmpty: heightController.text.isEmpty),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
+                      },),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Weight', controller: weightControllerKgs,readOnly: true,
                       onTap: () {
-                      Get.bottomSheet(SingleChildScrollView(child: Container(
-                        color: Theme.of(context).cardColor,
-                        padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
-                          Text(
-                            'Select Weight',
-                            style: kManrope25Black.copyWith(fontSize: 16),
-                          ),
-                          sizedBox12(),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                                  Obx(() => Text('${authControl.attributeWeightValue.value.toString()} Kg',
-                                    style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
-                                        color: Theme.of(context).primaryColor),),),
+                        Get.bottomSheet(SingleChildScrollView(child: Container(
+                          color: Theme.of(context).cardColor,
+                          padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
+                            Text(
+                              'Select Weight',
+                              style: kManrope25Black.copyWith(fontSize: 16),
+                            ),
+                            sizedBox12(),
+                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                                    Obx(() => Text('${authControl.attributeWeightValue.value.toString()} Kg',
+                                      style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                                          color: Theme.of(context).primaryColor),),),
 
+                                  ],
+                                ),
+                                // Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                              ],
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: Obx(() => Slider(
+                                min: 45.0,
+                                max: 120.0,
+                                divisions: 75, // Number of divisions for finer granularity
+                                label: authControl.attributeWeightValue.value.toString(),
+                                value: authControl.attributeWeightValue.value.toDouble(),
+                                onChanged: (value) {
+                                  authControl.setAttributeWeightValue(value.toInt());
+                                  print(authControl.attributeWeightValue);
+                                  weightController.text = authControl.attributeWeightValue.toString();
+                                  weightControllerKgs.text =
+                                  '${authControl.attributeWeightValue.value} yrs';
+                                },
+                              )),
+                            ),
+                          ],),
+                        ) ,));
+
+                      },),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Eye Color', controller: eyeColorController,readOnly: true,
+                      onTap: () {
+                            Get.bottomSheet(SingleChildScrollView(child: Container(
+                              color: Theme.of(context).cardColor,
+                              padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Eye Color',
+                                    style: kManrope25Black.copyWith(fontSize: 16),
+                                  ),
+                                  sizedBox12(),
+                                  CustomDropdownButtonFormField<String>(
+                                    value:  authControl.eyeColor ?? authControl.eyeColorsList.first,// Assuming you have a selectedPosition variable
+                                    items: authControl.eyeColorsList,
+                                    hintText: "Select Eye Color",
+                                    onChanged: (String? value) {
+                                      if (value != null) {
+                                        authControl.setEyeColor(value);
+                                        print(authControl.eyeColor);
+                                        eyeColorController.text = value;
+                                      }
+                                    },
+                                    // itemLabelBuilder: (String item) => item,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please Select Eye Color';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ],
                               ),
-                              // Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
-                            ],
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: Obx(() => Slider(
-                              min: 45.0,
-                              max: 120.0,
-                              divisions: 75, // Number of divisions for finer granularity
-                              label: authControl.attributeWeightValue.value.toString(),
-                              value: authControl.attributeWeightValue.value.toDouble(),
-                              onChanged: (value) {
-                                authControl.setAttributeWeightValue(value.toInt());
-                                print(authControl.attributeWeightValue);
-                                weightController.text = authControl.attributeWeightValue.toString();
-                              },
-                            )),
-                          ),
-                        ],),
-                      ) ,));
-                      },
-                      child: buildDataAddRow(title: 'Weight',
-                        data1: weightController.text.isEmpty
-                            ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
-                            ? 'Not Added'
-                            : physicalData.weight.toString())
-                            : weightController.text,
-                        data2:'${weightController.text.split('.')[0]} Kg',
-                        isControllerTextEmpty: weightController.text.isEmpty,),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
-                      onTap: () {
-                       Get.bottomSheet(SingleChildScrollView(child: Container(
-                         color: Theme.of(context).cardColor,
-                         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
-                         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Text(
-                               'Blood Group',
-                               style: kManrope25Black.copyWith(fontSize: 16),
-                             ),
-                             sizedBox12(),
-                             CustomDropdownButtonFormField<String>(
-                               value:  authControl.bloodGroup ?? authControl.bloodGroupsList.first,// Assuming you have a selectedPosition variable
-                               items: authControl.bloodGroupsList,
-                               hintText: "Select Blood Group",
-                               onChanged: (String? value) {
-                                 if (value != null) {
-                                   authControl.setBloodGroup(value);
-                                   print(authControl.bloodGroup);
-                                   bloodGroupController.text = value;
-                                   print(bloodGroupController.text);
-                                 }
-                               },
-                               // itemLabelBuilder: (String item) => item,
-                               validator: (value) {
-                                 if (value == null || value.isEmpty) {
-                                   return 'Please Select Annual Income';
-                                 }
-                                 return null;
-                               },
-                             ),
+                            ),));
 
-                           ],
-                         ),
-                       ),));
-                      },
-                      child: buildDataAddRow(title: 'Blood Group',
-                        data1: bloodGroupController.text.isEmpty
-                            ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
-                            ? 'Not Added'
-                            : physicalData.bloodGroup.toString())
-                            : bloodGroupController.text,
-                        data2: StringUtils.capitalize(bloodGroupController.text),
-                        isControllerTextEmpty: bloodGroupController.text.isEmpty,),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
+                      },),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Blood Group', controller: bloodGroupController,readOnly: true,
                       onTap: () {
                         Get.bottomSheet(SingleChildScrollView(child: Container(
                           color: Theme.of(context).cardColor,
@@ -326,90 +305,323 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Eye Color',
+                                'Blood Group',
                                 style: kManrope25Black.copyWith(fontSize: 16),
                               ),
                               sizedBox12(),
                               CustomDropdownButtonFormField<String>(
-                                value:  authControl.eyeColor ?? authControl.eyeColorsList.first,// Assuming you have a selectedPosition variable
-                                items: authControl.eyeColorsList,
-                                hintText: "Select Eye Color",
+                                value:  authControl.bloodGroup ?? authControl.bloodGroupsList.first,// Assuming you have a selectedPosition variable
+                                items: authControl.bloodGroupsList,
+                                hintText: "Select Blood Group",
                                 onChanged: (String? value) {
                                   if (value != null) {
-                                    authControl.setEyeColor(value);
-                                    print(authControl.eyeColor);
-                                    eyeColorController.text = value;
+                                    authControl.setBloodGroup(value);
+                                    print(authControl.bloodGroup);
+                                    bloodGroupController.text = value;
+                                    print(bloodGroupController.text);
                                   }
                                 },
                                 // itemLabelBuilder: (String item) => item,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please Select Eye Color';
+                                    return 'Please Select Annual Income';
                                   }
                                   return null;
                                 },
                               ),
+
                             ],
                           ),
                         ),));
-                      },
-                      child: buildDataAddRow(title: 'EyeColor',
-                        data1: eyeColorController.text.isEmpty
-                            ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
-                            ? 'Not Added'
-                            : physicalData.eyeColor.toString())
-                            : eyeColorController.text,
-                        data2: StringUtils.capitalize(eyeColorController.text),
-                        isControllerTextEmpty: eyeColorController.text.isEmpty,),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
-                    GestureDetector(
+
+                      },),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Hair Color', controller: hairColorController,readOnly: true,
                       onTap: () {
                         Get.bottomSheet(SingleChildScrollView(
                           child: Container(color: Theme.of(context).cardColor,
                             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Hair Color',
-                                style: kManrope25Black.copyWith(fontSize: 16),
-                              ),
-                              sizedBox12(),
-                              CustomDropdownButtonFormField<String>(
-                                value:  authControl.hairColor ?? authControl.hairColorList.first,// Assuming you have a selectedPosition variable
-                                items: authControl.hairColorList,
-                                hintText: "Hair Color",
-                                onChanged: (String? value) {
-                                  if (value != null) {
-                                    authControl.setHairColor(value);
-                                    print(authControl.hairColor);
-                                    hairColorController.text = value;
-                                  }
-                                },
-                                // itemLabelBuilder: (String item) => item,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please Select Hair Color';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),),
+                              children: [
+                                Text(
+                                  'Hair Color',
+                                  style: kManrope25Black.copyWith(fontSize: 16),
+                                ),
+                                sizedBox12(),
+                                CustomDropdownButtonFormField<String>(
+                                  value:  authControl.hairColor ?? authControl.hairColorList.first,// Assuming you have a selectedPosition variable
+                                  items: authControl.hairColorList,
+                                  hintText: "Hair Color",
+                                  onChanged: (String? value) {
+                                    if (value != null) {
+                                      authControl.setHairColor(value);
+                                      print(authControl.hairColor);
+                                      hairColorController.text = value;
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),),
                         ));
-                      },
-                      child: buildDataAddRow(title: 'Hair Color',
-                        data1: hairColorController.text.isEmpty
-                            ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
-                            ? 'Not Added'
-                            : physicalData.weight.toString())
-                            : hairColorController.text,
-                        data2: StringUtils.capitalize(hairColorController.text),
-                        isControllerTextEmpty: hairColorController.text.isEmpty,),
-                      // child: CarRowWidget(favourites: favourites!,)
-                    ),
-                    sizedBox16(),
+
+                      },),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.bottomSheet(
+                    //         SingleChildScrollView(
+                    //           child: Container(color: Theme.of(context).cardColor,
+                    //             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+                    //               Text(
+                    //                 'Select Height',
+                    //                 style: kManrope25Black.copyWith(fontSize: 16),
+                    //               ),
+                    //               sizedBox12(),
+                    //               Row(
+                    //                 children: [
+                    //                   Text('Height  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                    //                   Obx(() => Text(
+                    //                     '${authControl.attributeHeightValue.value.toStringAsFixed(1)} ft',
+                    //                     style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                    //                         color: Theme.of(context).primaryColor),),),
+                    //                 ],
+                    //               ),
+                    //               SizedBox(
+                    //                 width: double.infinity,
+                    //                 child: Obx(() => Slider(
+                    //                   min: 5.0,
+                    //                   max: 7.0,
+                    //                   divisions: 20, // Number of divisions for finer granularity
+                    //                   label: authControl.attributeHeightValue.value.toStringAsFixed(1), // Format to 1 decimal place
+                    //                   value: authControl.attributeHeightValue.value, // Single value
+                    //                   onChanged: (value) {
+                    //                     authControl.setAttributeHeightValue(value);
+                    //                     print(authControl.attributeHeightValue);
+                    //                     heightController.text = authControl.attributeHeightValue.toString();
+                    //                   },
+                    //                 )),
+                    //               ),
+                    //             ],),
+                    //           ),)
+                    //     );
+                    //
+                    //   },
+                    //   child: buildDataAddRow(title: 'Height',
+                    //       data1: heightController.text.isEmpty
+                    //           ? (physicalData.id == null || physicalData.height == null || physicalData.height!.isEmpty
+                    //           ? 'Not Added'
+                    //           : physicalData.height.toString())
+                    //           : heightController.text,
+                    //       data2: profileController.convertHeightToFeetInches(heightController.text),
+                    //       isControllerTextEmpty: heightController.text.isEmpty),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
+                    // sizedBox6(),
+                    // const Divider(),
+                    // sizedBox6(),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //   Get.bottomSheet(SingleChildScrollView(child: Container(
+                    //     color: Theme.of(context).cardColor,
+                    //     padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //     child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
+                    //       Text(
+                    //         'Select Weight',
+                    //         style: kManrope25Black.copyWith(fontSize: 16),
+                    //       ),
+                    //       sizedBox12(),
+                    //       Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           Row(
+                    //             children: [
+                    //               Text('Weight  ',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                    //               Obx(() => Text('${authControl.attributeWeightValue.value.toString()} Kg',
+                    //                 style:satoshiBold.copyWith(fontSize: Dimensions.fontSize12,
+                    //                     color: Theme.of(context).primaryColor),),),
+                    //
+                    //             ],
+                    //           ),
+                    //           // Text('Max Weight',style: satoshiLight.copyWith(fontSize: Dimensions.fontSize12),),
+                    //         ],
+                    //       ),
+                    //       SizedBox(
+                    //         width: double.infinity,
+                    //         child: Obx(() => Slider(
+                    //           min: 45.0,
+                    //           max: 120.0,
+                    //           divisions: 75, // Number of divisions for finer granularity
+                    //           label: authControl.attributeWeightValue.value.toString(),
+                    //           value: authControl.attributeWeightValue.value.toDouble(),
+                    //           onChanged: (value) {
+                    //             authControl.setAttributeWeightValue(value.toInt());
+                    //             print(authControl.attributeWeightValue);
+                    //             weightController.text = authControl.attributeWeightValue.toString();
+                    //           },
+                    //         )),
+                    //       ),
+                    //     ],),
+                    //   ) ,));
+                    //   },
+                    //   child: buildDataAddRow(title: 'Weight',
+                    //     data1: weightController.text.isEmpty
+                    //         ? (physicalData.id == null || physicalData.weight == null || physicalData.weight!.isEmpty
+                    //         ? 'Not Added'
+                    //         : physicalData.weight.toString())
+                    //         : weightController.text,
+                    //     data2:'${weightController.text.split('.')[0]} Kg',
+                    //     isControllerTextEmpty: weightController.text.isEmpty,),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
+                    // sizedBox6(),
+                    // const Divider(),
+                    // sizedBox6(),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //    Get.bottomSheet(SingleChildScrollView(child: Container(
+                    //      color: Theme.of(context).cardColor,
+                    //      padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //        children: [
+                    //          Text(
+                    //            'Blood Group',
+                    //            style: kManrope25Black.copyWith(fontSize: 16),
+                    //          ),
+                    //          sizedBox12(),
+                    //          CustomDropdownButtonFormField<String>(
+                    //            value:  authControl.bloodGroup ?? authControl.bloodGroupsList.first,// Assuming you have a selectedPosition variable
+                    //            items: authControl.bloodGroupsList,
+                    //            hintText: "Select Blood Group",
+                    //            onChanged: (String? value) {
+                    //              if (value != null) {
+                    //                authControl.setBloodGroup(value);
+                    //                print(authControl.bloodGroup);
+                    //                bloodGroupController.text = value;
+                    //                print(bloodGroupController.text);
+                    //              }
+                    //            },
+                    //            // itemLabelBuilder: (String item) => item,
+                    //            validator: (value) {
+                    //              if (value == null || value.isEmpty) {
+                    //                return 'Please Select Annual Income';
+                    //              }
+                    //              return null;
+                    //            },
+                    //          ),
+                    //
+                    //        ],
+                    //      ),
+                    //    ),));
+                    //   },
+                    //   child: buildDataAddRow(title: 'Blood Group',
+                    //     data1: bloodGroupController.text.isEmpty
+                    //         ? (physicalData.id == null || physicalData.bloodGroup == null || physicalData.bloodGroup!.isEmpty
+                    //         ? 'Not Added'
+                    //         : physicalData.bloodGroup.toString())
+                    //         : bloodGroupController.text,
+                    //     data2: StringUtils.capitalize(bloodGroupController.text),
+                    //     isControllerTextEmpty: bloodGroupController.text.isEmpty,),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
+                    // sizedBox6(),
+                    // const Divider(),
+                    // sizedBox6(),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.bottomSheet(SingleChildScrollView(child: Container(
+                    //       color: Theme.of(context).cardColor,
+                    //       padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text(
+                    //             'Eye Color',
+                    //             style: kManrope25Black.copyWith(fontSize: 16),
+                    //           ),
+                    //           sizedBox12(),
+                    //           CustomDropdownButtonFormField<String>(
+                    //             value:  authControl.eyeColor ?? authControl.eyeColorsList.first,// Assuming you have a selectedPosition variable
+                    //             items: authControl.eyeColorsList,
+                    //             hintText: "Select Eye Color",
+                    //             onChanged: (String? value) {
+                    //               if (value != null) {
+                    //                 authControl.setEyeColor(value);
+                    //                 print(authControl.eyeColor);
+                    //                 eyeColorController.text = value;
+                    //               }
+                    //             },
+                    //             // itemLabelBuilder: (String item) => item,
+                    //             validator: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Please Select Eye Color';
+                    //               }
+                    //               return null;
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),));
+                    //   },
+                    //   child: buildDataAddRow(title: 'EyeColor',
+                    //     data1: eyeColorController.text.isEmpty
+                    //         ? (physicalData.id == null || physicalData.eyeColor == null || physicalData.eyeColor!.isEmpty
+                    //         ? 'Not Added'
+                    //         : physicalData.eyeColor.toString())
+                    //         : eyeColorController.text,
+                    //     data2: StringUtils.capitalize(eyeColorController.text),
+                    //     isControllerTextEmpty: eyeColorController.text.isEmpty,),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
+                    // sizedBox6(),
+                    // const Divider(),
+                    // sizedBox6(),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Get.bottomSheet(SingleChildScrollView(
+                    //       child: Container(color: Theme.of(context).cardColor,
+                    //         padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //         child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text(
+                    //             'Hair Color',
+                    //             style: kManrope25Black.copyWith(fontSize: 16),
+                    //           ),
+                    //           sizedBox12(),
+                    //           CustomDropdownButtonFormField<String>(
+                    //             value:  authControl.hairColor ?? authControl.hairColorList.first,// Assuming you have a selectedPosition variable
+                    //             items: authControl.hairColorList,
+                    //             hintText: "Hair Color",
+                    //             onChanged: (String? value) {
+                    //               if (value != null) {
+                    //                 authControl.setHairColor(value);
+                    //                 print(authControl.hairColor);
+                    //                 hairColorController.text = value;
+                    //               }
+                    //             },
+                    //             // itemLabelBuilder: (String item) => item,
+                    //             validator: (value) {
+                    //               if (value == null || value.isEmpty) {
+                    //                 return 'Please Select Hair Color';
+                    //               }
+                    //               return null;
+                    //             },
+                    //           ),
+                    //         ],
+                    //       ),),
+                    //     ));
+                    //   },
+                    //   child: buildDataAddRow(title: 'Hair Color',
+                    //     data1: hairColorController.text.isEmpty
+                    //         ? (physicalData.id == null || physicalData.hairColor == null || physicalData.hairColor!.isEmpty
+                    //         ? 'Not Added'
+                    //         : physicalData.weight.toString())
+                    //         : hairColorController.text,
+                    //     data2: StringUtils.capitalize(hairColorController.text),
+                    //     isControllerTextEmpty: hairColorController.text.isEmpty,),
+                    //   // child: CarRowWidget(favourites: favourites!,)
+                    // ),
+                    // sizedBox6(),
+                    // const Divider(),
+                    // sizedBox6(),
                     // GestureDetector(
                     //   onTap: () {
                     //     showDialog(
@@ -465,8 +677,13 @@ class _EditPhysicalAttributesScreenState extends State<EditPhysicalAttributesScr
     return Row(
       children: [
         Expanded(
-          child: Text(
-            title, style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+          child: Row(
+            children: [
+              Text(
+                '${title}  ', style: styleSatoshiRegular(size: 14, color: color5E5E5E),
+              ),
+              Icon(Icons.edit,size: 12,)
+            ],
           ),
         ),
         isControllerTextEmpty ?

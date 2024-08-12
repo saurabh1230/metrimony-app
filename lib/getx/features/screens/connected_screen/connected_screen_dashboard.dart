@@ -46,7 +46,7 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
       padding: EdgeInsets.only(left: 16.0, right: 16, top: 16, bottom: 0),
       child: Center(
         child: CustomEmptyMatchScreen(
-          title: 'No Connected Match',
+          title: 'No Request Yet',
           isBackButton: true,),
       ),
     );
@@ -63,7 +63,11 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                 SizedBox(
                   height: 50,
                   child: ListView.builder(
-                    padding: const EdgeInsets.only(top: Dimensions.paddingSize10),
+                    controller: _scrollController, // ScrollController for smooth scrolling
+                    padding: const EdgeInsets.only(
+                      top: Dimensions.paddingSize10,
+                      right: Dimensions.paddingSizeDefault, // Padding on the right to avoid cutting
+                    ),
                     itemCount: filterControl.connectedFilterTopList.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
@@ -75,6 +79,13 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                             _pageIndex = i;
                             _pageController.jumpToPage(i);
                           });
+
+                          // Ensure the selected item is fully visible
+                          _scrollController.animateTo(
+                            i * (Dimensions.paddingSizeDefault + 100), // Adjust the multiplier based on item width
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.only(bottom: 8.0),
@@ -99,6 +110,7 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                     },
                   ),
                 ),
+
                 Divider(color: Theme.of(context).disabledColor),
                 Expanded(
                   child: PageView.builder(
@@ -107,9 +119,14 @@ class _ConnectDashboardState extends State<ConnectDashboard> {
                       setState(() {
                         _pageIndex = index;
                       });
+                      _scrollController.animateTo(
+                        index * (Dimensions.paddingSizeDefault + 100), // Adjust the multiplier based on item width
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
                       // _loadMatchesForFilter(index);
                     },
-                    itemCount: filterControl.matchFilterTopList.length,
+                    itemCount: filterControl.connectedFilterTopList.length,
                     itemBuilder: (context, index) {
                       return GetBuilder<MatchesController>(
                         builder: (matchesControl) {

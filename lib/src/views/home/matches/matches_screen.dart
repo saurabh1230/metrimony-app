@@ -4,6 +4,7 @@ import 'package:bureau_couple/getx/controllers/matches_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/features/screens/filter/filter_screen.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_empty_match_widget.dart';
+import 'package:bureau_couple/getx/features/widgets/matches_shimmer_widget.dart';
 
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/utils/widgets/customAppbar.dart';

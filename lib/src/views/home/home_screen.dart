@@ -1,6 +1,7 @@
 import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/screens/filter/filter_screen.dart';
 import 'package:bureau_couple/getx/features/screens/home/widgets/home_profile_holder.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_button%20_widget.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
@@ -266,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Category By Filter',
+                                'Filter By Category',
                                 style: styleSatoshiBold(
                                     size: 16, color: Colors.black),
                               ),
@@ -1038,6 +1039,14 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         IconButton(
             onPressed: () {
+              Get.to(FilterScreen());
+            },
+            icon: const Icon(
+              Icons.tune_rounded,
+              size: 24,
+            )),
+        IconButton(
+            onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -1060,167 +1069,196 @@ class HomeShimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomShimmerEffect(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // buildStack(),
-            Text(
-              "Members looking for you",
-              style: styleSatoshiBold(size: 18, color: color1C1C1c),
-            ),
-            sizedBox10(),
-            SizedBox(
-              height: 140,
-              child: ListView.separated(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (_, i) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        fReligion,
-                        height: 65,
-                      ),
-                      Text(
-                        'User',
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        style: styleSatoshiBlack(
-                            size: 14, color: Colors.black.withOpacity(0.60)),
-                      ),
-                    ],
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(
-                  width: 16,
-                ),
-              ),
-            ),
-            // const SizedBox(height: 20,),
+             Container(
+               height: 110,
+               padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+               margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(Dimensions.radius10),
+                 color: darkBlueColor.withOpacity(0.90),
+               ),
+             ),
+            sizedBox16(),
 
-            Text(
-              'Category By Filter',
-              style: styleSatoshiBold(size: 16, color: Colors.black),
-            ),
-            sizedBox16(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Column(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSize20),
+              child: Column(    crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text(
+                  //   'Category By Filter',
+                  //   style: styleSatoshiBold(size: 16, color: Colors.black),
+                  // ),
+                  // sizedBox16(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Image.asset(
-                        fReligion,
-                        height: 55,
-                      ),
-                      sizedBox6(),
-                      Text(
-                        "Religion",
-                        style: styleSatoshiLight(size: 12, color: colorDA4F7A),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        fCommunity,
-                        height: 55,
-                      ),
-                      sizedBox6(),
-                      Text(
-                        "State",
-                        style: styleSatoshiLight(size: 12, color: color7BB972),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        fAge,
-                        height: 55,
-                      ),
-                      sizedBox6(),
-                      Text(
-                        "Weight",
-                        style: styleSatoshiLight(size: 12, color: color7859BC),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        flanguage,
-                        height: 55,
-                      ),
-                      sizedBox6(),
-                      Text(
-                        "Language",
-                        style: styleSatoshiLight(size: 12, color: colorF2AB47),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            sizedBox16(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Preferred Matches',
-                  style: styleSatoshiBold(size: 18, color: Colors.black),
-                ),
-                Text(
-                  'See All',
-                  style: styleSatoshiBold(size: 12, color: Colors.black),
-                ),
-              ],
-            ),
-            Text(
-              "Members Based On your Preference",
-              style: styleSatoshiMedium(
-                size: 14,
-                color: color1C1C1c.withOpacity(0.60),
-              ),
-            ),
-            sizedBox14(),
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: 2,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.7,
-              ),
-              itemBuilder: (_, i) {
-                return Stack(
-                  children: [
-                    Container(
-                      height: 400,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              fReligion,
+                              height: 55,
+                            ),
+                            sizedBox6(),
+                            Text(
+                              "Religion",
+                              style: styleSatoshiLight(size: 12, color: colorDA4F7A),
+                            )
+                          ],
                         ),
                       ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              fCommunity,
+                              height: 55,
+                            ),
+                            sizedBox6(),
+                            Text(
+                              "State",
+                              style: styleSatoshiLight(size: 12, color: color7BB972),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              fAge,
+                              height: 55,
+                            ),
+                            sizedBox6(),
+                            Text(
+                              "Weight",
+                              style: styleSatoshiLight(size: 12, color: color7859BC),
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              flanguage,
+                              height: 55,
+                            ),
+                            sizedBox6(),
+                            Text(
+                              "Language",
+                              style: styleSatoshiLight(size: 12, color: colorF2AB47),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  sizedBox16(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'All Matches',
+                        style: styleSatoshiBold(size: 18, color: Colors.black),
+                      ),
+                      Text(
+                        'See All',
+                        style: styleSatoshiBold(size: 12, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "All New Members",
+                    style: styleSatoshiMedium(
+                      size: 14,
+                      color: color1C1C1c.withOpacity(0.60),
                     ),
-                  ],
-                );
-              },
+                  ),
+                  sizedBox14(),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: 2,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemBuilder: (_, i) {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: 400,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  sizedBox16(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Preferred Matches',
+                        style: styleSatoshiBold(size: 18, color: Colors.black),
+                      ),
+                      Text(
+                        'See All',
+                        style: styleSatoshiBold(size: 12, color: Colors.black),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "Members Based On your Preference",
+                    style: styleSatoshiMedium(
+                      size: 14,
+                      color: color1C1C1c.withOpacity(0.60),
+                    ),
+                  ),
+                  // sizedBox14(),
+                  // GridView.builder(
+                  //   shrinkWrap: true,
+                  //   itemCount: 2,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //     crossAxisCount: 2,
+                  //     mainAxisSpacing: 8,
+                  //     crossAxisSpacing: 8,
+                  //     childAspectRatio: 0.7,
+                  //   ),
+                  //   itemBuilder: (_, i) {
+                  //     return Stack(
+                  //       children: [
+                  //         Container(
+                  //           height: 400,
+                  //           clipBehavior: Clip.hardEdge,
+                  //           decoration: const BoxDecoration(
+                  //             color: Colors.grey,
+                  //             borderRadius: BorderRadius.all(
+                  //               Radius.circular(10.0),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // ),
+
+                ],
+              ),
             ),
             sizedBox16(),
           ],

@@ -1,6 +1,11 @@
+import 'package:bureau_couple/getx/controllers/auth_controller.dart';
 import 'package:bureau_couple/getx/controllers/profile_controller.dart';
 import 'package:bureau_couple/getx/data/response/profile_model.dart';
+import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field.dart';
+import 'package:bureau_couple/getx/features/widgets/edit_details_textfield.dart';
+import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
+import 'package:bureau_couple/src/constants/fonts.dart';
 import 'package:bureau_couple/src/constants/sizedboxe.dart';
 import 'package:bureau_couple/src/models/profie_model.dart';
 import 'package:bureau_couple/src/utils/widgets/buttons.dart';
@@ -71,11 +76,14 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
   final endingYearController = TextEditingController();
   final resultController = TextEditingController();
   final outOfController = TextEditingController();
+  final _highestDegreeIdController = TextEditingController();
+
 
   void fields() {
     degreeController.text = educationDetails[0].degree.toString() ?? '';
     fieldOfStudyController.text = educationDetails[0].fieldOfStudy.toString() ?? '';
     universityController.text = educationDetails[0].institute.toString() ?? '';
+    // _highestDegreeIdController.text = educationDetails[0].
   }
 
 
@@ -85,342 +93,380 @@ class _EditEducationScreenState extends State<EditEducationScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileController>(builder: (educationController) {
-      return   Scaffold(
-        appBar:  const CustomAppBar(title: "Education Info",
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: educationController.isEducationLoading  ?
-            loadingElevatedButton(context: context, color: primaryColor):
-            button(context: context, onTap: () {
-              educationController.editEducationInfoApi('educationInfo',
-                  educationDetails[0].id.toString(),
-                  degreeController.text,
-                  fieldOfStudyController.text,
-                  universityController.text);
-              Get.back();
-            },  title: "Save"),
+      return  GetBuilder<AuthController>(builder: (authControl) {
+        return Scaffold(
+          appBar:  const CustomAppBar(title: "Education Info",
           ),
-        ),
-        body:isLoading ? const Loading() :CustomRefreshIndicator(
-          onRefresh: () {
-            setState(() {
-              isLoading = true;
-            });
-            return educationInfo();
-          },
-          child: SingleChildScrollView(
-            physics: const  AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
-              child: Column(
-                children: [
-                  educationDetails.isEmpty || educationDetails == null ?
-                  Center(child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return StatefulBuilder(
-                                builder: (BuildContext context, StateSetter setState) {
-                                  return EditDialogWidget(
-                                      addTextField: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text("Education",
-                                            style: styleSatoshiBold(size: 18, color: Colors.black),),
-                                          sizedBox16(),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'University / institute', controller: instituteController),
-                                              ),
-                                              const SizedBox(width: 6,),
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Degress', controller: degreeController),
-                                              ),
-                                            ],
-                                          ),
-                                          sizedBox10(),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
-                                              ),
-                                              const SizedBox(width: 6,),
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Registration No',
-                                                    controller: registrationNoController,
-                                                    keyboard: TextInputType.number
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: educationController.isEducationLoading  ?
+              loadingElevatedButton(context: context, color: primaryColor):
+              button(context: context, onTap: () {
+                educationController.editEducationInfoApi('educationInfo',
+                    educationDetails[0].id.toString(),
+                    degreeController.text,
+                    fieldOfStudyController.text,
+                    universityController.text);
+                Get.back();
+              },  title: "Save"),
+            ),
+          ),
+          body:isLoading ? const Loading() :CustomRefreshIndicator(
+            onRefresh: () {
+              setState(() {
+                isLoading = true;
+              });
+              return educationInfo();
+            },
+            child: SingleChildScrollView(
+              physics: const  AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16),
+                child: Column(
+                  children: [
+                    educationDetails.isEmpty || educationDetails == null ?
+                    Center(child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return StatefulBuilder(
+                                  builder: (BuildContext context, StateSetter setState) {
+                                    return EditDialogWidget(
+                                        addTextField: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Education",
+                                              style: styleSatoshiBold(size: 18, color: Colors.black),),
+                                            sizedBox16(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'University', controller: instituteController),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          sizedBox10(),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Roll No', controller: rollNoController,
-                                                    keyboard: TextInputType.number),
-                                              ),
-                                              const SizedBox(width: 6,),
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Starting year', controller: startingYearController,
-                                                    keyboard: TextInputType.number),
-                                              ),
-                                            ],
-                                          ),
-                                          sizedBox10(),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Ending Year', controller: endingYearController,
-                                                    keyboard: TextInputType.number),
-                                              ),
-                                              const SizedBox(width: 6,),
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Result in no', controller: resultController,
-                                                    keyboard: TextInputType.number),
-                                              ),
-                                            ],
-                                          ),
-                                          sizedBox10(),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: buildTextFormField(context, hint: 'Out of', controller: outOfController,
-                                                    keyboard: TextInputType.number),
-                                              ),
+                                                const SizedBox(width: 6,),
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Degress', controller: degreeController),
+                                                ),
+                                              ],
+                                            ),
+                                            sizedBox10(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Field Of Study', controller: fieldOfStudyController),
+                                                ),
+                                                const SizedBox(width: 6,),
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Registration No',
+                                                      controller: registrationNoController,
+                                                      keyboard: TextInputType.number
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            sizedBox10(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Roll No', controller: rollNoController,
+                                                      keyboard: TextInputType.number),
+                                                ),
+                                                const SizedBox(width: 6,),
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Starting year', controller: startingYearController,
+                                                      keyboard: TextInputType.number),
+                                                ),
+                                              ],
+                                            ),
+                                            sizedBox10(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Ending Year', controller: endingYearController,
+                                                      keyboard: TextInputType.number),
+                                                ),
+                                                const SizedBox(width: 6,),
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Result in no', controller: resultController,
+                                                      keyboard: TextInputType.number),
+                                                ),
+                                              ],
+                                            ),
+                                            sizedBox10(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: buildTextFormField(context, hint: 'Out of', controller: outOfController,
+                                                      keyboard: TextInputType.number),
+                                                ),
 
-                                            ],
-                                          ),
-                                          sizedBox16(),
-                                          loading ?
-                                          loadingElevatedButton(context: context,
-                                              color: primaryColor):
-                                          elevatedButton(
-                                              color: primaryColor,
-                                              context: context, onTap: () {
-                                            setState(() {
-                                              loading =true;
-                                            });
-                                            Get.back();
+                                              ],
+                                            ),
+                                            sizedBox16(),
+                                            loading ?
+                                            loadingElevatedButton(context: context,
+                                                color: primaryColor):
+                                            elevatedButton(
+                                                color: primaryColor,
+                                                context: context, onTap: () {
+                                              setState(() {
+                                                loading =true;
+                                              });
+                                              Get.back();
 
 
-                                            educationInfoAddApi(
-                                                institute: instituteController.text,
-                                                degree: degreeController.text,
-                                                fieldOfStudy: fieldOfStudyController.text,
-                                                regNO: resultController.text, start: startingYearController.text,
-                                                end: endingYearController.text, result: resultController.text,
-                                                outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
-                                              /*  setState(() {
+                                              educationInfoAddApi(
+                                                  institute: instituteController.text,
+                                                  degree: degreeController.text,
+                                                  fieldOfStudy: fieldOfStudyController.text,
+                                                  regNO: resultController.text, start: startingYearController.text,
+                                                  end: endingYearController.text, result: resultController.text,
+                                                  outOf: outOfController.text, rollNo: rollNoController.text).then((value) {
+                                                /*  setState(() {
                                               });*/
-                                              if (value['status'] == true) {
-                                                setState(() {
-                                                  loading = false;
-                                                });
-                                                ToastUtil.showToast("Updated Successfully");
-                                                instituteController.clear();
-                                                degreeController.clear();
-                                                fieldOfStudyController.clear();
-                                                resultController.clear();
-                                                startingYearController.clear();
-                                                degreeController.clear();
-                                                endingYearController.clear();
-                                                resultController.clear();
-                                                outOfController.clear();
-                                                rollNoController.clear();
+                                                if (value['status'] == true) {
+                                                  setState(() {
+                                                    loading = false;
+                                                  });
+                                                  ToastUtil.showToast("Updated Successfully");
+                                                  instituteController.clear();
+                                                  degreeController.clear();
+                                                  fieldOfStudyController.clear();
+                                                  resultController.clear();
+                                                  startingYearController.clear();
+                                                  degreeController.clear();
+                                                  endingYearController.clear();
+                                                  resultController.clear();
+                                                  outOfController.clear();
+                                                  rollNoController.clear();
 
 
 
-                                              } else {
-                                                setState(() {
-                                                  loading = false;
-                                                });
-                                                List<dynamic> errors = value['message']['error'];
-                                                String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
-                                                Fluttertoast.showToast(msg: errorMessage);
-                                              }
-                                            });
-                                          }, title: "Save")
-                                        ],
-                                      )
-                                  );
-                                }
-                            );
-                          },
-                        );
-
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 50.0),
-                        child: DottedPlaceHolder(text: "Add Education Info"),
-                      )
-                  )):
-                  ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: 1,
-                      itemBuilder: (_,i) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          // onLongPress: () {
-                          //   setState(() {
-                          //     selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
-                          //   });
-                          // },
-                          child: Column(
-                            children: [
-                              buildListRow(title: 'University / institute', data1: StringUtils.capitalize(universityController.text), tap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return NameEditDialogWidget(
-                                      title: 'University / institute ',
-                                      addTextField: TextFormField(
-                                        maxLength: 40,
-                                        onChanged: (v) {
-                                          setState(() {
-
-                                          });
-                                        },
-                                        onEditingComplete: () {
-                                          Navigator.pop(context); // Close the dialog
-                                        },
-                                        controller: universityController,
-                                        decoration: AppTFDecoration(
-                                            hint: 'University / institute').decoration(),
-                                        //keyboardType: TextInputType.phone,
-                                      ),
+                                                } else {
+                                                  setState(() {
+                                                    loading = false;
+                                                  });
+                                                  List<dynamic> errors = value['message']['error'];
+                                                  String errorMessage = errors.isNotEmpty ? errors[0] : "An unknown error occurred.";
+                                                  Fluttertoast.showToast(msg: errorMessage);
+                                                }
+                                              });
+                                            }, title: "Save")
+                                          ],
+                                        )
                                     );
-                                  },
-                                );
-                              }, ),
-                              const Divider(),
-                              sizedBox10(),
-                              buildListRow(title: 'Degree', data1:  StringUtils.capitalize(
-                                  degreeController.text), tap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return NameEditDialogWidget(
-                                      title: 'Degree',
-                                      addTextField: TextFormField(
-                                        maxLength: 40,
-                                        onChanged: (v) {
-                                          setState(() {
+                                  }
+                              );
+                            },
+                          );
 
-                                          });
-                                        },
-                                        onEditingComplete: () {
-                                          Navigator.pop(context); // Close the dialog
-                                        },
-                                        controller: degreeController,
-                                        decoration: AppTFDecoration(
-                                            hint: 'Degree').decoration(),
-                                        //keyboardType: TextInputType.phone,
-                                      ),
-                                    );
-                                  },
-                                );
-                              }, ),
-                              const Divider(),
-                              sizedBox10(),
-                              buildListRow(title: 'Field Of Study', data1: StringUtils.capitalize(fieldOfStudyController.text), tap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return NameEditDialogWidget(
-                                      title: 'Field Of Study ',
-                                      addTextField: TextFormField(
-                                        maxLength: 40,
-                                        onChanged: (v) {
-                                          setState(() {
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 50.0),
+                          child: DottedPlaceHolder(text: "Add Education Info"),
+                        )
+                    )):
+                    EditDetailsTextField(title: 'University', controller: universityController),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Highest Degree', controller: degreeController,readOnly: true,
+                      onTap: () {
+                        Get.bottomSheet(
+                          SingleChildScrollView(
+                            child: Container(color: Theme.of(context).cardColor,
+                              padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Highest Degree',
+                                    style: kManrope25Black.copyWith(fontSize: 16),
+                                  ),
+                                  sizedBox12(),
+                                  CustomDropdownButtonFormField<String>(
+                                    value: authControl.highestDegree ,
+                                    items: authControl.highestDegreeList,
+                                    hintText: "Select Highest Degree",
+                                    onChanged: (String ? value) {
+                                      authControl.setHighestDegree(value!);
+                                      degreeController.text = value;
+                                      print(authControl.highestDegree);
+                                    },
 
-                                          });
-                                        },
-                                        onEditingComplete: () {
-                                          Navigator.pop(context); // Close the dialog
-                                        },
-                                        controller: fieldOfStudyController,
-                                        decoration: AppTFDecoration(
-                                            hint: 'Field Of Study').decoration(),
-                                        //keyboardType: TextInputType.phone,
-                                      ),
-                                    );
-                                  },
-                                );
-                              }, ),
-                              const Divider(),
-                              sizedBox10(),
-                              // buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
-                              // sizedBox6(),
-                              // buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
-                              // sizedBox6(),
-                              // buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
-                              // sizedBox6(),
-                              // buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
-                              // sizedBox6(),
-                              // buildListRow(title: 'Result',
-                              //   data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
-                              // sizedBox6(),
-                              // buildListRow(title: 'Out of',
-                              //   data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
-
-
-                            ],
+                                  ),
+                                ],
+                              ),),
                           ),
                         );
-                        // return customCard(
-                        //   child: GestureDetector(
-                        //     behavior: HitTestBehavior.translucent,
-                        //     // onLongPress: () {
-                        //     //   setState(() {
-                        //     //     selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
-                        //     //   });
-                        //     // },
-                        //     child: Column(
-                        //       children: [
-                        //         buildListRow(title: 'University / institute', data1: StringUtils.capitalize(educationDetails[i].institute.toString()), ),
-                        //         sizedBox6(),
-                        //         buildListRow(title: 'Degree', data1:  StringUtils.capitalize(educationDetails[i].degree.toString()), ),
-                        //         sizedBox6(),
-                        //         buildListRow(title: 'Field Of Study', data1: StringUtils.capitalize(educationDetails[i].fieldOfStudy.toString()), ),
-                        //         sizedBox6(),
-                        //         // buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
-                        //         // sizedBox6(),
-                        //         // buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
-                        //         // sizedBox6(),
-                        //         // buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
-                        //         // sizedBox6(),
-                        //         // buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
-                        //         // sizedBox6(),
-                        //         // buildListRow(title: 'Result',
-                        //         //   data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
-                        //         // sizedBox6(),
-                        //         // buildListRow(title: 'Out of',
-                        //         //   data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
-                        //
-                        //
-                        //       ],
-                        //     ),
-                        //   ), tap: () {
-                        //
-                        //
-                        // },
-                        //   borderColor:  selectedItemId == educationDetails[i].id.toString()
-                        //       ? Colors.red
-                        //       : Colors.grey,
-                        // );
-                      }),
-                ],
+                      },),
+                    sizedBox6(),
+                    EditDetailsTextField(title: 'Field of Study', controller: fieldOfStudyController),
+                    // ListView.builder(
+                    //     physics: const NeverScrollableScrollPhysics(),
+                    //     shrinkWrap: true,
+                    //     itemCount: 1,
+                    //     itemBuilder: (_,i) {
+                    //       return GestureDetector(
+                    //         behavior: HitTestBehavior.translucent,
+                    //         // onLongPress: () {
+                    //         //   setState(() {
+                    //         //     selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
+                    //         //   });
+                    //         // },
+                    //         child: Column(
+                    //           children: [
+                    //             buildListRow(title: 'University / institute', data1: StringUtils.capitalize(universityController.text), tap: () {
+                    //               showDialog(
+                    //                 context: context,
+                    //                 builder: (BuildContext context) {
+                    //                   return NameEditDialogWidget(
+                    //                     title: 'University / institute ',
+                    //                     addTextField: TextFormField(
+                    //                       maxLength: 40,
+                    //                       onChanged: (v) {
+                    //                         setState(() {
+                    //
+                    //                         });
+                    //                       },
+                    //                       onEditingComplete: () {
+                    //                         Navigator.pop(context); // Close the dialog
+                    //                       },
+                    //                       controller: universityController,
+                    //                       decoration: AppTFDecoration(
+                    //                           hint: 'University / institute').decoration(),
+                    //                       //keyboardType: TextInputType.phone,
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               );
+                    //             }, ),
+                    //             const Divider(),
+                    //             sizedBox10(),
+                    //             buildListRow(title: 'Highest Degree', data1:  StringUtils.capitalize(
+                    //                 degreeController.text), tap: () {
+                    //               Get.bottomSheet(
+                    //                 SingleChildScrollView(
+                    //                   child: Container(color: Theme.of(context).cardColor,
+                    //                     padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                    //                     child: Column(
+                    //                       children: [
+                    //                         Text(
+                    //                           'Highest Degree',
+                    //                           style: kManrope25Black.copyWith(fontSize: 16),
+                    //                         ),
+                    //                         sizedBox12(),
+                    //                         CustomDropdownButtonFormField<String>(
+                    //                           value: authControl.highestDegree ,
+                    //                           items: authControl.highestDegreeList,
+                    //                           hintText: "Select Highest Degree",
+                    //                           onChanged: (String ? value) {
+                    //                             authControl.setHighestDegree(value!);
+                    //                             degreeController.text = value;
+                    //                             print(authControl.highestDegree);
+                    //                           },
+                    //
+                    //                         ),
+                    //                       ],
+                    //                     ),),
+                    //                 ),
+                    //               );
+                    //             }, ),
+                    //             const Divider(),
+                    //             sizedBox10(),
+                    //             buildListRow(title: 'Field Of Study', data1: StringUtils.capitalize(fieldOfStudyController.text), tap: () {
+                    //               showDialog(
+                    //                 context: context,
+                    //                 builder: (BuildContext context) {
+                    //                   return NameEditDialogWidget(
+                    //                     title: 'Field Of Study ',
+                    //                     addTextField: TextFormField(
+                    //                       maxLength: 40,
+                    //                       onChanged: (v) {
+                    //                         setState(() {
+                    //
+                    //                         });
+                    //                       },
+                    //                       onEditingComplete: () {
+                    //                         Navigator.pop(context); // Close the dialog
+                    //                       },
+                    //                       controller: fieldOfStudyController,
+                    //                       decoration: AppTFDecoration(
+                    //                           hint: 'Field Of Study').decoration(),
+                    //                       //keyboardType: TextInputType.phone,
+                    //                     ),
+                    //                   );
+                    //                 },
+                    //               );
+                    //             }, ),
+                    //             const Divider(),
+                    //             sizedBox10(),
+                    //             // buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
+                    //             // sizedBox6(),
+                    //             // buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
+                    //             // sizedBox6(),
+                    //             // buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
+                    //             // sizedBox6(),
+                    //             // buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
+                    //             // sizedBox6(),
+                    //             // buildListRow(title: 'Result',
+                    //             //   data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
+                    //             // sizedBox6(),
+                    //             // buildListRow(title: 'Out of',
+                    //             //   data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
+                    //
+                    //
+                    //           ],
+                    //         ),
+                    //       );
+                    //       // return customCard(
+                    //       //   child: GestureDetector(
+                    //       //     behavior: HitTestBehavior.translucent,
+                    //       //     // onLongPress: () {
+                    //       //     //   setState(() {
+                    //       //     //     selectedItemId = educationDetails[i].id.toString(); // Set the ID of the selected item
+                    //       //     //   });
+                    //       //     // },
+                    //       //     child: Column(
+                    //       //       children: [
+                    //       //         buildListRow(title: 'University / institute', data1: StringUtils.capitalize(educationDetails[i].institute.toString()), ),
+                    //       //         sizedBox6(),
+                    //       //         buildListRow(title: 'Degree', data1:  StringUtils.capitalize(educationDetails[i].degree.toString()), ),
+                    //       //         sizedBox6(),
+                    //       //         buildListRow(title: 'Field Of Study', data1: StringUtils.capitalize(educationDetails[i].fieldOfStudy.toString()), ),
+                    //       //         sizedBox6(),
+                    //       //         // buildListRow(title: 'Registration No', data1: educationDetails[i].regNo.toString(), ),
+                    //       //         // sizedBox6(),
+                    //       //         // buildListRow(title: 'Roll No', data1: educationDetails[i].rollNo.toString(), ),
+                    //       //         // sizedBox6(),
+                    //       //         // buildListRow(title: 'Starting Year', data1: educationDetails[i].start.toString(), ),
+                    //       //         // sizedBox6(),
+                    //       //         // buildListRow(title: 'Ending Year', data1: educationDetails[i].end.toString(), ),
+                    //       //         // sizedBox6(),
+                    //       //         // buildListRow(title: 'Result',
+                    //       //         //   data1: double.parse(educationDetails[i].result.toString()).toStringAsFixed(0),),
+                    //       //         // sizedBox6(),
+                    //       //         // buildListRow(title: 'Out of',
+                    //       //         //   data1: double.parse(educationDetails[i].outOf.toString()).toStringAsFixed(0),),
+                    //       //
+                    //       //
+                    //       //       ],
+                    //       //     ),
+                    //       //   ), tap: () {
+                    //       //
+                    //       //
+                    //       // },
+                    //       //   borderColor:  selectedItemId == educationDetails[i].id.toString()
+                    //       //       ? Colors.red
+                    //       //       : Colors.grey,
+                    //       // );
+                    //     }),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
+      }) ;
     } );
 
   }

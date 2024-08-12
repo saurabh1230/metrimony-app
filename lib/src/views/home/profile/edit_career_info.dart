@@ -6,6 +6,7 @@ import 'package:bureau_couple/getx/features/widgets/custom_dropdown_button_field
 import 'package:bureau_couple/getx/features/widgets/custom_textfield_widget.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_toast.dart';
 import 'package:bureau_couple/getx/features/widgets/custom_typeahead_field.dart';
+import 'package:bureau_couple/getx/features/widgets/edit_details_textfield.dart';
 import 'package:bureau_couple/getx/utils/dimensions.dart';
 import 'package:bureau_couple/getx/utils/styles.dart';
 import 'package:bureau_couple/src/constants/colors.dart';
@@ -33,7 +34,8 @@ import 'package:get/get.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class EditCareerInfoScreen extends StatefulWidget {
-  const EditCareerInfoScreen({super.key});
+  final CareerInfo? career;
+  const EditCareerInfoScreen({super.key, this.career});
 
   @override
   State<EditCareerInfoScreen> createState() => _EditCareerInfoScreenState();
@@ -91,7 +93,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
   // final positionController = TextEditingController();
 
   void fields() {
-    positionController.text = career[0].position.toString() ?? '';
+    positionController.text = Get.find<ProfileController>().profile?.professionName ?? '';
     stateController.text = career[0].statePosting.toString() ?? '';
     districtController.text = career[0].districtPosting.toString() ?? '';
     fromController.text = career[0].from ?? '';
@@ -266,7 +268,76 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                    //         child: DottedPlaceHolder(text: "Add Career Info"),
                    //       ),
                    //     )) else
-                         ListView.builder(
+                   EditDetailsTextField(title: 'Position', controller: positionController,readOnly: true,
+                     onTap: () {
+                       Get.bottomSheet(
+                         SingleChildScrollView(
+                           child: Container(color: Theme.of(context).cardColor,
+                             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                             child: Column(
+                               children: [
+                                 Text(
+                                   'Profession',
+                                   style: kManrope25Black.copyWith(fontSize: 16),
+                                 ),
+                                 sizedBox12(),
+                                 CustomDropdownButtonFormField<String>(
+                                   value: authControl.professionList!.firstWhere((religion) => religion.id == authControl.professionIndex).name,// Assuming you have a selectedPosition variable
+                                   items: authControl.professionList!.map((position) => position.name!).toList(),
+                                   hintText: "Select Position",
+                                   onChanged: (String? value) {
+                                     if (value != null) {
+                                       var selected = authControl.professionList!.firstWhere((position) => position.name == value);
+                                       authControl.setProfessionIndex(selected.id, true);
+                                       positionController.text = selected.name.toString();
+                                       print(authControl.professionIndex);
+                                     }
+                                   },
+
+                                 ),
+                               ],
+                             ),),
+                         ),
+                       );
+
+                     },),
+                   sizedBox6(),
+                   EditDetailsTextField(title: 'State of Posting', controller: stateController,readOnly: true,
+                     onTap: () {
+                       Get.bottomSheet(
+                         SingleChildScrollView(
+                           child: Container(color: Theme.of(context).cardColor,
+                             padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
+                             child: Column(
+                               children: [
+                                 Text(
+                                   'State of Posting',
+                                   style: kManrope25Black.copyWith(fontSize: 16),
+                                 ),
+                                 sizedBox12(),
+                                 CustomDropdownButtonFormField<String>(
+                                   value:  authControl.posselectedState,
+                                   items: authControl.posstates,
+                                   hintText: "Select Posting State",
+                                   onChanged: (value) {
+                                     authControl.possetState(value ?? authControl.posstates.first);
+                                     print('cadre =========== >${authControl.posselectedState}');
+                                     stateController.text = authControl.posselectedState.toString();
+                                   },
+                                   validator: (value) {
+                                     if (value == null || value.isEmpty || value == 'Please Posting State') {
+                                       return 'Please Posting State';
+                                     }
+                                     return null;
+                                   },
+                                 ),
+                               ],
+                             ),),
+                         ),
+                       );
+
+                     },),
+         /*                ListView.builder(
                        physics: const NeverScrollableScrollPhysics(),
                        shrinkWrap: true,
                        itemCount: career.length,
@@ -477,7 +548,7 @@ class _EditCareerInfoScreenState extends State<EditCareerInfoScreen> {
                              ],
                            ),
                          );
-                       }),
+                       }),*/
                  ],
                ),
              ),
